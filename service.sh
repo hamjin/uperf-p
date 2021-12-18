@@ -32,7 +32,7 @@ do
     echo 4-7 >/dev/cpuset/gamelite/cpus
     echo 0-1 >/dev/cpuset/restricted/cpus
     echo 2-3 >/dev/cpuset/system-background/cpus
-    echo 2-6 >/dev/cpuset/top-app/cpus
+    echo 2-7 >/dev/cpuset/top-app/cpus
     echo 0-7 >/dev/cpuset/vr/cpus
     sleep 60s
 done;
