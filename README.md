@@ -1,7 +1,7 @@
 # uperf
 
 #### 介绍
-YC调度，为天玑1200进行专属优化
+YC调度，为天玑1100和天玑1200进行专属优化
 感谢@yc9559 [Uperf-Github](https://github.com/yc9559/uperf)
 
 #### 软件架构
