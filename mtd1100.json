@@ -369,8 +369,10 @@
                     "cpuFreqMax1": "1 1800000",
                     "ppmPolicy": "4 1",
                     "suUpRateUs": "20000,15000,15000",
+                    "mtkOpp": "0",
                     "gpuAlwayson": "1",
-                    "mtkOpp": "532000",
+                    "maliCustUpbound": "23",
+                    "maliCustBoost": "23",
                     "dramboost": "0",
                     "maliloadbasedvfsstep": "2",
                     "fpsgo": "0"
@@ -387,7 +389,8 @@
                     "cpuFreqMax1": "1 2000000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "15000,10000,10000",
-                    "mtkOpp": "715000",
+                    "maliCustUpbound": "23",
+                    "maliCustBoost": "23",
                     "dramboost": "0",
                     "maliloadbasedvfsstep": "2",
                     "fpsgo": "0"
@@ -404,7 +407,8 @@
                     "cpuFreqMax1": "1 2000000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "10000,5000,5000",
-                    "mtkOpp": "715000",
+                    "maliCustUpbound": "23",
+                    "maliCustBoost": "23",
                     "dramboost": "1",
                     "maliloadbasedvfsstep": "2",
                     "fpsgo": "0"
@@ -421,7 +425,8 @@
                     "cpuFreqMax2": "1 2200000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "10000,5000,5000",
-                    "mtkOpp": "715000",
+                    "maliCustUpbound": "12",
+                    "maliCustBoost": "12",
                     "dramboost": "1",
                     "maliloadbasedvfsstep": "2",
                     "fpsgo": "0"
@@ -439,7 +444,8 @@
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "10000,5000,5000",
                     "gpuAlwayson": "1",
-                    "mtkOpp": "715000",
+                    "maliCustUpbound": "12",
+                    "maliCustBoost": "12",
                     "dramboost": "1",
                     "maliloadbasedvfsstep": "2",
                     "fpsgo": "0"
@@ -452,7 +458,8 @@
                     "cpuFreqMax2": "1 2100000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "10000,5000,5000",
-                    "mtkOpp": "715000",
+                    "maliCustUpbound": "12",
+                    "maliCustBoost": "12",
                     "dramboost": "1",
                     "fpsgo": "0"
                 },
@@ -466,7 +473,8 @@
                     "cpuFreqMax2": "1 2200000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "10000,5000,5000",
-                    "mtkOpp": "715000",
+                    "maliCustUpbound": "12",
+                    "maliCustBoost": "12",
                     "dramboost": "1",
                     "maliloadbasedvfsstep": "2",
                     "fpsgo": "0"
@@ -490,7 +498,9 @@
                     "ppmPolicy": "4 1",
                     "suUpRateUs": "15000,10000,10000",
                     "gpuAlwayson": "1",
-                    "mtkOpp": "350000",
+                    "mtkOpp": "0",
+                    "maliCustUpbound": "32",
+                    "maliCustBoost": "32",
                     "dramboost": "0",
                     "fpsgo": "0"
                 },
@@ -523,7 +533,8 @@
                     "cpuFreqMax1": "1 1500000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "10000,5000,5000",
-                    "mtkOpp": "350000",
+                    "maliCustUpbound": "32",
+                    "maliCustBoost": "32",
                     "dramboost": "0",
                     "fpsgo": "0"
                 },
@@ -539,7 +550,8 @@
                     "cpuFreqMax1": "1 1500000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "10000,5000,5000",
-                    "mtkOpp": "350000",
+                    "maliCustUpbound": "32",
+                    "maliCustBoost": "32",
                     "dramboost": "0",
                     "fpsgo": "0"
                 },
@@ -555,7 +567,8 @@
                     "cpuFreqMax1": "1 1700000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "10000,5000,5000",
-                    "mtkOpp": "350000",
+                    "maliCustUpbound": "32",
+                    "maliCustBoost": "32",
                     "dramboost": "1",
                     "fpsgo": "0"
                 },
@@ -567,7 +580,8 @@
                     "cpuFreqMax1": "1 1500000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "10000,5000,5000",
-                    "mtkOpp": "350000",
+                    "maliCustUpbound": "32",
+                    "maliCustBoost": "32",
                     "dramboost": "0",
                     "fpsgo": "0"
                 },
@@ -605,8 +619,11 @@
                     "ppmPolicy": "4 1",
                     "suUpRateUs": "10000,0,0",
                     "gpuAlwayson": "1",
-                    "mtkOpp": "685000",
+                    "mtkOpp": "0",
+                    "maliCustUpbound": "15",
+                    "maliCustBoost": "15",
                     "dramboost": "1",
+                    "maliloadbasedvfsstep": "2",
                     "fpsgo": "0"
                 },
                 "active": {
@@ -621,8 +638,10 @@
                     "cpuFreqMax2": "1 2400000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "10000,0,0",
-                    "mtkOpp": "795000",
+                    "maliCustUpbound": "06",
+                    "maliCustBoost": "06",
                     "dramboost": "1",
+                    "maliloadbasedvfsstep": "4",
                     "fpsgo": "0"
                 },
                 "interaction": {
@@ -637,8 +656,10 @@
                     "cpuFreqMax1": "1 2400000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "10000,0,0",
-                    "mtkOpp": "795000",
+                    "maliCustUpbound": "04",
+                    "maliCustBoost": "04",
                     "dramboost": "1",
+                    "maliloadbasedvfsstep": "4",
                     "fpsgo": "0"
                 },
                 "pressed": {
@@ -653,8 +674,10 @@
                     "cpuFreqMax1": "1 2400000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "10000,0,0",
-                    "mtkOpp": "765000",
+                    "maliCustUpbound": "03",
+                    "maliCustBoost": "03",
                     "dramboost": "0",
+                    "maliloadbasedvfsstep": "4",
                     "fpsgo": "0"
                 },
                 "heavyLoad": {
@@ -665,12 +688,14 @@
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 500000",
                     "cpuFreqMin1": "1 437000",
-                    "cpuFreqMax0": "0 1800000",
-                    "cpuFreqMax1": "1 2200000",
+                    "cpuFreqMax0": "0 2000000",
+                    "cpuFreqMax1": "1 2500000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "10000,0,0",
-                    "mtkOpp": "836000",
+                    "maliCustUpbound": "25",
+                    "maliCustBoost": "25",
                     "dramboost": "1",
+                    "maliloadbasedvfsstep": "6",
                     "fpsgo": "0"
                 },
                 "sfLag": {
@@ -681,8 +706,10 @@
                     "cpuFreqMax1": "1 2400000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "10000,0,0",
-                    "mtkOpp": "795000",
+                    "maliCustUpbound": "12",
+                    "maliCustBoost": "12",
                     "dramboost": "1",
+                    "maliloadbasedvfsstep": "8",
                     "fpsgo": "0"
                 },
                 "sfBoost": {
@@ -695,8 +722,10 @@
                     "cpuFreqMax1": "1 2600000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "10000,0,0",
-                    "mtkOpp": "795000",
+                    "maliCustUpbound": "04",
+                    "maliCustBoost": "04",
                     "dramboost": "1",
+                    "maliloadbasedvfsstep": "8",
                     "fpsgo": "0"
                 }
             }
