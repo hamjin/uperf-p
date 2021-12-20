@@ -4,7 +4,7 @@
 YC调度，为天玑1100和天玑1200进行专属优化
 感谢@yc9559 [Uperf-Github](https://github.com/yc9559/uperf)
 
- **相关修改** 
+ **相关修改**
 加回fast模式
 fast模式：降低CPU高负载时的GPU频率，强制提高内存频率，提供极限CPU性能。
 performance模式：降低CPU频率，阻止GPU调频至最高以压制GPU功耗，强制提高内存频率，提供高GPU性能。
