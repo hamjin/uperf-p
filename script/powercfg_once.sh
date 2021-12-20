@@ -169,7 +169,7 @@ unify_lpm() {
     if [ -f "$LPM/bias_hyst" ]; then
         lock_val "5" $LPM/bias_hyst
         lock_val "0" $LPM/lpm_prediction
-    elif [ -f "$SCHED/sched_busy_hyst_ns" ]; then
+        elif [ -f "$SCHED/sched_busy_hyst_ns" ]; then
         lock_val "127" $SCHED/sched_busy_hysteresis_enable_cpus # seem not working well on cpu7
         lock_val "0" $SCHED/sched_coloc_busy_hysteresis_enable_cpus
         lock_val "5000000" $SCHED/sched_busy_hyst_ns
@@ -305,7 +305,18 @@ disable_kernel_boost() {
     lock_val "0" "/sys/module/cpu_input_boost/parameters/*"
     lock_val "0" "/sys/module/dsboost/parameters/*"
     lock_val "0" "/sys/module/devfreq_boost/parameters/*"
-
+    #load balance
+    lock_val "0" /dev/cpuset/sched_load_balance
+    lock_val "0" /dev/cpuset/background/sched_load_balance
+    lock_val "0" /dev/cpuset/foreground/sched_load_balance
+    lock_val "0" /dev/cpuset/game/sched_load_balance
+    lock_val "0" /dev/cpuset/gamelite/sched_load_balance
+    lock_val "0" /dev/cpuset/restricted/sched_load_balance
+    lock_val "0" /dev/cpuset/system-background/sched_load_balance
+    lock_val "0" /dev/cpuset/top-app/sched_load_balance
+    lock_val "0" /dev/cpuset/vr/sched_load_balance
+    userdata=$(getprop dev.mnt.blk.data)
+    lock_val "1" /sys/fs/f2fs/${userdata}/gc_booster
 }
 
 disable_userspace_boost() {
