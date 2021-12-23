@@ -28,11 +28,11 @@ unify_cgroup() {
 
     # launcher is usually in foreground group, uperf will take care of them
     lock_val "0-7" /dev/cpuset/top-app/boost/cpus
-    lock_val "0-3,4,7" /dev/cpuset/game/boost/cpus
-    lock_val "0-7" /dev/cpuset/gamelite/boost/cpus
+    lock_val "0-3,4-5,7" /dev/cpuset/game/cpus
+    lock_val "0-1,4-6" /dev/cpuset/gamelite/cpus
     lock_val "0-7" /dev/cpuset/foreground/boost/cpus
     lock_val "0-3,5-6" /dev/cpuset/foreground/cpus
-    lock_val "0-3,5-6" /dev/cpuset/restricted/cpus
+    lock_val "0-3,4,6" /dev/cpuset/restricted/cpus
     lock_val "0-3" /dev/cpuset/system-background/cpus
     lock_val "0-1" /dev/cpuset/background/cpus
 
@@ -44,7 +44,7 @@ unify_cgroup() {
     pin_proc_on_pwr "crtc_commit|crtc_event|pp_event|msm_irqbalance|netd|mdnsd|analytics"
     pin_proc_on_pwr "imsdaemon|cnss-daemon|qadaemon|qseecomd|time_daemon|ATFWD-daemon|ims_rtp_daemon|qcrilNrd"
     # ueventd related to hotplug of camera, wifi, usb...
-    # pin_proc_on_pwr "ueventd"
+    pin_proc_on_pwr "ueventd"
     # hardware services, eg. android.hardware.sensors@1.0-service
     pin_proc_on_pwr "android.hardware.bluetooth"
     pin_proc_on_pwr "android.hardware.gnss"
@@ -169,7 +169,7 @@ unify_lpm() {
     if [ -f "$LPM/bias_hyst" ]; then
         lock_val "5" $LPM/bias_hyst
         lock_val "0" $LPM/lpm_prediction
-        elif [ -f "$SCHED/sched_busy_hyst_ns" ]; then
+    elif [ -f "$SCHED/sched_busy_hyst_ns" ]; then
         lock_val "127" $SCHED/sched_busy_hysteresis_enable_cpus # seem not working well on cpu7
         lock_val "0" $SCHED/sched_coloc_busy_hysteresis_enable_cpus
         lock_val "5000000" $SCHED/sched_busy_hyst_ns
@@ -235,8 +235,25 @@ disable_kernel_boost() {
     lock_val "7 0" /proc/ppm/policy_status
     lock_val "8 0" /proc/ppm/policy_status
     lock_val "9 0" /proc/ppm/policy_status
+    lock_val "0" /sys/module/ged/parameters/boost_amp
+    lock_val "0" /sys/module/ged/parameters/boost_extra
+    lock_val "0" /sys/module/ged/parameters/boost_gpu_enable
+    lock_val "0" /sys/module/ged/parameters/cpu_boost_policy
+    lock_val "0" /sys/module/ged/parameters/enable_cpu_boost
+    lock_val "0" /sys/module/ged/parameters/enable_game_self_frc_detect
+    lock_val "0" /sys/module/ged/parameters/enable_gpu_boost
+    lock_val "0" /sys/module/ged/parameters/ged_boost_enable
+    lock_val "0" /sys/module/ged/parameters/ged_smart_boost
+    lock_val "0" /sys/module/ged/parameters/gx_boost_on
+    lock_val "1" /sys/module/ged/parameters/gx_dfps
+    lock_val "0" /sys/module/ged/parameters/gx_force_cpu_boost
+    lock_val "0" /sys/module/ged/parameters/gx_frc_mode
+    lock_val "0" /sys/module/ged/parameters/gx_game_mode
+    lock_val "0" /sys/module/ged/parameters/is_GED_KPI_enabled
+    lock_val "0" /sys/module/ged/parameters/boost_amp
     # used by uperf
     # mutate "6 1" /proc/ppm/policy_status
+
     if [ -d /dev/stune/ ]; then
         write_value "0" "/dev/stune/schedtune.boost"
         write_value "0" "/dev/stune/schedtune.prefer_idle"
@@ -257,7 +274,7 @@ disable_kernel_boost() {
         done
     fi
     if [ -e /sys/devices/system/cpu/sched/sched_boost ]; then
-        write_value 0 /sys/devices/system/cpu/sched/sched_boost
+        write_value 0 "/sys/devices/system/cpu/sched/sched_boost"
         write_value 1 "/sys/devices/system/cpu/eas/enable"
     fi
 
@@ -305,18 +322,7 @@ disable_kernel_boost() {
     lock_val "0" "/sys/module/cpu_input_boost/parameters/*"
     lock_val "0" "/sys/module/dsboost/parameters/*"
     lock_val "0" "/sys/module/devfreq_boost/parameters/*"
-    #load balance
-    lock_val "0" /dev/cpuset/sched_load_balance
-    lock_val "0" /dev/cpuset/background/sched_load_balance
-    lock_val "0" /dev/cpuset/foreground/sched_load_balance
-    lock_val "0" /dev/cpuset/game/sched_load_balance
-    lock_val "0" /dev/cpuset/gamelite/sched_load_balance
-    lock_val "0" /dev/cpuset/restricted/sched_load_balance
-    lock_val "0" /dev/cpuset/system-background/sched_load_balance
-    lock_val "0" /dev/cpuset/top-app/sched_load_balance
-    lock_val "0" /dev/cpuset/vr/sched_load_balance
-    userdata=$(getprop dev.mnt.blk.data)
-    lock_val "1" /sys/fs/f2fs/${userdata}/gc_booster
+
 }
 
 disable_userspace_boost() {
