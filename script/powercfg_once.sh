@@ -44,7 +44,7 @@ unify_cgroup() {
     pin_proc_on_pwr "crtc_commit|crtc_event|pp_event|msm_irqbalance|netd|mdnsd|analytics"
     pin_proc_on_pwr "imsdaemon|cnss-daemon|qadaemon|qseecomd|time_daemon|ATFWD-daemon|ims_rtp_daemon|qcrilNrd"
     # ueventd related to hotplug of camera, wifi, usb...
-    pin_proc_on_pwr "ueventd"
+    #pin_proc_on_pwr "ueventd"
     # hardware services, eg. android.hardware.sensors@1.0-service
     pin_proc_on_pwr "android.hardware.bluetooth"
     pin_proc_on_pwr "android.hardware.gnss"
@@ -223,7 +223,7 @@ disable_kernel_boost() {
     # [10] PPM_POLICY_HICA: ?
     # Usage: echo <policy_idx> <1(enable)/0(disable)> > /proc/ppm/policy_status
     lock_val "1" /proc/ppm/enabled
-    lock_val "0" /sys/kernel/eara_thermal
+    # lock_val "0" /sys/kernel/eara_thermal
     lock_val "1" /proc/mtk-perf/lowmem_hint_enable
     lock_val "0 0" /proc/ppm/policy_status
     lock_val "1 0" /proc/ppm/policy_status
@@ -245,7 +245,7 @@ disable_kernel_boost() {
     lock_val "0" /sys/module/ged/parameters/ged_boost_enable
     lock_val "0" /sys/module/ged/parameters/ged_smart_boost
     lock_val "0" /sys/module/ged/parameters/gx_boost_on
-    lock_val "1" /sys/module/ged/parameters/gx_dfps
+    lock_val "0" /sys/module/ged/parameters/gx_dfps
     lock_val "0" /sys/module/ged/parameters/gx_force_cpu_boost
     lock_val "0" /sys/module/ged/parameters/gx_frc_mode
     lock_val "0" /sys/module/ged/parameters/gx_game_mode
