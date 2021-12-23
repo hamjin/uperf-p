@@ -251,6 +251,16 @@ disable_kernel_boost() {
     lock_val "0" /sys/module/ged/parameters/gx_game_mode
     lock_val "0" /sys/module/ged/parameters/is_GED_KPI_enabled
     lock_val "0" /sys/module/ged/parameters/boost_amp
+    #load balance
+    lock_val "0" /dev/cpuset/sched_load_balance
+    lock_val "0" /dev/cpuset/background/sched_load_balance
+    lock_val "0" /dev/cpuset/foreground/sched_load_balance
+    lock_val "0" /dev/cpuset/game/sched_load_balance
+    lock_val "0" /dev/cpuset/gamelite/sched_load_balance
+    lock_val "0" /dev/cpuset/restricted/sched_load_balance
+    lock_val "0" /dev/cpuset/system-background/sched_load_balance
+    lock_val "0" /dev/cpuset/top-app/sched_load_balance
+    lock_val "0" /dev/cpuset/vr/sched_load_balance
     # used by uperf
     # mutate "6 1" /proc/ppm/policy_status
 
