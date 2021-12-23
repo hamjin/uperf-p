@@ -235,22 +235,22 @@ disable_kernel_boost() {
     lock_val "7 0" /proc/ppm/policy_status
     lock_val "8 0" /proc/ppm/policy_status
     lock_val "9 0" /proc/ppm/policy_status
-    lock_val "0" /sys/module/ged/parameters/boost_amp
-    lock_val "0" /sys/module/ged/parameters/boost_extra
+    # lock_val "0" /sys/module/ged/parameters/boost_amp
+    # lock_val "0" /sys/module/ged/parameters/boost_extra
     lock_val "0" /sys/module/ged/parameters/boost_gpu_enable
-    lock_val "0" /sys/module/ged/parameters/cpu_boost_policy
+    # lock_val "0" /sys/module/ged/parameters/cpu_boost_policy
     lock_val "0" /sys/module/ged/parameters/enable_cpu_boost
-    lock_val "0" /sys/module/ged/parameters/enable_game_self_frc_detect
+    # lock_val "0" /sys/module/ged/parameters/enable_game_self_frc_detect
     lock_val "0" /sys/module/ged/parameters/enable_gpu_boost
     lock_val "0" /sys/module/ged/parameters/ged_boost_enable
-    lock_val "0" /sys/module/ged/parameters/ged_smart_boost
+    # lock_val "0" /sys/module/ged/parameters/ged_smart_boost
     lock_val "0" /sys/module/ged/parameters/gx_boost_on
-    lock_val "0" /sys/module/ged/parameters/gx_dfps
+    # lock_val "0" /sys/module/ged/parameters/gx_dfps
     lock_val "0" /sys/module/ged/parameters/gx_force_cpu_boost
-    lock_val "0" /sys/module/ged/parameters/gx_frc_mode
-    lock_val "0" /sys/module/ged/parameters/gx_game_mode
-    lock_val "0" /sys/module/ged/parameters/is_GED_KPI_enabled
-    lock_val "0" /sys/module/ged/parameters/boost_amp
+    # lock_val "0" /sys/module/ged/parameters/gx_frc_mode
+    # lock_val "0" /sys/module/ged/parameters/gx_game_mode
+    # lock_val "0" /sys/module/ged/parameters/is_GED_KPI_enabled
+    # lock_val "0" /sys/module/ged/parameters/boost_amp
     #load balance
     lock_val "0" /dev/cpuset/sched_load_balance
     lock_val "0" /dev/cpuset/background/sched_load_balance
