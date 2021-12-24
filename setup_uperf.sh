@@ -215,7 +215,7 @@ _get_sdm82x_type()
         echo "sdm82x_eas"
         return
     fi
-    
+
     local l_max
     local b_max
     l_max="$(_get_maxfreq 0)"
@@ -376,9 +376,9 @@ _get_cfgname()
 uperf_print_banner()
 {
     echo ""
-    echo "* Uperf https://github.com/yc9559/uperf/"
-    echo "* Author: Matt Yang"
-    echo "* Version: v2 (21.08.15)"
+    echo "* Uperf https://gitee.com/hamjin/uperf/"
+    echo "* Author: Matt Yang && HamJTY"
+    echo "* Version: v2 (21.08.15),GPU_Lock-v3.1-fixed-21.12.24"
     echo ""
 }
 
