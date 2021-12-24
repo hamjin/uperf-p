@@ -462,8 +462,7 @@
                     "suUpRateUs": "10000,5000,5000",
                     "mtkOpp": "715000",
                     "dramboost": "1",
-                    "cciboost": "1",
-                    "fpsgo": "0"
+                    "cciboost": "1"
                 },
                 "sfBoost": {
                     "topBoost": "0",
@@ -730,7 +729,7 @@
                     "gpuAlwayson": "1",
                     "mtkOpp": "512000",
                     "dramboost": "1",
-                    "fpsgo": "1"
+                    "cciboost": "1"
                 },
                 "interaction": {
                     "cpuFreqMin0": "0 2000000",

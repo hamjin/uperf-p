@@ -762,8 +762,7 @@
                     "gpuAlwayson": "1",
                     "mtkOpp": "512000",
                     "dramboost": "1",
-                    "cciboost": "1",
-                    "fpsgo": "0"
+                    "cciboost": "1"
                 },
                 "active": {
                     "cpuFreqMin0": "0 2000000",
@@ -776,8 +775,7 @@
                     "gpuAlwayson": "1",
                     "mtkOpp": "512000",
                     "dramboost": "1",
-                    "cciboost": "1",
-                    "fpsgo": "1"
+                    "cciboost": "1"
                 },
                 "interaction": {
                     "cpuFreqMin0": "0 2000000",
@@ -789,8 +787,7 @@
                     "gpuAlwayson": "1",
                     "mtkOpp": "512000",
                     "cciboost": "1",
-                    "dramboost": "1",
-                    "fpsgo": "1"
+                    "dramboost": "1"
                 },
                 "pressed": {
                     "cpuFreqMin0": "0 2000000",
@@ -803,8 +800,7 @@
                     "gpuAlwayson": "1",
                     "mtkOpp": "512000",
                     "cciboost": "1",
-                    "dramboost": "1",
-                    "fpsgo": "1"
+                    "dramboost": "1"
                 },
                 "heavyLoad": {
                     "cpuFreqMin0": "0 2000000",
@@ -816,8 +812,7 @@
                     "ppmPolicy": "6 1",
                     "gpuAlwayson": "1",
                     "mtkOpp": "512000",
-                    "dramboost": "1",
-                    "fpsgo": "1"
+                    "dramboost": "1"
                 },
                 "sfLag": {
 
@@ -831,8 +826,7 @@
                     "cciboost": "1",
                     "gpuAlwayson": "1",
                     "mtkOpp": "512000",
-                    "dramboost": "1",
-                    "fpsgo": "1"
+                    "dramboost": "1"
                 },
                 "sfBoost": {
                     "cpuFreqMin0": "0 2000000",
@@ -845,8 +839,7 @@
                     "gpuAlwayson": "1",
                     "cciboost": "1",
                     "mtkOpp": "512000",
-                    "dramboost": "1",
-                    "fpsgo": "1"
+                    "dramboost": "1"
                 }
             }
         }
