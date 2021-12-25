@@ -34,4 +34,5 @@ crash_recuser()
 
 (crash_recuser &)
 wait_until_login
+echo "fast" >/sdcard/yc/uperf/cur_powermode
 sh $BASEDIR/run_uperf.sh
