@@ -28,11 +28,11 @@ unify_cgroup() {
 
     # launcher is usually in foreground group, uperf will take care of them
     lock_val "0-7" /dev/cpuset/top-app/boost/cpus
-    lock_val "0-3,4-5,7" /dev/cpuset/game/cpus
-    lock_val "0-1,4-6" /dev/cpuset/gamelite/cpus
+    lock_val "0-7" /dev/cpuset/game/cpus
+    lock_val "0-6" /dev/cpuset/gamelite/cpus
     lock_val "0-7" /dev/cpuset/foreground/boost/cpus
-    lock_val "0-3,5-6" /dev/cpuset/foreground/cpus
-    lock_val "0-3,4,6" /dev/cpuset/restricted/cpus
+    lock_val "0-7" /dev/cpuset/foreground/cpus
+    lock_val "0-6" /dev/cpuset/restricted/cpus
     lock_val "0-3" /dev/cpuset/system-background/cpus
     lock_val "0-1" /dev/cpuset/background/cpus
 
@@ -252,15 +252,15 @@ disable_kernel_boost() {
     # lock_val "0" /sys/module/ged/parameters/is_GED_KPI_enabled
     # lock_val "0" /sys/module/ged/parameters/boost_amp
     #load balance
-    lock_val "0" /dev/cpuset/sched_load_balance
-    lock_val "0" /dev/cpuset/background/sched_load_balance
-    lock_val "0" /dev/cpuset/foreground/sched_load_balance
-    lock_val "0" /dev/cpuset/game/sched_load_balance
-    lock_val "0" /dev/cpuset/gamelite/sched_load_balance
-    lock_val "0" /dev/cpuset/restricted/sched_load_balance
-    lock_val "0" /dev/cpuset/system-background/sched_load_balance
-    lock_val "0" /dev/cpuset/top-app/sched_load_balance
-    lock_val "0" /dev/cpuset/vr/sched_load_balance
+    # lock_val "0" /dev/cpuset/sched_load_balance
+    # lock_val "0" /dev/cpuset/background/sched_load_balance
+    # lock_val "0" /dev/cpuset/foreground/sched_load_balance
+    # lock_val "0" /dev/cpuset/game/sched_load_balance
+    # lock_val "0" /dev/cpuset/gamelite/sched_load_balance
+    # lock_val "0" /dev/cpuset/restricted/sched_load_balance
+    # lock_val "0" /dev/cpuset/system-background/sched_load_balance
+    # lock_val "0" /dev/cpuset/top-app/sched_load_balance
+    # lock_val "0" /dev/cpuset/vr/sched_load_balance
     # used by uperf
     # mutate "6 1" /proc/ppm/policy_status
 

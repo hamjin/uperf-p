@@ -1,9 +1,25 @@
 # This file will be read by resetprop
 # Example: Change dpi
 # ro.sf.lcd_density=320
-
 # unify surfaceflinger props
 debug.sf.latch_unsignaled=1
 ro.surface_flinger.max_frame_buffer_acquired_buffers=8
 persist.sys.miui.sf_cores=8
+persist.sys.miui_animator_sched.bigcores=4-7
+persist.vendor.display.miui.composer_boost=0
+persist.vendor.gnss.hpLocSetUI=1
+debug.sqlite.syncmode=1
+persist.sys.force_sw_gles=0
+persist.sys.miui_animator_sched.sched_threads=32
+persist.sys.miui.sf_cores=0-7
+ro.miui.ui.font.animation=enable
+ro.kernel.qemu.gles=1
 persist.sys.miui_animator_sched.bigcores=0-7
+persist.vendor.display.miui.composer_boost=0-7
+dalvik.vm.dexopt.secondary=false
+persist.miui.dexopt.first_use=true
+ro.iorapd.enable=true
+vendor.display.disable_scaler=0
+vendor.display.use_smooth_motion=0
+vendor.display.enable_async_powermode=0
+ro.vendor.sf.enable_fb_scaling=1
