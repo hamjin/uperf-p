@@ -1,6 +1,6 @@
 {
     "meta": {
-        "name": "Dimensity 1100(mt6893)[21.08.15] With Mali GPU Freq Lock v3",
+        "name": "Dimensity 1100(mt6891)[21.08.15] With Mali GPU Freq Lock v3",
         "author": "yc@coolapk add gpu freq lock by hamjin@coolapk",
         "features": "touch cpuload render standby sfanalysis ssanalysis dispfeature"
     },
