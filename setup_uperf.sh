@@ -294,7 +294,16 @@ _get_mt6885_type()
         echo "mtd1000l"
     fi
 }
-
+_get_mt68893_type()
+{
+    local b_max
+    b_max="$(_get_maxfreq 7)"
+    if [ "$b_max" -gt 3000000 ]; then
+        echo "mtd1200"
+    else
+        echo "mtd1100"
+    fi
+}
 _get_lahaina_type()
 {
     local b_max
@@ -367,7 +376,7 @@ _get_cfgname()
     "mt6885")        ret="$(_get_mt6885_type)" ;;
     "mt6889")        ret="$(_get_mt6885_type)" ;;
     "mt6891")        ret="mtd1100" ;;
-    "mt6893")        ret="mtd1200" ;;
+    "mt6893")        ret="$(_get_mt6893_type)" ;;
     *)               ret="unsupported" ;;
     esac
     echo "$ret"
