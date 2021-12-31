@@ -294,7 +294,7 @@ _get_mt6885_type()
         echo "mtd1000l"
     fi
 }
-_get_mt68893_type()
+_get_mt6893_type()
 {
     local b_max
     b_max="$(_get_maxfreq 7)"
