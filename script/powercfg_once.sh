@@ -28,12 +28,13 @@ unify_cgroup() {
 
     # launcher is usually in foreground group, uperf will take care of them
     lock_val "0-7" /dev/cpuset/top-app/boost/cpus
-    lock_val "0-7" /dev/cpuset/game/cpus
-    lock_val "0-6" /dev/cpuset/gamelite/cpus
+    lock_val "0-7" /dev/cpuset/top-app/cpus
+    lock_val "4-7" /dev/cpuset/game/cpus
+    lock_val "4-7" /dev/cpuset/gamelite/cpus
     lock_val "0-7" /dev/cpuset/foreground/boost/cpus
     lock_val "0-7" /dev/cpuset/foreground/cpus
     lock_val "0-6" /dev/cpuset/restricted/cpus
-    lock_val "0-3" /dev/cpuset/system-background/cpus
+    lock_val "2-3" /dev/cpuset/system-background/cpus
     lock_val "0-1" /dev/cpuset/background/cpus
 
     # VMOS may set cpuset/background/cpus to "0"
@@ -223,7 +224,7 @@ disable_kernel_boost() {
     # [10] PPM_POLICY_HICA: ?
     # Usage: echo <policy_idx> <1(enable)/0(disable)> > /proc/ppm/policy_status
     lock_val "1" /proc/ppm/enabled
-    # lock_val "0" /sys/kernel/eara_thermal
+    lock_val "0" /sys/kernel/eara_thermal
     lock_val "1" /proc/mtk-perf/lowmem_hint_enable
     lock_val "0 0" /proc/ppm/policy_status
     lock_val "1 0" /proc/ppm/policy_status
@@ -252,15 +253,15 @@ disable_kernel_boost() {
     # lock_val "0" /sys/module/ged/parameters/is_GED_KPI_enabled
     # lock_val "0" /sys/module/ged/parameters/boost_amp
     #load balance
-    # lock_val "0" /dev/cpuset/sched_load_balance
-    # lock_val "0" /dev/cpuset/background/sched_load_balance
-    # lock_val "0" /dev/cpuset/foreground/sched_load_balance
-    # lock_val "0" /dev/cpuset/game/sched_load_balance
-    # lock_val "0" /dev/cpuset/gamelite/sched_load_balance
-    # lock_val "0" /dev/cpuset/restricted/sched_load_balance
-    # lock_val "0" /dev/cpuset/system-background/sched_load_balance
-    # lock_val "0" /dev/cpuset/top-app/sched_load_balance
-    # lock_val "0" /dev/cpuset/vr/sched_load_balance
+    lock_val "0" /dev/cpuset/sched_load_balance
+    lock_val "0" /dev/cpuset/background/sched_load_balance
+    lock_val "0" /dev/cpuset/foreground/sched_load_balance
+    lock_val "0" /dev/cpuset/game/sched_load_balance
+    lock_val "0" /dev/cpuset/gamelite/sched_load_balance
+    lock_val "0" /dev/cpuset/restricted/sched_load_balance
+    lock_val "0" /dev/cpuset/system-background/sched_load_balance
+    lock_val "0" /dev/cpuset/top-app/sched_load_balance
+    lock_val "0" /dev/cpuset/vr/sched_load_balance
     # used by uperf
     # mutate "6 1" /proc/ppm/policy_status
 
