@@ -731,6 +731,11 @@
             "note": "降低CPU高负载时的GPU频率，强制提高内存频率，提供极限CPU性能",
             "actions": {
                 "normal": {
+                    "schedBoost": "1",
+                    "topBoost": "100",
+                    "heavyBoost": "100",
+                    "uxAffinity": "3",
+                    "dispFeature": "2",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2600000",
@@ -746,6 +751,11 @@
                     "cciboost": "1"
                 },
                 "active": {
+                    "schedBoost": "1",
+                    "topBoost": "100",
+                    "heavyBoost": "100",
+                    "uxAffinity": "3",
+                    "dispFeature": "2",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2600000",
@@ -759,6 +769,11 @@
                     "cciboost": "1"
                 },
                 "interaction": {
+                    "schedBoost": "1",
+                    "topBoost": "100",
+                    "heavyBoost": "100",
+                    "uxAffinity": "3",
+                    "dispFeature": "2",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2600000",
@@ -771,6 +786,11 @@
                     "dramboost": "1"
                 },
                 "pressed": {
+                    "schedBoost": "1",
+                    "topBoost": "100",
+                    "heavyBoost": "100",
+                    "uxAffinity": "3",
+                    "dispFeature": "2",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2600000",
@@ -784,6 +804,11 @@
                     "dramboost": "1"
                 },
                 "heavyLoad": {
+                    "schedBoost": "1",
+                    "topBoost": "100",
+                    "heavyBoost": "100",
+                    "uxAffinity": "3",
+                    "dispFeature": "2",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2600000",
@@ -796,7 +821,11 @@
                     "dramboost": "1"
                 },
                 "sfLag": {
-
+                    "schedBoost": "1",
+                    "topBoost": "100",
+                    "heavyBoost": "100",
+                    "uxAffinity": "3",
+                    "dispFeature": "2",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2600000",
@@ -809,6 +838,11 @@
                     "dramboost": "1"
                 },
                 "sfBoost": {
+                    "schedBoost": "1",
+                    "topBoost": "100",
+                    "heavyBoost": "100",
+                    "uxAffinity": "3",
+                    "dispFeature": "2",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2600000",
