@@ -294,14 +294,30 @@ _get_mt6885_type()
         echo "mtd1000l"
     fi
 }
+_get_maxfreq_6893()
+{
+    local fpath="/sys/devices/system/cpu/cpufreq/policy$1/scaling_max_freq"
+    local maxfreq="0"
+
+    if [ ! -f "$fpath" ]; then
+        echo ""
+        return
+    fi
+
+    for f in $(cat $fpath); do
+        [ "$f" -gt "$maxfreq" ] && maxfreq="$f"
+    done
+    echo "$maxfreq"
+}
+
 _get_mt6893_type()
 {
     local b_max
-    b_max="$(_get_maxfreq 7)"
-    if [ "$b_max" -gt 3000000 ]; then
-        echo "mtd1200"
-    else
+    b_max="$(_get_maxfreq_6893 7)"
+    if [ "$b_max" == "2600000" ]; then
         echo "mtd1100"
+    else
+        echo "mtd1200"
     fi
 }
 _get_lahaina_type()
