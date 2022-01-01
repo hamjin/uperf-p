@@ -76,6 +76,22 @@ _get_maxfreq()
     echo "$maxfreq"
 }
 
+_get_maxfreq_6893()
+{
+    local fpath="/sys/devices/system/cpu/cpufreq/policy$1/scaling_max_freq"
+    local maxfreq="0"
+
+    if [ ! -f "$fpath" ]; then
+        echo ""
+        return
+    fi
+
+    for f in $(cat $fpath); do
+        [ "$f" -gt "$maxfreq" ] && maxfreq="$f"
+    done
+    echo "$maxfreq"
+}
+
 _get_socid()
 {
     if [ -f /sys/devices/soc0/soc_id ]; then
@@ -294,21 +310,6 @@ _get_mt6885_type()
         echo "mtd1000l"
     fi
 }
-_get_maxfreq_6893()
-{
-    local fpath="/sys/devices/system/cpu/cpufreq/policy$1/scaling_max_freq"
-    local maxfreq="0"
-
-    if [ ! -f "$fpath" ]; then
-        echo ""
-        return
-    fi
-
-    for f in $(cat $fpath); do
-        [ "$f" -gt "$maxfreq" ] && maxfreq="$f"
-    done
-    echo "$maxfreq"
-}
 
 _get_mt6893_type()
 {
@@ -320,6 +321,7 @@ _get_mt6893_type()
         echo "mtd1200"
     fi
 }
+
 _get_lahaina_type()
 {
     local b_max
@@ -340,6 +342,13 @@ _setup_platform_file()
 
 _place_user_config()
 {
+    if [ ! -e "/data/cpufreq.txt" ]; then
+        touch /data/cpufreq.txt 2> /dev/null
+    fi
+    if [ ! -e "/data/gpufreq.txt" ]; then
+        touch /data/gpufreq.txt 2> /dev/null
+
+    fi
     if [ ! -e "$USER_PATH/cfg_uperf_display.txt" ]; then
         cp $BASEDIR/config/cfg_uperf_display.txt $USER_PATH/cfg_uperf_display.txt 2> /dev/null
     fi
@@ -403,7 +412,7 @@ uperf_print_banner()
     echo ""
     echo "* Uperf https://gitee.com/hamjin/uperf/"
     echo "* Author: Matt Yang && HamJTY"
-    echo "* Version: v2 (21.08.15),GPU_Lock-v3.2-fixed-22.01.01"
+    echo "* Version: v2 (21.08.15),GPULock-v4-dynamic-22.01.01-testing"
     echo ""
 }
 
@@ -417,10 +426,11 @@ uperf_install()
     echo "- Installing uperf"
     echo "- ro.board.platform=$(getprop ro.board.platform)"
     echo "- ro.product.board=$(getprop ro.product.board)"
-
+    echo "- ro.product.board is empty on Android 12, Use ro.board.platform instead"
     local target
     local cfgname
     target="$(getprop ro.board.platform)"
+    setprop ro.product.board $target
     cfgname="$(_get_cfgname $target)"
     if [ "$cfgname" == "unsupported" ]; then
         target="$(getprop ro.product.board)"
@@ -429,8 +439,10 @@ uperf_install()
 
     mkdir -p $USER_PATH
     if [ "$cfgname" != "unsupported" ] && [ -f $BASEDIR/config/$cfgname.json ]; then
+        echo "- cfgname: $cfgname"
         _setup_platform_file "$cfgname"
     else
+        echo "- cfgname: $cfgname"
         _abort "! [$target] not supported."
     fi
     _place_user_config
@@ -441,7 +453,6 @@ uperf_install()
     else
         cp "$BASEDIR/uperf/arm/uperf" "$BASEDIR/bin"
     fi
-
     _set_perm_recursive $BASEDIR 0 0 0755 0644
     _set_perm_recursive $BASEDIR/bin 0 0 0755 0755
     # in case of set_perm_recursive is broken
