@@ -268,46 +268,34 @@ disable_kernel_boost() {
     # mutate "6 1" /proc/ppm/policy_status
 
     if [ -d /dev/stune/ ]; then
-        write_value "0" "/dev/stune/schedtune.boost"
-        write_value "0" "/dev/stune/schedtune.prefer_idle"
+        lock_val "0" "/dev/stune/schedtune.boost"
+        lock_val "0" "/dev/stune/schedtune.prefer_idle"
         for stune_dir in /dev/stune/*; do
-            write_value "0" "${stune_dir}/schedtune.prefer_idle"
-            write_value "0" "${stune_dir}/schedtune.boost"
-            write_value "0" "${stune_dir}/schedtune.sched_boost_no_override"
+            lock_val "0" "${stune_dir}/schedtune.prefer_idle"
+            lock_val "0" "${stune_dir}/schedtune.boost"
+            lock_val "0" "${stune_dir}/schedtune.sched_boost_no_override"
         done
     fi
     if [ -d /dev/cpuctl/ ]; then
-        write_value "0" "/dev/cpuctl/cpu.uclamp.sched_boost_no_override"
-        write_value "0" "/dev/cpuctl/cpu.uclamp.min"
-        write_value "0" "/dev/cpuctl/cpu.uclamp.latency_sensitive"
+        lock_val "0" "/dev/cpuctl/cpu.uclamp.sched_boost_no_override"
+        lock_val "0" "/dev/cpuctl/cpu.uclamp.min"
+        lock_val "0" "/dev/cpuctl/cpu.uclamp.latency_sensitive"
         for cpuctl_dir in /dev/cpuctl/*; do
-            write_value "0" "${cpuctl_dir}/cpu.uclamp.latency_sensitive"
-            write_value "0" "${cpuctl_dir}/cpu.uclamp.min"
-            write_value "0" "${cpuctl_dir}/cpu.uclamp.sched_boost_no_override"
+            lock_val "0" "${cpuctl_dir}/cpu.uclamp.latency_sensitive"
+            lock_val "0" "${cpuctl_dir}/cpu.uclamp.min"
+            lock_val "0" "${cpuctl_dir}/cpu.uclamp.sched_boost_no_override"
         done
     fi
     if [ -e /sys/devices/system/cpu/sched/sched_boost ]; then
-        write_value 0 "/sys/devices/system/cpu/sched/sched_boost"
-        write_value 1 "/sys/devices/system/cpu/eas/enable"
+        lock_val 0 "/sys/devices/system/cpu/sched/sched_boost"
+        lock_val 1 "/sys/devices/system/cpu/eas/enable"
     fi
 
     for i in $(seq 0 7); do
         if [ -e /sys/devices/system/cpu/cpu${i}/sched_prefer_idle ]; then
-            write_value "0" /sys/devices/system/cpu/cpu${i}/sched_prefer_idle
+            lock_val "0" /sys/devices/system/cpu/cpu${i}/sched_prefer_idle
         fi
     done
-    for i in $(seq 0 7); do
-        if [ -e /sys/devices/system/cpu/cpu${i}/sched_load_boost ]; then
-            write_value "-6" "/sys/devices/system/cpu/cpu${i}/sched_load_boost"
-        fi
-    done
-    if [ -d /sys/devices/system/cpu/cpu0/core_ctl/ ] && [ -d /sys/devices/system/cpu/cpu7/ ]; then
-        for i in $(seq 1 7); do
-            if [ -e /sys/devices/system/cpu/cpu${i}/core_ctl/enabled ]; then
-                lock_value "1" /sys/devices/system/cpu/cpu${i}/core_ctl/enabled
-            fi
-        done
-    fi
     # Samsung
     mutate "0" "/sys/class/input_booster/*"
 
