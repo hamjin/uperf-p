@@ -412,7 +412,7 @@ uperf_print_banner()
     echo ""
     echo "* Uperf https://gitee.com/hamjin/uperf/"
     echo "* Author: Matt Yang && HamJTY"
-    echo "* Version: v2 (21.08.15),GPULock-v3.2-fixed-22.01.01"
+    echo "* Version: v2 (21.08.15),GPULock-v3.2-fixed"
     echo ""
 }
 
