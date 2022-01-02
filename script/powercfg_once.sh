@@ -224,10 +224,26 @@ disable_kernel_boost() {
     # [10] PPM_POLICY_HICA: ?
     # Usage: echo <policy_idx> <1(enable)/0(disable)> > /proc/ppm/policy_status
     lock_val "1" /proc/ppm/enabled
+
     lock_val "0" /sys/kernel/eara_thermal
+
     lock_val "1" /sys/kernel/fpsgo/common/stop_boost
     lock_val "0" /sys/kernel/fpsgo/common/force_onoff
-    lock_val "1" /proc/mtk-perf/lowmem_hint_enable
+
+    lock_val "0" /proc/mtk-perf/lowmem_hint_enable
+
+    lock_val "enable: 0" /proc/perfmgr/tchbst/user/usrtch
+    lock_val "0" /proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_enable
+
+    lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
+    lock_val "100" /proc/perfmgr/syslimiter/syslimitertolerance_percent
+    lock_val "1" /sys/module/ged/parameters/ged_force_mdp_enable
+
+    lock_val "999999999" /proc/mtk-perf/mt_throttle_ms
+    chmod 444  /proc/mtkcooler/
+    chmod 444  /proc/mtkcooler/*
+    lock_val "enable=1" /prooc/sla/config
+
     lock_val "0 0" /proc/ppm/policy_status
     lock_val "1 0" /proc/ppm/policy_status
     lock_val "2 0" /proc/ppm/policy_status
@@ -238,7 +254,7 @@ disable_kernel_boost() {
     lock_val "7 0" /proc/ppm/policy_status
     lock_val "8 0" /proc/ppm/policy_status
     lock_val "9 0" /proc/ppm/policy_status
-    # lock_val "0" /sys/module/ged/parameters/boost_amp
+    lock_val "1" /sys/module/ged/parameters/boost_amp
     # lock_val "0" /sys/module/ged/parameters/boost_extra
     lock_val "0" /sys/module/ged/parameters/boost_gpu_enable
     # lock_val "0" /sys/module/ged/parameters/cpu_boost_policy

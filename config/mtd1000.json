@@ -361,7 +361,7 @@
                     "cpuFreqMax1": "1 2600000",
                     "ppmPolicy": "4 1",
                     "suUpRateUs": "1500,1000",
-                    "suDownRateUs": "1000,1000",
+                    "suDownRateUs": "4000,4000",
                     "gpuAlwayson": "1",
                     "mtkOpp": "532000",
                     "dramboost": "0",
@@ -379,7 +379,7 @@
                     "cpuFreqMax1": "1 2600000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "1000,600",
-                    "suDownRateUs": "1000,700",
+                    "suDownRateUs": "5000,5000",
                     "mtkOpp": "715000",
                     "dramboost": "0",
                     "cciboost": "0"
@@ -396,7 +396,7 @@
                     "cpuFreqMax1": "1 2200000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "900,500",
-                    "suDownRateUs": "1000,700",
+                    "suDownRateUs": "5000,5000",
                     "mtkOpp": "715000",
                     "dramboost": "1",
                     "cciboost": "1"
@@ -413,7 +413,7 @@
                     "cpuFreqMax1": "1 2200000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "800,350",
-                    "suDownRateUs": "2000,1500,",
+                    "suDownRateUs": "5000,5000",
                     "mtkOpp": "715000",
                     "dramboost": "1",
                     "cciboost": "1"
@@ -430,7 +430,7 @@
                     "cpuFreqMax1": "1 2600000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "700,300",
-                    "suDownRateUs": "1000,5000",
+                    "suDownRateUs": "5000,5000",
                     "mtkOpp": "715000",
                     "dramboost": "1",
                     "cciboost": "1"
@@ -443,7 +443,7 @@
                     "cpuFreqMax1": "1 2200000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "100,10",
-                    "suDownRateUs": "4000,2000",
+                    "suDownRateUs": "5000,5000",
                     "mtkOpp": "715000",
                     "dramboost": "1",
                     "cciboost": "1"
@@ -458,7 +458,7 @@
                     "cpuFreqMax1": "1 2600000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "10,5",
-                    "suDownRateUs": "9000,4000",
+                    "suDownRateUs": "9000,5000",
                     "mtkOpp": "715000",
                     "dramboost": "1",
                     "cciboost": "1"
@@ -481,7 +481,7 @@
                     "cpuFreqMax1": "1 1700000",
                     "ppmPolicy": "4 1",
                     "suUpRateUs": "1000,1500",
-                    "suDownRateUs": "1,1",
+                    "suDownRateUs": "3000,3000",
                     "gpuAlwayson": "0",
                     "mtkOpp": "350000",
                     "dramboost": "0",
@@ -499,7 +499,7 @@
                     "cpuFreqMax1": "1 1400000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "1000,1000",
-                    "suDownRateUs": "150,50",
+                   "suDownRateUs": "3000,3000",
                     "mtkOpp": "350000",
                     "cciboost": "0",
                     "dramboost": "0"
@@ -516,7 +516,7 @@
                     "cpuFreqMax1": "1 1200000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "1000,1000",
-                    "suDownRateUs": "600,200",
+                    "suDownRateUs": "3000,3000",
                     "mtkOpp": "350000",
                     "cciboost": "0",
                     "dramboost": "0"
@@ -533,7 +533,7 @@
                     "cpuFreqMax1": "1 1700000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "1000,1000",
-                    "suDownRateUs": "800,600",
+                    "suDownRateUs": "3000,3000",
                     "mtkOpp": "350000",
                     "cciboost": "0",
                     "dramboost": "0"
@@ -550,7 +550,7 @@
                     "cpuFreqMax1": "1 1900000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "1000,1000",
-                    "suDownRateUs": "1000,1000",
+                    "suDownRateUs": "3000,3000",
                     "mtkOpp": "350000",
                     "cciboost": "0",
                     "dramboost": "0"
@@ -563,7 +563,7 @@
                     "cpuFreqMax1": "1 1200000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "1000,1000",
-                    "suDownRateUs": "2000,1500",
+                    "suDownRateUs": "3000,3000",
                     "mtkOpp": "350000",
                     "dramboost": "0",
                     "cciboost": "0"
@@ -578,7 +578,7 @@
                     "cpuFreqMax1": "1 2400000",
                     "ppmPolicy": "6 1",
                     "suUpRateUs": "1000,1000",
-                    "suDownRateUs": "2000,1500",
+                    "suDownRateUs": "3000,3000",
                     "mtkOpp": "350000",
                     "dramboost": "0",
                     "cciboost": "0"
