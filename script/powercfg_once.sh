@@ -225,6 +225,8 @@ disable_kernel_boost() {
     # Usage: echo <policy_idx> <1(enable)/0(disable)> > /proc/ppm/policy_status
     lock_val "1" /proc/ppm/enabled
     lock_val "0" /sys/kernel/eara_thermal
+    lock_val "1" /sys/kernel/fpsgo/common/stop_boost
+    lock_val "0" /sys/kernel/fpsgo/common/force_onoff
     lock_val "1" /proc/mtk-perf/lowmem_hint_enable
     lock_val "0 0" /proc/ppm/policy_status
     lock_val "1 0" /proc/ppm/policy_status
