@@ -128,24 +128,32 @@
                 "Pressed",
                 "Tap",
                 "Swipe",
-                "Active"
+                "Active",
+                "HeavyLoad",
+                "SsAnim",
+                "SfLag"
             ],
             "Active": [
                 "Wakeup",
                 "Touch",
                 "Pressed",
                 "Tap",
-                "Swipe"
+                "Swipe",
+                "HeavyLoad",
+                "SsAnim",
+                "SfLag"
             ],
             "Touch": [
                 "Wakeup",
                 "SsAnim",
                 "SfLag",
-                "HeavyLoad"
+                "HeavyLoad",
+                "SfBoost"
             ],
             "Pressed": [
                 "SsAnim",
-                "SfBoost"
+                "SfBoost",
+                "HeavyLoad"
             ],
             "Tap": [
                 "SsAnim",
@@ -158,9 +166,13 @@
                 "HeavyLoad"
             ],
             "HeavyLoad": [
+                "SsAnim",
+                "SfLag",
                 "SfBoost"
             ],
-            "SfLag": [],
+            "SfLag": [
+                "SfBoost"
+            ],
             "SfBoost": [],
             "SsAnim": [
                 "SfBoost"
