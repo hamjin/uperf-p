@@ -80,7 +80,6 @@ _get_maxfreq_6893()
 {
     local fpath="/sys/devices/system/cpu/cpufreq/policy$1/scaling_max_freq"
     local maxfreq="0"
-
     if [ ! -f "$fpath" ]; then
         echo ""
         return
@@ -401,7 +400,7 @@ _get_cfgname()
     "mt6885")        ret="$(_get_mt6885_type)" ;;
     "mt6889")        ret="$(_get_mt6885_type)" ;;
     "mt6891")        ret="mtd1100" ;;
-    "mt6893")        ret="$(_get_mt6893_type)" ;;
+    "mt6893")        ret="mtd1200" ;;
     *)               ret="unsupported" ;;
     esac
     echo "$ret"
