@@ -296,14 +296,14 @@
             },
             {
                 "name": "gpuAlwaysOn",
-                "note": "Mali GPU Always On",
+                "note": "Mali GPU Always On(Android 12 Not Available)",
                 "enable": true,
                 "path": "/proc/mali/always_on",
                 "type": "string"
             },
             {
                 "name": "mtkOpp",
-                "note": "MTK GPU Opp(set disabled)",
+                "note": "MTK GPU Opp",
                 "enable": true,
                 "path": "/proc/gpufreq/gpufreq_opp_freq",
                 "type": "string"
