@@ -29,13 +29,13 @@ unify_cgroup() {
     # launcher is usually in foreground group, uperf will take care of them
     lock_val "0-7" /dev/cpuset/top-app/boost/cpus
     lock_val "0-7" /dev/cpuset/top-app/cpus
-    lock_val "4-7" /dev/cpuset/game/cpus
-    lock_val "4-7" /dev/cpuset/gamelite/cpus
+    lock_val "0-7" /dev/cpuset/game/cpus
+    lock_val "0-7" /dev/cpuset/gamelite/cpus
     lock_val "0-7" /dev/cpuset/foreground/boost/cpus
     lock_val "0-7" /dev/cpuset/foreground/cpus
     lock_val "0-6" /dev/cpuset/restricted/cpus
-    lock_val "2-3" /dev/cpuset/system-background/cpus
-    lock_val "0-1" /dev/cpuset/background/cpus
+    # lock_val "0-3" /dev/cpuset/system-background/cpus
+    # lock_val "0-3" /dev/cpuset/background/cpus
 
     # VMOS may set cpuset/background/cpus to "0"
     lock /dev/cpuset/background/cpus
@@ -256,31 +256,30 @@ disable_kernel_boost() {
     lock_val "8 0" /proc/ppm/policy_status
     lock_val "9 0" /proc/ppm/policy_status
     mutate "1" /sys/module/ged/parameters/boost_amp
-    # lock_val "0" /sys/module/ged/parameters/boost_extra
-    lock_val "0" /sys/module/ged/parameters/boost_gpu_enable
+    lock_val "1" /sys/module/ged/parameters/boost_extra
+    lock_val "1" /sys/module/ged/parameters/boost_gpu_enable
     # lock_val "0" /sys/module/ged/parameters/cpu_boost_policy
-    lock_val "0" /sys/module/ged/parameters/enable_cpu_boost
-    # lock_val "0" /sys/module/ged/parameters/enable_game_self_frc_detect
-    lock_val "0" /sys/module/ged/parameters/enable_gpu_boost
-    lock_val "0" /sys/module/ged/parameters/ged_boost_enable
+    lock_val "1" /sys/module/ged/parameters/enable_cpu_boost
+    lock_val "1" /sys/module/ged/parameters/enable_game_self_frc_detect
+    lock_val "1" /sys/module/ged/parameters/enable_gpu_boost
+    lock_val "1" /sys/module/ged/parameters/ged_boost_enable
     # lock_val "0" /sys/module/ged/parameters/ged_smart_boost
-    lock_val "0" /sys/module/ged/parameters/gx_boost_on
+    lock_val "1" /sys/module/ged/parameters/gx_boost_on
     # lock_val "0" /sys/module/ged/parameters/gx_dfps
     lock_val "0" /sys/module/ged/parameters/gx_force_cpu_boost
-    # lock_val "0" /sys/module/ged/parameters/gx_frc_mode
+    lock_val "1" /sys/module/ged/parameters/gx_frc_mode
     # lock_val "0" /sys/module/ged/parameters/gx_game_mode
-    # lock_val "0" /sys/module/ged/parameters/is_GED_KPI_enabled
-    # lock_val "0" /sys/module/ged/parameters/boost_amp
+    lock_val "1" /sys/module/ged/parameters/is_GED_KPI_enabled
     #load balance
-    lock_val "0" /dev/cpuset/sched_load_balance
-    lock_val "0" /dev/cpuset/background/sched_load_balance
-    lock_val "0" /dev/cpuset/foreground/sched_load_balance
-    lock_val "0" /dev/cpuset/game/sched_load_balance
-    lock_val "0" /dev/cpuset/gamelite/sched_load_balance
-    lock_val "0" /dev/cpuset/restricted/sched_load_balance
-    lock_val "0" /dev/cpuset/system-background/sched_load_balance
-    lock_val "0" /dev/cpuset/top-app/sched_load_balance
-    lock_val "0" /dev/cpuset/vr/sched_load_balance
+    lock_val "1" /dev/cpuset/sched_load_balance
+    lock_val "1" /dev/cpuset/background/sched_load_balance
+    lock_val "1" /dev/cpuset/foreground/sched_load_balance
+    lock_val "1" /dev/cpuset/game/sched_load_balance
+    lock_val "1" /dev/cpuset/gamelite/sched_load_balance
+    lock_val "1" /dev/cpuset/restricted/sched_load_balance
+    lock_val "1" /dev/cpuset/system-background/sched_load_balance
+    lock_val "1" /dev/cpuset/top-app/sched_load_balance
+    lock_val "1" /dev/cpuset/vr/sched_load_balance
     # used by uperf
     # mutate "6 1" /proc/ppm/policy_status
 
