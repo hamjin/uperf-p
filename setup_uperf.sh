@@ -1,7 +1,7 @@
 #!/vendor/bin/sh
 # Uperf Setup
 # https://github.com/yc9559/
-# Author: Matt Yang & cjybyjk (cjybyjk@gmail.com)
+# Author: Matt Yang & cjybyjk (cjybyjk@gmail.com) &HamJTY(coolapk@HamJTY)
 # Version: 20201129
 
 BASEDIR="$(dirname $(readlink -f "$0"))"
@@ -412,7 +412,7 @@ uperf_print_banner()
     echo ""
     echo "* Uperf https://gitee.com/hamjin/uperf/"
     echo "* Author: Matt Yang && HamJTY"
-    echo "* Version: v2 (21.08.15),GPULock-v3.3-fixed"
+    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.03"
     echo ""
 }
 
