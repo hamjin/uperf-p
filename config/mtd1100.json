@@ -295,58 +295,16 @@
             },
             {
                 "name": "gpuAlwaysOn",
-                "note": "Mali GPU Always On",
+                "note": "Mali GPU Always On(Android 12 Not Available)",
                 "enable": true,
                 "path": "/proc/mali/always_on",
                 "type": "string"
             },
             {
-                "name": "gpuDvfs",
-                "note": "Mali GPU DVFS",
-                "enable": true,
-                "path": "/proc/mali/dvfs_enable",
-                "type": "string"
-            },
-            {
                 "name": "mtkOpp",
-                "note": "MTK GPU Opp(set disabled)",
+                "note": "MTK GPU Opp",
                 "enable": true,
                 "path": "/proc/gpufreq/gpufreq_opp_freq",
-                "type": "string"
-            },
-            {
-                "name": "maliCustUpbound",
-                "note": "Mali GPU Freq ID(2715MHz，3532 3512，0886，4350)",
-                "enable": true,
-                "path": "/sys/kernel/ged/hal/custom_upbound_gpu_freq",
-                "type": "string"
-            },
-            {
-                "name": "maliCustBoost",
-                "note": "Mali GPU Freq ID(2715MHz 371GFloats,3.1wtot，08 836MHz 438.4GFloats,4.2wtot, 3532MHz, 3512，0886MHz 466.0GFloats 5.3wtot, 435183GFloats)",
-                "enable": true,
-                "path": "/sys/kernel/ged/hal/custom_boost_gpu_freq",
-                "type": "string"
-            },
-            {
-                "name": "maligedBoostFreq",
-                "note": "Mali GPU Freq(2715MHz，3532 3512，0886 465.0G，4350)",
-                "enable": true,
-                "path": "/sys/module/ged/parameters/gpu_cust_boost_freq",
-                "type": "string"
-            },
-            {
-                "name": "maligedCustFreq",
-                "note": "Mali GPU Freq(2715MHz，3532 3512，0886 465.0G，4350)",
-                "enable": true,
-                "path": "/sys/module/ged/parameters/gpu_cust_upbound_freq",
-                "type": "string"
-            },
-            {
-                "name": "maliloadbasedvfsstep",
-                "note": "Mali Load Based DVFS Step",
-                "enable": true,
-                "path": "/sys/kernel/ged/hal/loading_base_dvfs_step",
                 "type": "string"
             }
         ]

@@ -274,58 +274,16 @@
             },
             {
                 "name": "gpuAlwaysOn",
-                "note": "Mali GPU Always On",
+                "note": "Mali GPU Always On(Android 12 Not Available)",
                 "enable": true,
                 "path": "/proc/mali/always_on",
                 "type": "string"
             },
             {
-                "name": "gpuDvfs",
-                "note": "Mali GPU DVFS",
-                "enable": true,
-                "path": "/proc/mali/dvfs_enable",
-                "type": "string"
-            },
-            {
                 "name": "mtkOpp",
-                "note": "MTK GPU Opp(set disabled)",
+                "note": "MTK GPU Opp",
                 "enable": true,
                 "path": "/proc/gpufreq/gpufreq_opp_freq",
-                "type": "string"
-            },
-            {
-                "name": "maliCustUpbound",
-                "note": "Mali GPU Freq ID",
-                "enable": true,
-                "path": "/sys/kernel/ged/hal/custom_upbound_gpu_freq",
-                "type": "string"
-            },
-            {
-                "name": "maliCustBoost",
-                "note": "Mali GPU Freq ID",
-                "enable": true,
-                "path": "/sys/kernel/ged/hal/custom_boost_gpu_freq",
-                "type": "string"
-            },
-            {
-                "name": "maligedBoostFreq",
-                "note": "Mali GPU Freq",
-                "enable": true,
-                "path": "/sys/module/ged/parameters/gpu_cust_boost_freq",
-                "type": "string"
-            },
-            {
-                "name": "maligedCustFreq",
-                "note": "Mali GPU Freq",
-                "enable": true,
-                "path": "/sys/module/ged/parameters/gpu_cust_upbound_freq",
-                "type": "string"
-            },
-            {
-                "name": "maliloadbasedvfsstep",
-                "note": "Mali Load Based DVFS Step",
-                "enable": true,
-                "path": "/sys/kernel/ged/hal/loading_base_dvfs_step",
                 "type": "string"
             }
         ]
