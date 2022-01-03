@@ -292,11 +292,11 @@
                 "enable": true
             },
             {
-                "name": "suUDownRateUs",
+                "name": "suDownRateUs",
                 "path": "/sys/devices/system/cpu/cpu%d/cpufreq/schedutil/down_rate_limit_us",
                 "note": "schedutil升频最小间隔，单位微秒",
                 "type": "percluster",
-                "enable": true
+                "enable": false
             },
             {
                 "name": "dramboost",
@@ -552,7 +552,7 @@
                     "cpuFreqMin0": "0 700000",
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2000000",
-                    "cpuFreqMax1": "1 2500000",
+                    "cpuFreqMax1": "1 2507000",
 
                     "suUpRateUs": "10000,5000",
                     "suDownRateUs": "30000,30000",

@@ -271,6 +271,13 @@
                 "enable": true
             },
             {
+                "name": "suDownRateUs",
+                "path": "/sys/devices/system/cpu/cpu%d/cpufreq/schedutil/up_rate_limit_us",
+                "note": "schedutil升频最小间隔，单位微秒",
+                "type": "percluster",
+                "enable": false
+            },
+            {
                 "name": "cciboost",
                 "path": "/proc/cpufreq/cpufreq_cci_mode",
                 "note": "MTK CPU-RingBus-Boost(0/1)",
