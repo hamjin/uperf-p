@@ -225,7 +225,8 @@ disable_kernel_boost() {
     # Usage: echo <policy_idx> <1(enable)/0(disable)> > /proc/ppm/policy_status
     lock_val "1" /proc/ppm/enabled
 
-    lock_val "0" /sys/kernel/eara_thermal
+    lock_val "0" /sys/kernel/eara_thermal/enable
+    lock_val "1" /sys/kernel/eara_thermal/fake_throttle
 
     lock_val "1" /sys/kernel/fpsgo/common/stop_boost
     lock_val "0" /sys/kernel/fpsgo/common/force_onoff
@@ -254,7 +255,7 @@ disable_kernel_boost() {
     lock_val "7 0" /proc/ppm/policy_status
     lock_val "8 0" /proc/ppm/policy_status
     lock_val "9 0" /proc/ppm/policy_status
-    lock_val "1" /sys/module/ged/parameters/boost_amp
+    mutate "1" /sys/module/ged/parameters/boost_amp
     # lock_val "0" /sys/module/ged/parameters/boost_extra
     lock_val "0" /sys/module/ged/parameters/boost_gpu_enable
     # lock_val "0" /sys/module/ged/parameters/cpu_boost_policy
