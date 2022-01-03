@@ -348,7 +348,7 @@
                     "suUpRateUs": "15000,10000",
                     "suDownRateUs": "50000,50000",
                     "gpuAlwayson": "1",
-                    "mtkOpp": "543000",
+                    "mtkOpp": "748000",
                     "dramboost": "0",
                     "cciboost": "0"
                 },
@@ -382,7 +382,7 @@
                     "suUpRateUs": "15000,10000",
                     "suDownRateUs": "50000,50000",
                     "gpuAlwayson": "1",
-                    "mtkOpp": "748000",
+                    "mtkOpp": "700000",
                     "dramboost": "0",
                     "cciboost": "0"
                 },
@@ -399,7 +399,7 @@
                     "suUpRateUs": "10000,5000",
                     "suDownRateUs": "50000,50000",
                     "gpuAlwayson": "1",
-                    "mtkOpp": "748000",
+                    "mtkOpp": "736000",
                     "dramboost": "0",
                     "cciboost": "0"
                 },
@@ -532,7 +532,7 @@
                     "cpuFreqMax1": "1 1800000",
                     "suUpRateUs": "10000,5000",
                     "suDownRateUs": "30000,30000",
-                    "mtkOpp": "358000",
+                    "mtkOpp": "399000",
                     "dramboost": "1",
                     "cciboost": "1"
                 },
@@ -544,7 +544,7 @@
                     "cpuFreqMax1": "1 1200000",
                     "suUpRateUs": "10000,5000",
                     "suDownRateUs": "30000,30000",
-                    "mtkOpp": "358000",
+                    "mtkOpp": "399000",
                     "dramboost": "1",
                     "cciboost": "1"
                 },
@@ -558,7 +558,7 @@
                     "cpuFreqMax1": "1 2300000",
                     "suUpRateUs": "10000,5000",
                     "suDownRateUs": "30000,30000",
-                    "mtkOpp": "358000",
+                    "mtkOpp": "399000",
                     "dramboost": "1",
                     "cciboost": "1"
                 }

@@ -371,7 +371,7 @@
                     "suDownRateUs": "40000,40000",
                     "gpuAlwayson": "1",
                     "cciboost": "0",
-                    "mtkOpp": "532000",
+                    "mtkOpp": "715000",
                     "dramboost": "0"
                 },
                 "active": {
@@ -404,7 +404,7 @@
 
                     "suUpRateUs": "10000,5000",
                     "suDownRateUs": "50000,50000",
-                    "mtkOpp": "715000",
+                    "mtkOpp": "675000",
                     "dramboost": "0",
                     "cciboost": "0"
                 },
@@ -421,7 +421,7 @@
 
                     "suUpRateUs": "10000,5000",
                     "suDownRateUs": "50000,50000",
-                    "mtkOpp": "715000",
+                    "mtkOpp": "685000",
                     "dramboost": "1",
                     "cciboost": "1"
                 },
@@ -438,7 +438,7 @@
 
                     "suUpRateUs": "10000,5000",
                     "suDownRateUs": "50000,50000",
-                    "mtkOpp": "785000",
+                    "mtkOpp": "765000",
                     "dramboost": "1",
                     "cciboost": "1"
                 },
@@ -451,7 +451,7 @@
 
                     "suUpRateUs": "10000,5000",
                     "suDownRateUs": "50000,50000",
-                    "mtkOpp": "795000",
+                    "mtkOpp": "805000",
                     "dramboost": "1",
                     "cciboost": "1"
                 },
@@ -468,7 +468,7 @@
                     "suDownRateUs": "50000,50000",
                     "cciboost": "1",
                     "dramboost": "1",
-                    "mtkOpp": "795000"
+                    "mtkOpp": "805000"
                 }
             }
         },
@@ -558,7 +558,7 @@
 
                     "suUpRateUs": "10000,5000",
                     "suDownRateUs": "30000,30000",
-                    "mtkOpp": "350000",
+                    "mtkOpp": "370000",
                     "dramboost": "0",
                     "cciboost": "0"
                 },
@@ -571,9 +571,9 @@
 
                     "suUpRateUs": "10000,5000",
                     "suDownRateUs": "30000,30000",
-                    "mtkOpp": "390000",
-                    "dramboost": "0",
-                    "cciboost": "0"
+                    "mtkOpp": "370000",
+                    "dramboost": "1",
+                    "cciboost": "1"
                 },
                 "sfBoost": {
                     "topBoost": "0",
@@ -586,15 +586,15 @@
 
                     "suUpRateUs": "10000,5000",
                     "suDownRateUs": "30000,30000",
-                    "mtkOpp": "350000",
-                    "dramboost": "0",
-                    "cciboost": "0"
+                    "mtkOpp": "370000",
+                    "dramboost": "1",
+                    "cciboost": "1"
                 }
             }
         },
         {
             "name": "performance",
-            "note": "降低CPU频率，阻止GPU调频至最高以压制GPU功耗，强制提高内存频率，提供高GPU性能",
+            "note": "降低CPU频率，强制GPU调频至最高以解放GPU性能，强制提高内存频率，提供高GPU性能",
             "actions": {
                 "normal": {
                     "schedBoost": "0",
@@ -609,7 +609,7 @@
 
                     "suUpRateUs": "100,50",
                     "suDownRateUs": "10000,4000",
-                    "mtkOpp": "775000",
+                    "mtkOpp": "836000",
                     "dramboost": "1",
                     "cciboost": "1"
                 },
