@@ -210,6 +210,7 @@ disable_kernel_boost() {
     lock_val "0" "/sys/module/msm_performance/parameters/*"
 
     # MediaTek
+    setenforce 0
     # policy_status
     # [0] PPM_POLICY_PTPOD: Meature PMIC buck currents
     # [1] PPM_POLICY_UT: Unit test
@@ -241,8 +242,8 @@ disable_kernel_boost() {
     lock_val "1" /sys/module/ged/parameters/ged_force_mdp_enable
 
     # lock_val "999999999" /proc/mtk-perf/mt_throttle_ms
-    chmod 444  /proc/mtkcooler/
-    chmod 444  /proc/mtkcooler/*
+    # chmod 444  /proc/mtkcooler/
+    # chmod 444  /proc/mtkcooler/*
     lock_val "enable=1" /prooc/sla/config
 
     lock_val "0 0" /proc/ppm/policy_status

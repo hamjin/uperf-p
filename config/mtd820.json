@@ -1,7 +1,7 @@
 {
     "meta": {
         "name": "Dimensity 820(mt6875)[21.08.15] With Mali GPU Freq Lock v3",
-        "author": "yc@coolapk add gpu freq lock by hamjin@coolapk",
+        "author": "yc@coolapk&add gpu freq lock by hamjin@coolapk",
         "features": "touch cpuload render standby sfanalysis ssanalysis dispfeature"
     },
     "common": {
