@@ -3,9 +3,9 @@
 # ro.sf.lcd_density=320
 #MIUI相关
 persist.sys.miui.sf_cores=8
-persist.sys.miui_animator_sched.bigcores=4-7
+persist.sys.miui_animator_sched.bigcores=0-7
 persist.vendor.display.miui.composer_boost=1
-persist.sys.miui_animator_sched.bigcores=4-7
+persist.sys.miui_animator_sched.bigcores=0-7
 persist.sys.miui_animator_sched.sched_threads=32
 persist.sys.miui.sf_cores=0-7
 ro.miui.ui.font.animation=enable
@@ -47,24 +47,20 @@ persist.sys.force_sw_skiaes=1
 debug.composition.type=mdp
 persist.sys.composition.type=mdp
 persist.hwc.mdpcomp.enable=true
-debug.mdpcomp.maxlayer=3
+debug.mdpcomp.maxlayer=5
 debug.mdpcomp.logs=0
 #Android
 ro.ril.transmitpower=true
 persist.android.strictmode=0
 windowsmgr.max_events_per_sec=150
 windowsmgr.support_rotation_270=true
-#telephony.lteOnCdmaDevice=1
-ro.mtk_vilte_support=0
-#dalvik.vm.heapgrowthlimit=384m
-#dalvik.vm.heapsize=768m
 #MTK PerfService
 ro.mtk_perf_simple_start_win=0
 ro.mtk_perf_fast_start_win=0
 ro.mtk_perf_response_time=0
 ro.mtk_perfservice_support=0
-ro.sys.fw.bg_apps_limit=999
+#ro.sys.fw.bg_apps_limit=999
 #Kernel
-#kernel.sched_latency_ns=4000000
-#kernel.sched_min_granularity_ns=800000
-#kernel.sched_wakeup_granularity_ns=8000000
+kernel.sched_latency_ns=4000000
+kernel.sched_min_granularity_ns=800000
+kernel.sched_wakeup_granularity_ns=8000000
