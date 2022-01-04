@@ -210,7 +210,6 @@ disable_kernel_boost() {
     lock_val "0" "/sys/module/msm_performance/parameters/*"
 
     # MediaTek
-    setenforce 0
     # policy_status
     # [0] PPM_POLICY_PTPOD: Meature PMIC buck currents
     # [1] PPM_POLICY_UT: Unit test
