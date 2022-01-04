@@ -2,15 +2,18 @@
 # Example: Change dpi
 # ro.sf.lcd_density=320
 #MIUI相关
+persist.sys.ai_preload_cloud=1
+debug.power.monitor_tools=false
 persist.sys.miui.sf_cores=8
 persist.sys.miui_animator_sched.bigcores=0-7
 persist.vendor.display.miui.composer_boost=1
 persist.sys.miui_animator_sched.bigcores=0-7
-persist.sys.miui_animator_sched.sched_threads=32
+persist.sys.miui_animator_sched.sched_threads=16
+persist.device_config_storage_native_boot.fuse_enabled=0
 persist.sys.miui.sf_cores=0-7
 ro.miui.ui.font.animation=enable
 #persist.miui.dexopt.first_use=true
-ro.ril.disable.power.collapse=0
+ro.ril.disable.power.collapse=1
 ro.config.nocheckin=1
 ro.HOME_APP_ADJ=1
 ro.kernel.android.checkjni=0
@@ -32,7 +35,7 @@ vendor.display.enable_async_powermode=0
 ro.vendor.sf.enable_fb_scaling=1
 #persist.sys.dalvik.hyperthreading=true
 debug.sf.hw=1
-debug.performance.tuning=1
+debug.performance.tuning=0
 video.accelerate.hw=1
 debug.egl.hw=1
 persist.sys.ui.hw=1

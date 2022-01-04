@@ -210,6 +210,7 @@ disable_kernel_boost() {
     lock_val "0" "/sys/module/msm_performance/parameters/*"
 
     # MediaTek
+
     # policy_status
     # [0] PPM_POLICY_PTPOD: Meature PMIC buck currents
     # [1] PPM_POLICY_UT: Unit test
@@ -223,6 +224,7 @@ disable_kernel_boost() {
     # [9] PPM_POLICY_SYS_BOOST: disabled
     # [10] PPM_POLICY_HICA: ?
     # Usage: echo <policy_idx> <1(enable)/0(disable)> > /proc/ppm/policy_status
+
     lock_val "1" /proc/ppm/enabled
 
     lock_val "0" /sys/kernel/eara_thermal/enable
@@ -255,6 +257,7 @@ disable_kernel_boost() {
     lock_val "7 0" /proc/ppm/policy_status
     lock_val "8 0" /proc/ppm/policy_status
     lock_val "9 1" /proc/ppm/policy_status
+    chmod 777 /proc/mali/always_on
     # mutate "1" /sys/module/ged/parameters/boost_amp
     # lock_val "1" /sys/module/ged/parameters/boost_extra
     # lock_val "1" /sys/module/ged/parameters/boost_gpu_enable
