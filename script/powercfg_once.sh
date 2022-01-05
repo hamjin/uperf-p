@@ -233,7 +233,7 @@ disable_kernel_boost() {
     lock_val "1" /sys/kernel/fpsgo/common/stop_boost
     lock_val "0" /sys/kernel/fpsgo/common/force_onoff
 
-    lock_val "0" /proc/mtk-perf/lowmem_hint_enable
+    lock_val "1" /proc/mtk-perf/lowmem_hint_enable
 
     lock_val "enable: 0" /proc/perfmgr/tchbst/user/usrtch
     # lock_val "0" /proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_enable
@@ -257,7 +257,6 @@ disable_kernel_boost() {
     lock_val "7 0" /proc/ppm/policy_status
     lock_val "8 0" /proc/ppm/policy_status
     lock_val "9 1" /proc/ppm/policy_status
-    chmod 777 /proc/mali/always_on
     # mutate "1" /sys/module/ged/parameters/boost_amp
     # lock_val "1" /sys/module/ged/parameters/boost_extra
     # lock_val "1" /sys/module/ged/parameters/boost_gpu_enable
@@ -315,7 +314,7 @@ disable_kernel_boost() {
     #         lock_val "0" /sys/devices/system/cpu/cpu${i}/sched_prefer_idle
     #     fi
     # done
-#CT EOF
+#CT End
     # Samsung
     mutate "0" "/sys/class/input_booster/*"
 
