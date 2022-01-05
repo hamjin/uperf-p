@@ -47,7 +47,7 @@ sleep 10s
 while [ $isstart = ""] ;do
     echo "uperf not loaded">/sdcard/yc/uperf/init_uperf.tx
     chmod +x /data/uperf//bin/uperf
-    sh $BASEDIR/initsvc_uperf.sh >/sdcard/yc/uperf/init_uperf.txt
+    sh $BASEDIR/initsvc_uperf.sh >>/sdcard/yc/uperf/init_uperf.txt
     $BASEDIR/bin/uperf -o /sdcard/yc/uperf/log_uperf.txt
     isstart=`pgrep Uperf`
     sleep 15s
