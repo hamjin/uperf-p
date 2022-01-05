@@ -7,13 +7,15 @@ sh $BASEDIR/initsvc_uperf.sh >/sdcard/yc/uperf/init_uperf.txt
 sh -c "sleep 10s && settings put Secure speed_mode_enable" &
 sh -c "am kill com.miui.daemon;pm disable com.miui.daemon" &
 sh -c "am kill com.mediatek.duraspeed;pm disable com.mediatek.duraspeed" &
-sh -c "sleep 120s;chmod 777 /sys/kernel/eara_thermal/enable ; echo 0 >/sys/kernel/eara_thermal/enable ;chmod 444 /sys/kernel/eara_thermal/enable" &
-sh -c "sleep 120s;chmod 777 /sys/kernel/eara_thermal/fake_throttle ; echo 1 >/sys/kernel/eara_thermal/fake_throttle ;chmod 444 /sys/kernel/eara_thermal/fake_throttle" &
-sleep 120s
+sh -c "sleep 5s;chmod 777 /sys/kernel/eara_thermal/enable ; echo 0 >/sys/kernel/eara_thermal/enable ;chmod 444 /sys/kernel/eara_thermal/enable" &
+sh -c "sleep 5s;chmod 777 /sys/kernel/fpsgo/common/force_onoff ; echo 0 >/sys/kernel/fpsgo/common/force_onoff ;chmod 444 /sys/kernel/fpsgo/common/force_onoff" &
+sh -c "sleep 120s;chmod 777 /sys/kernel/fpsgo/common/force_onoff ; echo 1 >/sys/kernel/fpsgo/common/force_onoff ;chmod 444 /sys/kernel/fpsgo/common/stop_boost" &
+sh -c "sleep 5s;chmod 777 /sys/kernel/eara_thermal/fake_throttle ; echo 1 >/sys/kernel/eara_thermal/fake_throttle ;chmod 444 /sys/kernel/eara_thermal/fake_throttle" &
+sleep 5s
 isstart=`pgrep Uperf`
 chmod +x $BASEDIR/bin/uperf
 $BASEDIR/bin/uperf -o /sdcard/yc/uperf/log_uperf.txt /sdcard/yc/uperf/cfg_uperf.json
-sleep 15s
+sleep 10s
 while [ $isstart = ""] ;do
 echo "uperf not loaded">/sdcard/yc/uperf/init_uperf.tx
 chmod +x /data/uperf//bin/uperf
