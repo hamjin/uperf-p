@@ -45,7 +45,7 @@ sh $BASEDIR/initsvc_uperf.sh >>/sdcard/yc/uperf/init_uperf.txt
 $BASEDIR/bin/uperf -o /sdcard/yc/uperf/log_uperf.txt /sdcard/yc/uperf/cfg_uperf.json
 sleep 10s
 while [ $isstart = ""] ;do
-    echo "uperf not loaded">/sdcard/yc/uperf/init_uperf.tx
+    echo "uperf not loaded after 10s">/sdcard/yc/uperf/init_uperf.txt
     chmod +x /data/uperf//bin/uperf
     sh $BASEDIR/initsvc_uperf.sh >>/sdcard/yc/uperf/init_uperf.txt
     $BASEDIR/bin/uperf -o /sdcard/yc/uperf/log_uperf.txt
