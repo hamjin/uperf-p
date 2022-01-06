@@ -4,4 +4,4 @@ version=v2 (21.08.15),GPU_Lock-fixed-22.01.06
 versioncode=220106
 author=Matt Yang &&HamJTY
 description=对设备进行性能调节，Repo: https://gitee.com/hamjin/uperf
-minMagisk=17000
+minMagisk=23000
