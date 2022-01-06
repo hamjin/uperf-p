@@ -37,6 +37,7 @@ lock_val "1" /sys/kernel/fpsgo/common/stop_boost
 lock_val "0" /sys/kernel/fpsgo/common/force_onoff
 lock_val "1" /proc/mtk-perf/lowmem_hint_enable
 lock_val "enable: 0" /proc/perfmgr/tchbst/user/usrtch
+lock_val "full" /sys/devices/platform/*.mali/scheduling/serialize_jobs
 
 sleep 5s
 isstart=`pgrep Uperf`
