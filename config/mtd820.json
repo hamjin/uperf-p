@@ -11,7 +11,7 @@
         },
         "switchInode": {
             "note": "接收性能模式切换的inode节点",
-            "path": "/sdcard/yc/uperf/cur_powermode"
+            "path": "/data/media/0/yc/uperf/cur_powermode"
         },
         "inputReader": {
             "note": "用户输入读取提供触摸按下/点击/滑动hint。sampleIntervalMinMs:最小用户输入采样间隔。swipeThdPct:滑动大于此相对距离阈值认为是滑动操作。gesturePctX:全面屏手势识别起始坐标X轴阈值。gesturePctY:全面屏手势识别起始坐标X轴阈值。gestureDelayMs:全面屏手势退出延时。holdEnterMs:长时间保持触摸的时长。",
@@ -49,7 +49,7 @@
         "dispFeature": {
             "note": "动态屏幕刷新率。path:白名单配置文件路径。rampDownDelayMs:降低屏幕刷新率前延时，降低频繁切换对视觉效果的影响。",
             "enable": false,
-            "path": "/sdcard/yc/uperf/cfg_uperf_display.txt",
+            "path": "/data/media/0/yc/uperf/cfg_uperf_display.txt",
             "rampDownDelayMs": 2000
         },
         "dispatch": [
