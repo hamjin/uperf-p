@@ -1,7 +1,10 @@
 #!/bin/sh
+BASEDIR="$(dirname $(readlink -f "$0"))"
+SCRIPT_DIR="$BASEDIR/script"
+. $BASEDIR/script/pathinfo.sh
 lock_val()
 {
-    echo "Locking $1 -> $p" >>/sdcard/yc/uperf/init_uperf.txt
+    echo "Locking $1 -> $p" >>$USER_PATH/init_uperf.txt
     for p in $2; do
         if [ -f "$p" ]; then
             chmod 0666 "$p" 2> /dev/null
@@ -10,9 +13,7 @@ lock_val()
         fi
     done
 }
-BASEDIR="$(dirname $(readlink -f "$0"))"
-SCRIPT_DIR="$BASEDIR/script"
-sh $BASEDIR/initsvc_uperf.sh >>/sdcard/yc/uperf/init_uperf.txt
+sh $BASEDIR/initsvc_uperf.sh >>$USER_PATH/init_uperf.txt
 lock_cpu()
 {
     sleep 240s
@@ -42,14 +43,14 @@ lock_val "full" /sys/devices/platform/*.mali/scheduling/serialize_jobs
 sleep 5s
 isstart=`pgrep Uperf`
 chmod +x $BASEDIR/bin/uperf
-sh $BASEDIR/initsvc_uperf.sh >>/sdcard/yc/uperf/init_uperf.txt
-$BASEDIR/bin/uperf -o /sdcard/yc/uperf/log_uperf.txt /sdcard/yc/uperf/cfg_uperf.json
+sh $BASEDIR/initsvc_uperf.sh >>/data/media/0/yc/uperf/cfg_uperf.json
+$BASEDIR/bin/uperf -o /data/media/0/yc/uperf/log_uperf.txt /data/media/0/yc/uperf/cfg_uperf.json
 sleep 10s
 while [ $isstart = ""] ;do
-    echo "uperf not loaded after 10s">/sdcard/yc/uperf/init_uperf.txt
+    echo "uperf not loaded after 10s">>/data/media/0/yc/uperf/init_uperf.txt
     chmod +x /data/uperf//bin/uperf
-    sh $BASEDIR/initsvc_uperf.sh >>/sdcard/yc/uperf/init_uperf.txt
-    $BASEDIR/bin/uperf -o /sdcard/yc/uperf/log_uperf.txt
+    sh $BASEDIR/initsvc_uperf.sh >>/data/media/0/yc/uperf/init_uperf.txt
+    $BASEDIR/bin/uperf -o /data/media/0/yc/uperf/log_uperf.txt /data/media/0/yc/uperf/cfg_uperf.json
     isstart=`pgrep Uperf`
     sleep 15s
 done

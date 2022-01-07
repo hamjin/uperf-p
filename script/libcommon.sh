@@ -14,7 +14,7 @@ BASEDIR="$(dirname "$0")"
 # $1:value $2:filepaths
 lock_val()
 {
-    echo "Locking $1 -> $p" >>/sdcard/yc/uperf/init_uperf.txt
+    echo "Locking $1 -> $p" >>$USER_PATH/init_uperf.txt
     for p in $2; do
         if [ -f "$p" ]; then
             chmod 0666 "$p" 2> /dev/null
@@ -25,7 +25,7 @@ lock_val()
 }
 write_value()
 {
-    echo "Locking $1 -> $p" >>/sdcard/yc/uperf/init_uperf.txt
+    echo "Locking $1 -> $p" >>$USER_PATH//init_uperf.txt
     for p in $2; do
         if [ -f "$p" ]; then
             chmod 0666 "$p" 2> /dev/null
@@ -37,7 +37,7 @@ write_value()
 # $1:value $2:filepaths
 mutate()
 {
-    echo "Change $1 -> $p" >>/sdcard/yc/uperf/init_uperf.txt
+    echo "Change $1 -> $p" >>$USER_PATH/init_uperf.txt
     for p in $2; do
         if [ -f "$p" ]; then
             chmod 0666 "$p" 2> /dev/null
@@ -49,7 +49,7 @@ mutate()
 # $1:file path
 lock()
 {
-    echo "Locking $1" >>/sdcard/yc/uperf/init_uperf.txt
+    echo "Locking $1" >>$USER_PATH/init_uperf.txt
     if [ -f "$1" ]; then
         chmod 0444 "$1" 2> /dev/null
     fi

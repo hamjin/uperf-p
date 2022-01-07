@@ -31,9 +31,9 @@ unify_cgroup() {
     # lock_val "0-7" /dev/cpuset/top-app/cpus
     # lock_val "0-7" /dev/cpuset/game/cpus
     # lock_val "0-7" /dev/cpuset/gamelite/cpus
-    # lock_val "0-7" /dev/cpuset/foreground/boost/cpus
-    # lock_val "0-7" /dev/cpuset/foreground/cpus
-    # lock_val "0-6" /dev/cpuset/restricted/cpus
+    lock_val "0-7" /dev/cpuset/foreground/boost/cpus
+    lock_val "0-7" /dev/cpuset/foreground/cpus
+    lock_val "0-6" /dev/cpuset/restricted/cpus
     # lock_val "0-3" /dev/cpuset/system-background/cpus
     # lock_val "0-3" /dev/cpuset/background/cpus
 
@@ -45,7 +45,7 @@ unify_cgroup() {
     pin_proc_on_pwr "crtc_commit|crtc_event|pp_event|msm_irqbalance|netd|mdnsd|analytics"
     pin_proc_on_pwr "imsdaemon|cnss-daemon|qadaemon|qseecomd|time_daemon|ATFWD-daemon|ims_rtp_daemon|qcrilNrd"
     # ueventd related to hotplug of camera, wifi, usb...
-    #pin_proc_on_pwr "ueventd"
+    # pin_proc_on_pwr "ueventd"
     # hardware services, eg. android.hardware.sensors@1.0-service
     pin_proc_on_pwr "android.hardware.bluetooth"
     pin_proc_on_pwr "android.hardware.gnss"
@@ -246,9 +246,10 @@ disable_kernel_boost() {
     lock_val "1" /sys/module/ged/parameters/ged_force_mdp_enable
 
     # lock_val "999999999" /proc/mtk-perf/mt_throttle_ms
-    # chmod 444  /proc/mtkcooler/
-    # chmod 444  /proc/mtkcooler/*
-    lock_val "enable=1" /prooc/sla/config
+    echo "Lock mtkcooler: /proc/mtkcooler -> 444"
+    chmod 444  /proc/mtkcooler/ >>$USER_PATH/init_uperf.txt
+    chmod 444  /proc/mtkcooler/* >>$USER_PATH/init_uperf.txt
+    lock_val "enable=1" /proc/sla/config
 
     lock_val "0 0" /proc/ppm/policy_status
     lock_val "1 0" /proc/ppm/policy_status
@@ -276,47 +277,46 @@ disable_kernel_boost() {
     # lock_val "0" /sys/module/ged/parameters/gx_game_mode
     # lock_val "1" /sys/module/ged/parameters/is_GED_KPI_enabled
     #load balance
-    # lock_val "1" /dev/cpuset/sched_load_balance
-    # lock_val "1" /dev/cpuset/background/sched_load_balance
-    # lock_val "1" /dev/cpuset/foreground/sched_load_balance
-    # lock_val "1" /dev/cpuset/game/sched_load_balance
-    # lock_val "1" /dev/cpuset/gamelite/sched_load_balance
-    # lock_val "1" /dev/cpuset/restricted/sched_load_balance
-    # lock_val "1" /dev/cpuset/system-background/sched_load_balance
-    # lock_val "1" /dev/cpuset/top-app/sched_load_balance
-    # lock_val "1" /dev/cpuset/vr/sched_load_balance
+    lock_val "0" /dev/cpuset/sched_relax_domain_level
+    lock_val "0" /dev/cpuset/background/sched_relax_domain_level
+    lock_val "0" /dev/cpuset/game/sched_relax_domain_level
+    lock_val "0" /dev/cpuset/gamelite/sched_relax_domain_level
+    lock_val "0" /dev/cpuset/restricted/sched_relax_domain_level
+    lock_val "0" /dev/cpuset/system-background/sched_relax_domain_level
+    lock_val "0" /dev/cpuset/top-app/sched_relax_domain_level
+    lock_val "0" /dev/cpuset/vr/sched_relax_domain_level
     # used by uperf
     # mutate "6 1" /proc/ppm/policy_status
 #CT
-    # if [ -d /dev/stune/ ]; then
-    #     lock_val "0" "/dev/stune/schedtune.boost"
-    #     lock_val "0" "/dev/stune/schedtune.prefer_idle"
-    #     for stune_dir in /dev/stune/*; do
-    #         lock_val "0" "${stune_dir}/schedtune.prefer_idle"
-    #         lock_val "0" "${stune_dir}/schedtune.boost"
-    #         lock_val "0" "${stune_dir}/schedtune.sched_boost_no_override"
-    #     done
-    # fi
-    # if [ -d /dev/cpuctl/ ]; then
-    #     lock_val "0" "/dev/cpuctl/cpu.uclamp.sched_boost_no_override"
-    #     lock_val "0" "/dev/cpuctl/cpu.uclamp.min"
-    #     lock_val "0" "/dev/cpuctl/cpu.uclamp.latency_sensitive"
-    #     for cpuctl_dir in /dev/cpuctl/*; do
-    #         lock_val "0" "${cpuctl_dir}/cpu.uclamp.latency_sensitive"
-    #         lock_val "0" "${cpuctl_dir}/cpu.uclamp.min"
-    #         lock_val "0" "${cpuctl_dir}/cpu.uclamp.sched_boost_no_override"
-    #     done
-    # fi
-    # if [ -e /sys/devices/system/cpu/sched/sched_boost ]; then
-    #     lock_val 0 "/sys/devices/system/cpu/sched/sched_boost"
-    #     lock_val 1 "/sys/devices/system/cpu/eas/enable"
-    # fi
+    if [ -d /dev/stune/ ]; then
+        lock_val "0" "/dev/stune/schedtune.boost"
+        lock_val "0" "/dev/stune/schedtune.prefer_idle"
+        for stune_dir in /dev/stune/*; do
+            lock_val "0" "${stune_dir}/schedtune.prefer_idle"
+            lock_val "0" "${stune_dir}/schedtune.boost"
+            lock_val "0" "${stune_dir}/schedtune.sched_boost_no_override"
+        done
+    fi
+    if [ -d /dev/cpuctl/ ]; then
+        lock_val "0" "/dev/cpuctl/cpu.uclamp.sched_boost_no_override"
+        lock_val "0" "/dev/cpuctl/cpu.uclamp.min"
+        lock_val "0" "/dev/cpuctl/cpu.uclamp.latency_sensitive"
+        for cpuctl_dir in /dev/cpuctl/*; do
+            lock_val "0" "${cpuctl_dir}/cpu.uclamp.latency_sensitive"
+            lock_val "0" "${cpuctl_dir}/cpu.uclamp.min"
+            lock_val "0" "${cpuctl_dir}/cpu.uclamp.sched_boost_no_override"
+        done
+    fi
+    if [ -e /sys/devices/system/cpu/sched/sched_boost ]; then
+        lock_val 0 "/sys/devices/system/cpu/sched/sched_boost"
+        lock_val 1 "/sys/devices/system/cpu/eas/enable"
+    fi
 
-    # for i in $(seq 0 7); do
-    #     if [ -e /sys/devices/system/cpu/cpu${i}/sched_prefer_idle ]; then
-    #         lock_val "0" /sys/devices/system/cpu/cpu${i}/sched_prefer_idle
-    #     fi
-    # done
+    for i in $(seq 0 7); do
+        if [ -e /sys/devices/system/cpu/cpu${i}/sched_prefer_idle ]; then
+            lock_val "0" /sys/devices/system/cpu/cpu${i}/sched_prefer_idle
+        fi
+    done
 #CT End
     # Samsung
     mutate "0" "/sys/class/input_booster/*"

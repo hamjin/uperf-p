@@ -1,13 +1,13 @@
 #!/system/bin/sh
 # Module Path Header
 # https://github.com/yc9559/
-# Author: Matt Yang
+# Author: Matt Yang && HamJTY
 
 SCRIPT_DIR="script"
 BIN_DIR="bin"
 MODULE_PATH="$(dirname $(readlink -f "$0"))"
 MODULE_PATH="${MODULE_PATH%\/$SCRIPT_DIR}"
-USER_PATH="/sdcard/yc/uperf"
+USER_PATH="/data/media/0/yc/uperf"
 PANEL_FILE="$USER_PATH/panel_uperf.txt"
 LOG_FILE="$USER_PATH/log_uperf_initsvc.log"
 FLAGS="$MODULE_PATH/flags"
