@@ -261,6 +261,11 @@ disable_kernel_boost() {
     lock_val "7 0" /proc/ppm/policy_status
     lock_val "8 0" /proc/ppm/policy_status
     lock_val "9 0" /proc/ppm/policy_status
+     lock_value "0" /sys/kernel/eara_thermal/enable;
+    lock_value "1" /sys/kernel/eara_thermal/fake_throttle;
+    lock_value "1" /sys/kernel/fpsgo/common/stop_boost;
+    lock_value "0" /sys/kernel/fpsgo/common/force_onoff;
+    lock_value "full" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs;
     #load balance
     # lock_val "0" /dev/cpuset/sched_relax_domain_level
     # lock_val "0" /dev/cpuset/background/sched_relax_domain_level
@@ -320,17 +325,6 @@ disable_userspace_boost() {
     # stop vendor.power.stats-hal-1-0
     # stop vendor.power-hal-1-0
 }
-lock_gpudeboost()
-{
-    while true; do
-    lock_val "0" /sys/kernel/eara_thermal/enable;
-    lock_val "1" /sys/kernel/eara_thermal/fake_throttle;
-    lock_val "1" /sys/kernel/fpsgo/common/stop_boost;
-    lock_val "0" /sys/kernel/fpsgo/common/force_onoff;
-    lock_val "full" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs;
-    sleep 120s;
-    done
-}
 lock_cpu()
 {
     sleep 1s
@@ -361,7 +355,6 @@ rebuild_process_scan_cache
 disable_userspace_boost
 disable_kernel_boost
 (lock_cpu &)
-(lock_gpudeboost&)
 disable_hotplug
 unify_cpufreq
 unify_sched
