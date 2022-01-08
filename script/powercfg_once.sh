@@ -361,7 +361,7 @@ rebuild_process_scan_cache
 disable_userspace_boost
 disable_kernel_boost
 (lock_cpu &)
-lock_gpudeboost
+(lock_gpudeboost&)
 disable_hotplug
 unify_cpufreq
 unify_sched
