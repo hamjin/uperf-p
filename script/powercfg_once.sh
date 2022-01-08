@@ -320,12 +320,48 @@ disable_userspace_boost() {
     # stop vendor.power.stats-hal-1-0
     # stop vendor.power-hal-1-0
 }
+lock_gpudeboost()
+{
+    while true; do
+    lock_val "0" /sys/kernel/eara_thermal/enable;
+    lock_val "1" /sys/kernel/eara_thermal/fake_throttle;
+    lock_val "1" /sys/kernel/fpsgo/common/stop_boost;
+    lock_val "0" /sys/kernel/fpsgo/common/force_onoff;
+    lock_val "full" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs;
+    sleep 120s;
+    done
+}
+lock_cpu()
+{
+    sleep 1s
+    lock_val "0-7" /dev/cpuset/top-app/boost/cpus
+    lock_val "0-7" /dev/cpuset/top-app/cpus
+    lock_val "0-7" /dev/cpuset/game/cpus
+    lock_val "0-7" /dev/cpuset/gamelite/cpus
+    lock_val "0-7" /dev/cpuset/foreground/boost/cpus
+    lock_val "0-7" /dev/cpuset/foreground/cpus
+    lock_val "0-6" /dev/cpuset/restricted/cpus
+    lock_val "0-3" /dev/cpuset/system-background/cpus
+    lock_val "0-3" /dev/cpuset/background/cpus
+    sleep 120s
+    lock_val "0-7" /dev/cpuset/top-app/boost/cpus
+    lock_val "0-7" /dev/cpuset/top-app/cpus
+    lock_val "0-7" /dev/cpuset/game/cpus
+    lock_val "0-7" /dev/cpuset/gamelite/cpus
+    lock_val "0-7" /dev/cpuset/foreground/boost/cpus
+    lock_val "0-3,5-6" /dev/cpuset/foreground/cpus
+    lock_val "0-3" /dev/cpuset/restricted/cpus
+    lock_val "0-3" /dev/cpuset/system-background/cpus
+    lock_val "2-3" /dev/cpuset/background/cpus
+}
 
 log "PATH=$PATH"
 log "sh=$(which sh)"
 rebuild_process_scan_cache
 disable_userspace_boost
 disable_kernel_boost
+(lock_cpu &)
+lock_gpudeboost
 disable_hotplug
 unify_cpufreq
 unify_sched
