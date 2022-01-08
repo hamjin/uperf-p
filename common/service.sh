@@ -1,5 +1,6 @@
 #!/bin/sh
 BASEDIR="$(dirname $(readlink -f "$0"))"
+MODDIR=${0%/*}
 SCRIPT_DIR="$BASEDIR/script"
 . $BASEDIR/script/pathinfo.sh
 lock_val()
@@ -12,6 +13,15 @@ lock_val()
             chmod 0444 "$p" 2> /dev/null
         fi
     done
+}
+detect uperf()
+{
+    sleep 60s
+    isstart=`pgrep Uperf`
+    if [ $isstart = ""]; then
+        echo "uperf not loaded after 10s">>$USER_PATH/init_uperf.txt
+        true > $MODDIR/disable
+    fi
 }
 sh $BASEDIR/initsvc_uperf.sh >>$USER_PATH/init_uperf.txt
 lock_cpu()
@@ -38,20 +48,6 @@ lock_val "1" /sys/kernel/fpsgo/common/stop_boost
 lock_val "0" /sys/kernel/fpsgo/common/force_onoff
 lock_val "1" /proc/mtk-perf/lowmem_hint_enable
 lock_val "enable: 0" /proc/perfmgr/tchbst/user/usrtch
-lock_val "full" /sys/devices/platform/*.mali/scheduling/serialize_jobs
-
-sleep 5s
-isstart=`pgrep Uperf`
-chmod +x $BASEDIR/bin/uperf
-sh $BASEDIR/initsvc_uperf.sh >>/data/media/0/yc/uperf/cfg_uperf.json
-$BASEDIR/bin/uperf -o /data/media/0/yc/uperf/log_uperf.txt /data/media/0/yc/uperf/cfg_uperf.json
-sleep 10s
-while [ $isstart = ""] ;do
-    echo "uperf not loaded after 10s">>/data/media/0/yc/uperf/init_uperf.txt
-    chmod +x /data/uperf//bin/uperf
-    sh $BASEDIR/initsvc_uperf.sh >>/data/media/0/yc/uperf/init_uperf.txt
-    $BASEDIR/bin/uperf -o /data/media/0/yc/uperf/log_uperf.txt /data/media/0/yc/uperf/cfg_uperf.json
-    isstart=`pgrep Uperf`
-    sleep 15s
-done
+lock_val "full" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs
+(detect_uperf &)
 exit 0

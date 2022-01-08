@@ -288,35 +288,35 @@ disable_kernel_boost() {
     # used by uperf
     # mutate "6 1" /proc/ppm/policy_status
 #CT
-    if [ -d /dev/stune/ ]; then
-        lock_val "0" "/dev/stune/schedtune.boost"
-        lock_val "0" "/dev/stune/schedtune.prefer_idle"
-        for stune_dir in /dev/stune/*; do
-            lock_val "0" "${stune_dir}/schedtune.prefer_idle"
-            lock_val "0" "${stune_dir}/schedtune.boost"
-            lock_val "0" "${stune_dir}/schedtune.sched_boost_no_override"
-        done
-    fi
-    if [ -d /dev/cpuctl/ ]; then
-        lock_val "0" "/dev/cpuctl/cpu.uclamp.sched_boost_no_override"
-        lock_val "0" "/dev/cpuctl/cpu.uclamp.min"
-        lock_val "0" "/dev/cpuctl/cpu.uclamp.latency_sensitive"
-        for cpuctl_dir in /dev/cpuctl/*; do
-            lock_val "0" "${cpuctl_dir}/cpu.uclamp.latency_sensitive"
-            lock_val "0" "${cpuctl_dir}/cpu.uclamp.min"
-            lock_val "0" "${cpuctl_dir}/cpu.uclamp.sched_boost_no_override"
-        done
-    fi
-    if [ -e /sys/devices/system/cpu/sched/sched_boost ]; then
-        lock_val 0 "/sys/devices/system/cpu/sched/sched_boost"
-        lock_val 1 "/sys/devices/system/cpu/eas/enable"
-    fi
+    # if [ -d /dev/stune/ ]; then
+    #     lock_val "0" "/dev/stune/schedtune.boost"
+    #     lock_val "0" "/dev/stune/schedtune.prefer_idle"
+    #     for stune_dir in /dev/stune/*; do
+    #         lock_val "0" "${stune_dir}/schedtune.prefer_idle"
+    #         lock_val "0" "${stune_dir}/schedtune.boost"
+    #         lock_val "0" "${stune_dir}/schedtune.sched_boost_no_override"
+    #     done
+    # fi
+    # if [ -d /dev/cpuctl/ ]; then
+    #     lock_val "0" "/dev/cpuctl/cpu.uclamp.sched_boost_no_override"
+    #     lock_val "0" "/dev/cpuctl/cpu.uclamp.min"
+    #     lock_val "0" "/dev/cpuctl/cpu.uclamp.latency_sensitive"
+    #     for cpuctl_dir in /dev/cpuctl/*; do
+    #         lock_val "0" "${cpuctl_dir}/cpu.uclamp.latency_sensitive"
+    #         lock_val "0" "${cpuctl_dir}/cpu.uclamp.min"
+    #         lock_val "0" "${cpuctl_dir}/cpu.uclamp.sched_boost_no_override"
+    #     done
+    # fi
+    # if [ -e /sys/devices/system/cpu/sched/sched_boost ]; then
+    #     lock_val 0 "/sys/devices/system/cpu/sched/sched_boost"
+    #     lock_val 1 "/sys/devices/system/cpu/eas/enable"
+    # fi
 
-    for i in $(seq 0 7); do
-        if [ -e /sys/devices/system/cpu/cpu${i}/sched_prefer_idle ]; then
-            lock_val "0" /sys/devices/system/cpu/cpu${i}/sched_prefer_idle
-        fi
-    done
+    # for i in $(seq 0 7); do
+    #     if [ -e /sys/devices/system/cpu/cpu${i}/sched_prefer_idle ]; then
+    #         lock_val "0" /sys/devices/system/cpu/cpu${i}/sched_prefer_idle
+    #     fi
+    # done
 #CT End
     # Samsung
     mutate "0" "/sys/class/input_booster/*"
