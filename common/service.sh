@@ -2,6 +2,8 @@
 BASEDIR="$(dirname $(readlink -f "$0"))"
 MODDIR=${0%/*}
 SCRIPT_DIR="$BASEDIR/script"
+sh $BASEDIR/initsvc_uperf.sh
+
 . $BASEDIR/script/pathinfo.sh
 lock_val()
 {
@@ -16,14 +18,17 @@ lock_val()
 }
 detect uperf()
 {
-    sleep 60s
+    sleep 5s
     isstart=`pgrep Uperf`
     if [ $isstart = ""]; then
-        echo "uperf not loaded after 10s">>$USER_PATH/init_uperf.txt
-        true > $MODDIR/disable
+        chmod +x /data/uperf//bin/uperf
+        sh $BASEDIR/initsvc_uperf.sh >>/data/media/0/yc/uperf/init_uperf.txt
+        $BASEDIR/bin/uperf -o /data/media/0/yc/uperf/log_uperf.txt /data/media/0/yc/uperf/cfg_uperf.json
+        isstart=`pgrep Uperf`
+        sleep 15s
     fi
 }
-sh $BASEDIR/initsvc_uperf.sh >>$USER_PATH/init_uperf.txt
+
 lock_cpu()
 {
     sleep 240s
@@ -38,7 +43,7 @@ lock_cpu()
     lock_val "0-3" /dev/cpuset/background/cpus
 }
 (lock_cpu &)
-lock_val "enable=1" /prooc/sla/config
+lock_val "enable=1" /proc/sla/config
 lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
 lock_val "100" /proc/perfmgr/syslimiter/syslimitertolerance_percent
 lock_val "1" /sys/module/ged/parameters/ged_force_mdp_enable
@@ -49,5 +54,5 @@ lock_val "0" /sys/kernel/fpsgo/common/force_onoff
 lock_val "1" /proc/mtk-perf/lowmem_hint_enable
 lock_val "enable: 0" /proc/perfmgr/tchbst/user/usrtch
 lock_val "full" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs
-(detect_uperf &)
+# (detect_uperf &)
 exit 0

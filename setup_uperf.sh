@@ -341,13 +341,6 @@ _setup_platform_file()
 
 _place_user_config()
 {
-    if [ ! -e "/data/cpufreq.txt" ]; then
-        touch /data/cpufreq.txt 2> /dev/null
-    fi
-    if [ ! -e "/data/gpufreq.txt" ]; then
-        touch /data/gpufreq.txt 2> /dev/null
-
-    fi
     if [ ! -e "$USER_PATH/cfg_uperf_display.txt" ]; then
         cp $BASEDIR/config/cfg_uperf_display.txt $USER_PATH/cfg_uperf_display.txt 2> /dev/null
     fi
@@ -411,7 +404,7 @@ uperf_print_banner()
     echo ""
     echo "* Uperf https://gitee.com/hamjin/uperf/"
     echo "* Author: Matt Yang && HamJTY"
-    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.06"
+    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.08"
     echo ""
 }
 

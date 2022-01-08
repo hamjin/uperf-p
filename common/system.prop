@@ -9,10 +9,10 @@ persist.sys.miui_animator_sched.bigcores=0-7
 persist.vendor.display.miui.composer_boost=1
 persist.sys.miui_animator_sched.bigcores=0-7
 persist.sys.miui_animator_sched.sched_threads=16
-persist.device_config_storage_native_boot.fuse_enabled=0
+# persist.device_config_storage_native_boot.fuse_enabled=0
 persist.sys.miui.sf_cores=0-7
 ro.miui.ui.font.animation=enable
-#persist.miui.dexopt.first_use=true
+persist.miui.dexopt.first_use=true
 ro.ril.disable.power.collapse=1
 ro.config.nocheckin=1
 ro.HOME_APP_ADJ=1
@@ -30,8 +30,8 @@ ro.iorapd.enable=true
 #硬件加速
 ro.kernel.qemu.gles=1
 vendor.display.disable_scaler=0
-vendor.display.use_smooth_motion=0
-vendor.display.enable_async_powermode=0
+vendor.display.use_smooth_motion=1
+vendor.display.enable_async_powermode=1
 ro.vendor.sf.enable_fb_scaling=1
 #persist.sys.dalvik.hyperthreading=true
 debug.sf.hw=1
@@ -50,7 +50,7 @@ persist.sys.force_sw_skiaes=1
 debug.composition.type=mdp
 persist.sys.composition.type=mdp
 persist.hwc.mdpcomp.enable=true
-debug.mdpcomp.maxlayer=5
+debug.mdpcomp.maxlayer=8
 debug.mdpcomp.logs=0
 #Android
 ro.ril.transmitpower=true
@@ -62,8 +62,8 @@ ro.mtk_perf_simple_start_win=0
 ro.mtk_perf_fast_start_win=0
 ro.mtk_perf_response_time=0
 ro.mtk_perfservice_support=0
-#ro.sys.fw.bg_apps_limit=999
-#Kernel
-kernel.sched_latency_ns=4000000
-kernel.sched_min_granularity_ns=800000
-kernel.sched_wakeup_granularity_ns=8000000
+# ro.sys.fw.bg_apps_limit=999
+# Kernel
+# kernel.sched_latency_ns=4000000
+# kernel.sched_min_granularity_ns=800000
+# kernel.sched_wakeup_granularity_ns=8000000
