@@ -32,8 +32,9 @@ crash_recuser()
     rm -f $BASEDIR/flags/.need_recuser
 }
 
-# (crash_recuser &)
+(crash_recuser &)
 wait_until_login
 mv /data/media/0/yc/uperf/init_uperf.txt /data/media/0/yc/uperf/init_uperf.txt.lastgood
+date '+%Y-%m-%d %H:%M:%S' >>$USER_PATH/init_uperf.txt
 echo "balance" >/data/media/0/yc/uperf/cur_powermode
 sh $BASEDIR/run_uperf.sh
