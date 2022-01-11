@@ -238,18 +238,18 @@ disable_kernel_boost() {
     
     lock_val "1" /proc/mtk-perf/lowmem_hint_enable
     
-    lock_val "enable: 0" /proc/perfmgr/tchbst/user/usrtch
-    lock_val "0" /proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_enable
+    # lock_val "enable: 0" /proc/perfmgr/tchbst/user/usrtch
+    # lock_val "0" /proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_enable
     
-    lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
-    lock_val "100" /proc/perfmgr/syslimiter/syslimitertolerance_percent
-    lock_val "1" /sys/module/ged/parameters/ged_force_mdp_enable
+    # lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
+    # lock_val "100" /proc/perfmgr/syslimiter/syslimitertolerance_percent
+    # lock_val "1" /sys/module/ged/parameters/ged_force_mdp_enable
     
-    lock_val "999999999" /proc/mtk-perf/mt_throttle_ms
-    echo "Lock mtkcooler: /proc/mtkcooler -> 444"
-    chmod 444  /proc/mtkcooler/ >>$USER_PATH/init_uperf.txt
-    chmod 444  /proc/mtkcooler/* >>$USER_PATH/init_uperf.txt
-    lock_val "enable=1" /proc/sla/config
+    # lock_val "999999999" /proc/mtk-perf/mt_throttle_ms
+    # echo "Lock mtkcooler: /proc/mtkcooler -> 444"
+    # chmod 444  /proc/mtkcooler/ >>$USER_PATH/init_uperf.txt
+    # chmod 444  /proc/mtkcooler/* >>$USER_PATH/init_uperf.txt
+    # lock_val "enable=1" /proc/sla/config
     
     lock_val "0 0" /proc/ppm/policy_status
     lock_val "1 0" /proc/ppm/policy_status
@@ -267,14 +267,14 @@ disable_kernel_boost() {
     lock_value "0" /sys/kernel/fpsgo/common/force_onoff
     lock_value "full" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs
     #load balance
-    lock_val "0" /dev/cpuset/sched_relax_domain_level
-    lock_val "0" /dev/cpuset/background/sched_relax_domain_level
-    lock_val "0" /dev/cpuset/game/sched_relax_domain_level
-    lock_val "0" /dev/cpuset/gamelite/sched_relax_domain_level
-    lock_val "0" /dev/cpuset/restricted/sched_relax_domain_level
-    lock_val "0" /dev/cpuset/system-background/sched_relax_domain_level
-    lock_val "0" /dev/cpuset/top-app/sched_relax_domain_level
-    lock_val "0" /dev/cpuset/vr/sched_relax_domain_level
+    # lock_val "0" /dev/cpuset/sched_relax_domain_level
+    # lock_val "0" /dev/cpuset/background/sched_relax_domain_level
+    # lock_val "0" /dev/cpuset/game/sched_relax_domain_level
+    # lock_val "0" /dev/cpuset/gamelite/sched_relax_domain_level
+    # lock_val "0" /dev/cpuset/restricted/sched_relax_domain_level
+    # lock_val "0" /dev/cpuset/system-background/sched_relax_domain_level
+    # lock_val "0" /dev/cpuset/top-app/sched_relax_domain_level
+    # lock_val "0" /dev/cpuset/vr/sched_relax_domain_level
     # used by uperf
     # mutate "6 1" /proc/ppm/policy_status
     # Samsung
@@ -325,36 +325,12 @@ disable_userspace_boost() {
     # stop vendor.power.stats-hal-1-0
     # stop vendor.power-hal-1-0
 }
-lock_cpu()
-{
-    sleep 1s
-    lock_val "0-7" /dev/cpuset/top-app/boost/cpus
-    lock_val "0-7" /dev/cpuset/top-app/cpus
-    lock_val "0-7" /dev/cpuset/game/cpus
-    lock_val "0-7" /dev/cpuset/gamelite/cpus
-    lock_val "0-7" /dev/cpuset/foreground/boost/cpus
-    lock_val "0-7" /dev/cpuset/foreground/cpus
-    lock_val "0-6" /dev/cpuset/restricted/cpus
-    lock_val "0-3" /dev/cpuset/system-background/cpus
-    lock_val "0-3" /dev/cpuset/background/cpus
-    sleep 120s
-    lock_val "0-7" /dev/cpuset/top-app/boost/cpus
-    lock_val "0-7" /dev/cpuset/top-app/cpus
-    lock_val "0-7" /dev/cpuset/game/cpus
-    lock_val "0-7" /dev/cpuset/gamelite/cpus
-    lock_val "0-7" /dev/cpuset/foreground/boost/cpus
-    lock_val "0-3,5-6" /dev/cpuset/foreground/cpus
-    lock_val "0-3" /dev/cpuset/restricted/cpus
-    lock_val "0-3" /dev/cpuset/system-background/cpus
-    lock_val "2-3" /dev/cpuset/background/cpus
-}
 
 log "PATH=$PATH"
 log "sh=$(which sh)"
 rebuild_process_scan_cache
 disable_userspace_boost
 disable_kernel_boost
-(lock_cpu &)
 disable_hotplug
 unify_cpufreq
 unify_sched

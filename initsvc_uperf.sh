@@ -3,7 +3,7 @@
 # https://github.com/yc9559/
 # Author: Matt Yang
 # Version: 20200401
-
+USER_PATH="/data/media/0/yc/uperf"
 BASEDIR="$(dirname $(readlink -f "$0"))"
 
 wait_until_login()
@@ -21,7 +21,7 @@ wait_until_login()
         sleep 1
     done
     rm "$test_file"
-    mv $USER_PATH/init_uperf.txt $USER_PATH/init_uperf.txt.lastgood
+    
 }
 
 crash_recuser()
@@ -35,6 +35,7 @@ crash_recuser()
 
 (crash_recuser &)
 wait_until_login
+mv $USER_PATH/init_uperf.txt $USER_PATH/init_uperf.txt.lastgood
 date '+%Y-%m-%d %H:%M:%S' >>$USER_PATH/init_uperf.txt
 echo "balance" >/data/media/0/yc/uperf/cur_powermode
 sh $BASEDIR/run_uperf.sh

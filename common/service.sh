@@ -21,7 +21,7 @@ detect_uperf()
     lock_value "1" /sys/kernel/eara_thermal/fake_throttle
     lock_value "1" /sys/kernel/fpsgo/common/stop_boost
     lock_value "0" /sys/kernel/fpsgo/common/force_onoff
-    
+    settings put Secure speed_mode_enable 1
     lock_value "full" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs
     sleep 5s
     isstart=`pgrep Uperf`
