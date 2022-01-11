@@ -275,6 +275,15 @@ _get_mt6873_type() {
     fi
 }
 
+_get_mt6877_type() {
+    local b_max
+    b_max="$(_get_maxfreq 4)"
+    if [ "$b_max" -gt 2500000 ]; then
+        echo "mtd920"
+    else
+        echo "mtd900"
+    fi
+}
 _get_mt6885_type() {
     local b_max
     b_max="$(_get_maxfreq 4)"
@@ -364,6 +373,7 @@ _get_cfgname() {
     "mt6889") ret="$(_get_mt6885_type)" ;;
     "mt6891") ret="mtd1100" ;;
     "mt6893") ret="mtd1200" ;;
+    "mt6877") ret="$(_get_mt6877_type)" ;;
     *) ret="unsupported" ;;
     esac
     echo "$ret"
