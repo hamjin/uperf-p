@@ -2,7 +2,6 @@
 BASEDIR="$(dirname $(readlink -f "$0"))"
 MODDIR=${0%/*}
 SCRIPT_DIR="$BASEDIR/script"
-mv $USER_PATH/init_uperf.txt $USER_PATH/init_uperf.txt.lastgood
 sh $BASEDIR/initsvc_uperf.sh
 . $BASEDIR/script/pathinfo.sh
 lock_value()
@@ -18,11 +17,12 @@ lock_value()
 }
 detect_uperf()
 {
-    lock_value "0" /sys/kernel/eara_thermal/enable;
-    lock_value "1" /sys/kernel/eara_thermal/fake_throttle;
-    lock_value "1" /sys/kernel/fpsgo/common/stop_boost;
-    lock_value "0" /sys/kernel/fpsgo/common/force_onoff;
-    lock_value "full" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs;
+    lock_value "0" /sys/kernel/eara_thermal/enable
+    lock_value "1" /sys/kernel/eara_thermal/fake_throttle
+    lock_value "1" /sys/kernel/fpsgo/common/stop_boost
+    lock_value "0" /sys/kernel/fpsgo/common/force_onoff
+    
+    lock_value "full" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs
     sleep 5s
     isstart=`pgrep Uperf`
     if [ $isstart = ""]; then

@@ -25,7 +25,7 @@
         },
         "loadMonitor": {
             "note": "系统负载监视器提供重负载hint。load:系统负载为所有核心的负载总和，单个核心负载=频率(Ghz)*效率(A53@1.0g为100)*负载(%)。heavyLoad:进入HeavyLoad的系统负载阈值。idleLoad:退出HeavyLoad的系统负载阈值。requestBurstSlackMs:在上一次HeavyLoad结束后，且在requestBurstSlack时间内没有HeavyLoad请求，才能响应新的HeavyLoad。",
-            "enable": true,
+            "enable": false,
             "sampleIntervalMinMs": 100,
             "heavyLoad": 1300,
             "idleLoad": 870,
@@ -317,7 +317,7 @@
                     "cpuFreqMax0": "0 1400000",
                     "cpuFreqMin1": "1 500000",
                     "cpuFreqMax1": "1 2000000",
-                    "gpuAlwayson": "always_on",
+                    "gpuAlwayson": "coarse_demand",
                     "mtkOpp": "299000",
                     "dramboost": "0",
                     "cciboost": "0"
@@ -332,6 +332,7 @@
                     "cpuFreqMax0": "0 1500000",
                     "cpuFreqMin1": "1 900000",
                     "cpuFreqMax1": "1 2000000",
+                    "gpuAlwayson": "coarse_demand",
                     "mtkOpp": "743000",
                     "dramboost": "0",
                     "cciboost": "0"
@@ -346,6 +347,7 @@
                     "cpuFreqMax0": "0 1500000",
                     "cpuFreqMin1": "1 900000",
                     "cpuFreqMax1": "1 1700000",
+                    "gpuAlwayson": "always_on",
                     "mtkOpp": "637000",
                     "dramboost": "0",
                     "cciboost": "0"
@@ -360,6 +362,7 @@
                     "cpuFreqMax0": "0 1500000",
                     "cpuFreqMin1": "1 900000",
                     "cpuFreqMax1": "1 1700000",
+                    "gpuAlwayson": "always_on",
                     "mtkOpp": "663000",
                     "dramboost": "0",
                     "cciboost": "0"
@@ -367,13 +370,14 @@
                 "heavyLoad": {
                     "schedBoost": "0",
                     "topBoost": "0",
-                    "heavyBoost": "10",
+                    "heavyBoost": "1",
                     "uxAffinity": "3",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 1000000",
                     "cpuFreqMax0": "0 1800000",
                     "cpuFreqMin1": "1 1200000",
                     "cpuFreqMax1": "1 2000000",
+                    "gpuAlwayson": "always_on",
                     "mtkOpp": "769000",
                     "dramboost": "0",
                     "cciboost": "0"
@@ -384,6 +388,7 @@
                     "cpuFreqMax0": "0 1500000",
                     "cpuFreqMin1": "1 900000",
                     "cpuFreqMax1": "1 1700000",
+                    "gpuAlwayson": "always_on",
                     "mtkOpp": "796000",
                     "dramboost": "0",
                     "cciboost": "0"
@@ -396,6 +401,7 @@
                     "cpuFreqMax0": "0 1800000",
                     "cpuFreqMin1": "1 2000000",
                     "cpuFreqMax1": "1 2000000",
+                    "gpuAlwayson": "always_on",
                     "mtkOpp": "796000",
                     "dramboost": "0",
                     "cciboost": "0"
@@ -431,7 +437,8 @@
                     "cpuFreqMax0": "0 1400000",
                     "cpuFreqMin1": "1 500000",
                     "cpuFreqMax1": "1 1100000",
-                    "mtkOpp": "560000",
+                    "gpuAlwayson": "coarse_demand",
+                    "mtkOpp": "299000",
                     "dramboost": "0",
                     "cciboost": "0"
                 },
@@ -445,6 +452,7 @@
                     "cpuFreqMax0": "0 1400000",
                     "cpuFreqMin1": "1 600000",
                     "cpuFreqMax1": "1 1000000",
+                    "gpuAlwayson": "coarse_demand",
                     "mtkOpp": "450000",
                     "dramboost": "0",
                     "cciboost": "0"
@@ -459,6 +467,7 @@
                     "cpuFreqMax0": "0 1600000",
                     "cpuFreqMin1": "1 600000",
                     "cpuFreqMax1": "1 1300000",
+                    "gpuAlwayson": "coarse_demand",
                     "mtkOpp": "450000",
                     "dramboost": "0",
                     "cciboost": "0"
@@ -473,6 +482,7 @@
                     "cpuFreqMax0": "0 1800000",
                     "cpuFreqMin1": "1 800000",
                     "cpuFreqMax1": "1 1500000",
+                    "gpuAlwayson": "coarse_demand",
                     "mtkOpp": "509000",
                     "dramboost": "0",
                     "cciboost": "0"
@@ -483,6 +493,7 @@
                     "cpuFreqMax0": "0 1400000",
                     "cpuFreqMin1": "1 600000",
                     "cpuFreqMax1": "1 1000000",
+                    "gpuAlwayson": "coarse_demand",
                     "mtkOpp": "450000",
                     "dramboost": "0",
                     "cciboost": "0"
@@ -495,7 +506,8 @@
                     "cpuFreqMax0": "0 1800000",
                     "cpuFreqMin1": "1 1500000",
                     "cpuFreqMax1": "1 1900000",
-                    "mtkOpp": "823000",
+                    "gpuAlwayson": "coarse_demand",
+                    "mtkOpp": "509000",
                     "dramboost": "0",
                     "cciboost": "0"
                 }

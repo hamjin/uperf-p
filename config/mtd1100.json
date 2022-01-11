@@ -25,7 +25,7 @@
         },
         "loadMonitor": {
             "note": "系统负载监视器提供重负载hint。load:系统负载为所有核心的负载总和，单个核心负载=频率(Ghz)*效率(A53@1.0g为100)*负载(%)。heavyLoad:进入HeavyLoad的系统负载阈值。idleLoad:退出HeavyLoad的系统负载阈值。requestBurstSlackMs:在上一次HeavyLoad结束后，且在requestBurstSlack时间内没有HeavyLoad请求，才能响应新的HeavyLoad。",
-            "enable": true,
+            "enable": false,
             "sampleIntervalMinMs": 100,
             "heavyLoad": 1600,
             "idleLoad": 1200,
@@ -128,32 +128,24 @@
                 "Pressed",
                 "Tap",
                 "Swipe",
-                "Active",
-                "HeavyLoad",
-                "SsAnim",
-                "SfLag"
+                "Active"
             ],
             "Active": [
                 "Wakeup",
                 "Touch",
                 "Pressed",
                 "Tap",
-                "Swipe",
-                "HeavyLoad",
-                "SsAnim",
-                "SfLag"
+                "Swipe"
             ],
             "Touch": [
                 "Wakeup",
                 "SsAnim",
                 "SfLag",
-                "HeavyLoad",
-                "SfBoost"
+                "HeavyLoad"
             ],
             "Pressed": [
                 "SsAnim",
-                "SfBoost",
-                "HeavyLoad"
+                "SfBoost"
             ],
             "Tap": [
                 "SsAnim",
@@ -166,13 +158,9 @@
                 "HeavyLoad"
             ],
             "HeavyLoad": [
-                "SsAnim",
-                "SfLag",
                 "SfBoost"
             ],
-            "SfLag": [
-                "SfBoost"
-            ],
+            "SfLag": [],
             "SfBoost": [],
             "SsAnim": [
                 "SfBoost"
@@ -336,7 +324,7 @@
                     "cpuFreqMax0": "0 1600000",
                     "cpuFreqMin1": "1 700000",
                     "cpuFreqMax1": "1 2600000",
-                    "gpuAlwayson": "always_on",
+                    "gpuAlwayson": "coarse_demand",
                     "cciboost": "0",
                     "mtkOpp": "350000",
                     "dramboost": "0"
@@ -351,6 +339,7 @@
                     "cpuFreqMax0": "0 1700000",
                     "cpuFreqMin1": "1 1100000",
                     "cpuFreqMax1": "1 2600000",
+                    "gpuAlwayson": "coarse_demand",
                     "mtkOpp": "685000",
                     "dramboost": "0",
                     "cciboost": "0"
@@ -358,13 +347,14 @@
                 "interaction": {
                     "schedBoost": "0",
                     "topBoost": "0",
-                    "heavyBoost": "17",
+                    "heavyBoost": "10",
                     "uxAffinity": "1",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 1100000",
                     "cpuFreqMax0": "0 1700000",
                     "cpuFreqMin1": "1 1100000",
                     "cpuFreqMax1": "1 2200000",
+                    "gpuAlwayson": "always_on",
                     "mtkOpp": "654000",
                     "dramboost": "0",
                     "cciboost": "0"
@@ -372,49 +362,53 @@
                 "pressed": {
                     "schedBoost": "0",
                     "topBoost": "0",
-                    "heavyBoost": "17",
+                    "heavyBoost": "10",
                     "uxAffinity": "1",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 1100000",
                     "cpuFreqMax0": "0 1700000",
                     "cpuFreqMin1": "1 1100000",
                     "cpuFreqMax1": "1 2200000",
+                    "gpuAlwayson": "always_on",
                     "mtkOpp": "675000",
                     "dramboost": "1",
                     "cciboost": "1"
                 },
                 "heavyLoad": {
                     "schedBoost": "0",
-                    "topBoost": "17",
-                    "heavyBoost": "17",
+                    "topBoost": "0",
+                    "heavyBoost": "10",
                     "uxAffinity": "3",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 1100000",
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 1600000",
-                    "cpuFreqMax1": "1 2600000",
+                    "cpuFreqMax1": "1 2200000",
+                    "gpuAlwayson": "always_on",
                     "mtkOpp": "715000",
                     "dramboost": "1",
                     "cciboost": "1"
                 },
                 "sfLag": {
                     "uxAffinity": "1",
-                    "cpuFreqMin0": "0 2000000",
-                    "cpuFreqMax0": "0 2000000",
-                    "cpuFreqMin1": "1 2600000",
-                    "cpuFreqMax1": "1 2600000",
+                    "cpuFreqMin0": "0 1100000",
+                    "cpuFreqMax0": "0 1800000",
+                    "cpuFreqMin1": "1 1800000",
+                    "cpuFreqMax1": "1 2100000",
+                    "gpuAlwayson": "always_on",
                     "mtkOpp": "685000",
                     "dramboost": "1",
                     "cciboost": "1"
                 },
                 "sfBoost": {
-                    "topBoost": "55",
-                    "heavyBoost": "55",
+                    "topBoost": "0",
+                    "heavyBoost": "10",
                     "uxAffinity": "2",
-                    "cpuFreqMin0": "0 2000000",
+                    "cpuFreqMin0": "0 1100000",
                     "cpuFreqMax0": "0 2000000",
-                    "cpuFreqMin1": "1 2600000",
-                    "cpuFreqMax1": "1 2600000",
+                    "cpuFreqMin1": "1 1800000",
+                    "cpuFreqMax1": "1 2400000",
+                    "gpuAlwayson": "always_on",
                     "cciboost": "1",
                     "dramboost": "1",
                     "mtkOpp": "715000"
@@ -450,7 +444,7 @@
                     "cpuFreqMax0": "0 1600000",
                     "cpuFreqMin1": "1 700000",
                     "cpuFreqMax1": "1 1500000",
-                    "mtkOpp": "431000",
+                    "mtkOpp": "350000",
                     "dramboost": "0",
                     "cciboost": "0"
                 },
@@ -464,14 +458,14 @@
                     "cpuFreqMax0": "0 1600000",
                     "cpuFreqMin1": "1 800000",
                     "cpuFreqMax1": "1 1200000",
-                    "mtkOpp": "370000",
+                    "mtkOpp": "390000",
                     "dramboost": "0",
                     "cciboost": "0"
                 },
                 "pressed": {
                     "schedBoost": "0",
                     "topBoost": "0",
-                    "heavyBoost": "2",
+                    "heavyBoost": "1",
                     "uxAffinity": "1",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 700000",
@@ -492,7 +486,7 @@
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 1000000",
                     "cpuFreqMax1": "1 2000000",
-                    "mtkOpp": "532000",
+                    "mtkOpp": "492000",
                     "dramboost": "1",
                     "cciboost": "1"
                 },
@@ -507,16 +501,16 @@
                     "cciboost": "1"
                 },
                 "sfBoost": {
-                    "topBoost": "25",
-                    "heavyBoost": "25",
+                    "topBoost": "1",
+                    "heavyBoost": "1",
                     "uxAffinity": "2",
                     "cpuFreqMin0": "0 700000",
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2000000",
-                    "cpuFreqMax1": "1 2500000",
+                    "cpuFreqMax1": "1 2200000",
                     "cciboost": "1",
                     "dramboost": "1",
-                    "mtkOpp": "715000"
+                    "mtkOpp": "532000"
                 }
             }
         },

@@ -12,7 +12,7 @@ wait_until_login()
     while [ "$(getprop sys.boot_completed)" != "1" ]; do
         sleep 1
     done
-
+    
     # we doesn't have the permission to rw "/sdcard" before the user unlocks the screen
     local test_file="/data/media/0/Android/.PERMISSION_TEST"
     true > "$test_file"
@@ -21,6 +21,7 @@ wait_until_login()
         sleep 1
     done
     rm "$test_file"
+    mv $USER_PATH/init_uperf.txt $USER_PATH/init_uperf.txt.lastgood
 }
 
 crash_recuser()
