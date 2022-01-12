@@ -428,6 +428,11 @@ uperf_install() {
     chmod 0755 $BASEDIR/bin/*
 
     rm -rf $BASEDIR/uperf
+    echo "- 阻止微信libhardcore接管系统调度 -"
+    mkdir /data/data/com.tencent.mm/shared_prefs
+    cp -r "$BASEDIR/common/hardcoder_setting.xml" "/data/data/com.tencent.mm/shared_prefs/hardcoder_setting.xml"
+    chmod 444 /data/data/com.tencent.mm/shared_prefs/hardcoder_setting.xml
+    chattr +i /data/data/com.tencent.mm/shared_prefs/hardcoder_setting.xml
 }
 
 injector_install() {
