@@ -287,7 +287,7 @@ _get_mt6877_type() {
 _get_mt6885_type() {
     local b_max
     b_max="$(_get_maxfreq 4)"
-    if [ "$b_max" -gt 2500000 ]; then
+    if [ "$b_max" -ge 2500000 ]; then
         echo "mtd1000"
     else
         echo "mtd1000l"
