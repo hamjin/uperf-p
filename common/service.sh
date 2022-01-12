@@ -25,7 +25,7 @@ detect_uperf()
     lock_value "1" /sys/kernel/fpsgo/common/stop_boost
     lock_value "0" /sys/kernel/fpsgo/common/force_onoff
     settings put Secure speed_mode_enable 1
-    lock_value "full" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs
+    lock_value "none" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs
     sleep 5s
     isstart=`pgrep Uperf`
     if [ $isstart = ""]; then
@@ -35,13 +35,5 @@ detect_uperf()
         isstart=`pgrep Uperf`
     fi
 }
-# kill_fpsgo()
-# {
-#     sleep 600s
-#     echo "Kill the module FPSGO After Boot Fully Complete 240s" >>$USER_PATH/init_uperf.txt
-#     cmd rmmod fpsgo >>$USER_PATH/init_uperf.txt
-#     cmd rmmod fpsgo.ko >>$USER_PATH/init_uperf.txt
-# }
 detect_uperf
-sh -c 'sleep 600s;echo "Kill the module FPSGO After Boot Fully Complete 240s" >>/data/media/0/yc/uperf/init_uperf.txt;cmd rmmod fpsgo >>/data/media/0/yc/uperf/init_uperf.txt;cmd rmmod fpsgo.ko >>/data/media/0/yc/uperf/init_uperf.txt;echo "kikk FPSGO Done!">>/data/media/0/yc/uperf/init_uperf.txt'
 exit 0
