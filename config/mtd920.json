@@ -1,6 +1,6 @@
 {
     "meta": {
-        "name": "Dimensity 800U(mt6853t)[21.07.25]",
+        "name": "Dimensity 920(mt6877)[21.07.25]",
         "author": "yc@coolapk",
         "features": "touch cpuload render standby sfanalysis ssanalysis dispfeature"
     },
@@ -305,7 +305,7 @@
                     "cpuFreqMax1": "1 2400000",
                     "cciboost": "0",
                     "dramboost": "0",
-                    "mtkOpp": "390000",
+                    "mtkOpp": "385000",
                     "ppmPolicy": "4 1"
                 },
                 "active": {
@@ -320,7 +320,7 @@
                     "cpuFreqMax1": "1 2400000",
                     "cciboost": "0",
                     "dramboost": "0",
-                    "mtkOpp": "760000",
+                    "mtkOpp": "766000",
                     "ppmPolicy": "6 1"
                 },
                 "interaction": {
@@ -335,7 +335,7 @@
                     "cpuFreqMax1": "1 2100000",
                     "cciboost": "0",
                     "dramboost": "0",
-                    "mtkOpp": "700000",
+                    "mtkOpp": "697000",
                     "ppmPolicy": "6 1"
                 },
                 "pressed": {
@@ -350,7 +350,7 @@
                     "cpuFreqMax1": "1 2100000",
                     "cciboost": "0",
                     "dramboost": "0",
-                    "mtkOpp": "655000",
+                    "mtkOpp": "652000",
                     "ppmPolicy": "6 1"
                 },
                 "heavyLoad": {
@@ -362,10 +362,10 @@
                     "cpuFreqMin0": "0 1100000",
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 1500000",
-                    "cpuFreqMax1": "1 2400000",
+                    "cpuFreqMax1": "1 2500000",
                     "cciboost": "1",
                     "dramboost": "1",
-                    "mtkOpp": "685000",
+                    "mtkOpp": "683000",
                     "ppmPolicy": "6 1"
                 },
                 "sfLag": {
@@ -376,7 +376,7 @@
                     "cpuFreqMax1": "1 2100000",
                     "cciboost": "1",
                     "dramboost": "1",
-                    "mtkOpp": "715000",
+                    "mtkOpp": "711000",
                     "ppmPolicy": "6 1"
                 },
                 "sfBoost": {
@@ -385,11 +385,11 @@
                     "uxAffinity": "2",
                     "cpuFreqMin0": "0 1100000",
                     "cpuFreqMax0": "0 2000000",
-                    "cpuFreqMin1": "1 2400000",
+                    "cpuFreqMin1": "1 2300000",
                     "cpuFreqMax1": "1 2400000",
                     "cciboost": "1",
                     "dramboost": "1",
-                    "mtkOpp": "865000",
+                    "mtkOpp": "862000",
                     "ppmPolicy": "6 1"
                 }
             }
@@ -410,7 +410,7 @@
                     "cpuFreqMax1": "1 1600000",
                     "cciboost": "0",
                     "dramboost": "0",
-                    "mtkOpp": "390000",
+                    "mtkOpp": "385000",
                     "ppmPolicy": "4 1"
                 },
                 "active": {
@@ -425,7 +425,7 @@
                     "cpuFreqMax1": "1 1400000",
                     "cciboost": "0",
                     "dramboost": "0",
-                    "mtkOpp": "390000",
+                    "mtkOpp": "385000",
                     "ppmPolicy": "6 1"
                 },
                 "interaction": {
@@ -440,7 +440,7 @@
                     "cpuFreqMax1": "1 1200000",
                     "cciboost": "0",
                     "dramboost": "0",
-                    "mtkOpp": "473000",
+                    "mtkOpp": "474000",
                     "ppmPolicy": "6 1"
                 },
                 "pressed": {
@@ -455,7 +455,7 @@
                     "cpuFreqMax1": "1 1600000",
                     "cciboost": "0",
                     "dramboost": "0",
-                    "mtkOpp": "452000",
+                    "mtkOpp": "456000",
                     "ppmPolicy": "6 1"
                 },
                 "heavyLoad": {
@@ -470,7 +470,7 @@
                     "cpuFreqMax1": "1 1800000",
                     "cciboost": "1",
                     "dramboost": "1",
-                    "mtkOpp": "556000",
+                    "mtkOpp": "545000",
                     "ppmPolicy": "6 1"
                 },
                 "sfLag": {
@@ -481,7 +481,7 @@
                     "cpuFreqMax1": "1 1200000",
                     "cciboost": "0",
                     "dramboost": "0",
-                    "mtkOpp": "452000",
+                    "mtkOpp": "456000",
                     "ppmPolicy": "6 1"
                 },
                 "sfBoost": {
@@ -494,7 +494,7 @@
                     "cpuFreqMax1": "1 2300000",
                     "cciboost": "1",
                     "dramboost": "1",
-                    "mtkOpp": "556000",
+                    "mtkOpp": "563000",
                     "ppmPolicy": "6 1"
                 }
             }
@@ -512,7 +512,7 @@
                     "cpuFreqMin0": "0 500000",
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 700000",
-                    "cpuFreqMax1": "1 2400000",
+                    "cpuFreqMax1": "1 2500000",
                     "cciboost": "1",
                     "dramboost": "1",
                     "mtkOpp": "950000",
@@ -527,7 +527,7 @@
                     "cpuFreqMin0": "0 900000",
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 1200000",
-                    "cpuFreqMax1": "1 2400000",
+                    "cpuFreqMax1": "1 2500000",
                     "cciboost": "1",
                     "dramboost": "1",
                     "mtkOpp": "950000",
@@ -542,7 +542,7 @@
                     "cpuFreqMin0": "0 900000",
                     "cpuFreqMax0": "0 1800000",
                     "cpuFreqMin1": "1 1600000",
-                    "cpuFreqMax1": "1 2400000",
+                    "cpuFreqMax1": "1 2500000",
                     "cciboost": "1",
                     "dramboost": "1",
                     "mtkOpp": "950000",
@@ -572,7 +572,7 @@
                     "cpuFreqMin0": "0 1800000",
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2300000",
-                    "cpuFreqMax1": "1 2400000",
+                    "cpuFreqMax1": "1 2500000",
                     "cciboost": "1",
                     "dramboost": "1",
                     "mtkOpp": "950000",
@@ -583,7 +583,7 @@
                     "cpuFreqMin0": "0 900000",
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2300000",
-                    "cpuFreqMax1": "1 2400000",
+                    "cpuFreqMax1": "1 2500000",
                     "cciboost": "1",
                     "dramboost": "1",
                     "mtkOpp": "950000",
@@ -595,8 +595,8 @@
                     "uxAffinity": "3",
                     "cpuFreqMin0": "0 900000",
                     "cpuFreqMax0": "0 2000000",
-                    "cpuFreqMin1": "1 2400000",
-                    "cpuFreqMax1": "1 2400000",
+                    "cpuFreqMin1": "1 2500000",
+                    "cpuFreqMax1": "1 2500000",
                     "cciboost": "1",
                     "dramboost": "1",
                     "mtkOpp": "950000",
@@ -616,11 +616,11 @@
                     "dispFeature": "0",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMax0": "0 2000000",
-                    "cpuFreqMin1": "1 2400000",
-                    "cpuFreqMax1": "1 2400000",
+                    "cpuFreqMin1": "1 2500000",
+                    "cpuFreqMax1": "1 2500000",
                     "cciboost": "1",
                     "dramboost": "1",
-                    "mtkOpp": "577000",
+                    "mtkOpp": "580000",
                     "ppmPolicy": "4 1"
                 },
                 "active": {
@@ -631,11 +631,11 @@
                     "dispFeature": "1",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMax0": "0 2000000",
-                    "cpuFreqMin1": "1 2400000",
-                    "cpuFreqMax1": "1 2400000",
+                    "cpuFreqMin1": "1 2500000",
+                    "cpuFreqMax1": "1 2500000",
                     "cciboost": "1",
                     "dramboost": "1",
-                    "mtkOpp": "577000",
+                    "mtkOpp": "580000",
                     "ppmPolicy": "6 1"
                 },
                 "interaction": {
@@ -646,11 +646,11 @@
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMax0": "0 2000000",
-                    "cpuFreqMin1": "1 2400000",
-                    "cpuFreqMax1": "1 2400000",
+                    "cpuFreqMin1": "1 2500000",
+                    "cpuFreqMax1": "1 2500000",
                     "cciboost": "1",
                     "dramboost": "1",
-                    "mtkOpp": "577000",
+                    "mtkOpp": "580000",
                     "ppmPolicy": "6 1"
                 },
                 "pressed": {
@@ -661,11 +661,11 @@
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMax0": "0 2000000",
-                    "cpuFreqMin1": "1 2400000",
-                    "cpuFreqMax1": "1 2400000",
+                    "cpuFreqMin1": "1 2500000",
+                    "cpuFreqMax1": "1 2500000",
                     "cciboost": "1",
                     "dramboost": "1",
-                    "mtkOpp": "577000",
+                    "mtkOpp": "580000",
                     "ppmPolicy": "6 1"
                 },
                 "heavyLoad": {
@@ -676,22 +676,22 @@
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMax0": "0 2000000",
-                    "cpuFreqMin1": "1 2400000",
-                    "cpuFreqMax1": "1 2400000",
+                    "cpuFreqMin1": "1 2500000",
+                    "cpuFreqMax1": "1 2500000",
                     "cciboost": "1",
                     "dramboost": "1",
-                    "mtkOpp": "577000",
+                    "mtkOpp": "580000",
                     "ppmPolicy": "6 1"
                 },
                 "sfLag": {
                     "uxAffinity": "3",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMax0": "0 2000000",
-                    "cpuFreqMin1": "1 2400000",
-                    "cpuFreqMax1": "1 2400000",
+                    "cpuFreqMin1": "1 2500000",
+                    "cpuFreqMax1": "1 2500000",
                     "cciboost": "1",
                     "dramboost": "1",
-                    "mtkOpp": "577000",
+                    "mtkOpp": "580000",
                     "ppmPolicy": "6 1"
                 },
                 "sfBoost": {
@@ -700,11 +700,11 @@
                     "uxAffinity": "3",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMax0": "0 2000000",
-                    "cpuFreqMin1": "1 2400000",
-                    "cpuFreqMax1": "1 2400000",
+                    "cpuFreqMin1": "1 2500000",
+                    "cpuFreqMax1": "1 2500000",
                     "cciboost": "1",
                     "dramboost": "1",
-                    "mtkOpp": "577000",
+                    "mtkOpp": "580000",
                     "ppmPolicy": "6 1"
                 }
             }
