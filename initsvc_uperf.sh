@@ -14,7 +14,7 @@ wait_until_login()
     done
     
     # we doesn't have the permission to rw "/sdcard" before the user unlocks the screen
-    local test_file="/data/media/0/Android/.PERMISSION_TEST"
+    local test_file="/sdcard/Android/.PERMISSION_TEST"
     true > "$test_file"
     while [ ! -f "$test_file" ]; do
         true > "$test_file"
@@ -35,7 +35,7 @@ crash_recuser()
 
 (crash_recuser &)
 wait_until_login
-mv $USER_PATH/init_uperf.txt $USER_PATH/init_uperf.txt.lastgood
-date '+%Y-%m-%d %H:%M:%S' >>$USER_PATH/init_uperf.txt
+mv /data/media/0/yc/uperf/init_uperf.txt /data/media/0/yc/uperf/init_uperf.txt.lastgood
+date '+%Y-%m-%d %H:%M:%S' >>/data/media/0/yc/uperf/init_uperf.txt
 echo "balance" >/data/media/0/yc/uperf/cur_powermode
 sh $BASEDIR/run_uperf.sh

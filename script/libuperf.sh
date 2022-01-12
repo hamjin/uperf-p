@@ -27,7 +27,9 @@ uperf_powermode_node="$USER_PATH/cur_powermode"
 # $1:mode_name
 uperf_set_powermode()
 {
-    mutate "$1" $uperf_powermode_node
+    chmod 666 $uperf_powermode_node
+    echo "$1" > $uperf_powermode_node
+    # set_mode "$1" $uperf_powermode_node
 }
 
 uperf_status()
@@ -52,14 +54,14 @@ uperf_start()
     lock_val "524288" /proc/sys/fs/inotify/max_queued_events
     lock_val "524288" /proc/sys/fs/inotify/max_user_watches
     lock_val "1024" /proc/sys/fs/inotify/max_user_instances
-
+    
     # cleanup
     cmd settings delete system min_refresh_rate
-
+    cmd settings put Secure speed_mode_enable 1
     # start uperf
     "$MODULE_PATH/$UPERF_REL/$UPERF_NAME" -o "$uperf_log_path" "$uperf_config_path"
     # waiting for uperf initialization
-    sleep 2
+    sleep 5
     # uperf shouldn't preempt foreground tasks
     rebuild_process_scan_cache
     change_task_rt "$UPERF_NAME" "1"

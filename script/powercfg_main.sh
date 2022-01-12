@@ -10,7 +10,6 @@ BASEDIR="$(dirname "$0")"
 apply_power_mode()
 {
     uperf_set_powermode "$1"
-    echo "Applying $1 done."
 }
 
 # $1: power_mode

@@ -12,7 +12,7 @@ BASEDIR="$(dirname "$0")"
 
 unify_cgroup() {
     # clear stune & uclamp
-    for g in background foreground top-app; do
+    for g in background foreground top-app io nnapi-hal camera-daemon sf_standalone; do
         lock_val "0" /dev/stune/$g/schedtune.sched_boost_no_override
         lock_val "0" /dev/stune/$g/schedtune.boost
         lock_val "0" /dev/stune/$g/schedtune.prefer_idle
@@ -27,15 +27,15 @@ unify_cgroup() {
     done
     
     # launcher is usually in foreground group, uperf will take care of them
-    # lock_val "0-7" /dev/cpuset/top-app/boost/cpus
-    # lock_val "0-7" /dev/cpuset/top-app/cpus
-    # lock_val "0-7" /dev/cpuset/game/cpus
-    # lock_val "0-7" /dev/cpuset/gamelite/cpus
+    lock_val "0-7" /dev/cpuset/top-app/boost/cpus
+    lock_val "0-7" /dev/cpuset/top-app/cpus
+    lock_val "4-7" /dev/cpuset/game/cpus
+    lock_val "4-7" /dev/cpuset/gamelite/cpus
     lock_val "0-7" /dev/cpuset/foreground/boost/cpus
-    lock_val "0-7" /dev/cpuset/foreground/cpus
-    lock_val "0-6" /dev/cpuset/restricted/cpus
-    # lock_val "0-3" /dev/cpuset/system-background/cpus
-    # lock_val "0-3" /dev/cpuset/background/cpus
+    lock_val "0-3,4,6" /dev/cpuset/foreground/cpus
+    lock_val "0-4" /dev/cpuset/restricted/cpus
+    lock_val "0-3" /dev/cpuset/system-background/cpus
+    lock_val "0-3" /dev/cpuset/background/cpus
     
     # VMOS may set cpuset/background/cpus to "0"
     lock /dev/cpuset/background/cpus
@@ -227,7 +227,7 @@ disable_kernel_boost() {
     # [9] PPM_POLICY_SYS_BOOST: disabled
     # [10] PPM_POLICY_HICA: ?
     # Usage: echo <policy_idx> <1(enable)/0(disable)> > /proc/ppm/policy_status
-    # echo "Selinux May should be disabled" >>/sdcard/yc/uperf/init_uperf.txt
+    # Selinux May should be disabled
     lock_val "1" /proc/ppm/enabled
     
     lock_val "0" /sys/kernel/eara_thermal/enable
@@ -238,18 +238,21 @@ disable_kernel_boost() {
     
     lock_val "1" /proc/mtk-perf/lowmem_hint_enable
     
-    # lock_val "enable: 0" /proc/perfmgr/tchbst/user/usrtch
-    # lock_val "0" /proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_enable
+    lock_val "enable: 0" /proc/perfmgr/tchbst/user/usrtch
+    lock_val "0" /proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_enable
     
-    # lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
-    # lock_val "100" /proc/perfmgr/syslimiter/syslimitertolerance_percent
-    # lock_val "1" /sys/module/ged/parameters/ged_force_mdp_enable
-    
-    # lock_val "999999999" /proc/mtk-perf/mt_throttle_ms
-    # echo "Lock mtkcooler: /proc/mtkcooler -> 444"
-    # chmod 444  /proc/mtkcooler/ >>$USER_PATH/init_uperf.txt
-    # chmod 444  /proc/mtkcooler/* >>$USER_PATH/init_uperf.txt
-    # lock_val "enable=1" /proc/sla/config
+    lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
+    lock_val "100" /proc/perfmgr/syslimiter/syslimitertolerance_percent
+    lock_val "1" /sys/module/ged/parameters/ged_force_mdp_enable
+    lock_val "1" /sys/module/ged/parameters/is_GED_KPI_enabled
+    lock_val "1" /sys/module/ged/parameters/gx_frc_mode
+    lock_val "1" /sys/module/ged/parameters/enable_game_self_frc_detect
+    lock_val "1" /proc/sys/net/ipv6/conf/all/forwarding
+    lock_val "999999999" /proc/mtk-perf/mt_throttle_ms
+    echo "Lock mtkcooler: /proc/mtkcooler -> 444"
+    chmod 440  /proc/mtkcooler/ >>$USER_PATH/init_uperf.txt
+    chmod 440  /proc/mtkcooler/* >>$USER_PATH/init_uperf.txt
+    lock_val "enable=1" /proc/sla/config
     
     lock_val "0 0" /proc/ppm/policy_status
     lock_val "1 0" /proc/ppm/policy_status
@@ -265,16 +268,16 @@ disable_kernel_boost() {
     lock_value "1" /sys/kernel/eara_thermal/fake_throttle
     lock_value "1" /sys/kernel/fpsgo/common/stop_boost
     lock_value "0" /sys/kernel/fpsgo/common/force_onoff
-    lock_value "full" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs
+    lock_value "none" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs
     #load balance
-    # lock_val "0" /dev/cpuset/sched_relax_domain_level
-    # lock_val "0" /dev/cpuset/background/sched_relax_domain_level
-    # lock_val "0" /dev/cpuset/game/sched_relax_domain_level
-    # lock_val "0" /dev/cpuset/gamelite/sched_relax_domain_level
-    # lock_val "0" /dev/cpuset/restricted/sched_relax_domain_level
-    # lock_val "0" /dev/cpuset/system-background/sched_relax_domain_level
-    # lock_val "0" /dev/cpuset/top-app/sched_relax_domain_level
-    # lock_val "0" /dev/cpuset/vr/sched_relax_domain_level
+    lock_val "0" /dev/cpuset/sched_relax_domain_level
+    lock_val "0" /dev/cpuset/background/sched_relax_domain_level
+    lock_val "0" /dev/cpuset/game/sched_relax_domain_level
+    lock_val "0" /dev/cpuset/gamelite/sched_relax_domain_level
+    lock_val "0" /dev/cpuset/restricted/sched_relax_domain_level
+    lock_val "0" /dev/cpuset/system-background/sched_relax_domain_level
+    lock_val "0" /dev/cpuset/top-app/sched_relax_domain_level
+    lock_val "0" /dev/cpuset/vr/sched_relax_domain_level
     # used by uperf
     # mutate "6 1" /proc/ppm/policy_status
     # Samsung
@@ -309,17 +312,18 @@ disable_kernel_boost() {
 
 disable_userspace_boost() {
     # Qualcomm perfd
-    stop perfd 2>/dev/null
+    stop perfd 2
     
     # Qualcomm&MTK perfhal
     # keep perfhal running with empty config file in magisk mode
-    [ ! -f "$FLAGS/enable_perfhal_stub" ] && perfhal_stop
+    # [ ! -f "$FLAGS/enable_perfhal_stub" ]
+    perfhal_stop
     
     # xiaomi perfservice
     stop vendor.perfservice
     
     # brain service maybe not smart
-    stop oneplus_brain_service 2>/dev/null
+    stop oneplus_brain_service
     
     # disable service below will BOOM
     # stop vendor.power.stats-hal-1-0

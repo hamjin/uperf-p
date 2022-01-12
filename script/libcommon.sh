@@ -14,34 +14,38 @@ BASEDIR="$(dirname "$0")"
 # $1:value $2:filepaths
 lock_val()
 {
-    echo "Locking $1 -> $p" >>$USER_PATH/init_uperf.txt
     for p in $2; do
         if [ -f "$p" ]; then
+            echo "Locking $1 -> $p" >>$USER_PATH/init_uperf.txt
             chmod 0666 "$p" 2> /dev/null
             echo "$1" > "$p"
             chmod 0444 "$p" 2> /dev/null
+            echo "Locking $1 -> $p Done!" >>$USER_PATH/init_uperf.txt
         fi
     done
 }
 write_value()
 {
-    echo "Locking $1 -> $p" >>$USER_PATH//init_uperf.txt
     for p in $2; do
         if [ -f "$p" ]; then
+            echo "Locking $1 -> $p" >>$USER_PATH/init_uperf.txt
             chmod 0666 "$p" 2> /dev/null
             echo "$1" > "$p"
             chmod 0444 "$p" 2> /dev/null
+            echo "Locking $p Done!" >>$USER_PATH/init_uperf.txt
         fi
     done
 }
 # $1:value $2:filepaths
 mutate()
 {
-    echo "Change $1 -> $p" >>$USER_PATH/init_uperf.txt
+    
     for p in $2; do
         if [ -f "$p" ]; then
+            echo "Change $1 -> $p" >>$USER_PATH/init_uperf.txt
             chmod 0666 "$p" 2> /dev/null
             echo "$1" > "$p"
+            echo "Change $p Done!" >>$USER_PATH/init_uperf.txt
         fi
     done
 }
@@ -49,9 +53,10 @@ mutate()
 # $1:file path
 lock()
 {
-    echo "Locking $1" >>$USER_PATH/init_uperf.txt
     if [ -f "$1" ]; then
+        echo "Locking $1 's Permission" >>$USER_PATH/init_uperf.txt
         chmod 0444 "$1" 2> /dev/null
+        echo "Locking $1 's Permission Done!" >>$USER_PATH/init_uperf.txt
     fi
 }
 
@@ -98,7 +103,7 @@ wait_until_login()
     while [ "$(getprop sys.boot_completed)" != "1" ]; do
         sleep 1
     done
-
+    
     # we doesn't have the permission to rw "/sdcard" before the user unlocks the screen
     local test_file="/sdcard/Android/.PERMISSION_TEST"
     true > "$test_file"

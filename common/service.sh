@@ -3,15 +3,18 @@ BASEDIR="$(dirname $(readlink -f "$0"))"
 MODDIR=${0%/*}
 SCRIPT_DIR="$BASEDIR/script"
 sh $BASEDIR/initsvc_uperf.sh
-. $BASEDIR/script/pathinfo.sh
+
+USER_PATH=/data/media/0/yc/uperf/
 lock_value()
 {
-    echo "Locking $1 -> $p" >>$USER_PATH/init_uperf.txt
+    
     for p in $2; do
         if [ -f "$p" ]; then
+            echo "Locking $1 -> $p after boot " >>$USER_PATH/init_uperf.txt
             chmod 0666 "$p" 2> /dev/null
             echo "$1" > "$p"
             chmod 0444 "$p" 2> /dev/null
+            echo "Locking $1 -> $p after boot Done! " >>$USER_PATH/init_uperf.txt
         fi
     done
 }
@@ -30,8 +33,15 @@ detect_uperf()
         sh $BASEDIR/initsvc_uperf.sh
         $BASEDIR/bin/uperf -o $USER_PATH/log_uperf.txt $USER_PATH/cfg_uperf.json
         isstart=`pgrep Uperf`
-        sleep 15s
     fi
 }
-(detect_uperf &)
+# kill_fpsgo()
+# {
+#     sleep 600s
+#     echo "Kill the module FPSGO After Boot Fully Complete 240s" >>$USER_PATH/init_uperf.txt
+#     cmd rmmod fpsgo >>$USER_PATH/init_uperf.txt
+#     cmd rmmod fpsgo.ko >>$USER_PATH/init_uperf.txt
+# }
+detect_uperf
+sh -c 'sleep 600s;echo "Kill the module FPSGO After Boot Fully Complete 240s" >>/data/media/0/yc/uperf/init_uperf.txt;cmd rmmod fpsgo >>/data/media/0/yc/uperf/init_uperf.txt;cmd rmmod fpsgo.ko >>/data/media/0/yc/uperf/init_uperf.txt;echo "kikk FPSGO Done!">>/data/media/0/yc/uperf/init_uperf.txt'
 exit 0
