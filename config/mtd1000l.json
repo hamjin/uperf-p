@@ -290,7 +290,7 @@
                 "name": "gpuAlwaysOn",
                 "note": "Mali GPU Always On",
                 "enable": true,
-                "path": "/sys/devices/platform/13000000.mali/power_policy",
+                "path": "/sys/class/misc/mali0/device/power_policy",
                 "type": "string"
             },
             {
@@ -446,15 +446,15 @@
                     "cciboost": "0"
                 },
                 "interaction": {
-                    "schedBoost": "0",
+                    "schedBoost": "1",
                     "topBoost": "0",
                     "heavyBoost": "1",
                     "uxAffinity": "1",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 100000",
-                    "cpuFreqMax0": "0 1600000",
+                    "cpuFreqMax0": "0 1800000",
                     "cpuFreqMin1": "1 100000",
-                    "cpuFreqMax1": "1 1200000",
+                    "cpuFreqMax1": "1 1800000",
                     "suDownRateUs": "50000,50000",
                     "suUpRateUs": "10000,5000",
                     "mtkOpp": "370000",

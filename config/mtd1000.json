@@ -283,7 +283,7 @@
                 "name": "gpuAlwaysOn",
                 "note": "Mali GPU Always On",
                 "enable": true,
-                "path": "/sys/devices/platform/13000000.mali/power_policy",
+                "path": "/sys/class/misc/mali0/device/power_policy",
                 "type": "string"
             },
             {
