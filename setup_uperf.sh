@@ -373,7 +373,7 @@ _get_cfgname() {
     "mt6889") ret="$(_get_mt6885_type)" ;;
     "mt6891") ret="mtd1100" ;;
     "mt6893") ret="mtd1200" ;;
-    "mt6877") ret="$(_get_mt6877_type)" ;;
+    "mt6877") ret="$(_get_mt6877_type)" ;;#D900 D920
     *) ret="unsupported" ;;
     esac
     echo "$ret"
@@ -383,7 +383,7 @@ uperf_print_banner() {
     echo ""
     echo "* Uperf https://gitee.com/hamjin/uperf/"
     echo "* Author: Matt Yang && HamJTY"
-    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.12"
+    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.13"
     echo ""
 }
 
