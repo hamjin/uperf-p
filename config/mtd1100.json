@@ -345,7 +345,7 @@
                 },
                 "interaction": {
                     "schedBoost": "0",
-                    "topBoost": "0",
+                    "topBoost": "17",
                     "heavyBoost": "17",
                     "uxAffinity": "1",
                     "dispFeature": "2",
@@ -359,7 +359,7 @@
                 },
                 "pressed": {
                     "schedBoost": "0",
-                    "topBoost": "0",
+                    "topBoost": "17",
                     "heavyBoost": "17",
                     "uxAffinity": "1",
                     "dispFeature": "2",
@@ -449,9 +449,9 @@
                     "uxAffinity": "1",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 700000",
-                    "cpuFreqMax0": "0 1600000",
+                    "cpuFreqMax0": "0 1800000",
                     "cpuFreqMin1": "1 800000",
-                    "cpuFreqMax1": "1 1200000",
+                    "cpuFreqMax1": "1 1800000",
                     "mtkOpp": "370000",
                     "dramboost": "0",
                     "cciboost": "0"
@@ -513,9 +513,9 @@
             "note": "降低CPU频率，强制GPU调频至最高以解放GPU性能，强制提高内存频率，提供高GPU性能",
             "actions": {
                 "normal": {
-                    "schedBoost": "0",
-                    "topBoost": "0",
-                    "heavyBoost": "0",
+                    "schedBoost": "1",
+                    "topBoost": "25",
+                    "heavyBoost": "25",
                     "uxAffinity": "4",
                     "dispFeature": "0",
                     "cpuFreqMin0": "0 1625000",
@@ -528,9 +528,9 @@
                     "cciboost": "1"
                 },
                 "active": {
-                    "schedBoost": "0",
-                    "topBoost": "0",
-                    "heavyBoost": "0",
+                    "schedBoost": "1",
+                    "topBoost": "50",
+                    "heavyBoost": "50",
                     "uxAffinity": "4",
                     "dispFeature": "1",
                     "cpuFreqMin0": "0 1725000",
@@ -542,9 +542,9 @@
                     "cciboost": "1"
                 },
                 "interaction": {
-                    "schedBoost": "0",
-                    "topBoost": "0",
-                    "heavyBoost": "0",
+                    "schedBoost": "1",
+                    "topBoost": "65",
+                    "heavyBoost": "65",
                     "uxAffinity": "3",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 1725000",
@@ -556,9 +556,9 @@
                     "cciboost": "1"
                 },
                 "pressed": {
-                    "schedBoost": "0",
-                    "topBoost": "0",
-                    "heavyBoost": "0",
+                    "schedBoost": "1",
+                    "topBoost": "70",
+                    "heavyBoost": "70",
                     "uxAffinity": "3",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 1725000",
@@ -573,8 +573,8 @@
                 },
                 "heavyLoad": {
                     "schedBoost": "1",
-                    "topBoost": "0",
-                    "heavyBoost": "0",
+                    "topBoost": "88",
+                    "heavyBoost": "88",
                     "uxAffinity": "3",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 1725000",
@@ -599,8 +599,8 @@
                     "cciboost": "1"
                 },
                 "sfBoost": {
-                    "topBoost": "0",
-                    "heavyBoost": "0",
+                    "topBoost": "100",
+                    "heavyBoost": "100",
                     "uxAffinity": "3",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMin1": "1 2600000",

@@ -317,9 +317,9 @@
                 },
                 "active": {
                     "schedBoost": "0",
-                    "topBoost": "0",
-                    "heavyBoost": "0",
-                    "uxAffinity": "0",
+                    "topBoost": "10",
+                    "heavyBoost": "10",
+                    "uxAffinity": "1",
                     "dispFeature": "1",
                     "cpuFreqMin0": "0 900000",
                     "cpuFreqMax0": "0 1700000",
@@ -331,7 +331,7 @@
                 },
                 "interaction": {
                     "schedBoost": "0",
-                    "topBoost": "0",
+                    "topBoost": "17",
                     "heavyBoost": "17",
                     "uxAffinity": "1",
                     "dispFeature": "2",
@@ -345,7 +345,7 @@
                 },
                 "pressed": {
                     "schedBoost": "0",
-                    "topBoost": "0",
+                    "topBoost": "17",
                     "heavyBoost": "17",
                     "uxAffinity": "1",
                     "dispFeature": "2",
@@ -358,9 +358,9 @@
                     "cciboost": "1"
                 },
                 "heavyLoad": {
-                    "schedBoost": "0",
-                    "topBoost": "17",
-                    "heavyBoost": "17",
+                    "schedBoost": "1",
+                    "topBoost": "25",
+                    "heavyBoost": "25",
                     "uxAffinity": "3",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 1400000",
@@ -420,7 +420,7 @@
                     "schedBoost": "0",
                     "topBoost": "0",
                     "heavyBoost": "0",
-                    "uxAffinity": "0",
+                    "uxAffinity": "1",
                     "dispFeature": "1",
                     "cpuFreqMin0": "0 100000",
                     "cpuFreqMax0": "0 1600000",
@@ -433,9 +433,9 @@
                     "dramboost": "0"
                 },
                 "interaction": {
-                    "schedBoost": "0",
-                    "topBoost": "0",
-                    "heavyBoost": "1",
+                    "schedBoost": "1",
+                    "topBoost": "10",
+                    "heavyBoost": "10",
                     "uxAffinity": "1",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 700000",
@@ -449,9 +449,9 @@
                     "dramboost": "0"
                 },
                 "pressed": {
-                    "schedBoost": "0",
-                    "topBoost": "0",
-                    "heavyBoost": "1",
+                    "schedBoost": "1",
+                    "topBoost": "10",
+                    "heavyBoost": "10",
                     "uxAffinity": "1",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 100000",
@@ -465,9 +465,9 @@
                     "dramboost": "0"
                 },
                 "heavyLoad": {
-                    "schedBoost": "0",
-                    "topBoost": "1",
-                    "heavyBoost": "1",
+                    "schedBoost": "1",
+                    "topBoost": "17",
+                    "heavyBoost": "17",
                     "uxAffinity": "4",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 1100000",
