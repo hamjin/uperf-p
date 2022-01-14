@@ -373,7 +373,7 @@ _get_cfgname() {
     "mt6889") ret="$(_get_mt6885_type)" ;;
     "mt6891") ret="mtd1100" ;;
     "mt6893") ret="mtd1200" ;;
-    "mt6877") ret="$(_get_mt6877_type)" ;;#D900 D920
+    "mt6877") ret="$(_get_mt6877_type)" ;; #D900 D920
     *) ret="unsupported" ;;
     esac
     echo "$ret"
@@ -382,18 +382,34 @@ _get_cfgname() {
 uperf_print_banner() {
     echo ""
     echo "* Uperf https://gitee.com/hamjin/uperf/"
-    echo "* Author: Matt Yang && HamJTY"
-    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.13"
+    echo "* 作者: Matt Yang && HamJTY"
+    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.14-MIUI"
+    echo "* 本版本为MIUI设备 (除了K30墓碑版,即除了K30U) 专版"
+    echo "* 本版本为MIUI设备 (除了K30墓碑版,即除了K30U) 专版"
+    echo "* 本版本为MIUI设备 (除了K30墓碑版,即除了K30U) 专版"
+    sleep 2s
+    echo ""
+    echo "* 非MIUI设备请使用专门版本"
+    echo "* 非MIUI设备请使用专门版本"
+    echo "* 非MIUI设备请使用专门版本"
+    sleep 2s
+    echo ""
+    echo "* K30墓碑版(K30U)请使用专门版本"
+    echo "* K30墓碑版(K30U)请使用专门版本"
+    echo "* K30墓碑版(K30U)请使用专门版本"
+    echo "* K30墓碑版(K30U)请使用专门版本"
+    echo "* K30墓碑版(K30U)请使用专门版本"
+    echo "* K30墓碑版(K30U)请使用专门版本"
     echo ""
 }
 
 uperf_print_finish() {
-    echo "- Uperf installation was successful."
+    echo "- Uperf 成功安装."
 }
 
 uperf_install() {
-    echo "- Installing uperf"
-    echo "- ro.board.platform=$(getprop ro.board.platform)"
+    echo "- 开始安装"
+    echo "- 设备平台: $(getprop ro.board.platform)"
     echo "- ro.product.board=$(getprop ro.product.board)"
     echo "- ro.product.board is empty on Android 12, Use ro.board.platform instead"
     local target
@@ -436,9 +452,9 @@ uperf_install() {
 }
 
 injector_install() {
-    echo "- Installing injector"
-    echo "- SELinux may be set PERMISSIVE for better compatibility"
-    echo "- To keep ENFORCING, please delete flags/allow_permissive"
+    echo "- 安装注入器"
+    echo "- 关闭SELinux可以获得更高的兼容性和可用性"
+    echo "- 请手动删除模块目录下的flags/allow_permissive以阻止自动关闭SELinux"
 
     local src_path
     local dst_path
@@ -463,7 +479,7 @@ injector_install() {
 }
 
 powerhal_stub_install() {
-    echo "- Installing perfhal stub"
+    echo "- 替换 perfhal 文件"
 
     # do not place empty json if it doesn't exist in system
     # vendor/etc/powerhint.json: android perf hal
@@ -490,7 +506,7 @@ powerhal_stub_install() {
 }
 
 busybox_install() {
-    echo "- Installing private busybox"
+    echo "- 安装自带的busybox"
 
     local dst_path
     dst_path="$BASEDIR/bin/busybox/"
