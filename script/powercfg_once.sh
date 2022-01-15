@@ -25,7 +25,7 @@ unify_cgroup() {
             echo $p >/dev/$cg/foreground/tasks
         done
     done
-
+    
     # launcher is usually in foreground group, uperf will take care of them
     lock_val "0-7" /dev/cpuset/top-app/boost/cpus
     lock_val "0-7" /dev/cpuset/top-app/cpus
@@ -33,13 +33,14 @@ unify_cgroup() {
     lock_val "0-7" /dev/cpuset/gamelite/cpus
     lock_val "0-7" /dev/cpuset/foreground/boost/cpus
     lock_val "0-7" /dev/cpuset/foreground/cpus
-    lock_val "0-7" /dev/cpuset/restricted/cpus
+    lock_val "0-6" /dev/cpuset/restricted/cpus
+    lock_val "0-7" /dev/cpuset/camera-daemon/cpus
     lock_val "0-3" /dev/cpuset/system-background/cpus
     lock_val "0-3" /dev/cpuset/background/cpus
-
+    
     # VMOS may set cpuset/background/cpus to "0"
     lock /dev/cpuset/background/cpus
-
+    
     # Reduce Perf Cluster Wakeup
     # daemons
     pin_proc_on_pwr "crtc_commit|crtc_event|pp_event|msm_irqbalance|netd|mdnsd|analytics"
@@ -60,7 +61,7 @@ unify_cgroup() {
     pin_proc_on_pwr "android.process.media"
     # com.miui.securitycenter & com.miui.securityadd
     pin_proc_on_pwr "miui\.security"
-
+    
     # system_server blacklist
     # system_server controlled by uperf
     change_proc_cgroup "system_server" "" "cpuset"
@@ -78,7 +79,7 @@ unify_cgroup() {
     # do not let GC thread block system_server
     # pin_thread_on_mid "system_server" "HeapTaskDaemon"
     # pin_thread_on_mid "system_server" "FinalizerDaemon"
-
+    
     # Render Pipeline
     # surfaceflinger controlled by uperf
     # android.phone controlled by uperf
@@ -93,13 +94,13 @@ unify_cgroup() {
     change_thread_cgroup "\.hardware\.display" "^Binder" "top-app" "cpuset"
     change_thread_cgroup "\.hardware\.display" "^HwBinder" "top-app" "cpuset"
     change_thread_cgroup "\.composer" "^Binder" "top-app" "cpuset"
-
+    
     # Heavy Scene Boost
     # boost app boot process, zygote--com.xxxx.xxx
     # boost android process pool, usap--com.xxxx.xxx
     unpin_proc "zygote|usap"
     change_task_high_prio "zygote|usap"
-
+    
     # busybox fork from magiskd
     pin_proc_on_mid "magiskd"
     change_task_nice "magiskd" "19"
@@ -109,15 +110,15 @@ unify_cpufreq() {
     # no msm_performance limit
     set_cpufreq_min "0:0 1:0 2:0 3:0 4:0 5:0 6:0 7:0"
     set_cpufreq_max "0:9999000 1:9999000 2:9999000 3:9999000 4:9999000 5:9999000 6:9999000 7:9999000"
-
+    
     # stop sched core_ctl, game's main thread need be pinned on prime core
     set_corectl_param "enable" "0:0 2:0 4:0 6:0 7:0"
-
+    
     # clear cpu load scale factor
     for i in 0 1 2 3 4 5 6 7 8 9; do
         lock_val "0" $CPU/cpu$i/sched_load_boost
     done
-
+    
     # unify governor, use schedutil if kernel has it
     set_governor_param "scaling_governor" "0:interactive 2:interactive 4:interactive 6:interactive 7:interactive"
     set_governor_param "scaling_governor" "0:schedutil 2:schedutil 4:schedutil 6:schedutil 7:schedutil"
@@ -144,7 +145,7 @@ unify_sched() {
     lock_val "0" $SCHED/sched_conservative_pl
     lock_val "0" $SCHED/sched_force_lb_enable
     lock_val "0" $SCHED/sched_boost_top_app
-
+    
     # unify WALT HMP sched
     lock_val "5" $SCHED/sched_ravg_hist_size
     lock_val "2" $SCHED/sched_window_stats_policy
@@ -153,13 +154,13 @@ unify_sched() {
     lock_val "1" $SCHED/sched_prefer_sync_wakee_to_waker
     lock_val "200000" $SCHED/sched_freq_inc_notify
     lock_val "400000" $SCHED/sched_freq_dec_notify
-
+    
     # place a little heavier processes on big cluster, due to Cortex-A55 poor efficiency
     # The same Binder, A55@1.0g took 7.3ms，A76@1.0g took 3.0ms, in this case, A76's efficiency is 2.4x of A55's.
     # However in EAS model A76's efficiency is 1.7x of A55's, so the down migrate threshold need compensate.
     set_sched_migrate "50" "15" "999" "888"
     set_sched_migrate "50 90" "15 70" "999" "888"
-
+    
     # 10ms=10000000, prefer to use prev cpu, decrease jitter from 0.5ms to 0.3ms with lpm settings
     # 0.2ms=200000, prevent system_server binders pinned on perf cluster
     lock_val "200000" $SCHED/sched_migration_cost_ns
@@ -173,7 +174,7 @@ unify_lpm() {
     if [ -f "$LPM/bias_hyst" ]; then
         lock_val "5" $LPM/bias_hyst
         lock_val "0" $LPM/lpm_prediction
-    elif [ -f "$SCHED/sched_busy_hyst_ns" ]; then
+        elif [ -f "$SCHED/sched_busy_hyst_ns" ]; then
         lock_val "127" $SCHED/sched_busy_hysteresis_enable_cpus # seem not working well on cpu7
         lock_val "0" $SCHED/sched_coloc_busy_hysteresis_enable_cpus
         lock_val "5000000" $SCHED/sched_busy_hyst_ns
@@ -187,18 +188,18 @@ disable_hotplug() {
     # Exynos hotplug
     mutate "0" /sys/power/cpuhotplug/enabled
     mutate "0" $CPU/cpuhotplug/enabled
-
+    
     # turn off msm_thermal
     lock_val "0" /sys/module/msm_thermal/core_control/enabled
     lock_val "N" /sys/module/msm_thermal/parameters/enabled
-
+    
     # 3rd
     lock_val "0" /sys/kernel/intelli_plug/intelli_plug_active
     lock_val "0" /sys/module/blu_plug/parameters/enabled
     lock_val "0" /sys/devices/virtual/misc/mako_hotplug_control/enabled
     lock_val "0" /sys/module/autosmp/parameters/enabled
     lock_val "0" /sys/kernel/zen_decision/enabled
-
+    
     # bring all cores online
     for i in 0 1 2 3 4 5 6 7 8 9; do
         lock_val "1" $CPU/cpu$i/online
@@ -211,9 +212,9 @@ disable_kernel_boost() {
     lock_val "0" "/sys/devices/system/cpu/cpu_boost/parameters/*"
     lock_val "0" "/sys/module/cpu_boost/parameters/*"
     lock_val "0" "/sys/module/msm_performance/parameters/*"
-
+    
     # MediaTek
-
+    
     # policy_status
     # [0] PPM_POLICY_PTPOD: Meature PMIC buck currents
     # [1] PPM_POLICY_UT: Unit test
@@ -229,18 +230,18 @@ disable_kernel_boost() {
     # Usage: echo <policy_idx> <1(enable)/0(disable)> > /proc/ppm/policy_status
     # Selinux May should be disabled
     lock_val "1" /proc/ppm/enabled
-
+    
     lock_val "0" /sys/kernel/eara_thermal/enable
     lock_val "1" /sys/kernel/eara_thermal/fake_throttle
-
+    
     lock_val "1" /sys/kernel/fpsgo/common/stop_boost
     lock_val "0" /sys/kernel/fpsgo/common/force_onoff
-
-    lock_val "1" /proc/mtk-perf/lowmem_hint_enable
-
+    
+    lock_val "0" /proc/mtk-perf/lowmem_hint_enable
+    
     lock_val "enable: 0" /proc/perfmgr/tchbst/user/usrtch
     lock_val "0" /proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_enable
-
+    lock_val "1" /sys/devices/system/cpu/eas/enable
     lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
     lock_val "100" /proc/perfmgr/syslimiter/syslimitertolerance_percent
     lock_val "1" /sys/module/ged/parameters/ged_force_mdp_enable
@@ -252,8 +253,11 @@ disable_kernel_boost() {
     echo "Lock mtkcooler: /proc/mtkcooler -> 444"
     chmod 440 /proc/mtkcooler/ >>$USER_PATH/init_uperf.txt
     chmod 440 /proc/mtkcooler/* >>$USER_PATH/init_uperf.txt
+    chmod 440 /proc/mtkcooler/*/* >>$USER_PATH/init_uperf.txt
+    chmod 440 /proc/mtkcooler/*/*/* >>$USER_PATH/init_uperf.txt
+    chmod 440 /sys/devices/virtual/thermal/*/* >>$USER_PATH/init_uperf.txt
     lock_val "enable=1" /proc/sla/config
-
+    
     lock_val "0 0" /proc/ppm/policy_status
     lock_val "1 0" /proc/ppm/policy_status
     lock_val "2 0" /proc/ppm/policy_status
@@ -282,7 +286,7 @@ disable_kernel_boost() {
     # mutate "6 1" /proc/ppm/policy_status
     # Samsung
     mutate "0" "/sys/class/input_booster/*"
-
+    
     # Samsung EPIC interfaces, used by uperf
     # mutate "0" /dev/cluster0_freq_min
     # mutate "0" /dev/cluster1_freq_min
@@ -291,39 +295,39 @@ disable_kernel_boost() {
     # lock_val "0" /dev/gpu_freq_min
     # Samsung /kernel/sched/ems/...
     mutate "0" /sys/kernel/ems/eff_mode
-
+    
     # Oneplus
     lock_val "N" "/sys/module/control_center/parameters/*"
     lock_val "0" /sys/module/aigov/parameters/enable
     lock_val "0" "/sys/module/houston/parameters/*"
     # OnePlus opchain always pins UX threads on the big cluster
     lock_val "0" /sys/module/opchain/parameters/chain_on
-
+    
     # HTC
     lock_val "0" "/sys/power/pnpmgr/*"
-
+    
     # 3rd
     lock_val "0" "/sys/kernel/cpu_input_boost/*"
     lock_val "0" "/sys/module/cpu_input_boost/parameters/*"
     lock_val "0" "/sys/module/dsboost/parameters/*"
     lock_val "0" "/sys/module/devfreq_boost/parameters/*"
-
+    
 }
 
 disable_userspace_boost() {
     # Qualcomm perfd
     stop perfd 2
-
+    
     # Qualcomm&MTK perfhal
     # keep perfhal running with empty config file in magisk mode
     [ ! -f "$FLAGS/enable_perfhal_stub" ] && perfhal_stop
-
+    
     # xiaomi perfservice
-    stop vendor.perfservice
-
+    # stop vendor.perfservice
+    
     # brain service maybe not smart
     stop oneplus_brain_service
-
+    
     # disable service below will BOOM
     # stop vendor.power.stats-hal-1-0
     # stop vendor.power-hal-1-0
