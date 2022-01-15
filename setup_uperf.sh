@@ -297,10 +297,10 @@ _get_mt6885_type() {
 _get_mt6893_type() {
     local b_max
     b_max="$(_get_maxfreq_6893 7)"
-    if [ "$b_max" == "2600000" ]; then
-        echo "mtd1100"
-    else
+    if [ "$b_max" -ge 2700000 ]; then
         echo "mtd1200"
+    else
+        echo "mtd1100"
     fi
 }
 
@@ -372,7 +372,7 @@ _get_cfgname() {
     "mt6885") ret="$(_get_mt6885_type)" ;;
     "mt6889") ret="$(_get_mt6885_type)" ;;
     "mt6891") ret="mtd1100" ;;
-    "mt6893") ret="mtd1200" ;;
+    "mt6893") ret="$(_get_mt6893_type)" ;; #Redmi Note10 Pro's stupid build.prop declares it CPU is mtd1200 but it's actually mtd1100
     "mt6877") ret="$(_get_mt6877_type)" ;; #D900 D920
     *) ret="unsupported" ;;
     esac
@@ -383,7 +383,7 @@ uperf_print_banner() {
     echo ""
     echo "* Uperf https://gitee.com/hamjin/uperf/"
     echo "* 作者: Matt Yang && HamJTY"
-    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.14-MIUI"
+    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.15-MIUI"
     echo "* 本版本为MIUI设备 (除了K30墓碑版,即除了K30U) 专版"
     echo "* 本版本为MIUI设备 (除了K30墓碑版,即除了K30U) 专版"
     echo "* 本版本为MIUI设备 (除了K30墓碑版,即除了K30U) 专版"
@@ -424,10 +424,15 @@ uperf_install() {
 
     mkdir -p $USER_PATH
     if [ "$cfgname" != "unsupported" ] && [ -f $BASEDIR/config/$cfgname.json ]; then
-        echo "- cfgname: $cfgname"
+        echo "- 配置平台文件: $cfgname"
+        echo "- 红米Note10Pro中国版请注意平台判断！ 辣鸡ADUI妄图把天玑1100伪装成天玑1200！！！"
+        echo "- 红米Note10Pro中国版请注意平台判断！ 辣鸡ADUI妄图把天玑1100伪装成天玑1200！！！"
+        echo "- 红米Note10Pro中国版请注意平台判断！ 辣鸡ADUI妄图把天玑1100伪装成天玑1200！！！"
+        echo "- 等待5秒以提醒注意检查！"
+        sleep 5s
         _setup_platform_file "$cfgname"
     else
-        echo "- cfgname: $cfgname"
+        echo "- 配置平台文件: $cfgname"
         _abort "! [$target] not supported."
     fi
     _place_user_config
