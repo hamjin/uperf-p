@@ -250,12 +250,12 @@ disable_kernel_boost() {
     lock_val "1" /sys/module/ged/parameters/enable_game_self_frc_detect
     lock_val "1" /proc/sys/net/ipv6/conf/all/forwarding
     lock_val "999999999" /proc/mtk-perf/mt_throttle_ms
-    echo "Lock mtkcooler: /proc/mtkcooler -> 444"
-    chmod 440 /proc/mtkcooler/ >>$USER_PATH/init_uperf.txt
-    chmod 440 /proc/mtkcooler/* >>$USER_PATH/init_uperf.txt
-    chmod 440 /proc/mtkcooler/*/* >>$USER_PATH/init_uperf.txt
-    chmod 440 /proc/mtkcooler/*/*/* >>$USER_PATH/init_uperf.txt
-    chmod 440 /sys/devices/virtual/thermal/*/* >>$USER_PATH/init_uperf.txt
+    # echo "Lock mtkcooler: /proc/mtkcooler -> 444"
+    # chmod 440 /proc/mtkcooler/ >>$USER_PATH/init_uperf.txt
+    # chmod 440 /proc/mtkcooler/* >>$USER_PATH/init_uperf.txt
+    # chmod 440 /proc/mtkcooler/*/* >>$USER_PATH/init_uperf.txt
+    # chmod 440 /proc/mtkcooler/*/*/* >>$USER_PATH/init_uperf.txt
+    # chmod 440 /sys/devices/virtual/thermal/*/* >>$USER_PATH/init_uperf.txt
     lock_val "enable=1" /proc/sla/config
 
     lock_val "0 0" /proc/ppm/policy_status
