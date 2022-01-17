@@ -71,7 +71,7 @@ _get_maxfreq() {
 }
 
 _get_maxfreq_6893() {
-    local fpath="/sys/devices/system/cpu/cpufreq/policy$1/scaling_max_freq"
+    local fpath="/sys/devices/system/cpu/cpufreq/policy$1/cpuinfo_max_freq"
     local maxfreq="0"
     if [ ! -f "$fpath" ]; then
         echo ""
