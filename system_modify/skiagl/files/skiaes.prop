@@ -1,0 +1,3 @@
+#enable OpenGL-Skia
+debug.hwui.renderer=skiagl
+#enable OpenGL-Skia End

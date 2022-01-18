@@ -16,6 +16,7 @@ POSTFSDATA=true
 # Set to true if you need late_start service script
 LATESTARTSERVICE=true
 
+DEBUG_FLAG=false
 ##########################################################################################
 # Replace list
 ##########################################################################################
@@ -96,22 +97,33 @@ REPLACE=""
 ##########################################################################################x
 
 # Set what you want to display when installing your module
-print_modname()
-{
+print_modname() {
     # use setup_uperf.sh/uperf_print_banner
     return
 }
 
 # Copy/extract your module files into $MODPATH in on_install.
-on_install()
-{
+on_install() {
     $BOOTMODE || abort "! Uperf cannot be installed in recovery."
 
     ui_print "- Extracting module files"
-    unzip -o "$ZIPFILE" -x 'META-INF/*' -d $MODPATH > /dev/null
+    unzip -o "$ZIPFILE" -x 'META-INF/*' -d $MODPATH >/dev/null
     # use universal setup.sh
     sh $MODPATH/setup_uperf.sh
     [ "$?" != "0" ] && abort
+    ui_print "- 开始选择性安装系统修改部分"
+    chmod +x $BASEDIR/system-modify-choose.sh
+
+    $MODPATH/system-modify-choose.sh
+    # 提醒救砖
+    ui_print "
+- 修改系统有卡开机或者总是自动重启风险（偶发自动重启可以不用担心）, 必须使用有效救砖模块
+- 或者刷入可以自动解密Data的recovery（数量极少，特别是安卓12），在rec→高级→文件管理
+- →data→adb→modules
+- 删除对应的$id文件夹，不会就自行百度
+- K40G的可以加群378033245询问
+- 提交问题也可以在上面K40G的群、酷安私信、Gitee里问（建议），要附上打包的/sdcard/yc/uperf文件夹，注明机型、MIUI版本，发生时间
+"
     # use once
     rm $MODPATH/setup_uperf.sh
 }
@@ -119,8 +131,7 @@ on_install()
 # Only some special files require specific permissions
 # This function will be called after on_install is done
 # The default permissions should be good enough for most cases
-set_permissions()
-{
+set_permissions() {
     # Here are some examples:
     # set_perm_recursive  $MODPATH/system/lib       0     0       0755      0644
     # set_perm  $MODPATH/system/bin/app_process32   0     2000    0755      u:object_r:zygote_exec:s0

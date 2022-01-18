@@ -14,7 +14,7 @@ chmod 755 /data/powercfg.sh
 chmod 755 /data/powercfg-base.sh
 
 # powercfg path provided by magisk module
-echo "sh $SCRIPT_DIR/powercfg_main.sh \"\$1\"" >> /data/powercfg.sh
+echo "sh $SCRIPT_DIR/powercfg_main.sh \"\$1\"" >>/data/powercfg.sh
 
 # create busybox symlinks
 BB=$BASEDIR/bin/busybox
@@ -22,4 +22,6 @@ $BB/busybox --install -s $BB
 
 $BB/sh $SCRIPT_DIR/prepare.sh
 $BB/sh $SCRIPT_DIR/powercfg_once.sh
+$BB/sh $SCRIPT_DIR/FPSGO.sh
+$BB/sh $SCRIPT_DIR/MDP.sh
 $BB/sh $SCRIPT_DIR/start_injector.sh

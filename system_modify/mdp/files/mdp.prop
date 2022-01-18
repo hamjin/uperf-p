@@ -1,0 +1,7 @@
+#MDP优化
+debug.composition.type=mdp
+persist.sys.composition.type=mdp
+persist.hwc.mdpcomp.enable=true
+debug.mdpcomp.maxlayer=64
+debug.mdpcomp.logs=0
+#MDP优化-End

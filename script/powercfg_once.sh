@@ -231,25 +231,12 @@ disable_kernel_boost() {
     # Selinux May should be disabled
     lock_val "1" /proc/ppm/enabled
 
-    lock_val "0" /sys/kernel/eara_thermal/enable
-    lock_val "1" /sys/kernel/eara_thermal/fake_throttle
+    lock_val "1" /proc/mtk-perf/lowmem_hint_enable
 
-    lock_val "1" /sys/kernel/fpsgo/common/stop_boost
-    lock_val "0" /sys/kernel/fpsgo/common/force_onoff
-
-    lock_val "0" /proc/mtk-perf/lowmem_hint_enable
-
-    lock_val "enable: 0" /proc/perfmgr/tchbst/user/usrtch
-    lock_val "0" /proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_enable
     lock_val "1" /sys/devices/system/cpu/eas/enable
-    lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
-    lock_val "100" /proc/perfmgr/syslimiter/syslimitertolerance_percent
-    lock_val "1" /sys/module/ged/parameters/ged_force_mdp_enable
-    lock_val "1" /sys/module/ged/parameters/is_GED_KPI_enabled
-    lock_val "1" /sys/module/ged/parameters/gx_frc_mode
-    lock_val "1" /sys/module/ged/parameters/enable_game_self_frc_detect
+
     lock_val "1" /proc/sys/net/ipv6/conf/all/forwarding
-    lock_val "999999999" /proc/mtk-perf/mt_throttle_ms
+
     # echo "Lock mtkcooler: /proc/mtkcooler -> 444"
     # chmod 440 /proc/mtkcooler/ >>$USER_PATH/init_uperf.txt
     # chmod 440 /proc/mtkcooler/* >>$USER_PATH/init_uperf.txt
@@ -268,11 +255,6 @@ disable_kernel_boost() {
     lock_val "7 0" /proc/ppm/policy_status
     lock_val "8 0" /proc/ppm/policy_status
     lock_val "9 0" /proc/ppm/policy_status
-    lock_value "0" /sys/kernel/eara_thermal/enable
-    lock_value "1" /sys/kernel/eara_thermal/fake_throttle
-    lock_value "1" /sys/kernel/fpsgo/common/stop_boost
-    lock_value "0" /sys/kernel/fpsgo/common/force_onoff
-    lock_value "none" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs
     #load balance
     # lock_val "0" /dev/cpuset/sched_relax_domain_level
     # lock_val "0" /dev/cpuset/background/sched_relax_domain_level

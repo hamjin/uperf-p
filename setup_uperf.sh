@@ -5,7 +5,7 @@
 # Version: 20201129
 
 BASEDIR="$(dirname $(readlink -f "$0"))"
-USER_PATH="/sdcard/yc/uperf"
+USER_PATH="/data/media/0/yc/uperf"
 
 # $1:error_message
 _abort() {
@@ -383,24 +383,31 @@ uperf_print_banner() {
     echo ""
     echo "* Uperf https://gitee.com/hamjin/uperf/"
     echo "* 作者: Matt Yang && HamJTY"
-    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.15-MIUI"
-    echo "* 本版本为MIUI设备 (除了K30墓碑版,即除了K30U) 专版"
-    echo "* 本版本为MIUI设备 (除了K30墓碑版,即除了K30U) 专版"
-    echo "* 本版本为MIUI设备 (除了K30墓碑版,即除了K30U) 专版"
-    sleep 2s
-    echo ""
-    echo "* 非MIUI设备请使用专门版本"
-    echo "* 非MIUI设备请使用专门版本"
-    echo "* 非MIUI设备请使用专门版本"
-    sleep 2s
-    echo ""
-    echo "* K30墓碑版(K30U)和其它出现重启问题的请使用修复重启版本"
-    echo "* K30墓碑版(K30U)和其它出现重启问题的请使用修复重启版本"
-    echo "* K30墓碑版(K30U)和其它出现重启问题的请使用修复重启版本"
-    echo "* K30墓碑版(K30U)和其它出现重启问题的请使用修复重启版本"
-    echo "* K30墓碑版(K30U)和其它出现重启问题的请使用修复重启版本"
-    echo "* K30墓碑版(K30U)和其它出现重启问题的请使用修复重启版本"
-    echo ""
+    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.20"
+    # echo "* 本版本为MIUI设备 (除了K30墓碑版,即除了K30U) 专版"
+    # echo "* 本版本为MIUI设备 (除了K30墓碑版,即除了K30U) 专版"
+    # echo "* 本版本为MIUI设备 (除了K30墓碑版,即除了K30U) 专版"
+    # sleep 2s
+    # echo ""
+    # echo "* 非MIUI设备请使用专门版本"
+    # echo "* 非MIUI设备请使用专门版本"
+    # echo "* 非MIUI设备请使用专门版本"
+    # sleep 2s
+    # echo ""
+    # echo "* K30墓碑版(K30U)和其它出现重启问题的请使用修复重启版本"
+    # echo "* K30墓碑版(K30U)和其它出现重启问题的请使用修复重启版本"
+    # echo "* K30墓碑版(K30U)和其它出现重启问题的请使用修复重启版本"
+    # echo "* K30墓碑版(K30U)和其它出现重启问题的请使用修复重启版本"
+    # echo "* K30墓碑版(K30U)和其它出现重启问题的请使用修复重启版本"
+    # echo "* K30墓碑版(K30U)和其它出现重启问题的请使用修复重启版本"
+    # echo ""
+    # echo "
+    # - 卡米请在
+    # - rec→高级→文件管理
+    # - →data→adb→modules
+    # - 删除对应的$id文件夹，不会就百度
+    # "
+
 }
 
 uperf_print_finish() {
@@ -411,7 +418,7 @@ uperf_install() {
     echo "- 开始安装"
     echo "- 设备平台: $(getprop ro.board.platform)"
     echo "- ro.product.board=$(getprop ro.product.board)"
-    echo "- ro.product.board is empty on Android 12, Use ro.board.platform instead"
+    echo "- Android 12上ro.product.board是空的, 可以忽略"
     local target
     local cfgname
     target="$(getprop ro.board.platform)"
@@ -450,10 +457,14 @@ uperf_install() {
 
     rm -rf $BASEDIR/uperf
     echo "- 阻止微信libhardcore接管系统调度 -"
+    mkdir /data/data/com.tencent.mm/
     mkdir /data/data/com.tencent.mm/shared_prefs
+    chattr -i /data/data/com.tencent.mm/shared_prefs/hardcoder_setting.xml
+    chmod 744 /data/data/com.tencent.mm/shared_prefs/hardcoder_setting.xml
     cp -r "$BASEDIR/common/hardcoder_setting.xml" "/data/data/com.tencent.mm/shared_prefs/hardcoder_setting.xml"
     chmod 444 /data/data/com.tencent.mm/shared_prefs/hardcoder_setting.xml
     chattr +i /data/data/com.tencent.mm/shared_prefs/hardcoder_setting.xml
+
 }
 
 injector_install() {

@@ -1,0 +1,15 @@
+#硬件加速
+ro.kernel.qemu.gles=1
+vendor.display.disable_scaler=0
+vendor.display.use_smooth_motion=0
+vendor.display.enable_async_powermode=0
+ro.vendor.sf.enable_fb_scaling=1
+#persist.sys.dalvik.hyperthreading=true
+debug.sf.hw=1
+debug.performance.tuning=1
+video.accelerate.hw=1
+debug.egl.hw=1
+persist.sys.ui.hw=1
+hw3d.force=1
+hw2d.force=1
+#硬件加速 End
