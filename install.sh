@@ -16,7 +16,6 @@ POSTFSDATA=true
 # Set to true if you need late_start service script
 LATESTARTSERVICE=true
 
-DEBUG_FLAG=false
 ##########################################################################################
 # Replace list
 ##########################################################################################
