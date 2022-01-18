@@ -112,9 +112,7 @@ on_install() {
     sh $MODPATH/setup_uperf.sh
     [ "$?" != "0" ] && abort
     ui_print "- 开始选择性安装系统修改部分"
-    chmod +x $BASEDIR/system-modify-choose.sh
-
-    $MODPATH/system-modify-choose.sh
+    magisk --install-module $MODPATH/enhance.zip
     # 提醒救砖
     ui_print "
 - 修改系统有卡开机或者总是自动重启风险（偶发自动重启可以不用担心）, 必须使用有效救砖模块
