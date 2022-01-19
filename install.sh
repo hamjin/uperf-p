@@ -127,7 +127,7 @@ on_install() {
 - 并注明机型、MIUI版本，发生时间，发生场景
 "
     # use once
-    rm $MODPATH/setup_uperf.sh
+    # rm $MODPATH/setup_uperf.sh
 }
 
 # Only some special files require specific permissions
