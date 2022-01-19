@@ -128,6 +128,12 @@ on_install() {
 "
     # use once
     # rm $MODPATH/setup_uperf.sh
+    # rm $MODPATH/install.sh
+    cp $MODPATH/common/system.prop $MODPATH/system.prop
+    cp $MODPATH/common/post-fs-data.sh $MODPATH/post-fs-data.sh
+    cp $MODPATH/common/service.sh $MODPATH/service.sh
+    chmod 777 $MODPATH/*.sh
+    chmod 777 $MODPATH/script/*.sh
 }
 
 # Only some special files require specific permissions
