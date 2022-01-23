@@ -1,6 +1,7 @@
 # uperf
 
 #### 介绍
+本分支为适配Magisk Alpha（>=23017）的更新功能
 YC调度，为天玑1200进行专属优化
 感谢@yc9559 [Uperf-Github](https://github.com/yc9559/uperf)
 
