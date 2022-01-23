@@ -383,30 +383,7 @@ uperf_print_banner() {
     echo ""
     echo "* Uperf https://gitee.com/hamjin/uperf/"
     echo "* 作者: Matt Yang && HamJTY"
-    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.20"
-    # echo "* 本版本为MIUI设备 (除了K30墓碑版,即除了K30U) 专版"
-    # echo "* 本版本为MIUI设备 (除了K30墓碑版,即除了K30U) 专版"
-    # echo "* 本版本为MIUI设备 (除了K30墓碑版,即除了K30U) 专版"
-    # sleep 2s
-    # echo ""
-    # echo "* 非MIUI设备请使用专门版本"
-    # echo "* 非MIUI设备请使用专门版本"
-    # echo "* 非MIUI设备请使用专门版本"
-    # sleep 2s
-    # echo ""
-    # echo "* K30墓碑版(K30U)和其它出现重启问题的请使用修复重启版本"
-    # echo "* K30墓碑版(K30U)和其它出现重启问题的请使用修复重启版本"
-    # echo "* K30墓碑版(K30U)和其它出现重启问题的请使用修复重启版本"
-    # echo "* K30墓碑版(K30U)和其它出现重启问题的请使用修复重启版本"
-    # echo "* K30墓碑版(K30U)和其它出现重启问题的请使用修复重启版本"
-    # echo "* K30墓碑版(K30U)和其它出现重启问题的请使用修复重启版本"
-    # echo ""
-    # echo "
-    # - 卡米请在
-    # - rec→高级→文件管理
-    # - →data→adb→modules
-    # - 删除对应的$id文件夹，不会就百度
-    # "
+    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.25"
 
 }
 
@@ -417,8 +394,8 @@ uperf_print_finish() {
 uperf_install() {
     echo "- 开始安装"
     echo "- 设备平台: $(getprop ro.board.platform)"
-    echo "- ro.product.board=$(getprop ro.product.board)"
-    echo "- Android 12上ro.product.board是空的, 可以忽略"
+    echo "- 设备名称: $(getprop ro.product.board)"
+    # echo "- Android 12上ro.product.board可能是空的, 可以忽略"
     local target
     local cfgname
     target="$(getprop ro.board.platform)"
@@ -432,11 +409,9 @@ uperf_install() {
     mkdir -p $USER_PATH
     if [ "$cfgname" != "unsupported" ] && [ -f $BASEDIR/config/$cfgname.json ]; then
         echo "- 配置平台文件: $cfgname"
-        echo "- 红米Note10Pro中国版请注意平台判断！ 辣鸡ADUI妄图把天玑1100伪装成天玑1200！！！"
-        echo "- 红米Note10Pro中国版请注意平台判断！ 辣鸡ADUI妄图把天玑1100伪装成天玑1200！！！"
-        echo "- 红米Note10Pro中国版请注意平台判断！ 辣鸡ADUI妄图把天玑1100伪装成天玑1200！！！"
-        echo "- 等待5秒以提醒注意检查！"
-        sleep 5s
+        echo "- 红米Note10Pro中国版请注意平台判断！ "
+        echo "- 等待3秒以提醒注意检查！"
+        sleep 3s
         _setup_platform_file "$cfgname"
     else
         echo "- 配置平台文件: $cfgname"
@@ -464,6 +439,11 @@ uperf_install() {
     cp -r "$BASEDIR/common/hardcoder_setting.xml" "/data/data/com.tencent.mm/shared_prefs/hardcoder_setting.xml"
     chmod 444 /data/data/com.tencent.mm/shared_prefs/hardcoder_setting.xml
     chattr +i /data/data/com.tencent.mm/shared_prefs/hardcoder_setting.xml
+    echo "- 关闭位于用户数据分区的MTK官方温控 -"
+    rm -rf "/data/vendor/.tp"
+    rm -rf /data/vendor/thermal
+    echo "false" >"/data/vendor/.tp"
+    echo "false" >/data/vendor/thermal
 
 }
 

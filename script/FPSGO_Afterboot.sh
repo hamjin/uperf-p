@@ -12,13 +12,18 @@ lock_val() {
         fi
     done
 }
+stop thermal_manager
+stop thermal_core
+stop gbe
+stop thermal
+killall -9 thermal_manager getgameserver gbe
+/system/vendor/bin/thermal_manager /system/vendor/etc/.tp/ht120.mtc
 lock_val "none" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs
 lock_val "0" /sys/kernel/eara_thermal/enable
-lock_val "1" /sys/kernel/eara_thermal/fake_throttle
+lock_val "0" /sys/kernel/eara_thermal/fake_throttle
 lock_val "1" /sys/kernel/fpsgo/common/stop_boost
 lock_val "0" /sys/kernel/fpsgo/common/force_onoff
+lock_val "0" /proc/perfmgr/syslimiter/syslimitertolerance_percent
 lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
-lock_val "100" /proc/perfmgr/syslimiter/syslimitertolerance_percent
 lock_val "enable: 0" /proc/perfmgr/tchbst/user/usrtch
 lock_val "0" /proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_enable
-return 0

@@ -12,7 +12,8 @@ cp -af $SCRIPT_DIR/vtools-powercfg.sh /data/powercfg.sh
 cp -af $SCRIPT_DIR/vtools-powercfg.sh /data/powercfg-base.sh
 chmod 755 /data/powercfg.sh
 chmod 755 /data/powercfg-base.sh
-
+chmod 755 $SCRIPT_DIR/MDP.sh
+chmod 755 $SCRIPT_DIR/FPSGO.sh
 # powercfg path provided by magisk module
 echo "sh $SCRIPT_DIR/powercfg_main.sh \"\$1\"" >>/data/powercfg.sh
 

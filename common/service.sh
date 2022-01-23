@@ -7,7 +7,9 @@ sh $BASEDIR/initsvc_uperf.sh
 USER_PATH=/data/media/0/yc/uperf/
 detect_uperf() {
     settings put Secure speed_mode_enable 1
-
+    setprop ro.config.low_ram 0
+    setprop ro.lmk.use_psi true
+    setprop ro.lmk.use_minfree_levels false
     sleep 5s
     isstart=$(pgrep Uperf)
     if [ $isstart = ""]; then
@@ -17,6 +19,19 @@ detect_uperf() {
         isstart=$(pgrep Uperf)
     fi
 }
-detect_uperf
-sh $BASEDIR/FPSGO_Afterboot.sh
+/system/bin/resetprop --file $BASEDIR/common/system.prop
+killall -9 lmkd
+killall -9 lmkd
+killall -9 lmkd
+killall -9 lmkd
+killall -9 lmkd
+detect_uperf &
+sh $BASEDIR/script/FPSGO_Afterboot.sh &
+sh $BASEDIR/script/lock_core.sh &
+stop thermal_manager
+stop thermal_core
+stop gbe
+stop thermal
+killall -9 thermal_manager getgameserver gbe
+/system/vendor/bin/thermal_maganer /system/vendor/etc/.tp/.ht120.mtc
 exit 0

@@ -10,7 +10,7 @@
         <data cmd="PERF_RES_DRAM_OPP_MIN" param1="0"></data>
     </scenario>
     <scenario powerhint="MTKPOWER_HINT_EXT_LAUNCH">
-        <data cmd="PERF_RES_DRAM_OPP_MIN" param1="1"></data>
+        <data cmd="PERF_RES_DRAM_OPP_MIN" param1="0"></data>
     </scenario>
     <scenario powerhint="MTKPOWER_HINT_WHITELIST_LAUNCH">
         <data cmd="PERF_RES_DRAM_OPP_MIN" param1="0"></data>

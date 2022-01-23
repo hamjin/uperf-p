@@ -26,21 +26,6 @@ unify_cgroup() {
         done
     done
 
-    # launcher is usually in foreground group, uperf will take care of them
-    lock_val "0-7" /dev/cpuset/top-app/boost/cpus
-    lock_val "0-7" /dev/cpuset/top-app/cpus
-    # lock_val "0-7" /dev/cpuset/game/cpus
-    # lock_val "0-7" /dev/cpuset/gamelite/cpus
-    lock_val "0-7" /dev/cpuset/foreground/boost/cpus
-    lock_val "0-7" /dev/cpuset/foreground/cpus
-    lock_val "0-6" /dev/cpuset/restricted/cpus
-    # lock_val "0-7" /dev/cpuset/camera-daemon/cpus
-    # lock_val "0-3" /dev/cpuset/system-background/cpus
-    # lock_val "0-3" /dev/cpuset/background/cpus
-
-    # VMOS may set cpuset/background/cpus to "0"
-    lock /dev/cpuset/background/cpus
-
     # Reduce Perf Cluster Wakeup
     # daemons
     pin_proc_on_pwr "crtc_commit|crtc_event|pp_event|msm_irqbalance|netd|mdnsd|analytics"
@@ -116,9 +101,24 @@ unify_cpufreq() {
 
     # clear cpu load scale factor
     for i in 0 1 2 3 4 5 6 7 8 9; do
-        lock_val "0" $CPU/cpu$i/sched_load_boost
+        lock_val $i $CPU/cpu$i/sched_load_boost
     done
-
+    for i in 0 1 2 3 4 5 6 7; do
+        lock_val "0" /sys/devices/system/cpu/sched/set_sched_deisolation
+        lock /sys/devices/system/cpu/sched/set_sched_isolation
+        lock /sys/devices/system/cpu/cpu$i/scaling_governor
+        lock /sys/devices/system/cpu/cpu$i/scaling_max_freq
+        lock /sys/devices/system/cpu/cpu$i/scaling_min_freq
+        lock /sys/devices/system/cpu/cpu$i/scaling_setspeed
+    done
+    for i in 0 4 7; do
+        lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_governor
+        lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_max_freq
+        lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_min_freq
+        lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_setspeed
+    done
+    lock /sys/devices/system/cpu/rq-stats/htask_cpucap_ctrl
+    lock_val "1" /sys/devices/system/cpu/sched/hint_enable
     # unify governor, use schedutil if kernel has it
     set_governor_param "scaling_governor" "0:interactive 2:interactive 4:interactive 6:interactive 7:interactive"
     set_governor_param "scaling_governor" "0:schedutil 2:schedutil 4:schedutil 6:schedutil 7:schedutil"
@@ -231,7 +231,7 @@ disable_kernel_boost() {
     # Selinux May should be disabled
     lock_val "1" /proc/ppm/enabled
 
-    lock_val "1" /proc/mtk-perf/lowmem_hint_enable
+    lock_val "0" /proc/mtk-perf/lowmem_hint_enable
 
     lock_val "1" /sys/devices/system/cpu/eas/enable
 
@@ -243,7 +243,9 @@ disable_kernel_boost() {
     # chmod 440 /proc/mtkcooler/*/* >>$USER_PATH/init_uperf.txt
     # chmod 440 /proc/mtkcooler/*/*/* >>$USER_PATH/init_uperf.txt
     # chmod 440 /sys/devices/virtual/thermal/*/* >>$USER_PATH/init_uperf.txt
-    lock_val "enable=1" /proc/sla/config
+    lock_val "0" /proc/cpu_loading/onoff
+
+    lock_val "enable=0" /proc/sla/config
 
     lock_val "0 0" /proc/ppm/policy_status
     lock_val "1 0" /proc/ppm/policy_status
@@ -265,7 +267,7 @@ disable_kernel_boost() {
     # lock_val "0" /dev/cpuset/top-app/sched_relax_domain_level
     # lock_val "0" /dev/cpuset/vr/sched_relax_domain_level
     # used by uperf
-    # mutate "6 1" /proc/ppm/policy_status
+    mutate "6 1" /proc/ppm/policy_status
     # Samsung
     mutate "0" "/sys/class/input_booster/*"
 
