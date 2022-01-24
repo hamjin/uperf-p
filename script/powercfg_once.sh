@@ -104,7 +104,7 @@ unify_cpufreq() {
         lock_val $i $CPU/cpu$i/sched_load_boost
     done
     for i in 0 1 2 3 4 5 6 7; do
-        lock_val "0" /sys/devices/system/cpu/sched/set_sched_deisolation
+        lock_val "$i" /sys/devices/system/cpu/sched/set_sched_deisolation
         lock /sys/devices/system/cpu/sched/set_sched_isolation
         lock /sys/devices/system/cpu/cpu$i/scaling_governor
         lock /sys/devices/system/cpu/cpu$i/scaling_max_freq

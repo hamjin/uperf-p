@@ -635,7 +635,7 @@
         },
         {
             "name": "fast",
-            "note": "费电模式，保证费电的同时多一点流畅度",
+            "note": "极速模式，限制GPU保证CPU完全释放性能",
             "actions": {
                 "normal": {
                     "schedBoost": "1",

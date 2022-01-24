@@ -647,7 +647,7 @@
         },
         {
             "name": "fast",
-            "note": "降低CPU高负载时的GPU频率，强制提高内存频率，提供极限CPU性能",
+            "note": "极速模式，限制GPU保证CPU完全释放性能",
             "actions": {
                 "normal": {
                     "schedBoost": "1",

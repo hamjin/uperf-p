@@ -28,10 +28,5 @@ killall -9 lmkd
 detect_uperf &
 sh $BASEDIR/script/FPSGO_Afterboot.sh &
 sh $BASEDIR/script/lock_core.sh &
-stop thermal_manager
-stop thermal_core
-stop gbe
-stop thermal
-killall -9 thermal_manager getgameserver gbe
-/system/vendor/bin/thermal_maganer /system/vendor/etc/.tp/.ht120.mtc
+
 exit 0

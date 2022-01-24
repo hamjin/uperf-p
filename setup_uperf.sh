@@ -372,6 +372,7 @@ _get_cfgname() {
     "mt6885") ret="$(_get_mt6885_type)" ;;
     "mt6889") ret="$(_get_mt6885_type)" ;;
     "mt6891") ret="mtd1100" ;;
+    "mt6833") ret="mtd700" ;;
     "mt6893") ret="$(_get_mt6893_type)" ;; #Redmi Note10 Pro's stupid build.prop declares it CPU is mtd1200 but it's actually mtd1100
     "mt6877") ret="$(_get_mt6877_type)" ;; #D900 D920
     *) ret="unsupported" ;;
@@ -383,7 +384,7 @@ uperf_print_banner() {
     echo ""
     echo "* Uperf https://gitee.com/hamjin/uperf/"
     echo "* 作者: Matt Yang && HamJTY"
-    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.25"
+    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.26"
 
 }
 
@@ -490,6 +491,12 @@ powerhal_stub_install() {
     vendor/etc/powerscntbl.xml
     vendor/etc/perf/commonresourceconfigs.xml
     vendor/etc/perf/targetresourceconfigs.xml
+    vendor/power_app_cfg.xml
+    vendor/powercontable.xml
+    vendor/task_profiles.json
+    vendor/fstb.cfg
+    vendor/gbe.cfg
+    vendor/xgf.cfg
     "
     for f in $perfcfgs; do
         if [ ! -f "/$f" ]; then
