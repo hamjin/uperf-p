@@ -2,5 +2,4 @@
   "versionCode": 220126,
   "version": "v2 (21.08.15),GPU_Lock-fixed-22.01.26",
   "zipUrl": "https://gitee.com/hamjin/uperf/raw/update/uperf-dev-21.08.15-GPU_Lock-fixed-220126.zip",
-  "changelog": "#### 版本220126\r\n1. 配置更新/r/n1. 添加天玑700/720/r/n1. 天玑1200配置优化/r/n1. 上一版本修改可选化（集中于“解除限制”这个修改内）"
 }
