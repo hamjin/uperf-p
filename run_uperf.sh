@@ -23,7 +23,7 @@ $BB/busybox --install -s $BB
 
 $BB/sh $SCRIPT_DIR/prepare.sh
 $BB/sh $SCRIPT_DIR/powercfg_once.sh
-$BB/sh $SCRIPT_DIR/FPSGO.sh
+$BB/sh $SCRIPT_DIR/FPSGO_Afterboot.sh
 $BB/sh $SCRIPT_DIR/psi-mem.sh
 $BB/sh $SCRIPT_DIR/MDP.sh
 $BB/sh $SCRIPT_DIR/start_injector.sh

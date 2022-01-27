@@ -7,4 +7,4 @@ else
     true >$MODDIR/flags/.need_recuser
 fi
 (sh $MODDIR/script/FPSGO.sh &)
-(sh $MODDIR/script/psi-mem.sh &)
+# (sh $MODDIR/script/psi-mem.sh &)

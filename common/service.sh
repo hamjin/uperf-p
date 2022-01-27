@@ -1,5 +1,5 @@
 ASH_STANDALONE=1
-BASEDIR="$(dirname $(readlink -f "$0"))"
+BASEDIR="/data/adb/modules/uperf"
 MODDIR=${0%/*}
 SCRIPT_DIR="$BASEDIR/script"
 sh $BASEDIR/initsvc_uperf.sh
@@ -19,7 +19,7 @@ detect_uperf() {
         isstart=$(pgrep Uperf)
     fi
 }
-(sh $MODDIR/script/psi-mem.sh &)
+(sh $SCRIPT_DIR/psi-mem.sh &)
 (detect_uperf &)
 (sh $BASEDIR/script/FPSGO_Afterboot.sh &)
 (sh $BASEDIR/script/lock_core.sh &)
