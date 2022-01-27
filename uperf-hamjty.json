@@ -1,6 +1,6 @@
 {
-  "versionCode": 220127,
-  "version": "v2 (21.08.15),GPU_Lock-fixed-22.01.20",
-  "zipUrl": "https://gitee.com/hamjin/uperf/attach_files/949257/download/uperf-dev-21.08.15-GPU_Lock-fixed-220120.zip",
-  "changelog": "#### Version 22.01.20 Force Roll Back！！！\r\n1. /r/n1. Resolve Boot To Recovery On MIUI 12.5-Android 11/r/n1. /r/n1."
+  "versionCode": 220128,
+  "version": "v2 (21.08.15),GPU_Lock-fixed-22.01.28",
+  "zipUrl": "https://gitee.com/hamjin/uperf/raw/update/uperf-dev-21.08.15-GPU_Lock-fixed-220128.zip",
+  "changelog": "https://gitee.com/hamjin/uperf/raw/update/changelog.md"
 }
