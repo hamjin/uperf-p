@@ -12,7 +12,7 @@ BASEDIR="$(dirname "$0")"
 
 unify_cgroup() {
     # clear stune & uclamp
-    for g in background foreground top-app io nnapi-hal camera-daemon sf_standalone; do
+    for g in background foreground top-app; do
         lock_val "0" /dev/stune/$g/schedtune.sched_boost_no_override
         lock_val "0" /dev/stune/$g/schedtune.boost
         lock_val "0" /dev/stune/$g/schedtune.prefer_idle
@@ -98,30 +98,42 @@ unify_cpufreq() {
 
     # stop sched core_ctl, game's main thread need be pinned on prime core
     set_corectl_param "enable" "0:0 2:0 4:0 6:0 7:0"
-
+    # lock_val "99999" /sys/devices/system/cpu/cpu7/cpufreq/scaling_max_freq
+    # lock_val "0" /sys/devices/system/cpu/cpu7/cpufreq/scaling_min_freq
+    # lock_val "99999" /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
+    # lock_val "0" /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
+    # lock_val "99999" /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    # lock_val "0" /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    # lock_val "99999" /sys/devices/system/cpu/cpufreq/policy7/scaling_max_freq
+    # lock_val "0" /sys/devices/system/cpu/cpufreq/policy7/scaling_min_freq
+    # lock_val "99999" /sys/devices/system/cpu/cpufreq/policy4/scaling_max_freq
+    # lock_val "0" /sys/devices/system/cpu/cpufreq/policy4/scaling_min_freq
+    # lock_val "99999" /sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq
+    # lock_val "0" /sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq
     # clear cpu load scale factor
     for i in 0 1 2 3 4 5 6 7 8 9; do
         lock_val $i $CPU/cpu$i/sched_load_boost
     done
     for i in 0 1 2 3 4 5 6 7; do
         lock_val "$i" /sys/devices/system/cpu/sched/set_sched_deisolation
-        lock /sys/devices/system/cpu/sched/set_sched_isolation
-        lock /sys/devices/system/cpu/cpu$i/scaling_governor
+        lock_val "interactive" /sys/devices/system/cpu/cpu$i/scaling_governor
         lock /sys/devices/system/cpu/cpu$i/scaling_max_freq
         lock /sys/devices/system/cpu/cpu$i/scaling_min_freq
         lock /sys/devices/system/cpu/cpu$i/scaling_setspeed
     done
+    lock /sys/devices/system/cpu/sched/set_sched_isolation
     for i in 0 4 7; do
-        lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_governor
+        lock_val "interactive" /sys/devices/system/cpu/cpufreq/policy$i/scaling_governor
         lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_max_freq
         lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_min_freq
         lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_setspeed
     done
     lock /sys/devices/system/cpu/rq-stats/htask_cpucap_ctrl
-    lock_val "1" /sys/devices/system/cpu/sched/hint_enable
-    # unify governor, use schedutil if kernel has it
+
+    # unify governor, not use schedutil if kernel has broken it
+
     set_governor_param "scaling_governor" "0:interactive 2:interactive 4:interactive 6:interactive 7:interactive"
-    set_governor_param "scaling_governor" "0:schedutil 2:schedutil 4:schedutil 6:schedutil 7:schedutil"
+    # set_governor_param "scaling_governor" "0:schedutil 2:schedutil 4:schedutil 6:schedutil 7:schedutil"
     # unify walt schedutil governor
     set_governor_param "schedutil/hispeed_freq" "0:0 2:0 4:0 6:0 7:0"
     set_governor_param "schedutil/hispeed_load" "0:100 2:100 4:100 6:100 7:100"
@@ -138,6 +150,19 @@ unify_cpufreq() {
 }
 
 unify_sched() {
+    if [ -d /proc/perfmgr/boost_ctrl/eas_ctrl/ ]; then
+        lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_prefer_idle"
+        lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_fg_boost"
+        lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_ta_boost"
+        lock_val "-100" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_bg_boost"
+        lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_uclamp_min"
+        lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_fg_uclamp_min"
+        lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_ta_uclamp_min"
+        lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_bg_uclamp_min"
+        # lock_val "1" "/proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_enable"
+        mutate "80" "/proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_up_loading"
+        mutate "60" "/proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_down_loading"
+    fi
     # disable sched global placement boost
     lock_val "0" $SCHED/sched_boost
     lock_val "1000" $SCHED/sched_min_task_util_for_boost
@@ -164,6 +189,39 @@ unify_sched() {
     # 10ms=10000000, prefer to use prev cpu, decrease jitter from 0.5ms to 0.3ms with lpm settings
     # 0.2ms=200000, prevent system_server binders pinned on perf cluster
     lock_val "200000" $SCHED/sched_migration_cost_ns
+    #Disable EAS for better performance
+    lock_val "1" /sys/devices/system/cpu/sched/hint_enable
+    CPU_GOV="interactive"
+    for i in $(seq 0 7); do
+        if [ -e /sys/devices/system/cpu/cpu${i}/cpufreq/scaling_governor ]; then
+            lock_val "$CPU_GOV" /sys/devices/system/cpu/cpu${i}/cpufreq/scaling_governor
+        fi
+    done
+    for i in $(seq 0 7); do
+        if [ -d /sys/devices/system/cpu/cpu${i}/cpufreq/${CPU_GOV}/ ]; then
+            lock_val "10000" "/sys/devices/system/cpu/cpu${i}/cpufreq/${CPU_GOV}/min_sample_time"
+            lock_val "0" "/sys/devices/system/cpu/cpu${i}/cpufreq/${CPU_GOV}/boost"
+            lock_val "0" "/sys/devices/system/cpu/cpu${i}/cpufreq/${CPU_GOV}/io_is_busy"
+            lock_val "0" "/sys/devices/system/cpu/cpu${i}/cpufreq/${CPU_GOV}/target_loads"
+            lock_val "999" "/sys/devices/system/cpu/cpu${i}/cpufreq/${CPU_GOV}/single_enter_load"
+            lock_val "999" "/sys/devices/system/cpu/cpu${i}/cpufreq/${CPU_GOV}/single_exit_load"
+            lock_val "0" "/sys/devices/system/cpu/cpu${i}/cpufreq/${CPU_GOV}/multi_enter_load"
+            lock_val "0" "/sys/devices/system/cpu/cpu${i}/cpufreq/${CPU_GOV}/multi_exit_load"
+
+        fi
+    done
+    if [ -d /sys/kernel/hmp/ ]; then
+        lock_val "0" "/sys/kernel/hmp/boost"
+        lock_val "0" "/sys/kernel/hmp/boostpulse_duration"
+        lock_val "500" "/sys/kernel/hmp/up_threshold"
+        lock_val "300" "/sys/kernel/hmp/down_threshold"
+        lock_val "400" "/sys/kernel/hmp/sb_up_threshold"
+        lock_val "200" "/sys/kernel/hmp/sb_down_threshold"
+    fi
+    # lock /proc/perfmgr/boost_ctrl/cpu_ctrl/boot_freq
+    lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
+    # lock_val "1" /proc/perfmgr/syslimiter/syslimiter_fps_120
+    # lock /proc/ppm/policy/forcelimit_cpu_core
 }
 
 unify_lpm() {
@@ -231,9 +289,9 @@ disable_kernel_boost() {
     # Selinux May should be disabled
     lock_val "1" /proc/ppm/enabled
 
-    lock_val "0" /proc/mtk-perf/lowmem_hint_enable
+    lock_val "1" /proc/mtk-perf/lowmem_hint_enable
 
-    lock_val "1" /sys/devices/system/cpu/eas/enable
+    lock_val "0" /sys/devices/system/cpu/eas/enable
 
     lock_val "1" /proc/sys/net/ipv6/conf/all/forwarding
 
@@ -245,7 +303,7 @@ disable_kernel_boost() {
     # chmod 440 /sys/devices/virtual/thermal/*/* >>$USER_PATH/init_uperf.txt
     lock_val "0" /proc/cpu_loading/onoff
 
-    lock_val "enable=0" /proc/sla/config
+    lock_val "1" /proc/sla/config
 
     lock_val "0 0" /proc/ppm/policy_status
     lock_val "1 0" /proc/ppm/policy_status
@@ -267,7 +325,7 @@ disable_kernel_boost() {
     # lock_val "0" /dev/cpuset/top-app/sched_relax_domain_level
     # lock_val "0" /dev/cpuset/vr/sched_relax_domain_level
     # used by uperf
-    mutate "6 1" /proc/ppm/policy_status
+    lock_val "6 1" /proc/ppm/policy_status
     # Samsung
     mutate "0" "/sys/class/input_booster/*"
 

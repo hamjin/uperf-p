@@ -384,7 +384,7 @@ uperf_print_banner() {
     echo ""
     echo "* Uperf https://gitee.com/hamjin/uperf/"
     echo "* 作者: Matt Yang && HamJTY"
-    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.26"
+    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.28"
 
 }
 
@@ -491,12 +491,12 @@ powerhal_stub_install() {
     vendor/etc/powerscntbl.xml
     vendor/etc/perf/commonresourceconfigs.xml
     vendor/etc/perf/targetresourceconfigs.xml
-    vendor/power_app_cfg.xml
-    vendor/powercontable.xml
-    vendor/task_profiles.json
-    vendor/fstb.cfg
-    vendor/gbe.cfg
-    vendor/xgf.cfg
+    vendor/etc/power_app_cfg.xml
+    vendor/etc/powercontable.xml
+    vendor/etc/task_profiles.json
+    vendor/etc/fstb.cfg
+    vendor/etc/gbe.cfg
+    vendor/etc/xgf.cfg
     "
     for f in $perfcfgs; do
         if [ ! -f "/$f" ]; then
@@ -509,16 +509,16 @@ powerhal_stub_install() {
 }
 
 busybox_install() {
-    echo "- 安装自带的busybox"
-
+    # echo "- 安装自带的busybox"
+    echo "- 使用Magisk的busybox"
     local dst_path
     dst_path="$BASEDIR/bin/busybox/"
 
     mkdir -p "$dst_path"
     if [ "$(_is_aarch64)" == "true" ]; then
-        cp "$BASEDIR/busybox/busybox-arm64-selinux" "$dst_path/busybox"
+        cp -r "/data/adb/magisk/busybox" "$dst_path/busybox"
     else
-        cp "$BASEDIR/busybox/busybox-arm-selinux" "$dst_path/busybox"
+        cp -r "/data/adb/magisk/busybox" "$dst_path/busybox"
     fi
     chmod 0755 "$dst_path/busybox"
 

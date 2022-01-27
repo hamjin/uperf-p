@@ -25,15 +25,13 @@ uperf_log_path="$USER_PATH/log_uperf.txt"
 uperf_powermode_node="$USER_PATH/cur_powermode"
 
 # $1:mode_name
-uperf_set_powermode()
-{
+uperf_set_powermode() {
     chmod 666 $uperf_powermode_node
-    echo "$1" > $uperf_powermode_node
+    echo "$1" >$uperf_powermode_node
     # set_mode "$1" $uperf_powermode_node
 }
 
-uperf_status()
-{
+uperf_status() {
     # (uperfd & uperf) or (uperfd & new_uperf & old_uperf)
     # if [ "$(ps -A | grep "$UPERF_NAME" | wc -l)" -ge 2 ]; then
     #     echo "Running. Details see $uperf_log_path."
@@ -43,18 +41,16 @@ uperf_status()
     echo "Details see $uperf_log_path."
 }
 
-uperf_stop()
-{
+uperf_stop() {
     killall "$UPERF_NAME"
 }
 
-uperf_start()
-{
+uperf_start() {
     # raise inotify limit
-    # mutate "524288" /proc/sys/fs/inotify/max_queued_events
-    # mutate "524288" /proc/sys/fs/inotify/max_user_watches
-    # mutate "1024" /proc/sys/fs/inotify/max_user_instances
-    
+    mutate "524288" /proc/sys/fs/inotify/max_queued_events
+    mutate "524288" /proc/sys/fs/inotify/max_user_watches
+    mutate "1024" /proc/sys/fs/inotify/max_user_instances
+
     # cleanup
     cmd settings delete system min_refresh_rate
     cmd settings put Secure speed_mode_enable 1

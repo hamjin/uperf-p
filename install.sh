@@ -110,6 +110,27 @@ on_install() {
     # use universal setup.sh
     sh $MODPATH/setup_uperf.sh
     [ "$?" != "0" ] && abort
+    ui_print "- Done"
+    ui_print "- Uperf安装完成!"
+    ui_print "- 开始选择性安装系统修改部分"
+    magisk --install-module /data/adb/modules_update/uperf/Module-EnhanceUperf.zip
+    cp -r $TMPDIR/common/system.prop $TMPDIR/system.prop
+    cp -r $TMPDIR/common/post-fs-data.sh $TMPDIR/post-fs-data.sh
+    cp -r $TMPDIR/common/service.sh $TMPDIR/service.sh
+    # 提醒救砖
+    ui_print "
+- 启动模块的情况下只出现一次自动重启可以不用担心
+- 为关闭部分限制的正常情况,
+- 修改系统有卡开机或者总是自动重启风险
+- 必须使用有效救砖模块,
+- 或者刷入可以自动解密Data的recovery(数量极少，特别是安卓12),
+- 在rec→高级→文件管理→data→adb→modules
+- 删除对应的$id文件夹，不会就自行百度
+- K40G的可以加群378033245询问
+- 提交问题也可以在上面K40G的群、酷安私信、Gitee里问（建议）
+- 要附上打包的/sdcard/yc/uperf文件夹
+- 并注明机型、MIUI版本，发生时间，发生场景
+"
 
     # use once
     rm $MODPATH/setup_uperf.sh

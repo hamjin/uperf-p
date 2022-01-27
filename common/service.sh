@@ -1,4 +1,4 @@
-#!/bin/sh
+ASH_STANDALONE=1
 BASEDIR="$(dirname $(readlink -f "$0"))"
 MODDIR=${0%/*}
 SCRIPT_DIR="$BASEDIR/script"
@@ -19,14 +19,9 @@ detect_uperf() {
         isstart=$(pgrep Uperf)
     fi
 }
-/system/bin/resetprop --file $BASEDIR/common/system.prop
-killall -9 lmkd
-killall -9 lmkd
-killall -9 lmkd
-killall -9 lmkd
-killall -9 lmkd
-detect_uperf &
-sh $BASEDIR/script/FPSGO_Afterboot.sh &
-sh $BASEDIR/script/lock_core.sh &
+(sh $MODDIR/script/psi-mem.sh &)
+(detect_uperf &)
+(sh $BASEDIR/script/FPSGO_Afterboot.sh &)
+(sh $BASEDIR/script/lock_core.sh &)
 
 exit 0

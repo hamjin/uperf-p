@@ -15,9 +15,7 @@ lock_val() {
 lock_val "none" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs
 lock_val "0" /sys/kernel/eara_thermal/enable
 lock_val "0" /sys/kernel/eara_thermal/fake_throttle
-lock_val "1" /sys/kernel/fpsgo/common/stop_boost
-lock_val "0" /sys/kernel/fpsgo/common/force_onoff
-lock_val "0" /proc/perfmgr/syslimiter/syslimitertolerance_percent
-lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
-lock_val "enable: 1" /proc/perfmgr/tchbst/user/usrtch
-lock_val "1" /proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_enable
+# lock_val "1" /sys/kernel/fpsgo/common/stop_boost
+# lock_val "0" /sys/kernel/fpsgo/common/force_onoff
+# lock_val "enable: 1" /proc/perfmgr/tchbst/user/usrtch
+# lock_val "1" /proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_enable
