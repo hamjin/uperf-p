@@ -19,6 +19,7 @@ detect_uperf() {
         isstart=$(pgrep Uperf)
     fi
 }
+echo cubic >/proc/sys/net/ipv4/tcp_congestion_control
 (sh $SCRIPT_DIR/psi-mem.sh &)
 (detect_uperf &)
 (sh $BASEDIR/script/FPSGO_Afterboot.sh &)
