@@ -131,22 +131,32 @@ unify_cpufreq() {
     lock /sys/devices/system/cpu/rq-stats/htask_cpucap_ctrl
 
     # unify governor, not use schedutil if kernel has broken it
-
+    lock_val "0" /sys/devices/system/cpu/eas/enable
+    #some devices don't have interactive, use ondemand instead
+    set_governor_param "scaling_governor" "0:ondemand 2:ondemand 4:ondemand 6:ondemand 7:ondemand"
     set_governor_param "scaling_governor" "0:interactive 2:interactive 4:interactive 6:interactive 7:interactive"
     # set_governor_param "scaling_governor" "0:schedutil 2:schedutil 4:schedutil 6:schedutil 7:schedutil"
+    #some devices doesn't have interactive, use ondemand instead
     # unify walt schedutil governor
     set_governor_param "schedutil/hispeed_freq" "0:0 2:0 4:0 6:0 7:0"
     set_governor_param "schedutil/hispeed_load" "0:100 2:100 4:100 6:100 7:100"
     set_governor_param "schedutil/pl" "0:1 2:1 4:1 6:1 7:1"
-    # unify hmp interactive governor, only 2+2 4+2 4+4
-    set_governor_param "interactive/use_sched_load" "0:1 2:1 4:1"
-    set_governor_param "interactive/use_migration_notif" "0:1 2:1 4:1"
-    set_governor_param "interactive/enable_prediction" "0:0 2:0 4:0"
-    set_governor_param "interactive/ignore_hispeed_on_notif" "0:0 2:0 4:0"
-    set_governor_param "interactive/fast_ramp_down" "0:0 2:0 4:0"
-    set_governor_param "interactive/boostpulse_duration" "0:0 2:0 4:0"
-    set_governor_param "interactive/boost" "0:0 2:0 4:0"
-    set_governor_param "interactive/timer_slack" "0:12345678 2:12345678 4:12345678"
+    # unify hmp interactive governor, for 2+2 4+2 4+4 1+3+4 2+6
+    set_governor_param "interactive/use_sched_load" "0:1 2:1 4:1 6:1 7:1"
+    set_governor_param "interactive/use_migration_notif" "0:1 2:1 4:1 6:1 7:1"
+    set_governor_param "interactive/enable_prediction" "0:0 2:0 4:0 6:0 7:0"
+    set_governor_param "interactive/ignore_hispeed_on_notif" "0:0 2:0 4:0 6:0 7:0"
+    set_governor_param "interactive/fast_ramp_down" "0:0 2:0 4:0 6:0 7:0"
+    set_governor_param "interactive/boostpulse_duration" "0:0 2:0 4:0 6:0 7:0"
+    set_governor_param "interactive/boost" "0:0 2:0 4:0 6:0 7:0"
+    set_governor_param "interactive/timer_slack" "0:12345678 2:12345678 4:12345678 6:12345678 7:12345678"
+    # unify HMP ondemand governor for 2+2 4+2 4+4 1+3+4 2+6
+    set_governor_param "ondemand/ignore_nice_load" "0:1 2:1 4:1 6:1 7:1"
+    set_governor_param "ondemand/io_is_busy" "0:1 2:1 4:1 6:1 7:1" #io is busy at boot time
+    set_governor_param "ondemand/up_threshold" "0:60 2:60 4:60 6:60 7:60"
+    set_governor_param "ondemand/sampling_rate" "0:30000 2:30000 4:30000 6:30000 7:30000"
+    set_governor_param "ondemand/sampling_down_factor" "0:30000 2:30000 4:30000 6:30000 7:30000"
+
 }
 
 unify_sched() {
@@ -190,26 +200,8 @@ unify_sched() {
     # 0.2ms=200000, prevent system_server binders pinned on perf cluster
     lock_val "200000" $SCHED/sched_migration_cost_ns
     #Disable EAS for better performance
+    lock_val "0" /sys/devices/system/cpu/eas/enable
     lock_val "1" /sys/devices/system/cpu/sched/hint_enable
-    CPU_GOV="interactive"
-    for i in $(seq 0 7); do
-        if [ -e /sys/devices/system/cpu/cpu${i}/cpufreq/scaling_governor ]; then
-            lock_val "$CPU_GOV" /sys/devices/system/cpu/cpu${i}/cpufreq/scaling_governor
-        fi
-    done
-    for i in $(seq 0 7); do
-        if [ -d /sys/devices/system/cpu/cpu${i}/cpufreq/${CPU_GOV}/ ]; then
-            lock_val "10000" "/sys/devices/system/cpu/cpu${i}/cpufreq/${CPU_GOV}/min_sample_time"
-            lock_val "0" "/sys/devices/system/cpu/cpu${i}/cpufreq/${CPU_GOV}/boost"
-            lock_val "0" "/sys/devices/system/cpu/cpu${i}/cpufreq/${CPU_GOV}/io_is_busy"
-            lock_val "0" "/sys/devices/system/cpu/cpu${i}/cpufreq/${CPU_GOV}/target_loads"
-            lock_val "999" "/sys/devices/system/cpu/cpu${i}/cpufreq/${CPU_GOV}/single_enter_load"
-            lock_val "999" "/sys/devices/system/cpu/cpu${i}/cpufreq/${CPU_GOV}/single_exit_load"
-            lock_val "0" "/sys/devices/system/cpu/cpu${i}/cpufreq/${CPU_GOV}/multi_enter_load"
-            lock_val "0" "/sys/devices/system/cpu/cpu${i}/cpufreq/${CPU_GOV}/multi_exit_load"
-
-        fi
-    done
     if [ -d /sys/kernel/hmp/ ]; then
         lock_val "0" "/sys/kernel/hmp/boost"
         lock_val "0" "/sys/kernel/hmp/boostpulse_duration"
@@ -287,13 +279,11 @@ disable_kernel_boost() {
     # [10] PPM_POLICY_HICA: ?
     # Usage: echo <policy_idx> <1(enable)/0(disable)> > /proc/ppm/policy_status
     # Selinux May should be disabled
+
+    #MTK PPM must be enabled
     lock_val "1" /proc/ppm/enabled
-
+    #Active MTK Memery Management
     lock_val "1" /proc/mtk-perf/lowmem_hint_enable
-
-    lock_val "0" /sys/devices/system/cpu/eas/enable
-
-    lock_val "1" /proc/sys/net/ipv6/conf/all/forwarding
 
     # echo "Lock mtkcooler: /proc/mtkcooler -> 444"
     # chmod 440 /proc/mtkcooler/ >>$USER_PATH/init_uperf.txt

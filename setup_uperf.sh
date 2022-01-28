@@ -409,9 +409,11 @@ uperf_install() {
 
     mkdir -p $USER_PATH
     if [ "$cfgname" != "unsupported" ] && [ -f $BASEDIR/config/$cfgname.json ]; then
-        echo "- 配置平台文件: $cfgname"
-        echo "- 红米Note10Pro中国版请注意平台判断！ "
-        echo "- 等待3秒以提醒注意检查！"
+        ui_print "- 配置平台文件: $cfgname"
+        ui_print "- 由于联发科的问题"
+        ui_print "- Android 12上天玑1100、1200识别错误的可能性大幅提高"
+        ui_print "- 请注意平台判断"
+        ui_print "- 如果不对请及时私信"
         sleep 3s
         _setup_platform_file "$cfgname"
     else
@@ -432,14 +434,6 @@ uperf_install() {
     chmod 0755 $BASEDIR/bin/*
 
     rm -rf $BASEDIR/uperf
-    echo "- 阻止微信libhardcore接管系统调度 -"
-    mkdir /data/data/com.tencent.mm/
-    mkdir /data/data/com.tencent.mm/shared_prefs
-    chattr -i /data/data/com.tencent.mm/shared_prefs/hardcoder_setting.xml
-    chmod 744 /data/data/com.tencent.mm/shared_prefs/hardcoder_setting.xml
-    cp -r "$BASEDIR/common/hardcoder_setting.xml" "/data/data/com.tencent.mm/shared_prefs/hardcoder_setting.xml"
-    chmod 444 /data/data/com.tencent.mm/shared_prefs/hardcoder_setting.xml
-    chattr +i /data/data/com.tencent.mm/shared_prefs/hardcoder_setting.xml
     echo "- 关闭位于用户数据分区的MTK官方温控 -"
     rm -rf "/data/vendor/.tp"
     rm -rf /data/vendor/thermal
