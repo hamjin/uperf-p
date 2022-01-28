@@ -435,11 +435,23 @@ uperf_install() {
 
     rm -rf $BASEDIR/uperf
     echo "- 关闭位于用户数据分区的MTK官方温控 -"
+    chattr -i "/data/vendor/.tp"
+    chattr -i /data/vendor/thermal
     rm -rf "/data/vendor/.tp"
     rm -rf /data/vendor/thermal
     echo "false" >"/data/vendor/.tp"
     echo "false" >/data/vendor/thermal
-
+    chattr +i "/data/vendor/.tp"
+    chattr +i /data/vendor/thermal
+    echo "- 关闭位于用户数据分区的小米云控 -"
+    chattr -i /data/thermal
+    chattr -i /data/system/mcd
+    rm -rf /data/thermal
+    rm -rf /data/system/mcd
+    echo "false" >/data/system/mcd
+    echo "false" >/data/thermal
+    chattr +i /data/thermal
+    chattr +i /data/system/mcd
 }
 
 injector_install() {

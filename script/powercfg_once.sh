@@ -116,27 +116,33 @@ unify_cpufreq() {
     done
     for i in 0 1 2 3 4 5 6 7; do
         lock_val "$i" /sys/devices/system/cpu/sched/set_sched_deisolation
-        lock_val "interactive" /sys/devices/system/cpu/cpu$i/scaling_governor
+        # lock_val "interactive" /sys/devices/system/cpu/cpu$i/scaling_governor
         lock /sys/devices/system/cpu/cpu$i/scaling_max_freq
         lock /sys/devices/system/cpu/cpu$i/scaling_min_freq
         lock /sys/devices/system/cpu/cpu$i/scaling_setspeed
+        lock_val "0" /sys/devices/system/cpu/cpu$i/cpufreq/schedutil/up_rate_limit_us
+        lock_val "0" /sys/devices/system/cpu/cpu$i/cpufreq/schedutil/down_rate_limit_us
     done
     lock /sys/devices/system/cpu/sched/set_sched_isolation
     for i in 0 4 7; do
-        lock_val "interactive" /sys/devices/system/cpu/cpufreq/policy$i/scaling_governor
+        # lock_val "interactive" /sys/devices/system/cpu/cpufreq/policy$i/scaling_governor
         lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_max_freq
         lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_min_freq
         lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_setspeed
+        lock_val "0" /sys/devices/system/cpu/cpufreq/policy$i/schedutil/up_rate_limit_us
+        lock_val "0" /sys/devices/system/cpu/cpufreq/policy$i/schedutil/down_rate_limit_us
     done
     lock /sys/devices/system/cpu/rq-stats/htask_cpucap_ctrl
 
     # unify governor, not use schedutil if kernel has broken it
     lock_val "0" /sys/devices/system/cpu/eas/enable
+    chmod 400 /sys/devices/system/cpu/eas/enable
+    lock_val "1" /sys/devices/system/cpu/sched/hint_enable
+    chmod 400 /sys/devices/system/cpu/sched/hint_enable
     #some devices don't have interactive, use ondemand instead
     set_governor_param "scaling_governor" "0:ondemand 2:ondemand 4:ondemand 6:ondemand 7:ondemand"
     set_governor_param "scaling_governor" "0:interactive 2:interactive 4:interactive 6:interactive 7:interactive"
-    # set_governor_param "scaling_governor" "0:schedutil 2:schedutil 4:schedutil 6:schedutil 7:schedutil"
-    #some devices doesn't have interactive, use ondemand instead
+    set_governor_param "scaling_governor" "0:schedutil 2:schedutil 4:schedutil 6:schedutil 7:schedutil"
     # unify walt schedutil governor
     set_governor_param "schedutil/hispeed_freq" "0:0 2:0 4:0 6:0 7:0"
     set_governor_param "schedutil/hispeed_load" "0:100 2:100 4:100 6:100 7:100"
@@ -199,9 +205,6 @@ unify_sched() {
     # 10ms=10000000, prefer to use prev cpu, decrease jitter from 0.5ms to 0.3ms with lpm settings
     # 0.2ms=200000, prevent system_server binders pinned on perf cluster
     lock_val "200000" $SCHED/sched_migration_cost_ns
-    #Disable EAS for better performance
-    lock_val "0" /sys/devices/system/cpu/eas/enable
-    lock_val "1" /sys/devices/system/cpu/sched/hint_enable
     if [ -d /sys/kernel/hmp/ ]; then
         lock_val "0" "/sys/kernel/hmp/boost"
         lock_val "0" "/sys/kernel/hmp/boostpulse_duration"
@@ -211,7 +214,7 @@ unify_sched() {
         lock_val "200" "/sys/kernel/hmp/sb_down_threshold"
     fi
     # lock /proc/perfmgr/boost_ctrl/cpu_ctrl/boot_freq
-    lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
+
     # lock_val "1" /proc/perfmgr/syslimiter/syslimiter_fps_120
     # lock /proc/ppm/policy/forcelimit_cpu_core
 }
@@ -282,30 +285,22 @@ disable_kernel_boost() {
 
     #MTK PPM must be enabled
     lock_val "1" /proc/ppm/enabled
-    #Active MTK Memery Management
-    lock_val "1" /proc/mtk-perf/lowmem_hint_enable
-
-    # echo "Lock mtkcooler: /proc/mtkcooler -> 444"
-    # chmod 440 /proc/mtkcooler/ >>$USER_PATH/init_uperf.txt
-    # chmod 440 /proc/mtkcooler/* >>$USER_PATH/init_uperf.txt
-    # chmod 440 /proc/mtkcooler/*/* >>$USER_PATH/init_uperf.txt
-    # chmod 440 /proc/mtkcooler/*/*/* >>$USER_PATH/init_uperf.txt
-    # chmod 440 /sys/devices/virtual/thermal/*/* >>$USER_PATH/init_uperf.txt
-    lock_val "0" /proc/cpu_loading/onoff
-
-    lock_val "1" /proc/sla/config
-
     lock_val "0 0" /proc/ppm/policy_status
     lock_val "1 0" /proc/ppm/policy_status
     lock_val "2 0" /proc/ppm/policy_status
     lock_val "3 0" /proc/ppm/policy_status
     lock_val "4 0" /proc/ppm/policy_status
     lock_val "5 0" /proc/ppm/policy_status
-    lock_val "6 1" /proc/ppm/policy_status
     lock_val "7 0" /proc/ppm/policy_status
     lock_val "8 0" /proc/ppm/policy_status
     lock_val "9 0" /proc/ppm/policy_status
-    #load balance
+    # used by uperf
+    lock_val "6 1" /proc/ppm/policy_status
+    #Active MTK Memery Management
+    lock_val "1" /proc/mtk-perf/lowmem_hint_enable
+    # lock_val "0" /proc/cpu_loading/onoff
+    lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
+    # load balance is useless
     # lock_val "0" /dev/cpuset/sched_relax_domain_level
     # lock_val "0" /dev/cpuset/background/sched_relax_domain_level
     # lock_val "0" /dev/cpuset/game/sched_relax_domain_level
@@ -314,8 +309,7 @@ disable_kernel_boost() {
     # lock_val "0" /dev/cpuset/system-background/sched_relax_domain_level
     # lock_val "0" /dev/cpuset/top-app/sched_relax_domain_level
     # lock_val "0" /dev/cpuset/vr/sched_relax_domain_level
-    # used by uperf
-    lock_val "6 1" /proc/ppm/policy_status
+
     # Samsung
     mutate "0" "/sys/class/input_booster/*"
 
