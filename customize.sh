@@ -21,7 +21,7 @@ LATESTARTSERVICE=true
 ASH_STANDALONE=0
 
 #Use our custom setup script
-SKIPUNZIP=0
+SKIPUNZIP=1
 
 ##########################################################################################
 # Replace list
