@@ -1,7 +1,8 @@
 ##########################################################################################
 # Config Flags
 ##########################################################################################
-
+ui_print "- Extracting module files"
+unzip -o "$ZIPFILE" -x 'META-INF/*' -d $MODPATH
 # Set to true if you do *NOT* want Magisk to mount
 # any files for you. Most modules would NOT want
 # to set this flag to true
@@ -17,10 +18,10 @@ POSTFSDATA=true
 LATESTARTSERVICE=true
 
 # Set to true for we need Magisk Busybox Environment
-ASH_STANDALONE=1
+ASH_STANDALONE=0
 
 #Use our custom setup script
-SKIPUNZIP=1
+SKIPUNZIP=0
 
 ##########################################################################################
 # Replace list
@@ -108,13 +109,11 @@ REPLACE=""
 # }
 
 # Copy/extract your module files into $MODPATH in on_install.
-on_install() {
-    $BOOTMODE || abort "! Uperf cannot be installed in recovery."
 
-    ui_print "- Extracting module files"
-    unzip -o "$ZIPFILE" -x 'META-INF/*' -d $MODPATH
+on_install() {
+    $BOOTMODE || abort "! 不能在Recovery内Uperf."
     # use universal setup.sh
-    sh $MODPATH/setup_uperf.sh
+    . $MODPATH/setup_uperf.sh
     [ "$?" != "0" ] && abort
     ui_print "- Uperf安装完成!"
 

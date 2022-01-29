@@ -174,8 +174,8 @@ unify_sched() {
         lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_ta_uclamp_min"
         lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_bg_uclamp_min"
         # lock_val "1" "/proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_enable"
-        mutate "80" "/proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_up_loading"
-        mutate "60" "/proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_down_loading"
+        lock_val "80" "/proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_up_loading"
+        lock_val "60" "/proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_down_loading"
     fi
     # disable sched global placement boost
     lock_val "0" $SCHED/sched_boost

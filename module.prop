@@ -1,8 +1,8 @@
 id=uperf
-name=YC调度-天玑专属
+name=YC调度-天玑优化
 version=v2 (21.08.15),GPU_Lock-fixed-22.01.29
 versionCode=220129
-author=Matt Yang @yc9559 && HamJTY @hamjin
+author=Matt Yang @yc9559 && HamJTY @HamJin
 description=基于uperf v2 (21.07.25)配置文件对天玑SOC进行性能优化，Repo: https://gitee.com/hamjin/uperf
 minMagisk=23000
 updateJson=https://gitee.com/hamjin/uperf/raw/update/uperf-hamjty.json
