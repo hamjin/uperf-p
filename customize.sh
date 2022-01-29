@@ -15,8 +15,12 @@ POSTFSDATA=true
 
 # Set to true if you need late_start service script
 LATESTARTSERVICE=true
+
 # Set to true for we need Magisk Busybox Environment
 ASH_STANDALONE=1
+
+#Use our custom setup script
+SKIPUNZIP=1
 
 ##########################################################################################
 # Replace list
@@ -95,24 +99,23 @@ REPLACE=""
 #     for all directories in <directory> (including itself), it will call:
 #       set_perm dir owner group dirpermission context
 #
-##########################################################################################x
+##########################################################################################
 
 # Set what you want to display when installing your module
-print_modname() {
-    # use setup_uperf.sh/uperf_print_banner
-    return
-}
+# print_modname() {
+#     # use setup_uperf.sh/uperf_print_banner
+#     return
+# }
 
 # Copy/extract your module files into $MODPATH in on_install.
 on_install() {
     $BOOTMODE || abort "! Uperf cannot be installed in recovery."
 
     ui_print "- Extracting module files"
-    unzip -o "$ZIPFILE" -x 'META-INF/*' -d $MODPATH >/dev/null
+    unzip -o "$ZIPFILE" -x 'META-INF/*' -d $MODPATH
     # use universal setup.sh
     sh $MODPATH/setup_uperf.sh
     [ "$?" != "0" ] && abort
-    ui_print "- Done"
     ui_print "- Uperf安装完成!"
 
     # use once
@@ -131,5 +134,5 @@ set_permissions() {
     # set_perm  $MODPATH/system/lib/libart.so       0     0       0644
     return
 }
-
 # You can add more functions to assist your custom script code
+on_install

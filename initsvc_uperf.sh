@@ -24,17 +24,18 @@ wait_until_login() {
 }
 
 crash_recuser() {
-    rm $BASEDIR/logcat.log
-    logcat -f $BASEDIR/logcat.log &
+    # rm $BASEDIR/logcat.log
+    # logcat -f $BASEDIR/logcat.log &
     sleep 60
-    killall logcat
-    rm -f $BASEDIR/flags/.need_recuser
+    # killall logcat
+    rm -f $BASEDIR/.need_recuser
     rm $BASEDIR/logcat.log
 }
 
 (crash_recuser &)
 wait_until_login
-mv /data/media/0/yc/uperf/init_uperf.txt /data/media/0/yc/uperf/init_uperf.txt.lastgood
-date '+%Y-%m-%d %H:%M:%S' >>/data/media/0/yc/uperf/init_uperf.txt
-echo "fast" >/data/media/0/yc/uperf/cur_powermode
+mv $USER_PATH/init_uperf.txt $USER_PATH/init_uperf.lastgood.txt
+echo "YC调度-天玑优化：开始加载"
+date '+%Y-%m-%d %H:%M:%S' >>$USER_PATH/init_uperf.txt
+echo "fast" >$USER_PATH/cur_powermode
 sh $BASEDIR/run_uperf.sh
