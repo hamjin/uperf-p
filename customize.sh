@@ -2,7 +2,7 @@
 # Config Flags
 ##########################################################################################
 ui_print "- Extracting module files"
-unzip -o "$ZIPFILE" -x 'META-INF/*' -d $MODPATH
+unzip -o "$ZIPFILE" -x 'META-INF/*' -d $MODPATH >/dev/null
 # Set to true if you do *NOT* want Magisk to mount
 # any files for you. Most modules would NOT want
 # to set this flag to true
