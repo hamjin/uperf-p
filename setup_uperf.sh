@@ -542,4 +542,3 @@ injector_install
 powerhal_stub_install
 busybox_install
 uperf_print_finish
-exit 0
