@@ -396,6 +396,7 @@ uperf_install() {
     echo "- 开始安装"
     echo "- 设备平台: $(getprop ro.board.platform)"
     echo "- 设备名称: $(getprop ro.product.board)"
+    DEVICE=$(getprop ro.product.board)
     # echo "- Android 12上ro.product.board可能是空的, 可以忽略"
     local target
     local cfgname
@@ -406,9 +407,13 @@ uperf_install() {
         target="$(getprop ro.product.board)"
         cfgname="$(_get_cfgname $target)"
     fi
-
     mkdir -p $USER_PATH
     if [ "$cfgname" != "unsupported" ] && [ -f $BASEDIR/config/$cfgname.json ]; then
+        if [ "$DEVICE" == "cezanne" ]; then
+            cfgname="Zen3APU"
+            echo "- 检测到AMD Zen3 APU！正在使用K30至尊墓碑版专用配置！"
+        fi
+        echo "- 配置平台文件: $cfgname"
         ui_print "- 配置平台文件: $cfgname"
         ui_print "- 由于联发科的问题"
         ui_print "- Android 12上天玑1100、1200识别错误的可能性大幅提高"

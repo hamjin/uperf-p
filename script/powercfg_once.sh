@@ -116,7 +116,6 @@ unify_cpufreq() {
     done
     for i in 0 1 2 3 4 5 6 7; do
         lock_val "$i" /sys/devices/system/cpu/sched/set_sched_deisolation
-        # lock_val "interactive" /sys/devices/system/cpu/cpu$i/scaling_governor
         lock /sys/devices/system/cpu/cpu$i/scaling_max_freq
         lock /sys/devices/system/cpu/cpu$i/scaling_min_freq
         lock /sys/devices/system/cpu/cpu$i/scaling_setspeed
@@ -125,7 +124,6 @@ unify_cpufreq() {
     done
     lock /sys/devices/system/cpu/sched/set_sched_isolation
     for i in 0 4 7; do
-        # lock_val "interactive" /sys/devices/system/cpu/cpufreq/policy$i/scaling_governor
         lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_max_freq
         lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_min_freq
         lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_setspeed
