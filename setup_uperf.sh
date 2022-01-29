@@ -4,7 +4,7 @@
 # Author: Matt Yang & cjybyjk (cjybyjk@gmail.com) &HamJTY(coolapk@HamJTY)
 # Version: 20201129
 
-BASEDIR="$(dirname $(readlink -f "$0"))"
+BASEDIR=$MODPATH
 USER_PATH="/data/media/0/yc/uperf"
 
 # $1:error_message
@@ -408,7 +408,7 @@ uperf_install() {
         cfgname="$(_get_cfgname $target)"
     fi
     mkdir -p $USER_PATH
-    if [ "$cfgname" != "unsupported" ] && [ -f $BASEDIR/config/$cfgname.json ]; then
+    if [ "$cfgname" != "unsupported" ] && [ -f $MODPATH/config/$cfgname.json ]; then
         if [ "$DEVICE" == "cezanne" ]; then
             cfgname="Zen3APU"
             echo "- 检测到AMD Zen3 APU！正在使用K30至尊墓碑版专用配置！"
