@@ -33,11 +33,11 @@ unify_cgroup() {
     # ueventd related to hotplug of camera, wifi, usb...
     # pin_proc_on_pwr "ueventd"
     # hardware services, eg. android.hardware.sensors@1.0-service
-    pin_proc_on_pwr "android.hardware.bluetooth"
+    #pin_proc_on_pwr "android.hardware.bluetooth"
     pin_proc_on_pwr "android.hardware.gnss"
     pin_proc_on_pwr "android.hardware.health"
     pin_proc_on_pwr "android.hardware.thermal"
-    pin_proc_on_pwr "android.hardware.wifi"
+    #pin_proc_on_pwr "android.hardware.wifi"
     pin_proc_on_pwr "android.hardware.keymaster"
     pin_proc_on_pwr "vendor.qti.hardware.qseecom"
     pin_proc_on_pwr "hardware.sensors"
@@ -130,13 +130,13 @@ unify_cpufreq() {
         lock_val "0" /sys/devices/system/cpu/cpufreq/policy$i/schedutil/up_rate_limit_us
         lock_val "0" /sys/devices/system/cpu/cpufreq/policy$i/schedutil/down_rate_limit_us
     done
-    lock /sys/devices/system/cpu/rq-stats/htask_cpucap_ctrl
+    #lock /sys/devices/system/cpu/rq-stats/htask_cpucap_ctrl
 
     # unify governor, not use schedutil if kernel has broken it
+    lock_val "0" /sys/devices/system/cpu/sched/hint_enable
+    chmod 000 /sys/devices/system/cpu/sched/hint_enable
     lock_val "0" /sys/devices/system/cpu/eas/enable
     chmod 400 /sys/devices/system/cpu/eas/enable
-    lock_val "1" /sys/devices/system/cpu/sched/hint_enable
-    chmod 400 /sys/devices/system/cpu/sched/hint_enable
     #some devices don't have interactive, use ondemand instead
     set_governor_param "scaling_governor" "0:ondemand 2:ondemand 4:ondemand 6:ondemand 7:ondemand"
     set_governor_param "scaling_governor" "0:interactive 2:interactive 4:interactive 6:interactive 7:interactive"

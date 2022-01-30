@@ -384,7 +384,7 @@ uperf_print_banner() {
     echo ""
     echo "* Uperf https://gitee.com/hamjin/uperf/"
     echo "* 作者: Matt Yang && HamJTY"
-    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.28"
+    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.29-test2"
 
 }
 
@@ -395,8 +395,10 @@ uperf_print_finish() {
 uperf_install() {
     echo "- 开始安装"
     echo "- 设备平台: $(getprop ro.board.platform)"
-    echo "- 设备名称: $(getprop ro.product.board)"
-    DEVICE=$(getprop ro.product.board)
+    echo "- 设备代号: $(getprop ro.product.board)"
+    echo "- 设备型号: $(getprop ro.product.device)"
+    DEVICE=$(getprop ro.product.device)
+    DEVCODE=$(getprop ro.product.device)
     # echo "- Android 12上ro.product.board可能是空的, 可以忽略"
     local target
     local cfgname
@@ -412,8 +414,10 @@ uperf_install() {
         if [ "$DEVICE" == "cezanne" ]; then
             cfgname="Zen3APU"
             echo "- 检测到AMD Zen3 APU！正在使用K30至尊墓碑版专用配置！"
+        elif [ "$DEVCODE" == "cezanne" ]; then
+            cfgname="Zen3APU"
+            echo "- 检测到AMD Zen3 APU！正在使用K30至尊墓碑版专用配置！"
         fi
-        echo "- 配置平台文件: $cfgname"
         ui_print "- 配置平台文件: $cfgname"
         ui_print "- 由于联发科的问题"
         ui_print "- Android 12上天玑1100、1200识别错误的可能性大幅提高"
@@ -422,7 +426,7 @@ uperf_install() {
         sleep 3s
         _setup_platform_file "$cfgname"
     else
-        echo "- 配置平台文件: $cfgname"
+        ui_print "- 配置平台文件: $cfgname"
         _abort "! [$target] not supported."
     fi
     _place_user_config

@@ -23,23 +23,11 @@ lock_val "0-7" /dev/cpuset/top-app/boost/cpus
 lock_val "0-7" /dev/cpuset/top-app/cpus
 lock_val "0-7" /dev/cpuset/foreground/boost/cpus
 lock_val "0-7" /dev/cpuset/foreground/cpus
-lock_val "0-7" /dev/cpuset/restricted/cpus
-lock_val "0-7" /dev/cpuset/background/cpus
-lock_val "0-7" /dev/cpuset/system-background/cpus
-lock_val "0-7" /dev/cpuset/game/cpus
-lock_val "0-7" /dev/cpuset/gamelite/cpus
+lock_val "0-6" /dev/cpuset/restricted/cpus
+lock_val "0-6" /dev/cpuset/background/cpus
+lock_val "0-6" /dev/cpuset/system-background/cpus
 # VMOS may set cpuset/background/cpus to "0"
 lock /dev/cpuset/background/cpus
-sleep 300s
-lock_val "0-7" /dev/cpuset/top-app/boost/cpus
-lock_val "0-7" /dev/cpuset/top-app/cpus
-lock_val "0-7" /dev/cpuset/foreground/boost/cpus
-lock_val "0-7" /dev/cpuset/foreground/cpus
-lock_val "0-6" /dev/cpuset/restricted/cpus
-lock_val "0-3" /dev/cpuset/background/cpus
-lock_val "0-3" /dev/cpuset/system-background/cpus
 #Do Not Let Games Run On A55
 lock_val "4-7" /dev/cpuset/game/cpus
 lock_val "4-7" /dev/cpuset/gamelite/cpus
-# VMOS may set cpuset/background/cpus to "0"
-lock /dev/cpuset/background/cpus

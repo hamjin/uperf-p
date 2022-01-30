@@ -156,7 +156,9 @@ unpin_thread() {
 
 # $1:task_name $2:thread_name
 pin_thread_on_pwr() {
-    change_thread_cgroup "$1" "$2" "background" "cpuset"
+    unpin_thread "$1" "$2"
+    change_thread_affinity "$1" "$2" "f"
+    #change_thread_cgroup "$1" "$2" "background" "cpuset"
 }
 
 # $1:task_name $2:thread_name

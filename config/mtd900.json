@@ -29,7 +29,7 @@
             "sampleIntervalMinMs": 100,
             "heavyLoad": 1420,
             "idleLoad": 950,
-            "requestBurstSlackMs": 3000
+            "requestBurstSlackMs": 100
         },
         "sfAnalysis": {
             "note": "surfaceflinger分析器提供渲染开始/结束/滞后hint。boostCntMax:SfBoost可用次数缓存上限。boostGrowQuantumMs:每满此间隔没有SfBoost请求，则SfBoost可用次数+1。renderIdleSlackMs:进入渲染结束状态前的滞后时长。",
@@ -80,43 +80,43 @@
             {
                 "hint": "Tap",
                 "action": "interaction",
-                "maxDuration": 2000,
+                "maxDuration": 20000,
                 "note": "点击松开屏幕切换的Hint"
             },
             {
                 "hint": "Swipe",
                 "action": "interaction",
-                "maxDuration": 4000,
+                "maxDuration": 400000,
                 "note": "在屏幕滑动一段距离松开后切换的Hint"
             },
             {
                 "hint": "HeavyLoad",
                 "action": "heavyLoad",
-                "maxDuration": 2000,
+                "maxDuration": 400000,
                 "note": "在Tap或Swipe检测到重负载后切换，负载降低后回落到Tap"
             },
             {
                 "hint": "SfLag",
                 "action": "sfLag",
-                "maxDuration": 20,
+                "maxDuration": 200000,
                 "note": "给Surfaceflinger的渲染提交出现滞后的Hint，滞后的渲染完成后会提前退出"
             },
             {
                 "hint": "SfBoost",
                 "action": "sfBoost",
-                "maxDuration": 100,
+                "maxDuration": 100000,
                 "note": "同SfLag，针对某些重负载场景"
             },
             {
                 "hint": "SsAnim",
                 "action": "heavyLoad",
-                "maxDuration": 300,
+                "maxDuration": 900000,
                 "note": "系统过渡动画的Hint"
             },
             {
                 "hint": "Wakeup",
                 "action": "heavyLoad",
-                "maxDuration": 1500,
+                "maxDuration": 90000,
                 "note": "屏幕点亮Hint"
             }
         ],
@@ -336,7 +336,7 @@
                     "schedBoost": "1",
                     "topBoost": "17",
                     "heavyBoost": "17",
-                    "uxAffinity": "1",
+                    "uxAffinity": "2",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 1600000",
                     "cpuFreqMax0": "0 1700000",
@@ -352,7 +352,7 @@
                     "schedBoost": "0",
                     "topBoost": "21",
                     "heavyBoost": "21",
-                    "uxAffinity": "1",
+                    "uxAffinity": "2",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 1100000",
                     "cpuFreqMax0": "0 1700000",
@@ -381,7 +381,7 @@
                     "ppmPolicy": "6 1"
                 },
                 "sfLag": {
-                    "uxAffinity": "1",
+                    "uxAffinity": "2",
                     "cpuFreqMin0": "0 1100000",
                     "cpuFreqMax0": "0 1700000",
                     "cpuFreqMin1": "1 1000000",
@@ -395,7 +395,7 @@
                 "sfBoost": {
                     "topBoost": "55",
                     "heavyBoost": "55",
-                    "uxAffinity": "2",
+                    "uxAffinity": "3",
                     "cpuFreqMin0": "0 1100000",
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2400000",
@@ -432,7 +432,7 @@
                     "schedBoost": "0",
                     "topBoost": "0",
                     "heavyBoost": "0",
-                    "uxAffinity": "0",
+                    "uxAffinity": "1",
                     "dispFeature": "1",
                     "cpuFreqMin0": "0 700000",
                     "cpuFreqMax0": "0 1600000",
@@ -448,7 +448,7 @@
                     "schedBoost": "1",
                     "topBoost": "1",
                     "heavyBoost": "1",
-                    "uxAffinity": "1",
+                    "uxAffinity": "2",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 1000000",
                     "cpuFreqMax0": "0 1800000",
@@ -464,7 +464,7 @@
                     "schedBoost": "1",
                     "topBoost": "1",
                     "heavyBoost": "1",
-                    "uxAffinity": "1",
+                    "uxAffinity": "2",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 700000",
                     "cpuFreqMax0": "0 1800000",
@@ -493,7 +493,7 @@
                     "ppmPolicy": "6 1"
                 },
                 "sfLag": {
-                    "uxAffinity": "1",
+                    "uxAffinity": "2",
                     "cpuFreqMin0": "0 700000",
                     "cpuFreqMax0": "0 1600000",
                     "cpuFreqMin1": "1 700000",
@@ -507,7 +507,7 @@
                 "sfBoost": {
                     "topBoost": "25",
                     "heavyBoost": "25",
-                    "uxAffinity": "2",
+                    "uxAffinity": "3",
                     "cpuFreqMin0": "0 700000",
                     "cpuFreqMax0": "0 1800000",
                     "cpuFreqMin1": "1 1700000",
@@ -525,10 +525,10 @@
             "note": "费电模式，保证费电的同时多一点流畅度",
             "actions": {
                 "normal": {
-                    "schedBoost": "0",
-                    "topBoost": "0",
-                    "heavyBoost": "0",
-                    "uxAffinity": "4",
+                    "schedBoost": "1",
+                    "topBoost": "100",
+                    "heavyBoost": "100",
+                    "uxAffinity": "3",
                     "dispFeature": "0",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMax0": "0 2000000",
@@ -541,10 +541,10 @@
                     "ppmPolicy": "4 1"
                 },
                 "active": {
-                    "schedBoost": "0",
-                    "topBoost": "0",
-                    "heavyBoost": "0",
-                    "uxAffinity": "4",
+                    "schedBoost": "1",
+                    "topBoost": "100",
+                    "heavyBoost": "100",
+                    "uxAffinity": "3",
                     "dispFeature": "1",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMax0": "0 2000000",
@@ -557,9 +557,9 @@
                     "ppmPolicy": "6 1"
                 },
                 "interaction": {
-                    "schedBoost": "0",
-                    "topBoost": "0",
-                    "heavyBoost": "0",
+                    "schedBoost": "1",
+                    "topBoost": "100",
+                    "heavyBoost": "100",
                     "uxAffinity": "3",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 2000000",
@@ -573,9 +573,9 @@
                     "ppmPolicy": "6 1"
                 },
                 "pressed": {
-                    "schedBoost": "0",
-                    "topBoost": "0",
-                    "heavyBoost": "0",
+                    "schedBoost": "1",
+                    "topBoost": "100",
+                    "heavyBoost": "100",
                     "uxAffinity": "3",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 2000000",
@@ -590,8 +590,8 @@
                 },
                 "heavyLoad": {
                     "schedBoost": "1",
-                    "topBoost": "0",
-                    "heavyBoost": "0",
+                    "topBoost": "100",
+                    "heavyBoost": "100",
                     "uxAffinity": "3",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 2000000",
@@ -617,8 +617,9 @@
                     "ppmPolicy": "6 1"
                 },
                 "sfBoost": {
-                    "topBoost": "0",
-                    "heavyBoost": "0",
+                    "schedBoost": "1",
+                    "topBoost": "100",
+                    "heavyBoost": "100",
                     "uxAffinity": "3",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMax0": "0 2000000",
@@ -640,7 +641,7 @@
                     "schedBoost": "1",
                     "topBoost": "100",
                     "heavyBoost": "100",
-                    "uxAffinity": "4",
+                    "uxAffinity": "3",
                     "dispFeature": "0",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMax0": "0 2000000",
@@ -656,7 +657,7 @@
                     "schedBoost": "1",
                     "topBoost": "100",
                     "heavyBoost": "100",
-                    "uxAffinity": "4",
+                    "uxAffinity": "3",
                     "dispFeature": "1",
                     "cpuFreqMin0": "0 2000000",
                     "cpuFreqMax0": "0 2000000",
