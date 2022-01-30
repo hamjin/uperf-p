@@ -8,6 +8,8 @@
 # com.tencent.tmgp.sgame 90 90 90
 # com.hypergryph.arknights 60 60 60
 # * 60 60 120
+* 144 144 144
+com.android.systemui -1 -1 -1
 
 # 方法2: Surfaceflinger backdoor法，数值范围-1<=idx<20
 # idx: 系统支持的刷新率索引，-1表示关闭，0/1/2/...对应的帧率需要自行尝试。

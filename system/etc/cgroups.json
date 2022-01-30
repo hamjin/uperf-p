@@ -1,12 +1,1 @@
-{
-  "Cgroups": [
-    {
-      "Controller": "schedtune",
-      "Path": "/dev/stune",
-      "Mode": "0755",
-      "UID": "system",
-      "GID": "system",
-      "Optional": true
-    }
-  ]
-}
+{}
