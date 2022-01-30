@@ -36,6 +36,6 @@ wait_until_login
 mv $USER_PATH/init_uperf.txt $USER_PATH/init_uperf.lastgood.txt 2>&1
 echo "YC调度-天玑优化：开始加载" >>$USER_PATH/init_uperf.txt 2>&1
 date '+%Y-%m-%d %H:%M:%S' >>$USER_PATH/init_uperf.txt 2>&1
-echo "fast" >$USER_PATH/cur_powermode
+echo "balance" >$USER_PATH/cur_powermode
 env >>$USER_PATH/init_uperf.txt 2>&1
 sh $BASEDIR/run_uperf.sh >>$USER_PATH/init_uperf.txt 2>&1
