@@ -20,8 +20,7 @@ INJ_NAME="sfa_injector"
 ###############################
 
 # $1:process $2:dynamiclib $3:alog_tag
-inj_do_inject()
-{
+inj_do_inject() {
     log "[begin] injecting $2 to $1"
 
     local lib_path
@@ -35,11 +34,11 @@ inj_do_inject()
     [ ! -e "$lib_path" ] && lib_path="${MODULE_PATH}${lib_path}"
 
     # try to allow executing dlopen in surfaceflinger
-    magiskpolicy --live "allow surfaceflinger system_lib_file file { read getattr execute }" >> "$LOG_FILE"
-    magiskpolicy --live "allow surfaceflinger system_data_file file { read write getattr }" >> "$LOG_FILE"
-    magiskpolicy --live "allow surfaceflinger system_data_file dir { read write getattr search }" >> "$LOG_FILE"
+    magiskpolicy --live "allow surfaceflinger system_lib_file file { read getattr execute }" >>"$LOG_FILE"
+    magiskpolicy --live "allow surfaceflinger system_data_file file { read write getattr }" >>"$LOG_FILE"
+    magiskpolicy --live "allow surfaceflinger system_data_file dir { read write getattr search }" >>"$LOG_FILE"
 
-    "$MODULE_PATH/$INJ_REL/$INJ_NAME" "$lib_path" >> "$LOG_FILE"
+    "$MODULE_PATH/$INJ_REL/$INJ_NAME" "$lib_path" >>"$LOG_FILE"
 
     if [ "$?" != "0" ]; then
         if [ -f "$FLAGS/allow_permissive" ]; then
@@ -47,7 +46,7 @@ inj_do_inject()
             local sestate
             sestate="$(getenforce)"
             setenforce 0
-            "$MODULE_PATH/$INJ_REL/$INJ_NAME" "$lib_path" >> "$LOG_FILE"
+            "$MODULE_PATH/$INJ_REL/$INJ_NAME" "$lib_path" >>"$LOG_FILE"
             if [ "$sestate" == "Enforcing" ]; then
                 log "Resume SELinux enforcing"
                 setenforce 1
@@ -58,7 +57,7 @@ inj_do_inject()
     fi
 
     sleep 1
-    logcat -d | grep -i "$3" >> "$LOG_FILE"
+    logcat -d | grep -i "$3" >>"$LOG_FILE"
 
     log "[end] injecting $2 to $1"
     log ""

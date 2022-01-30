@@ -7,19 +7,17 @@ BASEDIR="$(dirname "$0")"
 . $BASEDIR/libuperf.sh
 
 # $1: power_mode
-apply_power_mode()
-{
+apply_power_mode() {
     uperf_set_powermode "$1"
 }
 
 # $1: power_mode
-verify_power_mode()
-{
+verify_power_mode() {
     # fast -> performance
     case "$1" in
-        "powersave"|"balance"|"performance") echo "$1" ;;
-        "fast") echo "fast" ;;
-        *) echo "balance" ;;
+    "powersave" | "balance" | "performance") echo "$1" ;;
+    "fast") echo "fast" ;;
+    *) echo "balance" ;;
     esac
 }
 

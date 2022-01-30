@@ -19,11 +19,8 @@ echo "sh $SCRIPT_DIR/powercfg_main.sh \"\$1\"" >>/data/powercfg.sh
 
 # create busybox symlinks
 BB=$BASEDIR/bin/busybox
-$BB/busybox --install -s $BB
+$BB/busybox --install -s $BB 2>&1
 
-$BB/sh $SCRIPT_DIR/prepare.sh
-$BB/sh $SCRIPT_DIR/powercfg_once.sh
-$BB/sh $SCRIPT_DIR/FPSGO_Afterboot.sh
-$BB/sh $SCRIPT_DIR/psi-mem.sh
-$BB/sh $SCRIPT_DIR/MDP.sh
-$BB/sh $SCRIPT_DIR/start_injector.sh
+$BB/sh $SCRIPT_DIR/prepare.sh 2>&1
+$BB/sh $SCRIPT_DIR/powercfg_once.sh 2>&1
+$BB/sh $SCRIPT_DIR/start_injector.sh 2>&1

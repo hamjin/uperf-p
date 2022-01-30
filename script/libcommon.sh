@@ -3,7 +3,7 @@
 # https://github.com/yc9559/
 # Author: Matt Yang
 # Version: 20210523
-ASH_STANDALONE=1
+
 BASEDIR="$(dirname "$0")"
 . $BASEDIR/pathinfo.sh
 

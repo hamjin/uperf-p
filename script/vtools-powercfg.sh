@@ -4,4 +4,3 @@
 
 # powercfg wrapper for com.omarea.vtools
 # MAKE SURE THAT THE MAGISK MODULE "Uperf" HAS BEEN INSTALLED
-

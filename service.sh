@@ -1,6 +1,6 @@
 #!/system/bin/sh
-ASH_STANDALONE=1
+ASH_STANDALONE=0
+MODDIR=${0%/*}
 BASEDIR="$(dirname $(readlink -f "$0"))"
 SCRIPT_DIR="$BASEDIR/script"
-
-sh $BASEDIR/initsvc_uperf.sh &
+sh $BASEDIR/initsvc_uperf.sh 2>&1

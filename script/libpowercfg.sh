@@ -1,4 +1,4 @@
-..#!/system/bin/sh
+#!/system/bin/sh
 # Powercfg Library
 # https://github.com/yc9559/
 # Author: Matt Yang

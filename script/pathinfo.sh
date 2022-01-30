@@ -2,7 +2,7 @@
 # Module Path Header
 # https://github.com/yc9559/
 # Author: Matt Yang && HamJTY
-ASH_STANDALONE=1
+BASEDIR="$(dirname $(readlink -f "$0"))"
 SCRIPT_DIR="script"
 BIN_DIR="bin"
 MODULE_PATH="$(dirname $(readlink -f "$0"))"
