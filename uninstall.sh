@@ -1,3 +1,10 @@
-cd /sdcard/yc/uperf/
-rm -rf *.json *log* *init*
+rm -rf /sdcard/yc/uperf/
 rm -rf /data/adb/*/uperf
+chattr -i /data/thermal
+chattr -i /data/system/mcd
+rm -rf /data/thermal
+rm -rf /data/system/mcd
+chattr -i "/data/vendor/.tp"
+chattr -i /data/vendor/thermal
+rm -rf "/data/vendor/.tp"
+rm -rf /data/vendor/thermal

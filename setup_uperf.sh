@@ -9,8 +9,8 @@ USER_PATH="/data/media/0/yc/uperf"
 
 # $1:error_message
 _abort() {
-    echo "$1"
-    echo "! Uperf installation failed."
+    ui_print "$1"
+    ui_print "! Uperf installation failed."
     exit 1
 }
 
@@ -35,22 +35,22 @@ _set_perm_recursive() {
 }
 
 _get_nr_core() {
-    echo "$(cat /proc/stat | grep cpu[0-9] | wc -l)"
+    ui_print "$(cat /proc/stat | grep cpu[0-9] | wc -l)"
 }
 
 _is_aarch64() {
     if [ "$(getprop ro.product.cpu.abi)" == "arm64-v8a" ]; then
-        echo "true"
+        ui_print "true"
     else
-        echo "false"
+        ui_print "false"
     fi
 }
 
 _is_eas() {
     if [ "$(grep sched /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors)" != "" ]; then
-        echo "true"
+        ui_print "true"
     else
-        echo "false"
+        ui_print "false"
     fi
 }
 
@@ -60,35 +60,35 @@ _get_maxfreq() {
     local maxfreq="0"
 
     if [ ! -f "$fpath" ]; then
-        echo ""
+        ui_print ""
         return
     fi
 
     for f in $(cat $fpath); do
         [ "$f" -gt "$maxfreq" ] && maxfreq="$f"
     done
-    echo "$maxfreq"
+    ui_print "$maxfreq"
 }
 
 _get_maxfreq_6893() {
     local fpath="/sys/devices/system/cpu/cpufreq/policy$1/cpuinfo_max_freq"
     local maxfreq="0"
     if [ ! -f "$fpath" ]; then
-        echo ""
+        ui_print ""
         return
     fi
 
     for f in $(cat $fpath); do
         [ "$f" -gt "$maxfreq" ] && maxfreq="$f"
     done
-    echo "$maxfreq"
+    ui_print "$maxfreq"
 }
 
 _get_socid() {
     if [ -f /sys/devices/soc0/soc_id ]; then
-        echo "$(cat /sys/devices/soc0/soc_id)"
+        ui_print "$(cat /sys/devices/soc0/soc_id)"
     else
-        echo "$(cat /sys/devices/system/soc/soc0/id)"
+        ui_print "$(cat /sys/devices/system/soc/soc0/id)"
     fi
 }
 
@@ -96,40 +96,40 @@ _get_sm6150_type() {
     [ -f /sys/devices/soc0/soc_id ] && SOC_ID="$(cat /sys/devices/soc0/soc_id)"
     [ -f /sys/devices/system/soc/soc0/id ] && SOC_ID="$(cat /sys/devices/system/soc/soc0/id)"
     case "$SOC_ID" in
-    365 | 366) echo "sdm730" ;;
-    355 | 369) echo "sdm675" ;;
+    365 | 366) ui_print "sdm730" ;;
+    355 | 369) ui_print "sdm675" ;;
     esac
 }
 
 _get_sdm76x_type() {
     if [ "$(_get_maxfreq 7)" -gt 2800000 ]; then
-        echo "sdm768"
+        ui_print "sdm768"
     elif [ "$(_get_maxfreq 7)" -gt 2300000 ]; then
-        echo "sdm765"
+        ui_print "sdm765"
     else
-        echo "sdm750"
+        ui_print "sdm750"
     fi
 }
 
 _get_msm8916_type() {
     case "$(_get_socid)" in
-    "206" | "247" | "248" | "249" | "250") echo "msm8916" ;;
-    "233" | "240" | "242") echo "sdm610" ;;
-    "239" | "241" | "263" | "268" | "269" | "270" | "271") echo "sdm616" ;;
-    *) echo "msm8916" ;;
+    "206" | "247" | "248" | "249" | "250") ui_print "msm8916" ;;
+    "233" | "240" | "242") ui_print "sdm610" ;;
+    "239" | "241" | "263" | "268" | "269" | "270" | "271") ui_print "sdm616" ;;
+    *) ui_print "msm8916" ;;
     esac
 }
 
 _get_msm8952_type() {
     case "$(_get_socid)" in
     "264" | "289")
-        echo "msm8952"
+        ui_print "msm8952"
         ;;
     *)
         if [ "$(_get_nr_core)" == "8" ]; then
-            echo "sdm652"
+            ui_print "sdm652"
         else
-            echo "sdm650"
+            ui_print "sdm650"
         fi
         ;;
     esac
@@ -137,9 +137,9 @@ _get_msm8952_type() {
 
 _get_sdm636_type() {
     if [ "$(_is_eas)" == "true" ]; then
-        echo "sdm636_eas"
+        ui_print "sdm636_eas"
     else
-        echo "sdm636_hmp"
+        ui_print "sdm636_hmp"
     fi
 }
 
@@ -149,36 +149,36 @@ _get_sdm660_type() {
     # sdm660 & sdm636 may share the same platform name
     if [ "$b_max" -gt 2000000 ]; then
         if [ "$(_is_eas)" == "true" ]; then
-            echo "sdm660_eas"
+            ui_print "sdm660_eas"
         else
-            echo "sdm660_hmp"
+            ui_print "sdm660_hmp"
         fi
     else
-        echo "$(_get_sdm636_type)"
+        ui_print "$(_get_sdm636_type)"
     fi
 }
 
 _get_sdm652_type() {
     if [ "$(_is_eas)" == "true" ]; then
-        echo "sdm652_eas"
+        ui_print "sdm652_eas"
     else
-        echo "sdm652_hmp"
+        ui_print "sdm652_hmp"
     fi
 }
 
 _get_sdm650_type() {
     if [ "$(_is_eas)" == "true" ]; then
-        echo "sdm650_eas"
+        ui_print "sdm650_eas"
     else
-        echo "sdm650_hmp"
+        ui_print "sdm650_hmp"
     fi
 }
 
 _get_sdm626_type() {
     if [ "$(_is_eas)" == "true" ]; then
-        echo "sdm626_eas"
+        ui_print "sdm626_eas"
     else
-        echo "sdm626_hmp"
+        ui_print "sdm626_hmp"
     fi
 }
 
@@ -188,26 +188,26 @@ _get_sdm625_type() {
     # sdm625 & sdm626 may share the same platform name
     if [ "$b_max" -lt 2100000 ]; then
         if [ "$(_is_eas)" == "true" ]; then
-            echo "sdm625_eas"
+            ui_print "sdm625_eas"
         else
-            echo "sdm625_hmp"
+            ui_print "sdm625_hmp"
         fi
     else
-        echo "$(_get_sdm626_type)"
+        ui_print "$(_get_sdm626_type)"
     fi
 }
 
 _get_sdm835_type() {
     if [ "$(_is_eas)" == "true" ]; then
-        echo "sdm835_eas"
+        ui_print "sdm835_eas"
     else
-        echo "sdm835_hmp"
+        ui_print "sdm835_hmp"
     fi
 }
 
 _get_sdm82x_type() {
     if [ "$(_is_eas)" == "true" ]; then
-        echo "sdm82x_eas"
+        ui_print "sdm82x_eas"
         return
     fi
 
@@ -220,38 +220,38 @@ _get_sdm82x_type() {
     if [ "$l_max" -lt 1800000 ]; then
         if [ "$b_max" -gt 2100000 ]; then
             # 1593/2150
-            echo "sdm820_hmp"
+            ui_print "sdm820_hmp"
         elif [ "$b_max" -gt 1900000 ]; then
             # 1593/1996
-            echo "sdm821_v1_hmp"
+            ui_print "sdm821_v1_hmp"
         else
             # 1363/1824
-            echo "sdm820_hmp"
+            ui_print "sdm820_hmp"
         fi
     else
         if [ "$b_max" -gt 2300000 ]; then
             # 2188/2342
-            echo "sdm821_v3_hmp"
+            ui_print "sdm821_v3_hmp"
         else
             # 1996/2150
-            echo "sdm821_v2_hmp"
+            ui_print "sdm821_v2_hmp"
         fi
     fi
 }
 
 _get_e8890_type() {
     if [ "$(_is_eas)" == "true" ]; then
-        echo "e8890_eas"
+        ui_print "e8890_eas"
     else
-        echo "e8890_hmp"
+        ui_print "e8890_hmp"
     fi
 }
 
 _get_e8895_type() {
     if [ "$(_is_eas)" == "true" ]; then
-        echo "e8895_eas"
+        ui_print "e8895_eas"
     else
-        echo "e8895_hmp"
+        ui_print "e8895_hmp"
     fi
 }
 
@@ -259,9 +259,9 @@ _get_mt6853_type() {
     local b_max
     b_max="$(_get_maxfreq 6)"
     if [ "$b_max" -gt 2200000 ]; then
-        echo "mtd800u"
+        ui_print "mtd800u"
     else
-        echo "mtd720"
+        ui_print "mtd720"
     fi
 }
 
@@ -269,9 +269,9 @@ _get_mt6873_type() {
     local b_max
     b_max="$(_get_maxfreq 4)"
     if [ "$b_max" -gt 2500000 ]; then
-        echo "mtd820"
+        ui_print "mtd820"
     else
-        echo "mtd800"
+        ui_print "mtd800"
     fi
 }
 
@@ -279,18 +279,18 @@ _get_mt6877_type() {
     local b_max
     b_max="$(_get_maxfreq 4)"
     if [ "$b_max" -gt 2500000 ]; then
-        echo "mtd920"
+        ui_print "mtd920"
     else
-        echo "mtd900"
+        ui_print "mtd900"
     fi
 }
 _get_mt6885_type() {
     local b_max
     b_max="$(_get_maxfreq 4)"
     if [ "$b_max" -ge 2500000 ]; then
-        echo "mtd1000"
+        ui_print "mtd1000"
     else
-        echo "mtd1000l"
+        ui_print "mtd1000l"
     fi
 }
 
@@ -298,9 +298,9 @@ _get_mt6893_type() {
     local b_max
     b_max="$(_get_maxfreq_6893 7)"
     if [ "$b_max" -ge 2700000 ]; then
-        echo "mtd1200"
+        ui_print "mtd1200"
     else
-        echo "mtd1100"
+        ui_print "mtd1100"
     fi
 }
 
@@ -308,9 +308,9 @@ _get_lahaina_type() {
     local b_max
     b_max="$(_get_maxfreq 7)"
     if [ "$b_max" -gt 2600000 ]; then
-        echo "sdm888"
+        ui_print "sdm888"
     else
-        echo "sdm780"
+        ui_print "sdm780"
     fi
 }
 
@@ -377,29 +377,29 @@ _get_cfgname() {
     "mt6877") ret="$(_get_mt6877_type)" ;; #D900 D920
     *) ret="unsupported" ;;
     esac
-    echo "$ret"
+    ui_print "$ret"
 }
 
 uperf_print_banner() {
-    echo ""
-    echo "* Uperf https://gitee.com/hamjin/uperf/"
-    echo "* 作者: Matt Yang && HamJTY"
-    echo "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.29-test2"
+    ui_print ""
+    ui_print "* Uperf https://gitee.com/hamjin/uperf/"
+    ui_print "* 作者: Matt Yang && HamJTY"
+    ui_print "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.30"
 
 }
 
 uperf_print_finish() {
-    echo "- Uperf 成功安装."
+    ui_print "- Uperf 成功安装."
 }
 
 uperf_install() {
-    echo "- 开始安装"
-    echo "- 设备平台: $(getprop ro.board.platform)"
-    echo "- 设备代号: $(getprop ro.product.board)"
-    echo "- 设备型号: $(getprop ro.product.device)"
-    DEVICE=$(getprop ro.product.device)
+    ui_print "- 开始安装"
+    DEVICE=$(getprop ro.product.board)
     DEVCODE=$(getprop ro.product.device)
-    # echo "- Android 12上ro.product.board可能是空的, 可以忽略"
+    ui_print "- 设备平台: $(getprop ro.board.platform)"
+    ui_print "- 设备型号: $DEVCODE"
+    ui_print "- 设备代号: $DEVICE"
+    # ui_print "- Android 12上ro.product.board可能是空的, 可以忽略"
     local target
     local cfgname
     target="$(getprop ro.board.platform)"
@@ -411,13 +411,15 @@ uperf_install() {
     fi
     mkdir -p $USER_PATH
     if [ "$cfgname" != "unsupported" ] && [ -f $MODPATH/config/$cfgname.json ]; then
-        if [ "$DEVICE" == "cezanne" ]; then
+        if [ "$DEVICE" == "cezanne" ] || [ "$DEVCODE" == "cezanne" ]; then
+
             cfgname="Zen3APU"
-            echo "- 检测到AMD Zen3 APU！正在使用K30至尊墓碑版专用配置！"
-        elif [ "$DEVCODE" == "cezanne" ]; then
-            cfgname="Zen3APU"
-            echo "- 检测到AMD Zen3 APU！正在使用K30至尊墓碑版专用配置！"
+            ui_print "- 检测到平台为AMD Zen3 APU！正在使用K30至尊墓碑版专用配置！"
+        elif [ "$DEVCODE" == "atom" ] || [ "$DEVICE" == "atom" ] [ "$DEVCODE" == "bomb" ] || [ "$DEVICE" == "bomb" ]; then
+            cfgname="10x"
+            ui_print "- 检测到Redmi 10X系列！正在使用专用配置！"
         fi
+        ui_print $cfgname >$MODPATH/flags/device
         ui_print "- 配置平台文件: $cfgname"
         ui_print "- 由于联发科的问题"
         ui_print "- Android 12上天玑1100、1200识别错误的可能性大幅提高"
@@ -443,30 +445,31 @@ uperf_install() {
     chmod 0755 $BASEDIR/bin/*
 
     rm -rf $BASEDIR/uperf
-    echo "- 关闭位于用户数据分区的MTK官方温控 -"
+    ui_print "- 关闭位于用户数据分区的MTK官方温控 -"
+    ui_print "- 关闭位于Vendor分区的MTK官方温控锁帧等负优化 -"
     chattr -i "/data/vendor/.tp"
     chattr -i /data/vendor/thermal
     rm -rf "/data/vendor/.tp"
     rm -rf /data/vendor/thermal
-    echo "false" >"/data/vendor/.tp"
-    echo "false" >/data/vendor/thermal
+    touch "/data/vendor/.tp"
+    touch /data/vendor/thermal
     chattr +i "/data/vendor/.tp"
     chattr +i /data/vendor/thermal
-    echo "- 关闭位于用户数据分区的小米云控 -"
+    ui_print "- 关闭位于用户数据分区的小米云控 -"
     chattr -i /data/thermal
     chattr -i /data/system/mcd
     rm -rf /data/thermal
     rm -rf /data/system/mcd
-    echo "false" >/data/system/mcd
-    echo "false" >/data/thermal
+    touch /data/system/mcd
+    touch /data/thermal
     chattr +i /data/thermal
     chattr +i /data/system/mcd
 }
 
 injector_install() {
-    echo "- 安装注入器"
-    echo "- 关闭SELinux可以获得更高的兼容性和可用性"
-    echo "- 请手动删除模块目录下的flags/allow_permissive以阻止自动关闭SELinux"
+    ui_print "- 安装注入器"
+    ui_print "- 关闭SELinux可以获得更高的兼容性和可用性"
+    ui_print "- 请手动删除模块目录下的flags/allow_permissive以阻止自动关闭SELinux"
 
     local src_path
     local dst_path
@@ -491,7 +494,7 @@ injector_install() {
 }
 
 powerhal_stub_install() {
-    echo "- 替换 perfhal 文件"
+    ui_print "- 替换 perfhal 文件"
 
     # do not place empty json if it doesn't exist in system
     # vendor/etc/powerhint.json: android perf hal
@@ -524,16 +527,16 @@ powerhal_stub_install() {
 }
 
 busybox_install() {
-    # echo "- 安装自带的busybox"
-    echo "- 使用Magisk的busybox"
+    # ui_print "- 安装自带的busybox"
+    ui_print "- 使用Magisk的busybox"
     local dst_path
     dst_path="$BASEDIR/bin/busybox/"
 
     mkdir -p "$dst_path"
     if [ "$(_is_aarch64)" == "true" ]; then
-        cp -r "/data/adb/magisk/busybox" "$dst_path/busybox"
+        ln -s "/data/adb/magisk/busybox" "$dst_path/busybox"
     else
-        cp -r "/data/adb/magisk/busybox" "$dst_path/busybox"
+        ln -s "/data/adb/magisk/busybox" "$dst_path/busybox"
     fi
     chmod 0755 "$dst_path/busybox"
 

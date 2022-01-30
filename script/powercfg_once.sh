@@ -116,20 +116,20 @@ unify_cpufreq() {
     done
     for i in 0 1 2 3 4 5 6 7; do
         lock_val "$i" /sys/devices/system/cpu/sched/set_sched_deisolation
-        lock /sys/devices/system/cpu/cpu$i/scaling_max_freq
-        lock /sys/devices/system/cpu/cpu$i/scaling_min_freq
-        lock /sys/devices/system/cpu/cpu$i/scaling_setspeed
+        #lock /sys/devices/system/cpu/cpu$i/scaling_max_freq
+        #lock /sys/devices/system/cpu/cpu$i/scaling_min_freq
+        #lock /sys/devices/system/cpu/cpu$i/scaling_setspeed
         lock_val "0" /sys/devices/system/cpu/cpu$i/cpufreq/schedutil/up_rate_limit_us
         lock_val "0" /sys/devices/system/cpu/cpu$i/cpufreq/schedutil/down_rate_limit_us
     done
     lock /sys/devices/system/cpu/sched/set_sched_isolation
-    for i in 0 4 7; do
-        lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_max_freq
-        lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_min_freq
-        lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_setspeed
-        lock_val "0" /sys/devices/system/cpu/cpufreq/policy$i/schedutil/up_rate_limit_us
-        lock_val "0" /sys/devices/system/cpu/cpufreq/policy$i/schedutil/down_rate_limit_us
-    done
+    #for i in 0 2 4 6 7; do
+    #    #lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_max_freq
+    #    #lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_min_freq
+    #    #lock /sys/devices/system/cpu/cpufreq/policy$i/scaling_setspeed
+    #    lock_val "0" /sys/devices/system/cpu/cpufreq/policy$i/schedutil/up_rate_limit_us
+    #    lock_val "0" /sys/devices/system/cpu/cpufreq/policy$i/schedutil/down_rate_limit_us
+    #done
     #lock /sys/devices/system/cpu/rq-stats/htask_cpucap_ctrl
 
     # unify governor, not use schedutil if kernel has broken it
@@ -137,10 +137,11 @@ unify_cpufreq() {
     chmod 000 /sys/devices/system/cpu/sched/hint_enable
     lock_val "0" /sys/devices/system/cpu/eas/enable
     chmod 400 /sys/devices/system/cpu/eas/enable
+    #do not change governor on 10x
     #some devices don't have interactive, use ondemand instead
-    set_governor_param "scaling_governor" "0:ondemand 2:ondemand 4:ondemand 6:ondemand 7:ondemand"
-    set_governor_param "scaling_governor" "0:interactive 2:interactive 4:interactive 6:interactive 7:interactive"
-    set_governor_param "scaling_governor" "0:schedutil 2:schedutil 4:schedutil 6:schedutil 7:schedutil"
+    #set_governor_param "scaling_governor" "0:ondemand 2:ondemand 4:ondemand 6:ondemand 7:ondemand"
+    #set_governor_param "scaling_governor" "0:interactive 2:interactive 4:interactive 6:interactive 7:interactive"
+    #set_governor_param "scaling_governor" "0:schedutil 2:schedutil 4:schedutil 6:schedutil 7:schedutil"
     # unify walt schedutil governor
     set_governor_param "schedutil/hispeed_freq" "0:0 2:0 4:0 6:0 7:0"
     set_governor_param "schedutil/hispeed_load" "0:100 2:100 4:100 6:100 7:100"
@@ -164,19 +165,19 @@ unify_cpufreq() {
 }
 
 unify_sched() {
-    if [ -d /proc/perfmgr/boost_ctrl/eas_ctrl/ ]; then
-        lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_prefer_idle"
-        lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_fg_boost"
-        lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_ta_boost"
-        lock_val "-100" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_bg_boost"
-        lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_uclamp_min"
-        lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_fg_uclamp_min"
-        lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_ta_uclamp_min"
-        lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_bg_uclamp_min"
-        # lock_val "1" "/proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_enable"
-        lock_val "80" "/proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_up_loading"
-        lock_val "60" "/proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_down_loading"
-    fi
+    #if [ -d /proc/perfmgr/boost_ctrl/eas_ctrl/ ]; then
+    #    #lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_prefer_idle"
+    #    #lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_fg_boost"
+    #    #lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_ta_boost"
+    #    #lock_val "-100" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_bg_boost"
+    #    #lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_uclamp_min"
+    #    #lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_fg_uclamp_min"
+    #    #lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_ta_uclamp_min"
+    #    #lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_bg_uclamp_min"
+    #    # lock_val "1" "/proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_enable"
+    #    #lock_val "80" "/proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_up_loading"
+    #    #lock_val "60" "/proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_down_loading"
+    #fi
     # disable sched global placement boost
     lock_val "0" $SCHED/sched_boost
     lock_val "1000" $SCHED/sched_min_task_util_for_boost
@@ -295,7 +296,7 @@ disable_kernel_boost() {
     # used by uperf
     lock_val "6 1" /proc/ppm/policy_status
     #Active MTK Memery Management
-    lock_val "1" /proc/mtk-perf/lowmem_hint_enable
+    # lock_val "1" /proc/mtk-perf/lowmem_hint_enable
     # lock_val "0" /proc/cpu_loading/onoff
     lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
     # load balance is useless
