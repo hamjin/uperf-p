@@ -24,8 +24,8 @@ lock_val "0-7" /dev/cpuset/top-app/cpus
 lock_val "0-7" /dev/cpuset/foreground/boost/cpus
 lock_val "0-7" /dev/cpuset/foreground/cpus
 lock_val "0-6" /dev/cpuset/restricted/cpus
-lock_val "0-6" /dev/cpuset/background/cpus
-lock_val "0-6" /dev/cpuset/system-background/cpus
+lock_val "0-4" /dev/cpuset/background/cpus
+lock_val "0-4" /dev/cpuset/system-background/cpus
 # VMOS may set cpuset/background/cpus to "0"
 lock /dev/cpuset/background/cpus
 #Do Not Let Games Run On A55

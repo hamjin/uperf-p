@@ -28,6 +28,7 @@ unify_cgroup() {
 
     # Reduce Perf Cluster Wakeup
     # daemons
+    pin_proc_on_pwr "mediatek|vendor|miui|xiaomi|android|mi|google"
     pin_proc_on_pwr "crtc_commit|crtc_event|pp_event|msm_irqbalance|netd|mdnsd|analytics"
     pin_proc_on_pwr "imsdaemon|cnss-daemon|qadaemon|qseecomd|time_daemon|ATFWD-daemon|ims_rtp_daemon|qcrilNrd"
     # ueventd related to hotplug of camera, wifi, usb...
@@ -46,7 +47,7 @@ unify_cgroup() {
     pin_proc_on_pwr "android.process.media"
     # com.miui.securitycenter & com.miui.securityadd
     pin_proc_on_pwr "miui\.security"
-
+    pin_proc_on_mid "surfaceflinger"
     # system_server blacklist
     # system_server controlled by uperf
     change_proc_cgroup "system_server" "" "cpuset"
@@ -76,6 +77,7 @@ unify_cgroup() {
     change_task_affinity "\.hardware\.display" "7f"
     change_task_rt "\.hardware\.display" "2"
     # let UX related Binders run with top-app
+
     change_thread_cgroup "\.hardware\.display" "^Binder" "top-app" "cpuset"
     change_thread_cgroup "\.hardware\.display" "^HwBinder" "top-app" "cpuset"
     change_thread_cgroup "\.composer" "^Binder" "top-app" "cpuset"
@@ -88,7 +90,20 @@ unify_cgroup() {
 
     # busybox fork from magiskd
     pin_proc_on_mid "magiskd"
+    pin_proc_on_mid "zygiskd"
+    pin_proc_on_mid "zygiskd64"
     change_task_nice "magiskd" "19"
+    change_task_nice "zygiskd" "19"
+    change_task_nice "zygiskd64" "19"
+    #miui optimize
+    change_task_cgroup "\miui" "system-background" "cpuset"
+    change_task_cgroup "\mi" "system-background" "cpuset"
+    change_task_cgroup "\vendor" "system-background" "cpuset"
+    change_task_cgroup "\mediatek" "system-background" "cpuset"
+    change_task_cgroup "\miui\.home" "game" "cpuset"
+    change_task_cgroup "\.xiaomi\.xmsf" "system-background" "cpuset"
+    change_task_cgroup "\xiaomi" "system-background" "cpuset"
+
 }
 
 unify_cpufreq() {
