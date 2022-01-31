@@ -384,7 +384,7 @@ uperf_print_banner() {
     ui_print ""
     ui_print "* Uperf https://gitee.com/hamjin/uperf/"
     ui_print "* 作者: Matt Yang && HamJTY"
-    ui_print "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.30"
+    ui_print "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.31"
 
 }
 
