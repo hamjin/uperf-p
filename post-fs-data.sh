@@ -7,3 +7,4 @@ if [ -f "$MODDIR/.need_recuser" ]; then
 else
     true >$MODDIR/.need_recuser
 fi
+/system/bin/resetprop --file $MODDIR/system.prop &
