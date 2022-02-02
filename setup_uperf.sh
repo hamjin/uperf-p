@@ -384,7 +384,7 @@ uperf_print_banner() {
     ui_print ""
     ui_print "* Uperf https://gitee.com/hamjin/uperf/"
     ui_print "* 作者: Matt Yang && HamJTY"
-    ui_print "* Version: v2 (21.08.15),GPU_Lock-fixed-22.01.31"
+    ui_print "* Version: v2 (21.08.15),GPU_Lock-fixed-22.02.02"
 
 }
 
@@ -412,14 +412,15 @@ uperf_install() {
     mkdir -p $USER_PATH
     if [ "$cfgname" != "unsupported" ] && [ -f $MODPATH/config/$cfgname.json ]; then
         if [ "$DEVICE" == "cezanne" ] || [ "$DEVCODE" == "cezanne" ]; then
-
             cfgname="Zen3APU"
             ui_print "- 检测到平台为AMD Zen3 APU！正在使用K30至尊墓碑版专用配置！"
         elif [ "$DEVCODE" == "atom" ] || [ "$DEVICE" == "atom" ] [ "$DEVCODE" == "bomb" ] || [ "$DEVICE" == "bomb" ]; then
             cfgname="10x"
             ui_print "- 检测到Redmi 10X系列！正在使用专用配置！"
         fi
-        ui_print $cfgname >$MODPATH/flags/device
+        echo $cfgname >$MODPATH/flags/cfgname
+        echo $DEVICE >$MODPATH/flags/device
+        echo $DEVCODE >$MODPATH/flags/device_code
         ui_print "- 配置平台文件: $cfgname"
         ui_print "- 由于联发科的问题"
         ui_print "- Android 12上天玑1100、1200识别错误的可能性大幅提高"
