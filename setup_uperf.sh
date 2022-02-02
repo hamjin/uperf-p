@@ -318,6 +318,7 @@ _get_lahaina_type() {
 _setup_platform_file() {
     mv -f $USER_PATH/cfg_uperf.json $USER_PATH/cfg_uperf.json.bak 2>/dev/null
     cp $BASEDIR/config/$1.json $USER_PATH/cfg_uperf.json 2>/dev/null
+    echo "balance" >$USER_PATH/cur_powermode
 }
 
 _place_user_config() {

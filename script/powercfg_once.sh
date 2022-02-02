@@ -28,7 +28,6 @@ unify_cgroup() {
 
     # Reduce Perf Cluster Wakeup
     # daemons
-    pin_proc_on_pwr "mediatek|vendor|miui|xiaomi|android|mi|google"
     pin_proc_on_pwr "crtc_commit|crtc_event|pp_event|msm_irqbalance|netd|mdnsd|analytics"
     pin_proc_on_pwr "imsdaemon|cnss-daemon|qadaemon|qseecomd|time_daemon|ATFWD-daemon|ims_rtp_daemon|qcrilNrd"
     # ueventd related to hotplug of camera, wifi, usb...
@@ -95,15 +94,6 @@ unify_cgroup() {
     change_task_nice "magiskd" "19"
     change_task_nice "zygiskd" "19"
     change_task_nice "zygiskd64" "19"
-    #miui optimize
-    change_task_cgroup "\miui" "system-background" "cpuset"
-    change_task_cgroup "\mi" "system-background" "cpuset"
-    change_task_cgroup "\vendor" "system-background" "cpuset"
-    change_task_cgroup "\mediatek" "system-background" "cpuset"
-    change_task_cgroup "\miui\.home" "game" "cpuset"
-    change_task_cgroup "\.xiaomi\.xmsf" "system-background" "cpuset"
-    change_task_cgroup "\xiaomi" "system-background" "cpuset"
-
 }
 
 unify_cpufreq() {
@@ -134,8 +124,8 @@ unify_cpufreq() {
         #lock /sys/devices/system/cpu/cpu$i/scaling_max_freq
         #lock /sys/devices/system/cpu/cpu$i/scaling_min_freq
         #lock /sys/devices/system/cpu/cpu$i/scaling_setspeed
-        lock_val "0" /sys/devices/system/cpu/cpu$i/cpufreq/schedutil/up_rate_limit_us
-        lock_val "0" /sys/devices/system/cpu/cpu$i/cpufreq/schedutil/down_rate_limit_us
+        lock_val "750" /sys/devices/system/cpu/cpu$i/cpufreq/schedutil/up_rate_limit_us
+        lock_val "50000" /sys/devices/system/cpu/cpu$i/cpufreq/schedutil/down_rate_limit_us
     done
     lock /sys/devices/system/cpu/sched/set_sched_isolation
     #for i in 0 2 4 6 7; do
