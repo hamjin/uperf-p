@@ -1,7 +1,7 @@
 {
     "meta": {
-        "name": "Dimensity 720(mt6853)[21.07.25] With Mali GPU Freq Lock v3",
-        "author": "yc@coolapk&add gpu freq lock by hamjin@coolapk",
+        "name": "Dimensity 720(mt6853)[21.07.25]&Mali GPU Freq Lock 22.2.6",
+        "author": "yc@coolapk and hamjin@coolapk",
         "features": "touch cpuload render standby sfanalysis ssanalysis dispfeature"
     },
     "common": {
@@ -28,8 +28,8 @@
             "enable": true,
             "sampleIntervalMinMs": 100,
             "heavyLoad": 1420,
-            "idleLoad": 950,
-            "requestBurstSlackMs": 100
+            "idleLoad": 932,
+            "requestBurstSlackMs": 3000
         },
         "sfAnalysis": {
             "note": "surfaceflinger分析器提供渲染开始/结束/滞后hint。boostCntMax:SfBoost可用次数缓存上限。boostGrowQuantumMs:每满此间隔没有SfBoost请求，则SfBoost可用次数+1。renderIdleSlackMs:进入渲染结束状态前的滞后时长。",
@@ -135,7 +135,8 @@
                 "Touch",
                 "Pressed",
                 "Tap",
-                "Swipe"
+                "Swipe",
+                "None"
             ],
             "Touch": [
                 "Wakeup",
@@ -297,34 +298,34 @@
     },
     "powermodes": [
         {
-            "name": "balance",
-            "note": "均衡模式，比原厂略流畅的同时略省电",
+            "name": "lowtemp",
+            "note": "低温保护模式",
             "actions": {
                 "normal": {
-                    "schedBoost": "0",
+                    "schedBoost": "1",
                     "topBoost": "0",
                     "heavyBoost": "0",
-                    "uxAffinity": "0",
+                    "uxAffinity": "4",
                     "dispFeature": "0",
-                    "cpuFreqMin0": "0 100000",
+                    "cpuFreqMin0": "0 1500000",
                     "cpuFreqMax0": "0 1600000",
-                    "cpuFreqMin1": "1 700000",
+                    "cpuFreqMin1": "1 1700000",
                     "cpuFreqMax1": "1 2000000",
                     "cciboost": "0",
                     "dramboost": "0",
                     "dramforcefreq": "-1",
-                    "mtkOpp": "390000",
+                    "mtkOpp": "760000",
                     "ppmPolicy": "4 1"
                 },
                 "active": {
                     "schedBoost": "0",
                     "topBoost": "0",
                     "heavyBoost": "0",
-                    "uxAffinity": "1",
+                    "uxAffinity": "4",
                     "dispFeature": "1",
-                    "cpuFreqMin0": "0 700000",
+                    "cpuFreqMin0": "0 1700000",
                     "cpuFreqMax0": "0 1700000",
-                    "cpuFreqMin1": "1 1000000",
+                    "cpuFreqMin1": "1 1800000",
                     "cpuFreqMax1": "1 2000000",
                     "cciboost": "0",
                     "dramboost": "0",
@@ -336,7 +337,7 @@
                     "schedBoost": "0",
                     "topBoost": "17",
                     "heavyBoost": "17",
-                    "uxAffinity": "2",
+                    "uxAffinity": "4",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 1600000",
                     "cpuFreqMax0": "0 1800000",
@@ -349,12 +350,12 @@
                     "ppmPolicy": "6 1"
                 },
                 "pressed": {
-                    "schedBoost": "0",
+                    "schedBoost": "1",
                     "topBoost": "0",
-                    "heavyBoost": "17",
-                    "uxAffinity": "2",
+                    "heavyBoost": "10",
+                    "uxAffinity": "4",
                     "dispFeature": "2",
-                    "cpuFreqMin0": "0 1100000",
+                    "cpuFreqMin0": "0 1700000",
                     "cpuFreqMax0": "0 1700000",
                     "cpuFreqMin1": "1 1000000",
                     "cpuFreqMax1": "1 2000000",
@@ -365,14 +366,14 @@
                     "ppmPolicy": "6 1"
                 },
                 "heavyLoad": {
-                    "schedBoost": "0",
-                    "topBoost": "25",
-                    "heavyBoost": "25",
+                    "schedBoost": "1",
+                    "topBoost": "60",
+                    "heavyBoost": "60",
                     "uxAffinity": "4",
                     "dispFeature": "2",
-                    "cpuFreqMin0": "0 1100000",
+                    "cpuFreqMin0": "0 1800000",
                     "cpuFreqMax0": "0 2000000",
-                    "cpuFreqMin1": "1 1500000",
+                    "cpuFreqMin1": "1 1900000",
                     "cpuFreqMax1": "1 2000000",
                     "cciboost": "1",
                     "dramboost": "1",
@@ -381,7 +382,7 @@
                     "ppmPolicy": "6 1"
                 },
                 "sfLag": {
-                    "uxAffinity": "2",
+                    "uxAffinity": "4",
                     "cpuFreqMin0": "0 1100000",
                     "cpuFreqMax0": "0 1700000",
                     "cpuFreqMin1": "1 1000000",
@@ -393,10 +394,11 @@
                     "ppmPolicy": "6 1"
                 },
                 "sfBoost": {
-                    "topBoost": "55",
-                    "heavyBoost": "55",
+                    "schedBoost": "1",
+                    "topBoost": "10",
+                    "heavyBoost": "10",
                     "uxAffinity": "4",
-                    "cpuFreqMin0": "0 1100000",
+                    "cpuFreqMin0": "0 1800000",
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2000000",
                     "cpuFreqMax1": "1 2000000",
@@ -411,6 +413,117 @@
         {
             "name": "powersave",
             "note": "卡顿模式，保证基本流畅的同时尽可能降低功耗",
+            "actions": {
+                "normal": {
+                    "schedBoost": "0",
+                    "topBoost": "0",
+                    "heavyBoost": "0",
+                    "uxAffinity": "0",
+                    "dispFeature": "0",
+                    "cpuFreqMin0": "0 100000",
+                    "cpuFreqMax0": "0 1800000",
+                    "cpuFreqMin1": "1 700000",
+                    "cpuFreqMax1": "1 1100000",
+                    "cciboost": "0",
+                    "dramboost": "0",
+                    "dramforcefreq": "-1",
+                    "mtkOpp": "390000",
+                    "ppmPolicy": "4 1"
+                },
+                "active": {
+                    "schedBoost": "0",
+                    "topBoost": "1",
+                    "heavyBoost": "1",
+                    "uxAffinity": "1",
+                    "dispFeature": "1",
+                    "cpuFreqMin0": "0 100000",
+                    "cpuFreqMax0": "0 1800000",
+                    "cpuFreqMin1": "1 700000",
+                    "cpuFreqMax1": "1 1200000",
+                    "cciboost": "0",
+                    "dramboost": "0",
+                    "dramforcefreq": "-1",
+                    "mtkOpp": "390000",
+                    "ppmPolicy": "6 1"
+                },
+                "interaction": {
+                    "schedBoost": "0",
+                    "topBoost": "1",
+                    "heavyBoost": "1",
+                    "uxAffinity": "2",
+                    "dispFeature": "2",
+                    "cpuFreqMin0": "0 1500000",
+                    "cpuFreqMax0": "0 1800000",
+                    "cpuFreqMin1": "1 1000000",
+                    "cpuFreqMax1": "1 1200000",
+                    "cciboost": "0",
+                    "dramboost": "0",
+                    "dramforcefreq": "-1",
+                    "mtkOpp": "473000"
+                },
+                "pressed": {
+                    "schedBoost": "0",
+                    "topBoost": "1",
+                    "heavyBoost": "1",
+                    "uxAffinity": "2",
+                    "dispFeature": "2",
+                    "cpuFreqMin0": "0 1500000",
+                    "cpuFreqMax0": "0 1800000",
+                    "cpuFreqMin1": "1 700000",
+                    "cpuFreqMax1": "1 1800000",
+                    "cciboost": "0",
+                    "dramboost": "0",
+                    "dramforcefreq": "-1",
+                    "mtkOpp": "452000",
+                    "ppmPolicy": "6 1"
+                },
+                "heavyLoad": {
+                    "schedBoost": "0",
+                    "topBoost": "10",
+                    "heavyBoost": "10",
+                    "uxAffinity": "4",
+                    "dispFeature": "2",
+                    "cpuFreqMin0": "0 1500000",
+                    "cpuFreqMax0": "0 2000000",
+                    "cpuFreqMin1": "1 100000",
+                    "cpuFreqMax1": "1 1400000",
+                    "cciboost": "1",
+                    "dramboost": "1",
+                    "dramforcefreq": "0",
+                    "mtkOpp": "556000",
+                    "ppmPolicy": "6 1"
+                },
+                "sfLag": {
+                    "uxAffinity": "2",
+                    "cpuFreqMin0": "0 1700000",
+                    "cpuFreqMax0": "0 1800000",
+                    "cpuFreqMin1": "1 700000",
+                    "cpuFreqMax1": "1 1400000",
+                    "cciboost": "0",
+                    "dramboost": "0",
+                    "dramforcefreq": "-1",
+                    "mtkOpp": "452000",
+                    "ppmPolicy": "6 1"
+                },
+                "sfBoost": {
+                    "topBoost": "25",
+                    "heavyBoost": "25",
+                    "uxAffinity": "4",
+                    "cpuFreqMin0": "0 1700000",
+                    "cpuFreqMax0": "0 1800000",
+                    "cpuFreqMin1": "1 1100000",
+                    "cpuFreqMax1": "1 1900000",
+                    "cciboost": "1",
+                    "dramboost": "1",
+                    "dramforcefreq": "0",
+                    "mtkOpp": "556000",
+                    "ppmPolicy": "6 1"
+                }
+            }
+        },
+        {
+            "name": "balance",
+            "note": "均衡模式",
             "actions": {
                 "normal": {
                     "schedBoost": "0",
@@ -441,7 +554,7 @@
                     "cciboost": "0",
                     "dramboost": "0",
                     "dramforcefreq": "-1",
-                    "mtkOpp": "390000",
+                    "mtkOpp": "700000",
                     "ppmPolicy": "6 1"
                 },
                 "interaction": {
@@ -457,7 +570,7 @@
                     "cciboost": "0",
                     "dramboost": "0",
                     "dramforcefreq": "-1",
-                    "mtkOpp": "473000"
+                    "mtkOpp": "685000"
                 },
                 "pressed": {
                     "schedBoost": "0",
@@ -472,7 +585,7 @@
                     "cciboost": "0",
                     "dramboost": "0",
                     "dramforcefreq": "-1",
-                    "mtkOpp": "452000",
+                    "mtkOpp": "670000",
                     "ppmPolicy": "6 1"
                 },
                 "heavyLoad": {
@@ -488,7 +601,7 @@
                     "cciboost": "1",
                     "dramboost": "1",
                     "dramforcefreq": "0",
-                    "mtkOpp": "556000",
+                    "mtkOpp": "745000",
                     "ppmPolicy": "6 1"
                 },
                 "sfLag": {
@@ -500,7 +613,7 @@
                     "cciboost": "0",
                     "dramboost": "0",
                     "dramforcefreq": "-1",
-                    "mtkOpp": "452000",
+                    "mtkOpp": "685000",
                     "ppmPolicy": "6 1"
                 },
                 "sfBoost": {
@@ -514,125 +627,13 @@
                     "cciboost": "1",
                     "dramboost": "1",
                     "dramforcefreq": "0",
-                    "mtkOpp": "556000",
+                    "mtkOpp": "760000",
                     "ppmPolicy": "6 1"
                 }
             }
         },
         {
             "name": "performance",
-            "note": "费电模式，保证费电的同时多一点流畅度",
-            "actions": {
-                "normal": {
-                    "schedBoost": "1",
-                    "topBoost": "100",
-                    "heavyBoost": "100",
-                    "uxAffinity": "4",
-                    "dispFeature": "0",
-                    "cpuFreqMin0": "0 2000000",
-                    "cpuFreqMax0": "0 2000000",
-                    "cpuFreqMin1": "1 2000000",
-                    "cpuFreqMax1": "1 2000000",
-                    "cciboost": "1",
-                    "dramboost": "1",
-                    "dramforcefreq": "0",
-                    "mtkOpp": "950000",
-                    "ppmPolicy": "4 1"
-                },
-                "active": {
-                    "schedBoost": "1",
-                    "topBoost": "100",
-                    "heavyBoost": "100",
-                    "uxAffinity": "4",
-                    "dispFeature": "1",
-                    "cpuFreqMin0": "0 2000000",
-                    "cpuFreqMax0": "0 2000000",
-                    "cpuFreqMin1": "1 2000000",
-                    "cpuFreqMax1": "1 2000000",
-                    "cciboost": "1",
-                    "dramboost": "1",
-                    "dramforcefreq": "0",
-                    "mtkOpp": "950000",
-                    "ppmPolicy": "6 1"
-                },
-                "interaction": {
-                    "schedBoost": "1",
-                    "topBoost": "100",
-                    "heavyBoost": "100",
-                    "uxAffinity": "4",
-                    "dispFeature": "2",
-                    "cpuFreqMin0": "0 2000000",
-                    "cpuFreqMax0": "0 2000000",
-                    "cpuFreqMin1": "1 2000000",
-                    "cpuFreqMax1": "1 2000000",
-                    "cciboost": "1",
-                    "dramboost": "1",
-                    "dramforcefreq": "0",
-                    "mtkOpp": "950000",
-                    "ppmPolicy": "6 1"
-                },
-                "pressed": {
-                    "schedBoost": "1",
-                    "topBoost": "100",
-                    "heavyBoost": "100",
-                    "uxAffinity": "4",
-                    "dispFeature": "2",
-                    "cpuFreqMin0": "0 2000000",
-                    "cpuFreqMax0": "0 2000000",
-                    "cpuFreqMin1": "1 2000000",
-                    "cpuFreqMax1": "1 2000000",
-                    "cciboost": "1",
-                    "dramboost": "1",
-                    "dramforcefreq": "0",
-                    "mtkOpp": "950000",
-                    "ppmPolicy": "6 1"
-                },
-                "heavyLoad": {
-                    "schedBoost": "1",
-                    "topBoost": "100",
-                    "heavyBoost": "100",
-                    "uxAffinity": "4",
-                    "dispFeature": "2",
-                    "cpuFreqMin0": "0 2000000",
-                    "cpuFreqMax0": "0 2000000",
-                    "cpuFreqMin1": "1 2000000",
-                    "cpuFreqMax1": "1 2000000",
-                    "cciboost": "1",
-                    "dramboost": "1",
-                    "dramforcefreq": "0",
-                    "mtkOpp": "950000",
-                    "ppmPolicy": "6 1"
-                },
-                "sfLag": {
-                    "uxAffinity": "4",
-                    "cpuFreqMin0": "0 2000000",
-                    "cpuFreqMax0": "0 2000000",
-                    "cpuFreqMin1": "1 2000000",
-                    "cpuFreqMax1": "1 2000000",
-                    "cciboost": "1",
-                    "dramboost": "1",
-                    "dramforcefreq": "0",
-                    "mtkOpp": "950000",
-                    "ppmPolicy": "6 1"
-                },
-                "sfBoost": {
-                    "topBoost": "100",
-                    "heavyBoost": "100",
-                    "uxAffinity": "4",
-                    "cpuFreqMin0": "0 2000000",
-                    "cpuFreqMax0": "0 2000000",
-                    "cpuFreqMin1": "1 2000000",
-                    "cpuFreqMax1": "1 2000000",
-                    "cciboost": "1",
-                    "dramboost": "1",
-                    "dramforcefreq": "0",
-                    "mtkOpp": "950000",
-                    "ppmPolicy": "6 1"
-                }
-            }
-        },
-        {
-            "name": "fast",
             "note": "极速模式，限制GPU保证CPU完全释放性能",
             "actions": {
                 "normal": {
@@ -739,6 +740,118 @@
                     "dramboost": "1",
                     "dramforcefreq": "0",
                     "mtkOpp": "577000",
+                    "ppmPolicy": "6 1"
+                }
+            }
+        },
+        {
+            "name": "fast",
+            "note": "费电模式，保证费电的同时多一点流畅度",
+            "actions": {
+                "normal": {
+                    "schedBoost": "1",
+                    "topBoost": "100",
+                    "heavyBoost": "100",
+                    "uxAffinity": "4",
+                    "dispFeature": "0",
+                    "cpuFreqMin0": "0 2000000",
+                    "cpuFreqMax0": "0 2000000",
+                    "cpuFreqMin1": "1 2000000",
+                    "cpuFreqMax1": "1 2000000",
+                    "cciboost": "1",
+                    "dramboost": "1",
+                    "dramforcefreq": "0",
+                    "mtkOpp": "932000",
+                    "ppmPolicy": "4 1"
+                },
+                "active": {
+                    "schedBoost": "1",
+                    "topBoost": "100",
+                    "heavyBoost": "100",
+                    "uxAffinity": "4",
+                    "dispFeature": "1",
+                    "cpuFreqMin0": "0 2000000",
+                    "cpuFreqMax0": "0 2000000",
+                    "cpuFreqMin1": "1 2000000",
+                    "cpuFreqMax1": "1 2000000",
+                    "cciboost": "1",
+                    "dramboost": "1",
+                    "dramforcefreq": "0",
+                    "mtkOpp": "932000",
+                    "ppmPolicy": "6 1"
+                },
+                "interaction": {
+                    "schedBoost": "1",
+                    "topBoost": "100",
+                    "heavyBoost": "100",
+                    "uxAffinity": "4",
+                    "dispFeature": "2",
+                    "cpuFreqMin0": "0 2000000",
+                    "cpuFreqMax0": "0 2000000",
+                    "cpuFreqMin1": "1 2000000",
+                    "cpuFreqMax1": "1 2000000",
+                    "cciboost": "1",
+                    "dramboost": "1",
+                    "dramforcefreq": "0",
+                    "mtkOpp": "932000",
+                    "ppmPolicy": "6 1"
+                },
+                "pressed": {
+                    "schedBoost": "1",
+                    "topBoost": "100",
+                    "heavyBoost": "100",
+                    "uxAffinity": "4",
+                    "dispFeature": "2",
+                    "cpuFreqMin0": "0 2000000",
+                    "cpuFreqMax0": "0 2000000",
+                    "cpuFreqMin1": "1 2000000",
+                    "cpuFreqMax1": "1 2000000",
+                    "cciboost": "1",
+                    "dramboost": "1",
+                    "dramforcefreq": "0",
+                    "mtkOpp": "932000",
+                    "ppmPolicy": "6 1"
+                },
+                "heavyLoad": {
+                    "schedBoost": "1",
+                    "topBoost": "100",
+                    "heavyBoost": "100",
+                    "uxAffinity": "4",
+                    "dispFeature": "2",
+                    "cpuFreqMin0": "0 2000000",
+                    "cpuFreqMax0": "0 2000000",
+                    "cpuFreqMin1": "1 2000000",
+                    "cpuFreqMax1": "1 2000000",
+                    "cciboost": "1",
+                    "dramboost": "1",
+                    "dramforcefreq": "0",
+                    "mtkOpp": "932000",
+                    "ppmPolicy": "6 1"
+                },
+                "sfLag": {
+                    "uxAffinity": "4",
+                    "cpuFreqMin0": "0 2000000",
+                    "cpuFreqMax0": "0 2000000",
+                    "cpuFreqMin1": "1 2000000",
+                    "cpuFreqMax1": "1 2000000",
+                    "cciboost": "1",
+                    "dramboost": "1",
+                    "dramforcefreq": "0",
+                    "mtkOpp": "932000",
+                    "ppmPolicy": "6 1"
+                },
+                "sfBoost": {
+                    "topBoost": "100",
+                    "heavyBoost": "100",
+                    "uxAffinity": "4",
+                    "cpuFreqMin0": "0 2000000",
+                    "cpuFreqMax0": "0 2000000",
+                    "cpuFreqMin1": "1 2000000",
+                    "cpuFreqMax1": "1 2000000",
+                    "cciboost": "1",
+                    "dramboost": "1",
+                    "dramforcefreq": "0",
+                    "mtkOpp": "932000",
                     "ppmPolicy": "6 1"
                 }
             }
