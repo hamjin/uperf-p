@@ -763,7 +763,7 @@
                     "cciboost": "1",
                     "dramboost": "1",
                     "dramforcefreq": "0",
-                    "mtkOpp": "925000",
+                    "mtkOpp": "955000",
                     "ppmPolicy": "4 1"
                 },
                 "active": {
@@ -779,7 +779,7 @@
                     "cciboost": "1",
                     "dramboost": "1",
                     "dramforcefreq": "0",
-                    "mtkOpp": "925000",
+                    "mtkOpp": "955000",
                     "ppmPolicy": "6 1"
                 },
                 "interaction": {
@@ -795,7 +795,7 @@
                     "cciboost": "1",
                     "dramboost": "1",
                     "dramforcefreq": "0",
-                    "mtkOpp": "925000",
+                    "mtkOpp": "955000",
                     "ppmPolicy": "6 1"
                 },
                 "pressed": {
@@ -811,7 +811,7 @@
                     "cciboost": "1",
                     "dramboost": "1",
                     "dramforcefreq": "0",
-                    "mtkOpp": "925000",
+                    "mtkOpp": "955000",
                     "ppmPolicy": "6 1"
                 },
                 "heavyLoad": {
@@ -827,7 +827,7 @@
                     "cciboost": "1",
                     "dramboost": "1",
                     "dramforcefreq": "0",
-                    "mtkOpp": "925000",
+                    "mtkOpp": "955000",
                     "ppmPolicy": "6 1"
                 },
                 "sfLag": {
@@ -839,7 +839,7 @@
                     "cciboost": "1",
                     "dramboost": "1",
                     "dramforcefreq": "0",
-                    "mtkOpp": "925000",
+                    "mtkOpp": "955000",
                     "ppmPolicy": "6 1"
                 },
                 "sfBoost": {
@@ -854,7 +854,7 @@
                     "cciboost": "1",
                     "dramboost": "1",
                     "dramforcefreq": "0",
-                    "mtkOpp": "925000",
+                    "mtkOpp": "955000",
                     "ppmPolicy": "6 1"
                 }
             }

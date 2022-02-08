@@ -385,8 +385,7 @@ uperf_print_banner() {
     ui_print ""
     ui_print "* Uperf https://gitee.com/hamjin/uperf/"
     ui_print "* 作者: Matt Yang && HamJTY"
-    ui_print "* Version: v2 (21.08.15),GPU_Lock-fixed-22.02.08"
-
+    ui_print "* Version: v2 (21.08.15),GPU_Lock-fixed-22.02.09"
 }
 
 uperf_print_finish() {
@@ -412,12 +411,26 @@ uperf_install() {
     fi
     mkdir -p $USER_PATH
     if [ "$cfgname" != "unsupported" ] && [ -f $MODPATH/config/$cfgname.json ]; then
-        if [ "$DEVICE" == "cezanne" ] || [ "$DEVCODE" == "cezanne" ]; then
+        if [ "$DEVICE" == "cezanne" ]; then
             cfgname="Zen3APU"
             ui_print "- 检测到平台为AMD Zen3 APU！正在使用K30至尊墓碑版专用配置！"
-        elif [ "$DEVCODE" == "atom" ] || [ "$DEVICE" == "atom" ] [ "$DEVCODE" == "bomb" ] || [ "$DEVICE" == "bomb" ]; then
+        elif [ "$DEVCODE" == "cezanne" ]; then
+            cfgname="Zen3APU"
+            ui_print "- 检测到平台为AMD Zen3 APU！正在使用K30至尊墓碑版专用配置！"
+        elif [ "$DEVCODE" == "atom" ]; then
             cfgname="10x"
             ui_print "- 检测到Redmi 10X系列！正在使用专用配置！"
+        elif [ "$DEVICE" == "atom" ]; then
+            cfgname="10x"
+            ui_print "- 检测到Redmi 10X系列！正在使用专用配置！"
+        elif [ "$DEVCODE" == "bomb" ]; then
+            cfgname="10x"
+            ui_print "- 检测到Redmi 10X系列！正在使用专用配置！"
+        elif [ "$DEVICE" == "bomb" ]; then
+            cfgname="10x"
+            ui_print "- 检测到Redmi 10X系列！正在使用专用配置！"
+        else
+            ui_print "- 检测到CPU: $target"
         fi
         echo $cfgname >$MODPATH/flags/cfgname
         echo $DEVICE >$MODPATH/flags/device

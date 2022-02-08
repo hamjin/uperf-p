@@ -637,8 +637,6 @@
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2600000",
                     "cpuFreqMax1": "1 2600000",
-                    "suUpRateUs": "1,1,1",
-                    "suDownRateUs": "100000000,100000000",
                     "gpuAlwayson": "always_on",
                     "mtkOpp": "523000",
                     "dramboost": "1",
@@ -749,7 +747,7 @@
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2600000",
                     "cpuFreqMax1": "1 2600000",
-                    "mtkOpp": "878000",
+                    "mtkOpp": "902000",
                     "gpuAlwayson": "always_on",
                     "dramboost": "1",
                     "dramforcefreq": "0",
@@ -765,7 +763,7 @@
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2600000",
                     "cpuFreqMax1": "1 2600000",
-                    "mtkOpp": "878000",
+                    "mtkOpp": "902000",
                     "dramboost": "1",
                     "dramforcefreq": "0",
                     "cciboost": "1"
@@ -780,7 +778,7 @@
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2600000",
                     "cpuFreqMax1": "1 2600000",
-                    "mtkOpp": "878000",
+                    "mtkOpp": "902000",
                     "dramboost": "1",
                     "dramforcefreq": "0",
                     "cciboost": "1"
@@ -795,7 +793,7 @@
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2600000",
                     "cpuFreqMax1": "1 2600000",
-                    "mtkOpp": "878000",
+                    "mtkOpp": "902000",
                     "dramboost": "1",
                     "dramforcefreq": "0",
                     "cciboost": "1"
@@ -810,7 +808,7 @@
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2600000",
                     "cpuFreqMax1": "1 2600000",
-                    "mtkOpp": "878000",
+                    "mtkOpp": "902000",
                     "dramboost": "1",
                     "dramforcefreq": "0",
                     "cciboost": "1"
@@ -821,7 +819,7 @@
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2600000",
                     "cpuFreqMax1": "1 2600000",
-                    "mtkOpp": "878000",
+                    "mtkOpp": "902000",
                     "dramboost": "1",
                     "dramforcefreq": "0",
                     "cciboost": "1"
@@ -834,7 +832,7 @@
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2600000",
                     "cpuFreqMax1": "1 2600000",
-                    "mtkOpp": "878000",
+                    "mtkOpp": "902000",
                     "dramboost": "1",
                     "dramforcefreq": "0",
                     "cciboost": "1"

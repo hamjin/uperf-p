@@ -25,16 +25,14 @@ unify_cgroup() {
             echo $p >/dev/$cg/foreground/tasks
         done
     done
-    lock_val "0-7" /dev/cpuset/top-app/boost/cpus
-    lock_val "0-7" /dev/cpuset/top-app/cpus
+
+    # launcher is usually in foreground group, uperf will take care of them
     lock_val "0-7" /dev/cpuset/foreground/boost/cpus
     lock_val "0-7" /dev/cpuset/foreground/cpus
     lock_val "0-6" /dev/cpuset/restricted/cpus
     # VMOS may set cpuset/background/cpus to "0"
     lock /dev/cpuset/background/cpus
-    #Do Not Let Games Run On A55
-    lock_val "0-7" /dev/cpuset/game/cpus
-    lock_val "0-7" /dev/cpuset/gamelite/cpus
+
     # Reduce Perf Cluster Wakeup
     # daemons
     pin_proc_on_pwr "crtc_commit|crtc_event|pp_event|msm_irqbalance|netd|mdnsd|analytics"
@@ -42,11 +40,11 @@ unify_cgroup() {
     # ueventd related to hotplug of camera, wifi, usb...
     # pin_proc_on_pwr "ueventd"
     # hardware services, eg. android.hardware.sensors@1.0-service
-    #pin_proc_on_pwr "android.hardware.bluetooth"
+    pin_proc_on_pwr "android.hardware.bluetooth"
     pin_proc_on_pwr "android.hardware.gnss"
     pin_proc_on_pwr "android.hardware.health"
     pin_proc_on_pwr "android.hardware.thermal"
-    #pin_proc_on_pwr "android.hardware.wifi"
+    pin_proc_on_pwr "android.hardware.wifi"
     pin_proc_on_pwr "android.hardware.keymaster"
     pin_proc_on_pwr "vendor.qti.hardware.qseecom"
     pin_proc_on_pwr "hardware.sensors"
@@ -55,14 +53,14 @@ unify_cgroup() {
     pin_proc_on_pwr "android.process.media"
     # com.miui.securitycenter & com.miui.securityadd
     pin_proc_on_pwr "miui\.security"
-    pin_proc_on_mid "surfaceflinger"
+
     # system_server blacklist
     # system_server controlled by uperf
     change_proc_cgroup "system_server" "" "cpuset"
     # input dispatcher
     change_thread_high_prio "system_server" "input"
     # related to camera startup
-    change_thread_affinity "system_server" "ProcessManager" "ff"
+    # change_thread_affinity "system_server" "ProcessManager" "ff"
     # not important
     pin_thread_on_pwr "system_server" "Miui|Connect|Wifi|backup|Sync|Observer|Power|Sensor|batterystats"
     pin_thread_on_pwr "system_server" "Thread-|pool-|Jit|CachedAppOpt|Greezer|TaskSnapshot|Oom"
@@ -85,7 +83,6 @@ unify_cgroup() {
     change_task_affinity "\.hardware\.display" "7f"
     change_task_rt "\.hardware\.display" "2"
     # let UX related Binders run with top-app
-
     change_thread_cgroup "\.hardware\.display" "^Binder" "top-app" "cpuset"
     change_thread_cgroup "\.hardware\.display" "^HwBinder" "top-app" "cpuset"
     change_thread_cgroup "\.composer" "^Binder" "top-app" "cpuset"
@@ -96,10 +93,10 @@ unify_cgroup() {
     unpin_proc "zygote|usap"
     change_task_high_prio "zygote|usap"
 
-    # busybox fork from magiskd
-    pin_proc_on_mid "magiskd"
-    pin_proc_on_mid "zygiskd"
-    pin_proc_on_mid "zygiskd64"
+    # busybox fork from magiskd should run on little Only
+    pin_proc_on_pwr "magiskd"
+    pin_proc_on_pwr "zygiskd"
+    pin_proc_on_pwr "zygiskd64"
     change_task_nice "magiskd" "19"
     change_task_nice "zygiskd" "19"
     change_task_nice "zygiskd64" "19"
@@ -121,13 +118,9 @@ unify_cpufreq() {
     done
     for i in 0 1 2 3 4; do
         lock_val "$i" /sys/devices/system/cpu/sched/set_sched_deisolation
-        #lock_val "0" /sys/devices/system/cpu/cpu$i/cpufreq/schedutil/up_rate_limit_us
-        #lock_val "5000" /sys/devices/system/cpu/cpu$i/cpufreq/schedutil/down_rate_limit_us
     done
     for i in 5 6 7; do
         lock_val "$i" /sys/devices/system/cpu/sched/set_sched_deisolation
-        #lock_val "0" /sys/devices/system/cpu/cpu$i/cpufreq/schedutil/up_rate_limit_us
-        #lock_val "2000" /sys/devices/system/cpu/cpu$i/cpufreq/schedutil/down_rate_limit_us
     done
 
     #lock /sys/devices/system/cpu/rq-stats/htask_cpucap_ctrl
@@ -155,28 +148,15 @@ unify_cpufreq() {
     set_governor_param "interactive/boost" "0:0 2:0 4:0 6:0 7:0"
     set_governor_param "interactive/timer_slack" "0:12345678 2:12345678 4:12345678 6:12345678 7:12345678"
     # unify HMP ondemand governor for 2+2 4+2 4+4 1+3+4 2+6
-    #set_governor_param "ondemand/ignore_nice_load" "0:1 2:1 4:1 6:1 7:1"
-    #set_governor_param "ondemand/io_is_busy" "0:1 2:1 4:1 6:1 7:1" #io is busy at boot time
-    #set_governor_param "ondemand/up_threshold" "0:60 2:60 4:60 6:60 7:60"
-    #set_governor_param "ondemand/sampling_rate" "0:30000 2:30000 4:30000 6:30000 7:30000"
-    #set_governor_param "ondemand/sampling_down_factor" "0:30000 2:30000 4:30000 6:30000 7:30000"
+    set_governor_param "ondemand/ignore_nice_load" "0:1 2:1 4:1 6:1 7:1"
+    set_governor_param "ondemand/io_is_busy" "0:1 2:1 4:1 6:1 7:1" #io is busy at boot time
+    set_governor_param "ondemand/up_threshold" "0:60 2:60 4:60 6:60 7:60"
+    set_governor_param "ondemand/sampling_rate" "0:30000 2:30000 4:30000 6:30000 7:30000"
+    set_governor_param "ondemand/sampling_down_factor" "0:30000 2:30000 4:30000 6:30000 7:30000"
 
 }
 
 unify_sched() {
-    #if [ -d /proc/perfmgr/boost_ctrl/eas_ctrl/ ]; then
-    #    #lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_prefer_idle"
-    #    #lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_fg_boost"
-    #    #lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_ta_boost"
-    #    #lock_val "-100" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_bg_boost"
-    #    #lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_uclamp_min"
-    #    #lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_fg_uclamp_min"
-    #    #lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_ta_uclamp_min"
-    #    #lock_val "0" "/proc/perfmgr/boost_ctrl/eas_ctrl/perfserv_bg_uclamp_min"
-    #    # lock_val "1" "/proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_enable"
-    #    #lock_val "80" "/proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_up_loading"
-    #    #lock_val "60" "/proc/perfmgr/boost_ctrl/cpu_ctrl/cfp_down_loading"
-    #fi
     # disable sched global placement boost
     lock_val "0" $SCHED/sched_boost
     lock_val "1000" $SCHED/sched_min_task_util_for_boost
@@ -198,7 +178,7 @@ unify_sched() {
     # The same Binder, A55@1.0g took 7.3ms，A76@1.0g took 3.0ms, in this case, A76's efficiency is 2.4x of A55's.
     # However in EAS model A76's efficiency is 1.7x of A55's, so the down migrate threshold need compensate.
     set_sched_migrate "50" "15" "999" "888"
-    set_sched_migrate "50 90" "15 70" "999" "888"
+    set_sched_migrate "50 80" "15 60" "999" "888"
 
     # 10ms=10000000, prefer to use prev cpu, decrease jitter from 0.5ms to 0.3ms with lpm settings
     # 0.2ms=200000, prevent system_server binders pinned on perf cluster
@@ -213,10 +193,6 @@ unify_sched() {
         lock_val "400" "/sys/kernel/hmp/sb_up_threshold"
         lock_val "200" "/sys/kernel/hmp/sb_down_threshold"
     fi
-    # lock /proc/perfmgr/boost_ctrl/cpu_ctrl/boot_freq
-
-    lock_val "1" /proc/perfmgr/syslimiter/syslimiter_fps_120
-    lock /proc/ppm/policy/forcelimit_cpu_core
 }
 
 unify_lpm() {
@@ -255,7 +231,7 @@ disable_hotplug() {
 
     # bring all cores online
     for i in 0 1 2 3 4 5 6 7 8 9; do
-        lock_val "1" $CPU/cpu$i/online
+        mutate "1" $CPU/cpu$i/online
     done
 }
 
@@ -285,22 +261,23 @@ disable_kernel_boost() {
 
     #MTK PPM must be enabled
     lock_val "1" /proc/ppm/enabled
-    lock_val "0 0" /proc/ppm/policy_status
-    lock_val "1 0" /proc/ppm/policy_status
+    lock_val "0 1" /proc/ppm/policy_status
+    lock_val "1 1" /proc/ppm/policy_status
     lock_val "2 0" /proc/ppm/policy_status
     lock_val "3 0" /proc/ppm/policy_status
     lock_val "4 0" /proc/ppm/policy_status
-    lock_val "5 0" /proc/ppm/policy_status
+    lock_val "5 1" /proc/ppm/policy_status
     lock_val "7 0" /proc/ppm/policy_status
     lock_val "8 0" /proc/ppm/policy_status
     lock_val "9 0" /proc/ppm/policy_status
+    lock_val "10 0" /proc/ppm/policy_status
     # used by uperf
     lock_val "6 1" /proc/ppm/policy_status
     #Active MTK Memery Management
-    lock_val "1" /proc/mtk-perf/lowmem_hint_enable
-    lock_val "0" /proc/cpu_loading/onoff
-    lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
-    lock_val "enable=1" /proc/sla/config
+    #lock_val "1" /proc/mtk-perf/lowmem_hint_enable
+    #lock_val "0" /proc/cpu_loading/onoff
+    #lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
+    #lock_val "enable=1" /proc/sla/config
 
     # Samsung
     mutate "0" "/sys/class/input_booster/*"
@@ -334,7 +311,7 @@ disable_kernel_boost() {
 
 disable_userspace_boost() {
     # Qualcomm perfd
-    stop perfd 2
+    stop perfd 2>/dev/null
 
     # Qualcomm&MTK perfhal
     # keep perfhal running with empty config file in magisk mode
@@ -344,7 +321,7 @@ disable_userspace_boost() {
     # stop vendor.perfservice
 
     # brain service maybe not smart
-    stop oneplus_brain_service
+    stop oneplus_brain_service 2>/dev/null
 
     # disable service below will BOOM
     # stop vendor.power.stats-hal-1-0
@@ -354,12 +331,12 @@ disable_userspace_boost() {
 log "PATH=$PATH"
 log "sh=$(which sh)"
 rebuild_process_scan_cache
-disable_userspace_boost
-disable_kernel_boost
-disable_hotplug
-unify_cpufreq
-unify_sched
-unify_lpm
+(disable_userspace_boost &)
+(disable_kernel_boost &)
+(disable_hotplug &)
+(unify_cpufreq &)
+(unify_sched &)
+(unify_lpm &)
 
 # make sure that all the related cpu is online
 unify_cgroup
