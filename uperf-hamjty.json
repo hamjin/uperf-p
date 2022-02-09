@@ -1,6 +1,6 @@
 {
-  "versionCode": 220208,
-  "version": "v2 (21.08.15),GPU_Lock-fixed-22.02.08",
+  "versionCode": 220209,
+  "version": "v2 (21.08.15),GPU_Lock-fixed-22.02.09",
   "zipUrl": "https://gitee.com/hamjin/uperf/raw/update/uperf-dev-21.08.15-GPU_Lock-fixed.zip",
   "changelog": "https://gitee.com/hamjin/uperf/raw/update/changelog.md"
 }
