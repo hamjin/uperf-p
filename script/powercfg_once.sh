@@ -13,44 +13,44 @@ BASEDIR="$(dirname "$0")"
 unify_cgroup() {
     # clear stune & uclamp
     for g in background foreground top-app; do
-        lock_val "0" /dev/stune/$g/schedtune.sched_boost_no_override
-        lock_val "0" /dev/stune/$g/schedtune.boost
-        lock_val "0" /dev/stune/$g/schedtune.prefer_idle
-        lock_val "0" /dev/cpuctl/$g/cpu.uclamp.sched_boost_no_override
-        lock_val "0" /dev/cpuctl/$g/cpu.uclamp.min
-        lock_val "0" /dev/cpuctl/$g/cpu.uclamp.latency_sensitive
+        mutate "0" /dev/stune/$g/schedtune.sched_boost_no_override
+        mutate "0" /dev/stune/$g/schedtune.boost
+        mutate "0" /dev/stune/$g/schedtune.prefer_idle
+        mutate "0" /dev/cpuctl/$g/cpu.uclamp.sched_boost_no_override
+        mutate "0" /dev/cpuctl/$g/cpu.uclamp.min
+        mutate "0" /dev/cpuctl/$g/cpu.uclamp.latency_sensitive
     done
-    for cg in stune cpuctl; do
-        for p in $(cat /dev/$cg/top-app/tasks); do
-            echo $p >/dev/$cg/foreground/tasks
-        done
-    done
+    #for cg in stune cpuctl; do
+    #    for p in $(cat /dev/$cg/top-app/tasks); do
+    #        echo $p >/dev/$cg/foreground/tasks
+    #    done
+    #done
 
     # launcher is usually in foreground group, uperf will take care of them
-    lock_val "0-7" /dev/cpuset/foreground/boost/cpus
-    lock_val "0-7" /dev/cpuset/foreground/cpus
-    lock_val "0-6" /dev/cpuset/restricted/cpus
+    mutate "0-7" /dev/cpuset/foreground/boost/cpus
+    mutate "0-7" /dev/cpuset/foreground/cpus
+    mutate "0-6" /dev/cpuset/restricted/cpus
     # VMOS may set cpuset/background/cpus to "0"
     lock /dev/cpuset/background/cpus
 
     # Reduce Perf Cluster Wakeup
     # daemons
-    pin_proc_on_pwr "crtc_commit|crtc_event|pp_event|msm_irqbalance|netd|mdnsd|analytics"
-    pin_proc_on_pwr "imsdaemon|cnss-daemon|qadaemon|qseecomd|time_daemon|ATFWD-daemon|ims_rtp_daemon|qcrilNrd"
+    # pin_proc_on_pwr "crtc_commit|crtc_event|pp_event|msm_irqbalance|netd|mdnsd|analytics"
+    # pin_proc_on_pwr "imsdaemon|cnss-daemon|qadaemon|qseecomd|time_daemon|ATFWD-daemon|ims_rtp_daemon|qcrilNrd"
     # ueventd related to hotplug of camera, wifi, usb...
     # pin_proc_on_pwr "ueventd"
     # hardware services, eg. android.hardware.sensors@1.0-service
-    pin_proc_on_pwr "android.hardware.bluetooth"
-    pin_proc_on_pwr "android.hardware.gnss"
-    pin_proc_on_pwr "android.hardware.health"
+    # pin_proc_on_pwr "android.hardware.bluetooth" #It reduce MIUI+ Speed
+    #pin_proc_on_pwr "android.hardware.gnss"
+    #pin_proc_on_pwr "android.hardware.health"
     pin_proc_on_pwr "android.hardware.thermal"
-    pin_proc_on_pwr "android.hardware.wifi"
-    pin_proc_on_pwr "android.hardware.keymaster"
-    pin_proc_on_pwr "vendor.qti.hardware.qseecom"
+    #pin_proc_on_pwr "android.hardware.wifi" #It reduce MIUI+ Speed
+    #pin_proc_on_pwr "android.hardware.keymaster"
+    #pin_proc_on_pwr "vendor.qti.hardware.qseecom"
     pin_proc_on_pwr "hardware.sensors"
     pin_proc_on_pwr "sensorservice"
     # com.android.providers.media.module controlled by uperf
-    pin_proc_on_pwr "android.process.media"
+    # pin_proc_on_pwr "android.process.media" #It makes Audio lack
     # com.miui.securitycenter & com.miui.securityadd
     pin_proc_on_pwr "miui\.security"
 
@@ -93,13 +93,13 @@ unify_cgroup() {
     unpin_proc "zygote|usap"
     change_task_high_prio "zygote|usap"
 
-    # busybox fork from magiskd should run on little Only
-    pin_proc_on_pwr "magiskd"
-    pin_proc_on_pwr "zygiskd"
-    pin_proc_on_pwr "zygiskd64"
-    change_task_nice "magiskd" "19"
-    change_task_nice "zygiskd" "19"
-    change_task_nice "zygiskd64" "19"
+    # Magisk and Zygisk should be controled by system
+    #pin_proc_on_pwr "magiskd"
+    #pin_proc_on_pwr "zygiskd"
+    #pin_proc_on_pwr "zygiskd64"
+    #change_task_nice "magiskd" "19"
+    #change_task_nice "zygiskd" "19"
+    #change_task_nice "zygiskd64" "19"
 }
 
 unify_cpufreq() {
@@ -182,9 +182,11 @@ unify_sched() {
 
     # 10ms=10000000, prefer to use prev cpu, decrease jitter from 0.5ms to 0.3ms with lpm settings
     # 0.2ms=200000, prevent system_server binders pinned on perf cluster
+    #Response Optimize
     lock_val "200000" $SCHED/sched_migration_cost_ns
-    lock_val "10000000" /proc/sys/kernel/sched_latency_ns
+    lock_val "5000000" /proc/sys/kernel/sched_latency_ns
     lock_val "2000000" /proc/sys/kernel/sched_min_granularity_ns
+    #HMP Optimize
     if [ -d /sys/kernel/hmp/ ]; then
         lock_val "0" "/sys/kernel/hmp/boost"
         lock_val "0" "/sys/kernel/hmp/boostpulse_duration"
@@ -269,8 +271,8 @@ disable_kernel_boost() {
     lock_val "5 1" /proc/ppm/policy_status
     lock_val "7 0" /proc/ppm/policy_status
     lock_val "8 0" /proc/ppm/policy_status
-    lock_val "9 0" /proc/ppm/policy_status
-    lock_val "10 0" /proc/ppm/policy_status
+    lock_val "9 1" /proc/ppm/policy_status
+    lock_val "10 1" /proc/ppm/policy_status
     # used by uperf
     lock_val "6 1" /proc/ppm/policy_status
     #Active MTK Memery Management
@@ -315,10 +317,11 @@ disable_userspace_boost() {
 
     # Qualcomm&MTK perfhal
     # keep perfhal running with empty config file in magisk mode
-    [ ! -f "$FLAGS/enable_perfhal_stub" ] && perfhal_stop
+    #[ ! -f "$FLAGS/enable_perfhal_stub" ] &&
+    perfhal_stop
 
     # xiaomi perfservice
-    # stop vendor.perfservice
+    #stop vendor.perfservice
 
     # brain service maybe not smart
     stop oneplus_brain_service 2>/dev/null

@@ -8,7 +8,7 @@ BASEDIR="$(dirname "$0")"
 
 action="$1"
 battery_temp=$(cat /sys/class/power_supply/battery/temp)
-LOWTEMP=0
+
 # $1: power_mode
 apply_power_mode() {
     uperf_set_powermode "$1"
@@ -16,27 +16,31 @@ apply_power_mode() {
 
 # $1: power_mode
 verify_power_mode() {
-    # fast -> performance
-    if ["$LOWTEMP" -eq "1" ]; then
+    local test_file="$BASEDIR/flags/boot_stage"
+    if [ -f "$test_file" ]; then
+        echo "fast"
+        return 0
+    fi
+    #LOWTEMP="0"
+    #if [ ! -f "$BASEDIR/flags/disable_lowtemp"]; then
+    if [ "$battery_temp" -lt "220" ]; then
         case "$1" in
         "powersave" | "balance") echo "lowtemp" ;;
         "performance" | "fast") echo "$1" ;;
         *) echo "lowtemp" ;;
         esac
+        return 0
     else
         case "$1" in
         "powersave" | "balance" | "performance" | "fast") echo "$1" ;;
         *) echo "balance" ;;
         esac
+        return 0
     fi
 }
 
 # 1. target from exec parameter
-if [ ! -f "$BASEDIR/flags/disable_lowtemp"]; then
-    if [ "$battery_temp" -lt "220" ]; then
-        LOWTEMP=1
-    fi
-fi
+
 if [ "$action" != "" ]; then
     action="$(verify_power_mode "$action")"
     apply_power_mode "$action"

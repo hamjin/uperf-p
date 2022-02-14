@@ -9,8 +9,8 @@ USER_PATH="/data/media/0/yc/uperf"
 
 # $1:error_message
 _abort() {
-    ui_print "$1"
-    ui_print "! Uperf installation failed."
+    echo "$1"
+    echo "! Uperf installation failed."
     exit 1
 }
 
@@ -35,60 +35,60 @@ _set_perm_recursive() {
 }
 
 _get_nr_core() {
-    ui_print "$(cat /proc/stat | grep cpu[0-9] | wc -l)"
+    echo "$(cat /proc/stat | grep cpu[0-9] | wc -l)"
 }
 
 _is_aarch64() {
     if [ "$(getprop ro.product.cpu.abi)" == "arm64-v8a" ]; then
-        ui_print "true"
+        echo "true"
     else
-        ui_print "false"
+        echo "false"
     fi
 }
 
 _is_eas() {
     if [ "$(grep sched /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors)" != "" ]; then
-        ui_print "true"
+        echo "true"
     else
-        ui_print "false"
+        echo "false"
     fi
 }
 
 # $1:cpuid
 _get_maxfreq() {
-    local fpath="/sys/devices/system/cpu/cpu$1/cpufreq/scaling_available_frequencies"
+    local fpath="/sys/devices/system/cpu/cpu$1/cpufreq/cpuinfo_max_freq"
     local maxfreq="0"
 
     if [ ! -f "$fpath" ]; then
-        ui_print ""
+        echo ""
         return
     fi
 
     for f in $(cat $fpath); do
         [ "$f" -gt "$maxfreq" ] && maxfreq="$f"
     done
-    ui_print "$maxfreq"
+    echo "$maxfreq"
 }
 
 _get_maxfreq_6893() {
     local fpath="/sys/devices/system/cpu/cpufreq/policy$1/cpuinfo_max_freq"
     local maxfreq="0"
     if [ ! -f "$fpath" ]; then
-        ui_print ""
+        echo ""
         return
     fi
 
     for f in $(cat $fpath); do
         [ "$f" -gt "$maxfreq" ] && maxfreq="$f"
     done
-    ui_print "$maxfreq"
+    echo "$maxfreq"
 }
 
 _get_socid() {
     if [ -f /sys/devices/soc0/soc_id ]; then
-        ui_print "$(cat /sys/devices/soc0/soc_id)"
+        echo "$(cat /sys/devices/soc0/soc_id)"
     else
-        ui_print "$(cat /sys/devices/system/soc/soc0/id)"
+        echo "$(cat /sys/devices/system/soc/soc0/id)"
     fi
 }
 
@@ -96,18 +96,18 @@ _get_sm6150_type() {
     [ -f /sys/devices/soc0/soc_id ] && SOC_ID="$(cat /sys/devices/soc0/soc_id)"
     [ -f /sys/devices/system/soc/soc0/id ] && SOC_ID="$(cat /sys/devices/system/soc/soc0/id)"
     case "$SOC_ID" in
-    365 | 366) ui_print "sdm730" ;;
-    355 | 369) ui_print "sdm675" ;;
+    365 | 366) echo "sdm730" ;;
+    355 | 369) echo "sdm675" ;;
     esac
 }
 
 _get_sdm76x_type() {
     if [ "$(_get_maxfreq 7)" -gt 2800000 ]; then
-        ui_print "sdm768"
+        echo "sdm768"
     elif [ "$(_get_maxfreq 7)" -gt 2300000 ]; then
-        ui_print "sdm765"
+        echo "sdm765"
     else
-        ui_print "sdm750"
+        echo "sdm750"
     fi
 }
 
@@ -123,13 +123,13 @@ _get_msm8916_type() {
 _get_msm8952_type() {
     case "$(_get_socid)" in
     "264" | "289")
-        ui_print "msm8952"
+        echo "msm8952"
         ;;
     *)
         if [ "$(_get_nr_core)" == "8" ]; then
-            ui_print "sdm652"
+            echo "sdm652"
         else
-            ui_print "sdm650"
+            echo "sdm650"
         fi
         ;;
     esac
@@ -137,9 +137,9 @@ _get_msm8952_type() {
 
 _get_sdm636_type() {
     if [ "$(_is_eas)" == "true" ]; then
-        ui_print "sdm636_eas"
+        echo "sdm636_eas"
     else
-        ui_print "sdm636_hmp"
+        echo "sdm636_hmp"
     fi
 }
 
@@ -149,36 +149,36 @@ _get_sdm660_type() {
     # sdm660 & sdm636 may share the same platform name
     if [ "$b_max" -gt 2000000 ]; then
         if [ "$(_is_eas)" == "true" ]; then
-            ui_print "sdm660_eas"
+            echo "sdm660_eas"
         else
-            ui_print "sdm660_hmp"
+            echo "sdm660_hmp"
         fi
     else
-        ui_print "$(_get_sdm636_type)"
+        echo "$(_get_sdm636_type)"
     fi
 }
 
 _get_sdm652_type() {
     if [ "$(_is_eas)" == "true" ]; then
-        ui_print "sdm652_eas"
+        echo "sdm652_eas"
     else
-        ui_print "sdm652_hmp"
+        echo "sdm652_hmp"
     fi
 }
 
 _get_sdm650_type() {
     if [ "$(_is_eas)" == "true" ]; then
-        ui_print "sdm650_eas"
+        echo "sdm650_eas"
     else
-        ui_print "sdm650_hmp"
+        echo "sdm650_hmp"
     fi
 }
 
 _get_sdm626_type() {
     if [ "$(_is_eas)" == "true" ]; then
-        ui_print "sdm626_eas"
+        echo "sdm626_eas"
     else
-        ui_print "sdm626_hmp"
+        echo "sdm626_hmp"
     fi
 }
 
@@ -188,20 +188,20 @@ _get_sdm625_type() {
     # sdm625 & sdm626 may share the same platform name
     if [ "$b_max" -lt 2100000 ]; then
         if [ "$(_is_eas)" == "true" ]; then
-            ui_print "sdm625_eas"
+            echo "sdm625_eas"
         else
-            ui_print "sdm625_hmp"
+            echo "sdm625_hmp"
         fi
     else
-        ui_print "$(_get_sdm626_type)"
+        echo "$(_get_sdm626_type)"
     fi
 }
 
 _get_sdm835_type() {
     if [ "$(_is_eas)" == "true" ]; then
-        ui_print "sdm835_eas"
+        echo "sdm835_eas"
     else
-        ui_print "sdm835_hmp"
+        echo "sdm835_hmp"
     fi
 }
 
@@ -220,38 +220,38 @@ _get_sdm82x_type() {
     if [ "$l_max" -lt 1800000 ]; then
         if [ "$b_max" -gt 2100000 ]; then
             # 1593/2150
-            ui_print "sdm820_hmp"
+            echo "sdm820_hmp"
         elif [ "$b_max" -gt 1900000 ]; then
             # 1593/1996
-            ui_print "sdm821_v1_hmp"
+            echo "sdm821_v1_hmp"
         else
             # 1363/1824
-            ui_print "sdm820_hmp"
+            echo "sdm820_hmp"
         fi
     else
         if [ "$b_max" -gt 2300000 ]; then
             # 2188/2342
-            ui_print "sdm821_v3_hmp"
+            echo "sdm821_v3_hmp"
         else
             # 1996/2150
-            ui_print "sdm821_v2_hmp"
+            echo "sdm821_v2_hmp"
         fi
     fi
 }
 
 _get_e8890_type() {
     if [ "$(_is_eas)" == "true" ]; then
-        ui_print "e8890_eas"
+        echo "e8890_eas"
     else
-        ui_print "e8890_hmp"
+        echo "e8890_hmp"
     fi
 }
 
 _get_e8895_type() {
     if [ "$(_is_eas)" == "true" ]; then
-        ui_print "e8895_eas"
+        echo "e8895_eas"
     else
-        ui_print "e8895_hmp"
+        echo "e8895_hmp"
     fi
 }
 
@@ -259,9 +259,9 @@ _get_mt6853_type() {
     local b_max
     b_max="$(_get_maxfreq 6)"
     if [ "$b_max" -gt 2200000 ]; then
-        ui_print "mtd800u"
+        echo "mtd800u"
     else
-        ui_print "mtd720"
+        echo "mtd720"
     fi
 }
 
@@ -269,9 +269,9 @@ _get_mt6873_type() {
     local b_max
     b_max="$(_get_maxfreq 4)"
     if [ "$b_max" -gt 2500000 ]; then
-        ui_print "mtd820"
+        echo "mtd820"
     else
-        ui_print "mtd800"
+        echo "mtd800"
     fi
 }
 
@@ -279,18 +279,18 @@ _get_mt6877_type() {
     local b_max
     b_max="$(_get_maxfreq 4)"
     if [ "$b_max" -gt 2500000 ]; then
-        ui_print "mtd920"
+        echo "mtd920"
     else
-        ui_print "mtd900"
+        echo "mtd900"
     fi
 }
 _get_mt6885_type() {
     local b_max
     b_max="$(_get_maxfreq 4)"
     if [ "$b_max" -ge 2500000 ]; then
-        ui_print "mtd1000"
+        echo "mtd1000"
     else
-        ui_print "mtd1000l"
+        echo "mtd1000l"
     fi
 }
 
@@ -298,19 +298,27 @@ _get_mt6893_type() {
     local b_max
     b_max="$(_get_maxfreq_6893 7)"
     if [ "$b_max" -ge 2700000 ]; then
-        ui_print "mtd1200"
+        echo "mtd1200"
     else
-        ui_print "mtd1100"
+        echo "mtd1100"
     fi
 }
-
+_get_mt6833_type() {
+    local b_max
+    b_max="$(_get_maxfreq 7)"
+    if [ "$b_max" -ge 2300000 ]; then
+        echo "mtd810"
+    else
+        echo "mtd700"
+    fi
+}
 _get_lahaina_type() {
     local b_max
     b_max="$(_get_maxfreq 7)"
     if [ "$b_max" -gt 2600000 ]; then
-        ui_print "sdm888"
+        echo "sdm888"
     else
-        ui_print "sdm780"
+        echo "sdm780"
     fi
 }
 
@@ -373,19 +381,30 @@ _get_cfgname() {
     "mt6885") ret="$(_get_mt6885_type)" ;;
     "mt6889") ret="$(_get_mt6885_type)" ;;
     "mt6891") ret="mtd1100" ;;
-    "mt6833") ret="mtd700" ;;
     "mt6893") ret="$(_get_mt6893_type)" ;; #Redmi Note10 Pro's stupid build.prop declares it CPU is mtd1200 but it's actually mtd1100
     "mt6877") ret="$(_get_mt6877_type)" ;; #D900 D920
+    "mt6833") ret="$(_get_mt6833_type)" ;; # D810 & D700
+    "mt6833p") ret="mtd810" ;;             # D810
+    "mt6833v") ret="mtd810" ;;             # D810
+    "mt6983") ret="mtd9000" ;;             # D9000
     *) ret="unsupported" ;;
     esac
-    ui_print "$ret"
+    echo "$ret"
 }
 
 uperf_print_banner() {
+    # 获取模块版本
+    module_version="$(grep_prop version $MODPATH/module.prop)"
+    # 获取模块名称
+    module_name="$(grep_prop name $MODPATH/module.prop)"
+    # 获取模块id
+    module_id="$(grep_prop id $MODPATH/module.prop)"
+    # 获取模块作者
+    module_author="$(grep_prop author $MODPATH/module.prop)"
     ui_print ""
-    ui_print "* Uperf https://gitee.com/hamjin/uperf/"
-    ui_print "* 作者: Matt Yang && HamJTY"
-    ui_print "* Version: v2 (21.08.15),GPU_Lock-fixed-22.02.09"
+    ui_print "* YC调度—天玑优化(Uperf) https://gitee.com/hamjin/uperf/"
+    ui_print "* 作者: $module_author"
+    ui_print "* 版本: $module_version"
 }
 
 uperf_print_finish() {
@@ -432,9 +451,9 @@ uperf_install() {
         else
             ui_print "- 检测到CPU: $target"
         fi
-        echo $cfgname >$MODPATH/flags/cfgname
-        echo $DEVICE >$MODPATH/flags/device
-        echo $DEVCODE >$MODPATH/flags/device_code
+        echo $cfgname >$USER_PATH/cfgname
+        echo $DEVICE >$USER_PATH/device
+        echo $DEVCODE >$USER_PATH/device_code
         ui_print "- 配置平台文件: $cfgname"
         ui_print "- 由于联发科的问题"
         ui_print "- Android 12上天玑1100、1200识别错误的可能性大幅提高"
@@ -444,7 +463,7 @@ uperf_install() {
         _setup_platform_file "$cfgname"
     else
         ui_print "- 配置平台文件: $cfgname"
-        _abort "! [$target] not supported."
+        _abort "! [$target] 暂时没有支持."
     fi
     _place_user_config
     rm -rf $BASEDIR/config
@@ -460,8 +479,8 @@ uperf_install() {
     chmod 0755 $BASEDIR/bin/*
 
     rm -rf $BASEDIR/uperf
-    ui_print "- 关闭位于用户数据分区的MTK官方温控 -"
     ui_print "- 关闭位于Vendor分区的MTK官方温控锁帧等负优化 -"
+    ui_print "- 关闭位于用户数据分区的MTK官方温控 -"
     chattr -i "/data/vendor/.tp"
     chattr -i /data/vendor/thermal
     rm -rf "/data/vendor/.tp"
@@ -471,14 +490,21 @@ uperf_install() {
     chattr +i "/data/vendor/.tp"
     chattr +i /data/vendor/thermal
     ui_print "- 关闭位于用户数据分区的小米云控 -"
-    chattr -i /data/thermal
-    chattr -i /data/system/mcd
-    rm -rf /data/thermal
-    rm -rf /data/system/mcd
-    touch /data/system/mcd
-    touch /data/thermal
-    chattr +i /data/thermal
-    chattr +i /data/system/mcd
+    chattr -i /data/thermal 2>&1
+    chattr -i /data/system/mcd 2>&1
+    rm -rf /data/thermal 2>&1
+    rm -rf /data/system/mcd 2>&1
+    touch /data/system/mcd 2>&1
+    touch /data/thermal 2>&1
+    chattr +i /data/thermal 2>&1
+    chattr +i /data/system/mcd 2>&1
+    chattr -i /data/system/migt 2>&1
+    chattr -i /data/system/whetstone 2>&1
+    rm -rf /data/system/migt /data/system/whetstone 2>&1
+    touch /data/system/whetstone 2>&1
+    touch /data/system/migt 2>&1
+    chattr +i /data/system/migt 2>&1
+    chattr +i /data/system/whetstone 2>&1
 }
 
 injector_install() {

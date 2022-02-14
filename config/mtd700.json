@@ -1,7 +1,7 @@
 {
     "meta": {
-        "name": "Dimensity 720(mt6853)[21.07.25] With Mali GPU Freq Lock 22.2.6",
-        "author": "yc@coolapk and hamjin@coolapk",
+        "name": "Dimensity 700(mt6833)[22.2.6]&Mali GPU Freq Lock 22.2.6",
+        "author": "hamjin@coolapk",
         "features": "touch cpuload render standby sfanalysis ssanalysis dispfeature"
     },
     "common": {
