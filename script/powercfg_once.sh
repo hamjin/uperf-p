@@ -20,11 +20,11 @@ unify_cgroup() {
         mutate "0" /dev/cpuctl/$g/cpu.uclamp.min
         mutate "0" /dev/cpuctl/$g/cpu.uclamp.latency_sensitive
     done
-    #for cg in stune cpuctl; do
-    #    for p in $(cat /dev/$cg/top-app/tasks); do
-    #        echo $p >/dev/$cg/foreground/tasks
-    #    done
-    #done
+    for cg in stune cpuctl; do
+        for p in $(cat /dev/$cg/top-app/tasks); do
+            echo $p >/dev/$cg/foreground/tasks
+        done
+    done
 
     # launcher is usually in foreground group, uperf will take care of them
     mutate "0-7" /dev/cpuset/foreground/boost/cpus
@@ -40,13 +40,13 @@ unify_cgroup() {
     # ueventd related to hotplug of camera, wifi, usb...
     # pin_proc_on_pwr "ueventd"
     # hardware services, eg. android.hardware.sensors@1.0-service
-    # pin_proc_on_pwr "android.hardware.bluetooth" #It reduce MIUI+ Speed
-    #pin_proc_on_pwr "android.hardware.gnss"
-    #pin_proc_on_pwr "android.hardware.health"
+    pin_proc_on_pwr "android.hardware.bluetooth" #It reduce MIUI+ Speed
+    pin_proc_on_pwr "android.hardware.gnss"
+    pin_proc_on_pwr "android.hardware.health"
     pin_proc_on_pwr "android.hardware.thermal"
-    #pin_proc_on_pwr "android.hardware.wifi" #It reduce MIUI+ Speed
-    #pin_proc_on_pwr "android.hardware.keymaster"
-    #pin_proc_on_pwr "vendor.qti.hardware.qseecom"
+    pin_proc_on_pwr "android.hardware.wifi" #It reduce MIUI+ Speed
+    pin_proc_on_pwr "android.hardware.keymaster"
+    pin_proc_on_pwr "vendor.qti.hardware.qseecom"
     pin_proc_on_pwr "hardware.sensors"
     pin_proc_on_pwr "sensorservice"
     # com.android.providers.media.module controlled by uperf
@@ -115,11 +115,6 @@ unify_cpufreq() {
     lock /sys/devices/system/cpu/sched/set_sched_isolation
     for i in 0 1 2 3 4 5 6 7 8 9; do
         lock_val "0" $CPU/cpu$i/sched_load_boost
-    done
-    for i in 0 1 2 3 4; do
-        lock_val "$i" /sys/devices/system/cpu/sched/set_sched_deisolation
-    done
-    for i in 5 6 7; do
         lock_val "$i" /sys/devices/system/cpu/sched/set_sched_deisolation
     done
 
@@ -275,6 +270,11 @@ disable_kernel_boost() {
     lock_val "10 1" /proc/ppm/policy_status
     # used by uperf
     lock_val "6 1" /proc/ppm/policy_status
+    lock_val "99" /sys/kernel/ged/hal/custom_boost_gpu_freq
+    lock_val "1" /sys/kernel/ged/hal/dvfs_loading_mode
+    lock_val "1" /sys/kernel/ged/hal/dvfs_margin_value
+    lock_val "99" /sys/module/ged/parameters/gpu_cust_boost_freq
+
     #Active MTK Memery Management
     #lock_val "1" /proc/mtk-perf/lowmem_hint_enable
     #lock_val "0" /proc/cpu_loading/onoff
@@ -317,8 +317,7 @@ disable_userspace_boost() {
 
     # Qualcomm&MTK perfhal
     # keep perfhal running with empty config file in magisk mode
-    #[ ! -f "$FLAGS/enable_perfhal_stub" ] &&
-    perfhal_stop
+    [ ! -f "$FLAGS/enable_perfhal_stub" ] && perfhal_stop
 
     # xiaomi perfservice
     #stop vendor.perfservice
