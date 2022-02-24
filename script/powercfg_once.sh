@@ -12,97 +12,111 @@ BASEDIR="$(dirname "$0")"
 
 unify_cgroup() {
     # clear stune & uclamp
-    for g in background foreground top-app; do
+    for g in background foreground top-app background/untrustedapp; do
         lock_val "0" /dev/stune/$g/schedtune.sched_boost_no_override
         lock_val "0" /dev/stune/$g/schedtune.boost
         lock_val "0" /dev/stune/$g/schedtune.prefer_idle
         lock_val "0" /dev/cpuctl/$g/cpu.uclamp.sched_boost_no_override
         lock_val "0" /dev/cpuctl/$g/cpu.uclamp.min
         lock_val "0" /dev/cpuctl/$g/cpu.uclamp.latency_sensitive
+        lock_val "1" /dev/cpuset/$g/sched_load_balance
     done
-    for cg in stune cpuctl; do
+    for cg in stune cpuctl cpuset; do
         for p in $(cat /dev/$cg/top-app/tasks); do
             echo $p >/dev/$cg/foreground/tasks
         done
     done
-
+    #for cg in stune cpuctl cpuset; do
+    #    for p in $(cat /dev/$cg/foreground/tasks); do
+    #        echo $p >/dev/$cg/top-app/tasks
+    #    done
+    #done
+    #for p in $(cat /dev/cpuset/background/tasks); do
+    #    echo $p >/dev/cpuset/background/untrustedapp/tasks
+    #done
     # launcher is usually in foreground group, uperf will take care of them
-    lock_val "0-7" /dev/cpuset/top-app/boost/cpus
-    lock_val "0-7" /dev/cpuset/top-app/cpus
-    lock_val "4-7" /dev/cpuset/game/cpus
-    lock_val "4-7" /dev/cpuset/gamelite/cpus
     lock_val "0-7" /dev/cpuset/foreground/boost/cpus
     lock_val "0-7" /dev/cpuset/foreground/cpus
     lock_val "0-6" /dev/cpuset/restricted/cpus
-    lock_val "2-3" /dev/cpuset/system-background/cpus
-    lock_val "0-1" /dev/cpuset/background/cpus
-
     # VMOS may set cpuset/background/cpus to "0"
     lock /dev/cpuset/background/cpus
-
+    #lock_val "0-1" /dev/cpuset/background/cpus
+    #lock_val "0-1" /dev/cpuset/background/untrustedapp/cpus
+    #lock_val "0-1" /dev/cpuset/system-background/cpus
     # Reduce Perf Cluster Wakeup
     # daemons
-    pin_proc_on_pwr "crtc_commit|crtc_event|pp_event|msm_irqbalance|netd|mdnsd|analytics"
-    pin_proc_on_pwr "imsdaemon|cnss-daemon|qadaemon|qseecomd|time_daemon|ATFWD-daemon|ims_rtp_daemon|qcrilNrd"
+    #pin_proc_on_pwr "crtc_commit|crtc_event|pp_event|msm_irqbalance|netd|mdnsd|analytics"
+    #pin_proc_on_pwr "imsdaemon|cnss-daemon|qadaemon|qseecomd|time_daemon|ATFWD-daemon|ims_rtp_daemon|qcrilNrd"
     # ueventd related to hotplug of camera, wifi, usb...
-    #pin_proc_on_pwr "ueventd"
+    # pin_proc_on_pwr "ueventd"
     # hardware services, eg. android.hardware.sensors@1.0-service
-    pin_proc_on_pwr "android.hardware.bluetooth"
+    pin_proc_on_pwr "android.hardware.bluetooth" #It reduce MIUI+ Speed
     pin_proc_on_pwr "android.hardware.gnss"
     pin_proc_on_pwr "android.hardware.health"
     pin_proc_on_pwr "android.hardware.thermal"
-    pin_proc_on_pwr "android.hardware.wifi"
+    pin_proc_on_pwr "android.hardware.wifi" #It reduce MIUI+ Speed
     pin_proc_on_pwr "android.hardware.keymaster"
     pin_proc_on_pwr "vendor.qti.hardware.qseecom"
     pin_proc_on_pwr "hardware.sensors"
     pin_proc_on_pwr "sensorservice"
     # com.android.providers.media.module controlled by uperf
-    pin_proc_on_pwr "android.process.media"
+    #pin_proc_on_mid "android.process.media" #It makes Audio lack when run on little
     # com.miui.securitycenter & com.miui.securityadd
-    pin_proc_on_pwr "miui\.security"
+    #pin_proc_on_pwr "miui\.security"
+    #pin_proc_on_perf "lbe\.security\.miui"           # pin on pwr may reduce permission given
+    #pin_proc_on_perf "android\.permissioncontroller" # pin on pwr may reduce permission given
+    #change_proc_cgroup "miui\.home" "top-app" "stune"  # Desktop On Foreground is wrong
+    #change_proc_cgroup "miui\.home" "top-app" "cpuset" # Desktop On Foreground is wrong
 
     # system_server blacklist
     # system_server controlled by uperf
-    change_proc_cgroup "system_server" "" "cpuset"
+    change_proc_cgroup "system_server" "foreground" "cpuset"
     # input dispatcher
-    change_thread_high_prio "system_server" "input"
+    #change_thread_high_prio "system_server" "input"
     # related to camera startup
-    change_thread_affinity "system_server" "ProcessManager" "ff"
+    #change_thread_affinity "system_server" "ProcessManager" "ff"
     # not important
-    pin_thread_on_pwr "system_server" "Miui|Connect|Wifi|backup|Sync|Observer|Power|Sensor|batterystats"
-    pin_thread_on_pwr "system_server" "Thread-|pool-|Jit|CachedAppOpt|Greezer|TaskSnapshot|Oom"
-    change_thread_nice "system_server" "Greezer|TaskSnapshot|Oom" "4"
+    #pin_thread_on_pwr "system_server" "Miui|Connect|Wifi|backup|Sync|Observer|Power|Sensor|batterystats"
+    #pin_thread_on_pwr "system_server" "Thread-|pool-|Jit|CachedAppOpt|Greezer|TaskSnapshot|Oom"
+    #change_thread_nice "system_server" "Greezer|TaskSnapshot|Oom" "4"
     # pin_thread_on_pwr "system_server" "Async" # it blocks camera
     # pin_thread_on_pwr "system_server" "\.bg" # it blocks binders
     # pin_thread_on_pwr "system_server" "Network" # may reduce network speed on MIUI
     # do not let GC thread block system_server
-    # pin_thread_on_mid "system_server" "HeapTaskDaemon"
-    # pin_thread_on_mid "system_server" "FinalizerDaemon"
+    #pin_thread_on_mid "system_server" "HeapTaskDaemon"
+    #pin_thread_on_mid "system_server" "FinalizerDaemon"
 
     # Render Pipeline
     # surfaceflinger controlled by uperf
     # android.phone controlled by uperf
     # speed up searching service binder
-    change_task_cgroup "servicemanag" "top-app" "cpuset"
+    #change_task_cgroup "servicemanag" "top-app" "cpuset"
     # prevent display service from being preempted by normal tasks
     # vendor.qti.hardware.display.allocator-service cannot be set to RT policy, will be reset to 120
-    unpin_proc "\.hardware\.display"
-    change_task_affinity "\.hardware\.display" "7f"
-    change_task_rt "\.hardware\.display" "2"
+    #unpin_proc "\.hardware\.display"
+    #change_task_affinity "\.hardware\.display" "7f"
+    #change_task_rt "\.hardware\.display" "2"
     # let UX related Binders run with top-app
-    change_thread_cgroup "\.hardware\.display" "^Binder" "top-app" "cpuset"
-    change_thread_cgroup "\.hardware\.display" "^HwBinder" "top-app" "cpuset"
-    change_thread_cgroup "\.composer" "^Binder" "top-app" "cpuset"
+    #change_thread_cgroup "\.hardware\.display" "^Binder" "top-app" "cpuset"
+    #change_thread_cgroup "\.hardware\.display" "^HwBinder" "top-app" "cpuset"
+    #change_thread_cgroup "\.composer" "^Binder" "top-app" "cpuset"
 
     # Heavy Scene Boost
     # boost app boot process, zygote--com.xxxx.xxx
     # boost android process pool, usap--com.xxxx.xxx
-    unpin_proc "zygote|usap"
-    change_task_high_prio "zygote|usap"
+    #unpin_proc "zygote|usap"
+    #pin_proc_on_perf "zygote|usap"
+    #change_task_high_prio "zygote|usap"
 
-    # busybox fork from magiskd
-    pin_proc_on_mid "magiskd"
-    change_task_nice "magiskd" "19"
+    # Magisk and Zygisk should be controled by system
+    #pin_proc_on_mid "magiskd"
+    #pin_proc_on_mid "zygiskd"
+    #pin_proc_on_mid "zygiskd64"
+    #pin_proc_on_mid "zygiskd32"
+    #change_task_nice "magiskd" "19"
+    #change_task_nice "zygiskd" "19"
+    #change_task_nice "zygiskd64" "19"
+    #change_task_nice "zygiskd32" "19"
 }
 
 unify_cpufreq() {
@@ -114,23 +128,47 @@ unify_cpufreq() {
     set_corectl_param "enable" "0:0 2:0 4:0 6:0 7:0"
 
     # clear cpu load scale factor
+
+    lock /sys/devices/system/cpu/sched/set_sched_isolation
     for i in 0 1 2 3 4 5 6 7 8 9; do
         lock_val "0" $CPU/cpu$i/sched_load_boost
+        lock_val "$i" /sys/devices/system/cpu/sched/set_sched_deisolation
     done
 
-    # unify governor, use schedutil if kernel has it
+    #lock /sys/devices/system/cpu/rq-stats/htask_cpucap_ctrl
+
+    # unify governor, not use schedutil if kernel has broken it
+    lock_val "1" /sys/devices/system/cpu/sched/hint_enable
+    chmod 000 /sys/devices/system/cpu/sched/hint_enable
+    lock_val "90" /sys/devices/system/cpu/sched/hint_load_thresh
+    chmod 000 /sys/devices/system/cpu/sched/hint_load_thresh
+    lock_val "1" /sys/devices/system/cpu/eas/enable
+    chmod 000 /sys/devices/system/cpu/eas/enable
+
+    #some devices don't have interactive, use ondemand instead
+    set_governor_param "scaling_governor" "0:ondemand 2:ondemand 4:ondemand 6:ondemand 7:ondemand"
     set_governor_param "scaling_governor" "0:interactive 2:interactive 4:interactive 6:interactive 7:interactive"
     set_governor_param "scaling_governor" "0:schedutil 2:schedutil 4:schedutil 6:schedutil 7:schedutil"
+    # unify walt schedutil governor
+    set_governor_param "schedutil/hispeed_freq" "0:0 2:0 4:0 6:0 7:0"
+    set_governor_param "schedutil/hispeed_load" "0:100 2:100 4:100 6:100 7:100"
+    set_governor_param "schedutil/pl" "0:1 2:1 4:1 6:1 7:1"
+    # unify hmp interactive governor, for 2+2 4+2 4+4 1+3+4 2+6
+    set_governor_param "interactive/use_sched_load" "0:1 2:1 4:1 6:1 7:1"
+    set_governor_param "interactive/use_migration_notif" "0:1 2:1 4:1 6:1 7:1"
+    set_governor_param "interactive/enable_prediction" "0:0 2:0 4:0 6:0 7:0"
+    set_governor_param "interactive/ignore_hispeed_on_notif" "0:0 2:0 4:0 6:0 7:0"
+    set_governor_param "interactive/fast_ramp_down" "0:0 2:0 4:0 6:0 7:0"
+    set_governor_param "interactive/boostpulse_duration" "0:0 2:0 4:0 6:0 7:0"
+    set_governor_param "interactive/boost" "0:0 2:0 4:0 6:0 7:0"
+    set_governor_param "interactive/timer_slack" "0:12345678 2:12345678 4:12345678 6:12345678 7:12345678"
+    # unify HMP ondemand governor for 2+2 4+2 4+4 1+3+4 2+6
+    set_governor_param "ondemand/ignore_nice_load" "0:1 2:1 4:1 6:1 7:1"
+    set_governor_param "ondemand/io_is_busy" "0:1 2:1 4:1 6:1 7:1" #io is busy at boot time
+    set_governor_param "ondemand/up_threshold" "0:60 2:60 4:60 6:60 7:60"
+    set_governor_param "ondemand/sampling_rate" "0:30000 2:30000 4:30000 6:30000 7:30000"
+    set_governor_param "ondemand/sampling_down_factor" "0:30000 2:30000 4:30000 6:30000 7:30000"
 
-    # unify hmp interactive governor, only 2+2 4+2 4+4
-    set_governor_param "interactive/use_sched_load" "0:1 2:1 4:1"
-    set_governor_param "interactive/use_migration_notif" "0:1 2:1 4:1"
-    set_governor_param "interactive/enable_prediction" "0:0 2:0 4:0"
-    set_governor_param "interactive/ignore_hispeed_on_notif" "0:0 2:0 4:0"
-    set_governor_param "interactive/fast_ramp_down" "0:0 2:0 4:0"
-    set_governor_param "interactive/boostpulse_duration" "0:0 2:0 4:0"
-    set_governor_param "interactive/boost" "0:0 2:0 4:0"
-    set_governor_param "interactive/timer_slack" "0:12345678 2:12345678 4:12345678"
 }
 
 unify_sched() {
@@ -155,11 +193,23 @@ unify_sched() {
     # The same Binder, A55@1.0g took 7.3ms，A76@1.0g took 3.0ms, in this case, A76's efficiency is 2.4x of A55's.
     # However in EAS model A76's efficiency is 1.7x of A55's, so the down migrate threshold need compensate.
     set_sched_migrate "50" "15" "999" "888"
-    set_sched_migrate "50 80" "15 60" "999" "888"
+    set_sched_migrate "50 90" "15 80" "999" "888"
 
     # 10ms=10000000, prefer to use prev cpu, decrease jitter from 0.5ms to 0.3ms with lpm settings
     # 0.2ms=200000, prevent system_server binders pinned on perf cluster
+    #Response Optimize
     lock_val "200000" $SCHED/sched_migration_cost_ns
+    lock_val "5000000" /proc/sys/kernel/sched_latency_ns
+    lock_val "2000000" /proc/sys/kernel/sched_min_granularity_ns
+    #HMP Optimize
+    #if [ -d /sys/kernel/hmp/ ]; then
+    #    lock_val "0" "/sys/kernel/hmp/boost"
+    #    lock_val "0" "/sys/kernel/hmp/boostpulse_duration"
+    #    lock_val "500" "/sys/kernel/hmp/up_threshold"
+    #    lock_val "300" "/sys/kernel/hmp/down_threshold"
+    #    lock_val "400" "/sys/kernel/hmp/sb_up_threshold"
+    #    lock_val "200" "/sys/kernel/hmp/sb_down_threshold"
+    #fi
 }
 
 unify_lpm() {
@@ -198,7 +248,7 @@ disable_hotplug() {
 
     # bring all cores online
     for i in 0 1 2 3 4 5 6 7 8 9; do
-        lock_val "1" $CPU/cpu$i/online
+        mutate "1" $CPU/cpu$i/online
     done
 }
 
@@ -210,6 +260,7 @@ disable_kernel_boost() {
     lock_val "0" "/sys/module/msm_performance/parameters/*"
 
     # MediaTek
+
     # policy_status
     # [0] PPM_POLICY_PTPOD: Meature PMIC buck currents
     # [1] PPM_POLICY_UT: Unit test
@@ -223,79 +274,37 @@ disable_kernel_boost() {
     # [9] PPM_POLICY_SYS_BOOST: disabled
     # [10] PPM_POLICY_HICA: ?
     # Usage: echo <policy_idx> <1(enable)/0(disable)> > /proc/ppm/policy_status
+
+    #MTK PPM must be enabled
     lock_val "1" /proc/ppm/enabled
-    lock_val "0" /sys/kernel/eara_thermal
-    lock_val "1" /sys/kernel/fpsgo/common/stop_boost
-    lock_val "0" /sys/kernel/fpsgo/common/force_onoff
-    lock_val "1" /proc/mtk-perf/lowmem_hint_enable
+    #not used by uperf
     lock_val "0 0" /proc/ppm/policy_status
     lock_val "1 0" /proc/ppm/policy_status
     lock_val "2 0" /proc/ppm/policy_status
     lock_val "3 0" /proc/ppm/policy_status
     lock_val "4 0" /proc/ppm/policy_status
     lock_val "5 0" /proc/ppm/policy_status
-    lock_val "6 1" /proc/ppm/policy_status
     lock_val "7 0" /proc/ppm/policy_status
     lock_val "8 0" /proc/ppm/policy_status
     lock_val "9 0" /proc/ppm/policy_status
-    # lock_val "0" /sys/module/ged/parameters/boost_amp
-    # lock_val "0" /sys/module/ged/parameters/boost_extra
-    lock_val "0" /sys/module/ged/parameters/boost_gpu_enable
-    # lock_val "0" /sys/module/ged/parameters/cpu_boost_policy
-    lock_val "0" /sys/module/ged/parameters/enable_cpu_boost
-    # lock_val "0" /sys/module/ged/parameters/enable_game_self_frc_detect
-    lock_val "0" /sys/module/ged/parameters/enable_gpu_boost
-    lock_val "0" /sys/module/ged/parameters/ged_boost_enable
-    # lock_val "0" /sys/module/ged/parameters/ged_smart_boost
-    lock_val "0" /sys/module/ged/parameters/gx_boost_on
-    # lock_val "0" /sys/module/ged/parameters/gx_dfps
-    lock_val "0" /sys/module/ged/parameters/gx_force_cpu_boost
-    # lock_val "0" /sys/module/ged/parameters/gx_frc_mode
-    # lock_val "0" /sys/module/ged/parameters/gx_game_mode
-    # lock_val "0" /sys/module/ged/parameters/is_GED_KPI_enabled
-    # lock_val "0" /sys/module/ged/parameters/boost_amp
-    #load balance
-    lock_val "0" /dev/cpuset/sched_load_balance
-    lock_val "0" /dev/cpuset/background/sched_load_balance
-    lock_val "0" /dev/cpuset/foreground/sched_load_balance
-    lock_val "0" /dev/cpuset/game/sched_load_balance
-    lock_val "0" /dev/cpuset/gamelite/sched_load_balance
-    lock_val "0" /dev/cpuset/restricted/sched_load_balance
-    lock_val "0" /dev/cpuset/system-background/sched_load_balance
-    lock_val "0" /dev/cpuset/top-app/sched_load_balance
-    lock_val "0" /dev/cpuset/vr/sched_load_balance
+    lock_val "10 0" /proc/ppm/policy_status
     # used by uperf
-    # mutate "6 1" /proc/ppm/policy_status
+    lock_val "6 1" /proc/ppm/policy_status
+    lock_val "99" /sys/kernel/ged/hal/custom_boost_gpu_freq
+    #chmod 000 /sys/kernel/ged/hal/custom_boost_gpu_freq
+    lock_val "0" /sys/kernel/ged/hal/dvfs_loading_mode
+    # lock_val "1" /sys/kernel/ged/hal/dvfs_margin_value
+    lock_val "99" /sys/module/ged/parameters/gpu_cust_boost_freq
+    lock_val "enable: 0" /proc/perfmgr/tchbst/user/usrtch
+    chmod 400 /sys/module/ged/parameters/*
+    chmod 555 /sys/module/ged/parameters/ged_force_mdp_enable
+    # lock_val "0" /sys/kernel/fpsgo/common/force_onoff
+    #Active MTK Memery Management
+    # lock_val "1" /proc/mtk-perf/lowmem_hint_enable
+    # lock_val "0" /proc/cpu_loading/onoff
+    # lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
+    # lock_val "enable=1" /proc/sla/config
 
-    if [ -d /dev/stune/ ]; then
-        lock_val "0" "/dev/stune/schedtune.boost"
-        lock_val "0" "/dev/stune/schedtune.prefer_idle"
-        for stune_dir in /dev/stune/*; do
-            lock_val "0" "${stune_dir}/schedtune.prefer_idle"
-            lock_val "0" "${stune_dir}/schedtune.boost"
-            lock_val "0" "${stune_dir}/schedtune.sched_boost_no_override"
-        done
-    fi
-    if [ -d /dev/cpuctl/ ]; then
-        lock_val "0" "/dev/cpuctl/cpu.uclamp.sched_boost_no_override"
-        lock_val "0" "/dev/cpuctl/cpu.uclamp.min"
-        lock_val "0" "/dev/cpuctl/cpu.uclamp.latency_sensitive"
-        for cpuctl_dir in /dev/cpuctl/*; do
-            lock_val "0" "${cpuctl_dir}/cpu.uclamp.latency_sensitive"
-            lock_val "0" "${cpuctl_dir}/cpu.uclamp.min"
-            lock_val "0" "${cpuctl_dir}/cpu.uclamp.sched_boost_no_override"
-        done
-    fi
-    if [ -e /sys/devices/system/cpu/sched/sched_boost ]; then
-        lock_val 0 "/sys/devices/system/cpu/sched/sched_boost"
-        lock_val 1 "/sys/devices/system/cpu/eas/enable"
-    fi
-
-    for i in $(seq 0 7); do
-        if [ -e /sys/devices/system/cpu/cpu${i}/sched_prefer_idle ]; then
-            lock_val "0" /sys/devices/system/cpu/cpu${i}/sched_prefer_idle
-        fi
-    done
     # Samsung
     mutate "0" "/sys/class/input_booster/*"
 
@@ -335,7 +344,7 @@ disable_userspace_boost() {
     [ ! -f "$FLAGS/enable_perfhal_stub" ] && perfhal_stop
 
     # xiaomi perfservice
-    # stop vendor.perfservice
+    #stop vendor.perfservice
 
     # brain service maybe not smart
     stop oneplus_brain_service 2>/dev/null
@@ -361,3 +370,4 @@ unify_cgroup
 # start uperf once only
 uperf_stop
 uperf_start
+chmod 400 /sys/kernel/ged/hal/custom_upbound_gpu_freq

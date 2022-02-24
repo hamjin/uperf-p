@@ -12,48 +12,61 @@ BASEDIR="$(dirname "$0")"
 ###############################
 
 # $1:value $2:filepaths
-lock_val()
-{
+lock_val() {
     for p in $2; do
         if [ -f "$p" ]; then
-            chmod 0666 "$p" 2> /dev/null
-            echo "$1" > "$p"
-            chmod 0444 "$p" 2> /dev/null
+            echo "Locking $1 -> $p" >>$USER_PATH/init_uperf.txt 2>&1
+            chmod 0666 "$p" 2>/dev/null
+            echo "$1" >"$p"
+            chmod 0444 "$p" 2>/dev/null
+            echo "Locking $1 -> $p Done!" >>$USER_PATH/init_uperf.txt 2>&1
+        else
+            echo "Not found $p , continue" >>$USER_PATH/init_uperf.txt 2>&1
         fi
     done
 }
-write_value()
-{
+write_value() {
     for p in $2; do
         if [ -f "$p" ]; then
-            chmod 0666 "$p" 2> /dev/null
-            echo "$1" > "$p"
-            chmod 0444 "$p" 2> /dev/null
+            echo "Locking $1 -> $p" >>$USER_PATH/init_uperf.txt
+            chmod 0666 "$p" 2>/dev/null
+            echo "$1" >"$p"
+            chmod 0444 "$p" 2>/dev/null
+            echo "Locking $1 -> $p Done!" >>$USER_PATH/init_uperf.txt
+        else
+            echo "Not found $p , continue" >>$USER_PATH/init_uperf.txt
         fi
     done
 }
 # $1:value $2:filepaths
-mutate()
-{
+mutate() {
+
     for p in $2; do
         if [ -f "$p" ]; then
-            chmod 0666 "$p" 2> /dev/null
-            echo "$1" > "$p"
+            echo "Change $1 -> $p" >>$USER_PATH/init_uperf.txt 2>&1
+            chmod 0666 "$p" 2>/dev/null
+            echo "$1" >"$p"
+            echo "Change $p Done!" >>$USER_PATH/init_uperf.txt 2>&1
+        else
+            echo "Not found $p , continue" >>$USER_PATH/init_uperf.txt 2>&1
         fi
+
     done
 }
 
 # $1:file path
-lock()
-{
+lock() {
     if [ -f "$1" ]; then
-        chmod 0444 "$1" 2> /dev/null
+        echo "Locking $1 's Permission" >>$USER_PATH/init_uperf.txt 2>&1
+        chmod 0444 "$1" 2>/dev/null
+        echo "Locking $1 's Permission Done!" >>$USER_PATH/init_uperf.txt 2>&1
+    else
+        echo "Not found $p , continue" >>$USER_PATH/init_uperf.txt 2>&1
     fi
 }
 
 # $1:value $2:list
-has_val_in_list()
-{
+has_val_in_list() {
     for item in $2; do
         if [ "$1" == "$item" ]; then
             echo "true"
@@ -68,8 +81,7 @@ has_val_in_list()
 ###############################
 
 # $1:key $return:value(string)
-read_cfg_value()
-{
+read_cfg_value() {
     local value=""
     if [ -f "$PANEL_FILE" ]; then
         value="$(grep -i "^$1=" "$PANEL_FILE" | head -n 1 | tr -d ' ' | cut -d= -f2)"
@@ -78,28 +90,25 @@ read_cfg_value()
 }
 
 # $1:content
-write_panel()
-{
-    echo "$1" >> "$PANEL_FILE"
+write_panel() {
+    echo "$1" >>"$PANEL_FILE"
 }
 
-clear_panel()
-{
-    true > "$PANEL_FILE"
+clear_panel() {
+    true >"$PANEL_FILE"
 }
 
-wait_until_login()
-{
+wait_until_login() {
     # in case of /data encryption is disabled
     while [ "$(getprop sys.boot_completed)" != "1" ]; do
         sleep 1
     done
 
     # we doesn't have the permission to rw "/sdcard" before the user unlocks the screen
-    local test_file="/sdcard/Android/.PERMISSION_TEST"
-    true > "$test_file"
+    local test_file="$USER_PATH/.PERMISSION_TEST"
+    true >"$test_file"
     while [ ! -f "$test_file" ]; do
-        true > "$test_file"
+        true >"$test_file"
         sleep 1
     done
     rm "$test_file"
@@ -110,14 +119,12 @@ wait_until_login()
 ###############################
 
 # $1:content
-log()
-{
-    echo "$1" >> "$LOG_FILE"
+log() {
+    echo "$1" >>"$LOG_FILE"
 }
 
-clear_log()
-{
-    true > "$LOG_FILE"
+clear_log() {
+    true >"$LOG_FILE"
 }
 
 ###############################
@@ -125,25 +132,21 @@ clear_log()
 ###############################
 
 # $1:"4.14" return:string_in_version
-match_linux_version()
-{
+match_linux_version() {
     echo "$(cat /proc/version | grep -i "$1")"
 }
 
 # return:platform_name
-get_platform_name()
-{
+get_platform_name() {
     echo "$(getprop ro.board.platform)"
 }
 
 # return_nr_core
-get_nr_core()
-{
+get_nr_core() {
     echo "$(cat /proc/stat | grep cpu[0-9] | wc -l)"
 }
 
-is_aarch64()
-{
+is_aarch64() {
     if [ "$(getprop ro.product.cpu.abi)" == "arm64-v8a" ]; then
         echo "true"
     else
@@ -151,8 +154,7 @@ is_aarch64()
     fi
 }
 
-is_mtk()
-{
+is_mtk() {
     if [ "$(getprop | grep ro.mtk)" != "" ]; then
         echo "true"
     else
@@ -160,8 +162,7 @@ is_mtk()
     fi
 }
 
-is_magisk()
-{
+is_magisk() {
     if [ "$(echo $BASEDIR | grep "^\/data\/adb\/modules")" != "" ]; then
         echo "true"
     else

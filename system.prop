@@ -1,0 +1,13 @@
+# This file will be read by resetprop
+# Example: Change dpi
+# ro.sf.lcd_density=320
+
+#MTK PerfService
+ro.mtk_perf_simple_start_win=0
+ro.mtk_perf_fast_start_win=0
+ro.mtk_perf_response_time=0
+ro.mtk_perfservice_support=0
+persist.sys.resolutiontuner.enable=false
+persist.vendor.cool.mode=false
+#hardcoder
+persist.sys.hardcoder.name=abadsocket

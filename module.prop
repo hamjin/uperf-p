@@ -1,7 +1,8 @@
 id=uperf
-name=YC调度
-version=v2 (21.08.15),GPU_Lock-v3.1-dynamic-21.12.25
-versionCode=2.3.1
-author=Matt Yang &&HamJTY
-description=对设备进行性能调节，Repo: https://gitee.com/hamjin/uperf
-minMagisk=17000
+name=YC调度-天玑优化
+version=v2 (21.08.15),GPU_Lock-dynamic-v4
+versionCode=220214
+author=Matt Yang @yc9559 && HamJTY @HamJin
+minMagisk=23000
+description=基于uperf v2 (21.07.25)配置文件对天玑SOC进行性能优化，Repo: https://gitee.com/hamjin/uperf
+updateJson=https://gitee.com/hamjin/uperf/raw/update/uperf-hamjty-dynamic.json

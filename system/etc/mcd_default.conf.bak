@@ -1,0 +1,172 @@
+{
+"memory_opt": {
+    "zram_device_num": 1,
+    "zram_size_MB": "512 1536:1024 2560:1536 3256:2252 4915:2560 6553:4048 8892:4048 12888:0",
+    "global_swappiness": 60,
+    "more_memory_swappiness":60
+},
+"power_save": {
+    "defAutoSave": 0,
+    "windowLength": 3000,
+    "forceIdleOffPct": 10,
+    "forceBusyOffPct": 100
+},
+"cgroups": [
+    {
+        "groupname": "sys_critical",
+        "priority": 1,
+        "swappiness": 0,
+        "def_tasks": [
+            {"uid": "root", "name": "/sbin/ueventd"},
+            {"uid": "root", "name": "/system/bin/vold"},
+            {"uid": "root", "name": "/system/bin/netd" },
+            {"uid": "system", "name": "/system/bin/surfaceflinger"},
+            {"uid": "system", "name": "/system/bin/servicemanager"}
+        ]
+    }
+],
+"power_modes": [
+    {
+        "mode_id": "0",
+        "mode_name": "normal",
+        "mode_type": "0"
+    },
+    {
+        "mode_id": "1",
+        "mode_name": "idle",
+        "mode_type": "0"
+    },
+    {
+        "mode_id": "2",
+        "mode_name": "keyguard",
+        "mode_type": "0"
+    }
+],
+"override_memory_opt": [
+    {
+        "model":["MI 2", "MI 2W", "MI 2C", "M2006C3LC", "M2006C3MG", "M2006C3MII", "M2006C3MNG", "Redmi Note 8T", "Redmi Note 8",
+                 "M2006C3LG", "M2006C3LI", "M2006C3LII", "M2006C3LVG", "M2006C3MI", "M2006C3MT", "M2007J22C", "M2007J22G"],
+        "memory_opt": {
+            "zram_device_num": 0,
+            "zram_size_MB": "0"
+        }
+
+    },
+    {
+        "model":["M2003J15SC", "21061119AG", "2106118C", "2107119DC", "2109119DG", "2109119DI", "2109119BC",
+                 "M2011K2C", "Mi 11", "M2011K2G",
+                 "21061119BI", "21061119CI", "21061119BC", "21061119AL", "21061119DG", "21061119CG",
+                 "M2104K10AC", "21061110AG", "21041110AI",
+                 "Mi 11 Pro",  "M2102K1AC", "Mi 11 Ultra", "M2102K1C", "M2102K1G",
+                 "Redmi K40 Pro", "K40 Pro+", "M2012K11C", "Mi 11X Pro", "M2012K11G", "Mi 11i", "M2012K11I",
+                 "Mi 10", "Mi 10 Pro", "Redmi K30 Pro", "Redmi K30 Pro Zoom Edition",
+                 "Redmi K40", "M2012K11AC", "Mi 10S", "M2102J2SC",
+                 "21091116C", "21091116UG", "21091116UC", "21091116I", "21091116UI",
+                 "M2010J19SC", "M2010J19SI", "M2010J19SG", "M2010J19SR", "M2010J19ST", "M2010J19SY", "M2010J19SL",
+                 "M2010J19CG", "M2010J19CI", "citrus for arm64",
+                 "M2103K19C", "M2103K19I", "M2103K19PI", "M2103K19G", "M2103K19Y", "M2103K19PG", "M2103K19PY",
+                 "M2104K11TC", "M2104K11SG", "21081111TI", "21081111RG",
+                 "M2007J17I", "M2007J17C", "M2007J17G", "M2002J9S", "M2002J9G", "M2002J9E",
+                 "M2006J10C", "M2006J10G", "M2004J7AC", "M2004J7BC",
+                 "Redmi K30 5G", "Redmi K30i 5G", "Redmi K30 5G Speed",
+                 "M2105K81C", "M2105K81AC", "21051182C", "21051182G",
+                 "M2012K10C", "M2104K10I",
+                 "2107113SI", "2107113SC", "2107113SG", "2107113SR",
+                 "21091116AI", "21091116AC", "21091116AG", "22031116BG",
+                 "M2003J15SC", "M2003J15SE", "M2003J15SI"],
+        "memory_opt": {
+            "zram_device_num": 0,
+            "zram_size_MB": "0"
+        }
+    },
+    {
+        "model":["MI CC9 Pro", "Mi Note 10", "Mi Note 10 Lite",
+                 "M2003J6A1G", "M2003J6A1I", "M2003J6B1I", "M2003J6B2G", "M2003J6C1",
+                 "M2007J20CG", "M2007J20CI",
+                 "POCO X2", "Redmi K30",
+                 "M2101K6G", "M2101K6R",
+                 "M2101K7AG", "M2101K7AL", "M2101K7AT", "M2101K7AI",
+                 "M2101K7BG", "M2101K7BNY", "M2101K7BL", "M2101K7BR", "M2101K7BI",
+                 "M1908C3JGG",
+                 "M2004J19PI",
+                 "MI 9", "MI 9 ROY", "MI 9 Transparent Edition",
+                 "M2102J20SG", "M2102J20SI",
+                 "M2101K9C", "M2101K9G",
+                 "M2101K9AI", "M2101K9AG",
+                 "XIG02", "A101XM",
+                 "M2004J19C", "M2004J19AG", "M2004J19G", "M2004J19I",
+                 "2112123AG", "2112123AC",
+                 "2201116SC", "2201116SI","2201116SG", "2201116SR", "2201116PI", "2201116PG",
+                 "2201117SG", "2201117SL", "2201117SI", "2201117PI", "2201117PG", "2201117SY",
+                 "220333QAG", "220333QBI", "220333QL", "220333QNY",
+                 "2201117TL", "2201117TG", "2201117TI", "2201117TY",
+                 "2201116TG", "2201116TI"],
+        "memory_opt": {
+            "zram_device_num": 0,
+            "zram_size_MB": "0"
+        }
+    },
+    {
+        "model":["Mi-4c"],
+        "memory_opt": {
+            "more_memory_swappiness":60
+        }
+    },
+    {
+        "model":["Redmi Note 7"],
+	"memory_opt": {
+            "zram_device_num": 1,
+	    "zram_size_MB": "512 1536:768 2560:1536 3256:2252 4915:2560 6553:0"
+	}
+    },
+    {
+        "model":["Redmi S2","Redmi 6","Redmi 6A"],
+        "memory_opt": {
+            "zram_device_num": 1,
+            "zram_size_MB": "512 1536:768 2560:1024 3256:2040 4915:2560 6553:0"
+        }
+    },
+    {
+        "model":["Redmi 7","Redmi Y3"],
+        "memory_opt": {
+            "zram_device_num": 1,
+            "zram_size_MB": "512 1536:1024 2560:1536 3256:2040 4915:2560 6553:0"
+        }
+    },
+    {
+        "model":["Redmi 7A","Redmi 8","Redmi 8A","Redmi 8A Dual"],
+        "memory_opt": {
+            "zram_device_num": 1,
+            "zram_size_MB": "512 1536:1024 2560:1536 3256:2040 4915:2560 6553:0"
+        }
+    },
+    {
+        "model":["M2007J3SC","M2007J3SI","M2007J3SP","M2007J3SG","M2007J3SY","Mi 10T","Mi 10T Pro","Mi 10 Ultra","M2007J1SC"],
+        "memory_opt": {
+            "zram_device_num": 0,
+            "zram_size_MB": "0"
+        }
+    }
+],
+"override_power_save": [
+    {
+        "model": ["MI NOTE Pro"],
+        "power_save": {
+            "defAutoSave": 0
+        }
+    }
+],
+"override_power_modes": [
+    {
+        "model": ["MI NOTE Pro"],
+        "power_modes": [
+            {
+                "mode_id": "1",
+                "mode_name": "idle",
+                "autosave": 0
+            }
+        ]
+    }
+]
+
+}

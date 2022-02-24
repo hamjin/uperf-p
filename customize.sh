@@ -1,7 +1,8 @@
 ##########################################################################################
 # Config Flags
 ##########################################################################################
-
+ui_print "- Extracting module files"
+unzip -o "$ZIPFILE" -x 'META-INF/*' -d $MODPATH >/dev/null
 # Set to true if you do *NOT* want Magisk to mount
 # any files for you. Most modules would NOT want
 # to set this flag to true
@@ -15,6 +16,12 @@ POSTFSDATA=true
 
 # Set to true if you need late_start service script
 LATESTARTSERVICE=true
+
+# Set to true for we need Magisk Busybox Environment
+ASH_STANDALONE=0
+
+#Use our custom setup script
+SKIPUNZIP=1
 
 ##########################################################################################
 # Replace list
@@ -93,34 +100,32 @@ REPLACE=""
 #     for all directories in <directory> (including itself), it will call:
 #       set_perm dir owner group dirpermission context
 #
-##########################################################################################x
+##########################################################################################
 
 # Set what you want to display when installing your module
-print_modname()
-{
-    # use setup_uperf.sh/uperf_print_banner
-    return
-}
+# print_modname() {
+#     # use setup_uperf.sh/uperf_print_banner
+#     return
+# }
 
 # Copy/extract your module files into $MODPATH in on_install.
-on_install()
-{
-    $BOOTMODE || abort "! Uperf cannot be installed in recovery."
 
-    ui_print "- Extracting module files"
-    unzip -o "$ZIPFILE" -x 'META-INF/*' -d $MODPATH > /dev/null
+on_install() {
+    $BOOTMODE || abort "! 不能在Recovery内Uperf."
     # use universal setup.sh
-    sh $MODPATH/setup_uperf.sh
+    . $MODPATH/setup_uperf.sh
     [ "$?" != "0" ] && abort
+    ui_print "- Uperf安装完成!"
+
     # use once
     rm $MODPATH/setup_uperf.sh
+    rm $MODPATH/install.sh
 }
 
 # Only some special files require specific permissions
 # This function will be called after on_install is done
 # The default permissions should be good enough for most cases
-set_permissions()
-{
+set_permissions() {
     # Here are some examples:
     # set_perm_recursive  $MODPATH/system/lib       0     0       0755      0644
     # set_perm  $MODPATH/system/bin/app_process32   0     2000    0755      u:object_r:zygote_exec:s0
@@ -128,5 +133,5 @@ set_permissions()
     # set_perm  $MODPATH/system/lib/libart.so       0     0       0644
     return
 }
-
 # You can add more functions to assist your custom script code
+on_install
