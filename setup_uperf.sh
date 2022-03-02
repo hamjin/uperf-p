@@ -303,6 +303,15 @@ _get_mt6893_type() {
         echo "mtd1100"
     fi
 }
+_get_mt6895_type() {
+    local b_max
+    b_max="$(_get_maxfreq_6895 4)"
+    if [ "$b_max" -ge 2800000 ]; then
+        echo "mtd8100"
+    else
+        echo "mtd8000"
+    fi
+}
 _get_mt6833_type() {
     local b_max
     b_max="$(_get_maxfreq 7)"
@@ -380,13 +389,14 @@ _get_cfgname() {
     "mt6875") ret="$(_get_mt6873_type)" ;;
     "mt6885") ret="$(_get_mt6885_type)" ;;
     "mt6889") ret="$(_get_mt6885_type)" ;;
-    "mt6891") ret="mtd1100" ;;
-    "mt6893") ret="$(_get_mt6893_type)" ;; #Redmi Note10 Pro's stupid build.prop declares it CPU is mtd1200 but it's actually mtd1100
-    "mt6877") ret="$(_get_mt6877_type)" ;; #D900 D920
+    "mt6891") ret="mtd1100" ;;             # D1100(4+4)
+    "mt6893") ret="$(_get_mt6893_type)" ;; # D1100(1+3+4) & D1200 & D1300
+    "mt6877") ret="$(_get_mt6877_type)" ;; # D900 D920
     "mt6833") ret="$(_get_mt6833_type)" ;; # D810 & D700
     "mt6833p") ret="mtd810" ;;             # D810
     "mt6833v") ret="mtd810" ;;             # D810
     "mt6983") ret="mtd9000" ;;             # D9000
+    "mt6895") ret="$(_get_mt6895_type)" ;; # D8000 & D8100
     *) ret="unsupported" ;;
     esac
     echo "$ret"

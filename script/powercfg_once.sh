@@ -278,16 +278,16 @@ disable_kernel_boost() {
     #MTK PPM must be enabled
     lock_val "1" /proc/ppm/enabled
     #not used by uperf
-    lock_val "0 0" /proc/ppm/policy_status
-    lock_val "1 0" /proc/ppm/policy_status
+    lock_val "0 1" /proc/ppm/policy_status
+    lock_val "1 1" /proc/ppm/policy_status
     lock_val "2 0" /proc/ppm/policy_status
     lock_val "3 0" /proc/ppm/policy_status
     lock_val "4 0" /proc/ppm/policy_status
-    lock_val "5 0" /proc/ppm/policy_status
+    lock_val "5 1" /proc/ppm/policy_status
     lock_val "7 0" /proc/ppm/policy_status
     lock_val "8 0" /proc/ppm/policy_status
-    lock_val "9 0" /proc/ppm/policy_status
-    lock_val "10 0" /proc/ppm/policy_status
+    lock_val "9 1" /proc/ppm/policy_status
+    lock_val "10 1" /proc/ppm/policy_status
     # used by uperf
     lock_val "6 1" /proc/ppm/policy_status
     lock_val "99" /sys/kernel/ged/hal/custom_boost_gpu_freq
