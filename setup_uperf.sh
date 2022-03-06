@@ -412,23 +412,23 @@ uperf_print_banner() {
     # 获取模块作者
     module_author="$(grep_prop author $MODPATH/module.prop)"
     ui_print ""
-    ui_print "* YC调度—天玑优化(Uperf) https://gitee.com/hamjin/uperf/"
-    ui_print "* 作者: $module_author"
-    ui_print "* 版本: $module_version"
+    ui_print "* Uperf (For Mediatek SoCs Only) https://gitee.com/hamjin/uperf/"
+    ui_print "* Author: $module_author"
+    ui_print "* Version: $module_version"
 }
 
 uperf_print_finish() {
-    ui_print "- Uperf 成功安装."
+    ui_print "- Uperf Install Succeed."
 }
 
 uperf_install() {
-    ui_print "- 开始安装"
+    ui_print "- Start Install"
     DEVICE=$(getprop ro.product.board)
     DEVCODE=$(getprop ro.product.device)
-    ui_print "- 设备平台: $(getprop ro.board.platform)"
-    ui_print "- 设备型号: $DEVCODE"
-    ui_print "- 设备代号: $DEVICE"
-    # ui_print "- Android 12上ro.product.board可能是空的, 可以忽略"
+    ui_print "- Platform: $(getprop ro.board.platform)"
+    ui_print "- Model: $DEVCODE"
+    ui_print "- DeviceCode: $DEVICE"
+
     local target
     local cfgname
     target="$(getprop ro.board.platform)"
@@ -439,118 +439,83 @@ uperf_install() {
         cfgname="$(_get_cfgname $target)"
     fi
     if [ "$cfgname" != "unsupported" ] && [ -f $MODPATH/config/$cfgname.json ]; then
-        if [ "$DEVICE" == "cezanne" ]; then
+        #Redmi K30 Ultra
+        if [ "$DEVICE" == "cezanne" ] || [ "$DEVCODE" == "cezanne" ]; then
             cfgname="k30u"
-            ui_print "- 检测到平台为Redmi K30 Ultra！正在使用专用配置！"
-        elif [ "$DEVCODE" == "cezanne" ]; then
-            cfgname="k30u"
-            ui_print "- 检测到平台为Redmi K30 Ultra！正在使用专用配置！"
-        elif [ "$DEVCODE" == "atom" ]; then
+            ui_print "- Found Redmi K30 Ultra！Using specified config！"
+        #Redmi 10X &Redmi 10X Pro
+        elif [ "$DEVCODE" == "atom" ] || [ "$DEVICE" == "atom" ] || [ "$DEVCODE" == "bomb" ] || [ "$DEVICE" == "bomb" ]; then
             cfgname="10x"
-            ui_print "- 检测到Redmi 10X Series！正在使用专用配置！"
-        elif [ "$DEVICE" == "atom" ]; then
-            cfgname="10x"
-            ui_print "- 检测到Redmi 10X Series！正在使用专用配置！"
-        elif [ "$DEVCODE" == "bomb" ]; then
-            cfgname="10x"
-            ui_print "- 检测到Redmi 10X Series！正在使用专用配置！"
-        elif [ "$DEVICE" == "bomb" ]; then
-            cfgname="10x"
-            ui_print "- 检测到Redmi 10X Series！正在使用专用配置！"
+            ui_print "- Found Redmi 10X Series！Using specified config！"
+        #Others
         else
-            ui_print "- 检测到CPU: $target"
+            ui_print "- found CPU: $target"
         fi
         #make dir for the platform is supported
+        ui_print "- Config File: $cfgname"
         mkdir -p $USER_PATH
-        echo $cfgname >$USER_PATH/cfgname
-        echo $DEVICE >$USER_PATH/device
-        echo $DEVCODE >$USER_PATH/device_code
-        ui_print "- 配置平台文件: $cfgname"
-        #已经彻底修复
-        #ui_print "- 由于联发科的问题"
-        #ui_print "- Android 12上天玑1100、1200识别错误的可能性大幅提高"
-        #ui_print "- 请注意平台判断"
-        #ui_print "- 如果不对请及时私信"
-        #sleep 3s
+        rm -rf $USER_PATH/cfgname $USER_PATH/device $USER_PATH/device_code
+        mkdir -p $USER_PATH/deviceinfo
+        echo $cfgname >$USER_PATH/deviceinfo/cfgname.txt
+        echo $DEVICE >$USER_PATH/deviceinfo/device.txt
+        echo $DEVCODE >$USER_PATH/deviceinfo/device_code.txt
         _setup_platform_file "$cfgname"
     else
-        ui_print "- 配置平台文件: $cfgname"
-        _abort "! [$target] 暂时没有支持."
+        ui_print "- Target: $cfgname"
+        _abort "! [$target] is not supproted yet."
     fi
 
     _place_user_config
     rm -rf $BASEDIR/config
     #ARM64
     if [ "$(_is_aarch64)" == "true" ]; then
-        cp "$BASEDIR/uperf/aarch64/uperf" "$BASEDIR/bin"
+        killall -9 adjustment uperf
     else
-        cp "$BASEDIR/uperf/arm/uperf" "$BASEDIR/bin"
+        _abort "! Only ARM64 platform is supported!"
     fi
     _set_perm_recursive $BASEDIR 0 0 0755 0644
     _set_perm_recursive $BASEDIR/bin 0 0 0755 0755
     # in case of set_perm_recursive is broken
     chmod 0755 $BASEDIR/bin/*
-    rm -rf $BASEDIR/uperf
-    ui_print "- 关闭位于Vendor分区的MTK官方温控锁帧等负优化"
-    ui_print "- 关闭位于用户数据分区的MTK官方温控"
-    ui_print "- 关闭位于用户数据分区的小米云控"
+
+}
+clear_path() {
+    if [ -f "$1" ]; then
+        chattr -i "$1"
+        rm -rf "$1"
+        touch "$1"
+        chmod 000 "$1"
+        chattr +i "$1"
+    fi
 }
 disable_mtk_thermal() {
 
     chattr -i "/data/vendor/.tp"
     chattr -i /data/vendor/thermal
     rm -rf "/data/vendor/.tp"
+    ui_print "- Disable Mediatek Temp Limit by modify /data"
     rm -rf /data/vendor/thermal
-    touch "/data/vendor/.tp"
-    touch /data/vendor/thermal
-    chattr +i "/data/vendor/.tp"
-    chattr +i /data/vendor/thermal
-    chattr -i /data/thermal 2>&1
-    chattr -i /data/system/mcd 2>&1
-    rm -rf /data/thermal 2>&1
-    rm -rf /data/system/mcd 2>&1
-    touch /data/system/mcd 2>&1
-    touch /data/thermal 2>&1
-    chattr +i /data/thermal 2>&1
-    chattr +i /data/system/mcd 2>&1
-    chattr -i /data/system/migt 2>&1
-    chattr -i /data/system/whetstone 2>&1
-    rm -rf /data/system/migt /data/system/whetstone 2>&1
-    touch /data/system/whetstone 2>&1
-    touch /data/system/migt 2>&1
-    chattr +i /data/system/migt 2>&1
-    chattr +i /data/system/whetstone 2>&1
+    clear_path /data/thermal
+    clear_path /data/system/mcd
+    ui_print "- Disable MIUI Cloud Control by modify /data"
+    clear_path /data/system/migt
+    clear_path /data/system/whetstone
 }
 injector_install() {
-    ui_print "- 安装注入器"
-    ui_print "- 关闭SELinux可以获得更高的兼容性和可用性"
-    ui_print "- 请手动删除模块目录下的flags/allow_permissive以阻止自动关闭SELinux"
+    ui_print "- Installing SurfaceFlinger Injector"
+    ui_print "- Automaticly Set SeLinux to \"permissive\" before injection and Enable it after injection would get better compatibility."
+    ui_print "- If you need, please remove flags/allow_permissive in this module's dir by yourself to prevent this action"
 
-    local src_path
-    local dst_path
-    if [ "$(_is_aarch64)" == "true" ]; then
-        src_path="$BASEDIR/injector/aarch64"
-        dst_path="$BASEDIR/system/lib64"
-    else
-        src_path="$BASEDIR/injector/arm"
-        dst_path="$BASEDIR/system/lib"
-    fi
-
-    mkdir -p "$dst_path"
-    cp "$src_path/sfa_injector" "$BASEDIR/bin/"
-    cp "$src_path/libsfanalysis.so" "$dst_path"
     _set_perm "$BASEDIR/bin/sfa_injector" 0 0 0755 u:object_r:system_file:s0
-    _set_perm "$dst_path/libsfanalysis.so" 0 0 0644 u:object_r:system_lib_file:s0
+    _set_perm "$BASEDIR/bin/libsfanalysis.so" 0 0 0644 u:object_r:system_lib_file:s0
 
     # in case of set_perm_recursive is broken
     chmod 0755 $BASEDIR/bin/*
-
-    rm -rf $BASEDIR/injector
 }
 
 powerhal_stub_install() {
-    ui_print "- 替换 perfhal 文件"
-
+    ui_print "- Modify perfhal files"
+    ui_print "- Disable Mediatek Temp Limit by modify /vendor"
     # do not place empty json if it doesn't exist in system
     # vendor/etc/powerhint.json: android perf hal
     # vendor/etc/powerscntbl.cfg: mediatek perf hal (android 9)
@@ -582,25 +547,19 @@ powerhal_stub_install() {
 }
 
 busybox_install() {
-    # ui_print "- 安装自带的busybox"
-    ui_print "- 使用Magisk的busybox"
+    ui_print "- Using BusyBox in Magisk"
     local dst_path
     dst_path="$BASEDIR/bin/busybox/"
 
     mkdir -p "$dst_path"
-    if [ "$(_is_aarch64)" == "true" ]; then
-        ln -s "/data/adb/magisk/busybox" "$dst_path/busybox"
-    else
-        ln -s "/data/adb/magisk/busybox" "$dst_path/busybox"
-    fi
+    ln -s "/data/adb/magisk/busybox" "$dst_path/busybox"
     chmod 0755 "$dst_path/busybox"
 
     rm -rf $BASEDIR/busybox
 }
-
 uperf_print_banner
 uperf_install
-(disable_mtk_thermal &)
+disable_mtk_thermal
 injector_install
 powerhal_stub_install
 busybox_install

@@ -24,11 +24,8 @@ inj_do_inject() {
     log "[begin] injecting $2 to $1"
 
     local lib_path
-    if [ "$(is_aarch64)" == "true" ]; then
-        lib_path="/system/lib64/$2"
-    else
-        lib_path="/system/lib/$2"
-    fi
+
+    lib_path="$MODULE_PATH/$INJ_REL/$2"
 
     # fallback to standlone mode
     [ ! -e "$lib_path" ] && lib_path="${MODULE_PATH}${lib_path}"
@@ -37,7 +34,6 @@ inj_do_inject() {
     magiskpolicy --live "allow surfaceflinger system_lib_file file { read getattr execute }" >>"$LOG_FILE"
     magiskpolicy --live "allow surfaceflinger system_data_file file { read write getattr }" >>"$LOG_FILE"
     magiskpolicy --live "allow surfaceflinger system_data_file dir { read write getattr search }" >>"$LOG_FILE"
-
     "$MODULE_PATH/$INJ_REL/$INJ_NAME" "$lib_path" >>"$LOG_FILE"
 
     if [ "$?" != "0" ]; then

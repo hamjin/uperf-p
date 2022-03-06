@@ -15,13 +15,14 @@ BASEDIR="$(dirname "$0")"
 
 UPERF_REL="$BIN_DIR"
 UPERF_NAME="uperf"
-
+ADJ_NAME="adjustment"
 ###############################
 # Uperf tool functions
 ###############################
 
 uperf_config_path="$USER_PATH/cfg_uperf.json"
 uperf_log_path="$USER_PATH/log_uperf.txt"
+adj_log_path="$USER_PATH/log_adj.txt"
 uperf_powermode_node="$USER_PATH/cur_powermode"
 
 # $1:mode_name
@@ -33,16 +34,16 @@ uperf_set_powermode() {
 
 uperf_status() {
     # (uperfd & uperf) or (uperfd & new_uperf & old_uperf)
-    # if [ "$(ps -A | grep "$UPERF_NAME" | wc -l)" -ge 2 ]; then
-    #     echo "Running. Details see $uperf_log_path."
-    # else
-    #     echo "Not running. Reasons see $uperf_log_path."
-    # fi
-    echo "Details see $uperf_log_path."
+    if [ "$(ps -A | grep "$UPERF_NAME" | wc -l)" -ge 2 ]; then
+        echo "Running. Details see $uperf_log_path."
+    else
+        echo "Not running. Reasons see $uperf_log_path."
+    fi
+    #echo "Details see $uperf_log_path."
 }
 
 uperf_stop() {
-    killall "$UPERF_NAME"
+    killall -9 "$UPERF_NAME" "$ADJ_NAME"
 }
 
 uperf_start() {
@@ -50,16 +51,21 @@ uperf_start() {
     mutate "524288" /proc/sys/fs/inotify/max_queued_events
     mutate "524288" /proc/sys/fs/inotify/max_user_watches
     mutate "1024" /proc/sys/fs/inotify/max_user_instances
-
+    echo 1 >/dev/gpufreq_id
+    echo 1 >/dev/gpufreq_step
     # cleanup
     cmd settings delete system min_refresh_rate
     cmd settings put Secure speed_mode_enable 1
+    cp -r "$USER_PATH/log_adj.txt" "$USER_PATH/log_adj.lastgood.txt"
     # start uperf
     "$MODULE_PATH/$UPERF_REL/$UPERF_NAME" -o "$uperf_log_path" "$uperf_config_path"
+    nohup "$MODULE_PATH/$UPERF_REL/$ADJ_NAME" "$USER_PATH/log_adj.txt" >/dev/null 2>&1 &
     # waiting for uperf initialization
     sleep 5
     # uperf shouldn't preempt foreground tasks
     rebuild_process_scan_cache
     change_task_rt "$UPERF_NAME" "1"
+    change_task_rt "$ADJ_NAME" "1"
     pin_proc_on_pwr "$UPERF_NAME"
+    pin_proc_on_pwr "$ADJ_NAME"
 }

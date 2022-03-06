@@ -23,6 +23,12 @@ ps_ret=""
 # CPUID_HIGH="4-7"
 
 # $1:task_name $2:cgroup_name $3:"cpuset"/"stune"
+move_to_rt() {
+    pidof $1 | while read pid; do
+        echo $pid >/dev/stune/rt/cgroup.procs
+        echo $pid >/dev/cpuset/top-app/cgroup.procs
+    done
+}
 change_task_cgroup() {
     local comm
     for temp_pid in $(echo "$ps_ret" | grep -i -E "$1" | awk '{print $1}'); do

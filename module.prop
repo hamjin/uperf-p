@@ -1,7 +1,7 @@
 id=uperf
-name=YC调度-天玑优化
-version=v2 (21.08.15),GPU_Lock-dynamic-22.03.03
-versionCode=220303
+name=Uperf (For Mediatek SoCs Only)
+version=v2 (21.08.15),GPU_Lock-dynamic-22.03.05
+versionCode=220305
 author=Matt Yang @yc9559 && HamJTY @HamJin
 minMagisk=23000
 description=基于uperf v2 (21.07.25)配置文件对天玑SOC进行性能优化，Repo: https://gitee.com/hamjin/uperf

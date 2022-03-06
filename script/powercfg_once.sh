@@ -21,11 +21,14 @@ unify_cgroup() {
         lock_val "0" /dev/cpuctl/$g/cpu.uclamp.latency_sensitive
         lock_val "1" /dev/cpuset/$g/sched_load_balance
     done
-    for cg in stune cpuctl cpuset; do
-        for p in $(cat /dev/$cg/top-app/tasks); do
-            echo $p >/dev/$cg/foreground/tasks
-        done
-    done
+    lock_val "1" /dev/stune/rt/schedtune.sched_boost_no_override
+    lock_val "100" /dev/stune/rt/schedtune.boost
+    lock_val "1" /dev/stune/rt/schedtune.prefer_idle
+    #for cg in stune cpuctl cpuset; do
+    #    for p in $(cat /dev/$cg/top-app/tasks); do
+    #        echo $p >/dev/$cg/foreground/tasks
+    #    done
+    #done
     #for cg in stune cpuctl cpuset; do
     #    for p in $(cat /dev/$cg/foreground/tasks); do
     #        echo $p >/dev/$cg/top-app/tasks
@@ -44,9 +47,16 @@ unify_cgroup() {
     #lock_val "0-1" /dev/cpuset/background/untrustedapp/cpus
     #lock_val "0-1" /dev/cpuset/system-background/cpus
     # Reduce Perf Cluster Wakeup
+    move_to_rt "vendor.qti.hardware.display.composer-service"
+    move_to_rt "com.android.systemui"
+    move_to_rt "com.miui.home"
+    move_to_rt "surfaceflinger"
+    move_to_rt "system_server"
+    move_to_rt "update_engine"
+    pin_proc_on_perf "update_engine"
     # daemons
-    #pin_proc_on_pwr "crtc_commit|crtc_event|pp_event|msm_irqbalance|netd|mdnsd|analytics"
-    #pin_proc_on_pwr "imsdaemon|cnss-daemon|qadaemon|qseecomd|time_daemon|ATFWD-daemon|ims_rtp_daemon|qcrilNrd"
+    pin_proc_on_pwr "crtc_commit|crtc_event|pp_event|msm_irqbalance|netd|mdnsd|analytics"
+    pin_proc_on_pwr "imsdaemon|cnss-daemon|qadaemon|qseecomd|time_daemon|ATFWD-daemon|ims_rtp_daemon|qcrilNrd"
     # ueventd related to hotplug of camera, wifi, usb...
     # pin_proc_on_pwr "ueventd"
     # hardware services, eg. android.hardware.sensors@1.0-service
@@ -62,61 +72,69 @@ unify_cgroup() {
     # com.android.providers.media.module controlled by uperf
     #pin_proc_on_mid "android.process.media" #It makes Audio lack when run on little
     # com.miui.securitycenter & com.miui.securityadd
-    #pin_proc_on_pwr "miui\.security"
-    #pin_proc_on_perf "lbe\.security\.miui"           # pin on pwr may reduce permission given
-    #pin_proc_on_perf "android\.permissioncontroller" # pin on pwr may reduce permission given
-    #change_proc_cgroup "miui\.home" "top-app" "stune"  # Desktop On Foreground is wrong
+    pin_proc_on_pwr "miui\.security"
+    #change_proc_cgroup "miui\.home" "rt" "stune"       # Desktop On Foreground is wrong
     #change_proc_cgroup "miui\.home" "top-app" "cpuset" # Desktop On Foreground is wrong
 
     # system_server blacklist
     # system_server controlled by uperf
-    change_proc_cgroup "system_server" "foreground" "cpuset"
+    change_proc_cgroup "system_server" "top-app" "cpuset"
+    change_proc_cgroup "system_server" "rt" "stune"
     # input dispatcher
-    #change_thread_high_prio "system_server" "input"
+    change_thread_high_prio "system_server" "InputDispatcher"
+    change_thread_high_prio "system_server" "InputReader"
+    change_thread_high_prio "system_server" "Anim"
+    change_thread_high_prio "system_server" "Audio"
+    change_thread_high_prio "system_server" "android.anim.lf"
+    change_thread_high_prio "system_server" "android.anim"
+    change_thread_high_prio "system_server" "android.ui"
+    change_thread_high_prio "system_server" "android.display"
+    change_thread_high_prio "system_server" "android.io"
+    change_thread_high_prio "system_server" "input_monitor_m"
+
+    pin_thread_on_mid "system_server" "UiThread|miui_input_thread|miui.getsure|miui.fg|mali|Anim|Audio|Input|android.anim|android.fg|android.io|android.display|android.ui"
     # related to camera startup
-    #change_thread_affinity "system_server" "ProcessManager" "ff"
+    change_thread_affinity "system_server" "ProcessManager" "ff"
     # not important
-    #pin_thread_on_pwr "system_server" "Miui|Connect|Wifi|backup|Sync|Observer|Power|Sensor|batterystats"
-    #pin_thread_on_pwr "system_server" "Thread-|pool-|Jit|CachedAppOpt|Greezer|TaskSnapshot|Oom"
-    #change_thread_nice "system_server" "Greezer|TaskSnapshot|Oom" "4"
+    pin_thread_on_pwr "system_server" "Miui|ExtM|Connect|Wifi|backup|Sync|Observer|Power|Sensor|batterystats"
+    pin_thread_on_pwr "system_server" "Thread-|pool-|Jit|CachedAppOpt|Greezer|TaskSnapshot|Oom"
+    change_thread_nice "system_server" "Greezer|TaskSnapshot|Oom" "4"
     # pin_thread_on_pwr "system_server" "Async" # it blocks camera
     # pin_thread_on_pwr "system_server" "\.bg" # it blocks binders
     # pin_thread_on_pwr "system_server" "Network" # may reduce network speed on MIUI
     # do not let GC thread block system_server
-    #pin_thread_on_mid "system_server" "HeapTaskDaemon"
-    #pin_thread_on_mid "system_server" "FinalizerDaemon"
-
+    pin_thread_on_mid "system_server" "HeapTaskDaemon"
+    pin_thread_on_mid "system_server" "FinalizerDaemon"
     # Render Pipeline
     # surfaceflinger controlled by uperf
     # android.phone controlled by uperf
     # speed up searching service binder
-    #change_task_cgroup "servicemanag" "top-app" "cpuset"
+    change_task_cgroup "servicemanag" "top-app" "cpuset"
     # prevent display service from being preempted by normal tasks
     # vendor.qti.hardware.display.allocator-service cannot be set to RT policy, will be reset to 120
-    #unpin_proc "\.hardware\.display"
-    #change_task_affinity "\.hardware\.display" "7f"
-    #change_task_rt "\.hardware\.display" "2"
+    unpin_proc "\.hardware\.display"
+    change_task_affinity "\.hardware\.display" "7f"
+    change_task_rt "\.hardware\.display" "2"
     # let UX related Binders run with top-app
-    #change_thread_cgroup "\.hardware\.display" "^Binder" "top-app" "cpuset"
-    #change_thread_cgroup "\.hardware\.display" "^HwBinder" "top-app" "cpuset"
-    #change_thread_cgroup "\.composer" "^Binder" "top-app" "cpuset"
+    change_thread_cgroup "\.hardware\.display" "^Binder" "top-app" "cpuset"
+    change_thread_cgroup "\.hardware\.display" "^HwBinder" "top-app" "cpuset"
+    change_thread_cgroup "\.composer" "^Binder" "top-app" "cpuset"
 
     # Heavy Scene Boost
     # boost app boot process, zygote--com.xxxx.xxx
     # boost android process pool, usap--com.xxxx.xxx
-    #unpin_proc "zygote|usap"
-    #pin_proc_on_perf "zygote|usap"
-    #change_task_high_prio "zygote|usap"
+    unpin_proc "zygote|usap"
+    change_task_high_prio "zygote|usap"
 
-    # Magisk and Zygisk should be controled by system
-    #pin_proc_on_mid "magiskd"
-    #pin_proc_on_mid "zygiskd"
-    #pin_proc_on_mid "zygiskd64"
-    #pin_proc_on_mid "zygiskd32"
-    #change_task_nice "magiskd" "19"
-    #change_task_nice "zygiskd" "19"
-    #change_task_nice "zygiskd64" "19"
-    #change_task_nice "zygiskd32" "19"
+    # Magisk and Zygisk
+    pin_proc_on_mid "magiskd"
+    pin_proc_on_mid "zygiskd"
+    pin_proc_on_mid "zygiskd64"
+    pin_proc_on_mid "zygiskd32"
+    change_task_nice "magiskd" "19"
+    change_task_nice "zygiskd" "19"
+    change_task_nice "zygiskd64" "19"
+    change_task_nice "zygiskd32" "19"
 }
 
 unify_cpufreq() {
@@ -278,16 +296,24 @@ disable_kernel_boost() {
     #MTK PPM must be enabled
     lock_val "1" /proc/ppm/enabled
     #not used by uperf
-    lock_val "0 1" /proc/ppm/policy_status
-    lock_val "1 1" /proc/ppm/policy_status
+    lock_val "0 0" /proc/ppm/policy_status
+    lock_val "1 0" /proc/ppm/policy_status
     lock_val "2 0" /proc/ppm/policy_status
     lock_val "3 0" /proc/ppm/policy_status
     lock_val "4 0" /proc/ppm/policy_status
-    lock_val "5 1" /proc/ppm/policy_status
+    lock_val "5 0" /proc/ppm/policy_status
     lock_val "7 0" /proc/ppm/policy_status
     lock_val "8 0" /proc/ppm/policy_status
-    lock_val "9 1" /proc/ppm/policy_status
-    lock_val "10 1" /proc/ppm/policy_status
+    lock_val "9 0" /proc/ppm/policy_status
+    lock_val "10 0" /proc/ppm/policy_status
+
+    #for i in 'hard_userlimit_cpu_freq' 'hard_userlimit_freq_limit_by_others'; do
+    #    lock_val "0 -1" >/proc/ppm/policy/$i
+    #    lock_val "1 -1" >/proc/ppm/policy/$i
+    #    lock_val "2 -1" >/proc/ppm/policy/$i
+    #    lock /proc/ppm/policy/$i
+    #    # cat /proc/ppm/policy/$i
+    #done
     # used by uperf
     lock_val "6 1" /proc/ppm/policy_status
     lock_val "99" /sys/kernel/ged/hal/custom_boost_gpu_freq
@@ -304,6 +330,7 @@ disable_kernel_boost() {
     # lock_val "0" /proc/cpu_loading/onoff
     # lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
     # lock_val "enable=1" /proc/sla/config
+    #FPSGO
 
     # Samsung
     mutate "0" "/sys/class/input_booster/*"
@@ -356,13 +383,13 @@ disable_userspace_boost() {
 
 log "PATH=$PATH"
 log "sh=$(which sh)"
-rebuild_process_scan_cache
-disable_userspace_boost
-disable_kernel_boost
-disable_hotplug
-unify_cpufreq
-unify_sched
-unify_lpm
+(rebuild_process_scan_cache &)
+(disable_userspace_boost &)
+(disable_kernel_boost &)
+(disable_hotplug &)
+(unify_cpufreq &)
+(unify_sched &)
+(unify_lpm &)
 
 # make sure that all the related cpu is online
 unify_cgroup
@@ -370,4 +397,4 @@ unify_cgroup
 # start uperf once only
 uperf_stop
 uperf_start
-chmod 400 /sys/kernel/ged/hal/custom_upbound_gpu_freq
+#chmod 400 /sys/kernel/ged/hal/custom_upbound_gpu_freq
