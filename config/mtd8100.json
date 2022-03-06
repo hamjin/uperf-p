@@ -723,7 +723,7 @@
                     "schedBoost": "0",
                     "topBoost": "10",
                     "heavyBoost": "10",
-                    "uxAffinity": "3",
+                    "uxAffinity": "4",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 1500000",
                     "cpuFreqMax0": "0 2000000",
