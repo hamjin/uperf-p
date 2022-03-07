@@ -32,10 +32,10 @@ verify_power_mode() {
     elif [-n "huanta"]; then
         echo "yuanshen"
         return 0
-    elif [ "$battery_temp" -lt "100" ]; then
+    elif [ "$battery_temp" -lt "230" ]; then
         case "$1" in
-        "powersave" | "balance") echo "lowtemp" ;;
-        "performance" | "fast") echo "$1" ;;
+        "powersave") echo "lowtemp" ;;
+        "balance" | "performance" | "fast") echo "$1" ;;
         *) echo "lowtemp" ;;
         esac
         return 0
