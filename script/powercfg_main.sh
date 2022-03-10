@@ -26,17 +26,24 @@ verify_power_mode() {
     #LOWTEMP="0"
     #if [ ! -f "$BASEDIR/flags/disable_lowtemp"]; then
     if [ -n "$mihoyo" ]; then
-        #echo $mihoyo >/data/top_app.txt
-        echo "yuanshen"
+        case "$1" in
+        "powersave" | "balance" | "fast") echo "$1" ;;
+        "performance") echo "yuanshen" ;;
+        *) echo "lowtemp" ;;
+        esac
         return 0
     elif [-n "huanta"]; then
-        echo "yuanshen"
+        case "$1" in
+        "powersave" | "balance" | "fast") echo "$1" ;;
+        "performance") echo "yuanshen" ;;
+        *) echo "lowtemp" ;;
+        esac
         return 0
     elif [ "$battery_temp" -lt "230" ]; then
         case "$1" in
         "powersave") echo "lowtemp" ;;
         "balance" | "performance" | "fast") echo "$1" ;;
-        *) echo "lowtemp" ;;
+        *) echo "balance" ;;
         esac
         return 0
     else

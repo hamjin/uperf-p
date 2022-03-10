@@ -56,16 +56,14 @@ uperf_start() {
     # cleanup
     cmd settings delete system min_refresh_rate
     cmd settings put Secure speed_mode_enable 1
-    cp -r "$USER_PATH/log_adj.txt" "$USER_PATH/log_adj.lastgood.txt"
+    #cp -r "$USER_PATH/log_adj.txt" "$USER_PATH/log_adj.lastgood.txt"
     # start uperf
     "$MODULE_PATH/$UPERF_REL/$UPERF_NAME" -o "$uperf_log_path" "$uperf_config_path"
-    nohup "$MODULE_PATH/$UPERF_REL/$ADJ_NAME" "$USER_PATH/log_adj.txt" >/dev/null 2>&1 &
+    #nohup "$MODULE_PATH/$UPERF_REL/$ADJ_NAME" "$USER_PATH/log_adj.txt" >/dev/null 2>&1 &
     # waiting for uperf initialization
     sleep 5
     # uperf shouldn't preempt foreground tasks
     rebuild_process_scan_cache
     change_task_rt "$UPERF_NAME" "1"
-    change_task_rt "$ADJ_NAME" "1"
     pin_proc_on_pwr "$UPERF_NAME"
-    pin_proc_on_pwr "$ADJ_NAME"
 }

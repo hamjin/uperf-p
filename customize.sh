@@ -17,9 +17,6 @@ POSTFSDATA=true
 # Set to true if you need late_start service script
 LATESTARTSERVICE=true
 
-# Set to true for we need Magisk Busybox Environment
-ASH_STANDALONE=0
-
 #Use our custom setup script
 SKIPUNZIP=1
 
@@ -111,11 +108,11 @@ REPLACE=""
 # Copy/extract your module files into $MODPATH in on_install.
 
 on_install() {
-    $BOOTMODE || abort "! 不能在Recovery内Uperf."
+    $BOOTMODE || abort "! Cannot install in Recovery."
     # use universal setup.sh
     . $MODPATH/setup_uperf.sh
+
     [ "$?" != "0" ] && abort
-    ui_print "- Uperf安装完成!"
 
     # use once
     rm $MODPATH/setup_uperf.sh
@@ -131,7 +128,11 @@ set_permissions() {
     # set_perm  $MODPATH/system/bin/app_process32   0     2000    0755      u:object_r:zygote_exec:s0
     # set_perm  $MODPATH/system/bin/dex2oat         0     2000    0755      u:object_r:dex2oat_exec:s0
     # set_perm  $MODPATH/system/lib/libart.so       0     0       0644
+    chmod 755 $MODPATH/bin/*
+    chmod 755 $MODPATH/*.sh
+    chmod 755 $MODPATH/script*/*
     return
 }
 # You can add more functions to assist your custom script code
 on_install
+set_permissions

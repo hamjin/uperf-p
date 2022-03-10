@@ -24,11 +24,11 @@ unify_cgroup() {
     lock_val "1" /dev/stune/rt/schedtune.sched_boost_no_override
     lock_val "100" /dev/stune/rt/schedtune.boost
     lock_val "1" /dev/stune/rt/schedtune.prefer_idle
-    #for cg in stune cpuctl cpuset; do
-    #    for p in $(cat /dev/$cg/top-app/tasks); do
-    #        echo $p >/dev/$cg/foreground/tasks
-    #    done
-    #done
+    for cg in stune cpuctl cpuset; do
+        for p in $(cat /dev/$cg/top-app/tasks); do
+            echo $p >/dev/$cg/foreground/tasks
+        done
+    done
     #for cg in stune cpuctl cpuset; do
     #    for p in $(cat /dev/$cg/foreground/tasks); do
     #        echo $p >/dev/$cg/top-app/tasks
@@ -53,7 +53,7 @@ unify_cgroup() {
     move_to_rt "surfaceflinger"
     move_to_rt "system_server"
     move_to_rt "update_engine"
-    pin_proc_on_perf "update_engine"
+    move_to_rt "update_engine"
     # daemons
     pin_proc_on_pwr "crtc_commit|crtc_event|pp_event|msm_irqbalance|netd|mdnsd|analytics"
     pin_proc_on_pwr "imsdaemon|cnss-daemon|qadaemon|qseecomd|time_daemon|ATFWD-daemon|ims_rtp_daemon|qcrilNrd"
@@ -80,6 +80,13 @@ unify_cgroup() {
     # system_server controlled by uperf
     change_proc_cgroup "system_server" "top-app" "cpuset"
     change_proc_cgroup "system_server" "rt" "stune"
+    # related to camera startup
+    change_thread_affinity "system_server" "ProcessManager" "ff"
+    # not important
+    pin_thread_on_pwr "system_server" "Miui|ExtM|Connect|Wifi|backup|Sync|Observer|Power|Sensor|batterystats"
+    pin_thread_on_pwr "system_server" "Thread-|pool-|Jit|CachedAppOpt|Greezer|TaskSnapshot|Oom"
+    #Critical Threads
+    pin_thread_on_perf "system_server" "UiThread|miui_input_thread|miui.getsure|miui.fg|mali|Anim|Audio|Input|android.anim|android.fg|android.io|android.display|android.ui"
     # input dispatcher
     change_thread_high_prio "system_server" "InputDispatcher"
     change_thread_high_prio "system_server" "InputReader"
@@ -91,13 +98,7 @@ unify_cgroup() {
     change_thread_high_prio "system_server" "android.display"
     change_thread_high_prio "system_server" "android.io"
     change_thread_high_prio "system_server" "input_monitor_m"
-
-    pin_thread_on_mid "system_server" "UiThread|miui_input_thread|miui.getsure|miui.fg|mali|Anim|Audio|Input|android.anim|android.fg|android.io|android.display|android.ui"
-    # related to camera startup
-    change_thread_affinity "system_server" "ProcessManager" "ff"
-    # not important
-    pin_thread_on_pwr "system_server" "Miui|ExtM|Connect|Wifi|backup|Sync|Observer|Power|Sensor|batterystats"
-    pin_thread_on_pwr "system_server" "Thread-|pool-|Jit|CachedAppOpt|Greezer|TaskSnapshot|Oom"
+    #Other Thread
     change_thread_nice "system_server" "Greezer|TaskSnapshot|Oom" "4"
     # pin_thread_on_pwr "system_server" "Async" # it blocks camera
     # pin_thread_on_pwr "system_server" "\.bg" # it blocks binders
@@ -300,20 +301,20 @@ disable_kernel_boost() {
     lock_val "1 0" /proc/ppm/policy_status
     lock_val "2 0" /proc/ppm/policy_status
     lock_val "3 0" /proc/ppm/policy_status
-    lock_val "4 0" /proc/ppm/policy_status
+    lock_val "4 4" /proc/ppm/policy_status
     lock_val "5 0" /proc/ppm/policy_status
     lock_val "7 0" /proc/ppm/policy_status
     lock_val "8 0" /proc/ppm/policy_status
     lock_val "9 0" /proc/ppm/policy_status
     lock_val "10 0" /proc/ppm/policy_status
-
-    #for i in 'hard_userlimit_cpu_freq' 'hard_userlimit_freq_limit_by_others'; do
-    #    lock_val "0 -1" >/proc/ppm/policy/$i
-    #    lock_val "1 -1" >/proc/ppm/policy/$i
-    #    lock_val "2 -1" >/proc/ppm/policy/$i
-    #    lock /proc/ppm/policy/$i
-    #    # cat /proc/ppm/policy/$i
-    #done
+    #From Scene
+    for i in 'hard_userlimit_cpu_freq' 'hard_userlimit_freq_limit_by_others'; do
+        lock_val "0 -1" >/proc/ppm/policy/$i
+        lock_val "1 -1" >/proc/ppm/policy/$i
+        lock_val "2 -1" >/proc/ppm/policy/$i
+        lock /proc/ppm/policy/$i
+        # cat /proc/ppm/policy/$i
+    done
     # used by uperf
     lock_val "6 1" /proc/ppm/policy_status
     lock_val "99" /sys/kernel/ged/hal/custom_boost_gpu_freq
@@ -322,6 +323,7 @@ disable_kernel_boost() {
     # lock_val "1" /sys/kernel/ged/hal/dvfs_margin_value
     lock_val "99" /sys/module/ged/parameters/gpu_cust_boost_freq
     lock_val "enable: 0" /proc/perfmgr/tchbst/user/usrtch
+    lock_val "none" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs
     chmod 400 /sys/module/ged/parameters/*
     chmod 555 /sys/module/ged/parameters/ged_force_mdp_enable
     # lock_val "0" /sys/kernel/fpsgo/common/force_onoff
