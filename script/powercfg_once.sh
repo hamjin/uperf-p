@@ -19,7 +19,7 @@ unify_cgroup() {
         lock_val "0" /dev/cpuctl/$g/cpu.uclamp.sched_boost_no_override
         lock_val "0" /dev/cpuctl/$g/cpu.uclamp.min
         lock_val "0" /dev/cpuctl/$g/cpu.uclamp.latency_sensitive
-        lock_val "1" /dev/cpuset/$g/sched_load_balance
+        lock_val "0" /dev/cpuset/$g/sched_load_balance
     done
     lock_val "1" /dev/stune/rt/schedtune.sched_boost_no_override
     lock_val "100" /dev/stune/rt/schedtune.boost
@@ -47,12 +47,11 @@ unify_cgroup() {
     #lock_val "0-1" /dev/cpuset/background/untrustedapp/cpus
     #lock_val "0-1" /dev/cpuset/system-background/cpus
     # Reduce Perf Cluster Wakeup
-    move_to_rt "vendor.qti.hardware.display.composer-service"
-    move_to_rt "com.android.systemui"
-    move_to_rt "com.miui.home"
-    move_to_rt "surfaceflinger"
-    move_to_rt "system_server"
-    move_to_rt "update_engine"
+    #move_to_rt "vendor.qti.hardware.display.composer-service"
+    #move_to_rt "com.android.systemui"
+    #move_to_rt "com.miui.home"
+    #move_to_rt "surfaceflinger"
+    #move_to_rt "system_server"
     move_to_rt "update_engine"
     # daemons
     pin_proc_on_pwr "crtc_commit|crtc_event|pp_event|msm_irqbalance|netd|mdnsd|analytics"
@@ -159,10 +158,10 @@ unify_cpufreq() {
     # unify governor, not use schedutil if kernel has broken it
     lock_val "1" /sys/devices/system/cpu/sched/hint_enable
     chmod 000 /sys/devices/system/cpu/sched/hint_enable
-    lock_val "90" /sys/devices/system/cpu/sched/hint_load_thresh
-    chmod 000 /sys/devices/system/cpu/sched/hint_load_thresh
-    lock_val "1" /sys/devices/system/cpu/eas/enable
-    chmod 000 /sys/devices/system/cpu/eas/enable
+    lock_val "80" /sys/devices/system/cpu/sched/hint_load_thresh
+    chmod 004 /sys/devices/system/cpu/sched/hint_load_thresh
+    #lock_val "1" /sys/devices/system/cpu/eas/enable
+    #chmod 000 /sys/devices/system/cpu/eas/enable
 
     #some devices don't have interactive, use ondemand instead
     set_governor_param "scaling_governor" "0:ondemand 2:ondemand 4:ondemand 6:ondemand 7:ondemand"
@@ -315,6 +314,7 @@ disable_kernel_boost() {
         lock /proc/ppm/policy/$i
         # cat /proc/ppm/policy/$i
     done
+
     # used by uperf
     lock_val "6 1" /proc/ppm/policy_status
     lock_val "99" /sys/kernel/ged/hal/custom_boost_gpu_freq

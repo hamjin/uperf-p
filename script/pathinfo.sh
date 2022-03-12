@@ -13,5 +13,5 @@ LOG_FILE="$USER_PATH/log_uperf_initsvc.log"
 FLAGS="$MODULE_PATH/flags"
 
 # do not use private busybox
-PATH="/sbin:/system/sbin:/system/xbin:/system/bin:/vendor/xbin:/vendor/bin"
-PATH="$MODULE_PATH/$BIN_DIR/busybox:$PATH"
+#PATH="/sbin:/system/sbin:/system/xbin:/system/bin:/vendor/xbin:/vendor/bin"
+#PATH="$MODULE_PATH/$BIN_DIR/busybox:$PATH"

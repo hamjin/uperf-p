@@ -3,8 +3,8 @@
 # https://github.com/yc9559/
 # Author: Matt Yang
 # Version: 20200401
+BASEDIR=${0%/*}
 USER_PATH="/data/media/0/yc/uperf"
-BASEDIR="$(dirname $(readlink -f "$0"))"
 wait_until_login() {
     # in case of /data encryption is disabled
     while [ "$(getprop sys.boot_completed)" != "1" ]; do
@@ -22,10 +22,10 @@ wait_until_login() {
 
 }
 wait_until_login
-mv $USER_PATH/init_uperf.txt $USER_PATH/init_uperf.lastgood.txt 2>&1
+mv $USER_PATH/init_uperf.txt $USER_PATH/init_uperf.lastgood.txt
 date '+%Y-%m-%d %H:%M:%S' >>$USER_PATH/init_uperf.txt 2>&1
 echo "YC调度-天玑优化：开始加载" >>$USER_PATH/init_uperf.txt 2>&1
 echo "balance" >$USER_PATH/cur_powermode
 env >>$USER_PATH/init_uperf.txt 2>&1
-sh $BASEDIR/run_once.sh
 sh $BASEDIR/run_uperf.sh >>$USER_PATH/init_uperf.txt 2>&1
+sh $BASEDIR/run_adj.sh >>$USER_PATH/init_uperf.txt 2>&1 &

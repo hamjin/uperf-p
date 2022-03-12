@@ -34,12 +34,12 @@ uperf_set_powermode() {
 
 uperf_status() {
     # (uperfd & uperf) or (uperfd & new_uperf & old_uperf)
-    if [ "$(ps -A | grep "$UPERF_NAME" | wc -l)" -ge 2 ]; then
-        echo "Running. Details see $uperf_log_path."
-    else
-        echo "Not running. Reasons see $uperf_log_path."
-    fi
-    #echo "Details see $uperf_log_path."
+    #if [ "$(ps -A | grep "$UPERF_NAME" | wc -l)" -ge 2 ]; then
+    #    echo "Running. Details see $uperf_log_path."
+    #else
+    #    echo "Not running. Reasons see $uperf_log_path."
+    #fi
+    echo "Details see $uperf_log_path."
 }
 
 uperf_stop() {
@@ -51,8 +51,7 @@ uperf_start() {
     mutate "524288" /proc/sys/fs/inotify/max_queued_events
     mutate "524288" /proc/sys/fs/inotify/max_user_watches
     mutate "1024" /proc/sys/fs/inotify/max_user_instances
-    echo 1 >/dev/gpufreq_id
-    echo 1 >/dev/gpufreq_step
+
     # cleanup
     cmd settings delete system min_refresh_rate
     cmd settings put Secure speed_mode_enable 1

@@ -562,5 +562,5 @@ uperf_install
 disable_mtk_thermal
 injector_install
 powerhal_stub_install
-busybox_install
+#busybox_install
 uperf_print_finish

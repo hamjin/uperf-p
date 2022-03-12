@@ -1,6 +1,6 @@
 id=uperf
 name=Uperf (For Mediatek SoCs Only)
-version=v2 (21.08.15),GPU_Lock-dynamic-22.03.10
+version=v2 (21.08.15),GPU_Lock-dynamic-22.03.12
 versionCode=220310
 author=Matt Yang @yc9559 && HamJTY @HamJin
 minMagisk=23000
