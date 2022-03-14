@@ -33,7 +33,7 @@
         },
         "sfAnalysis": {
             "note": "surfaceflinger分析器提供渲染开始/结束/滞后hint。boostCntMax:SfBoost可用次数缓存上限。boostGrowQuantumMs:每满此间隔没有SfBoost请求，则SfBoost可用次数+1。renderIdleSlackMs:进入渲染结束状态前的滞后时长。",
-            "enable": true,
+            "enable": false,
             "boostCntMax": 50,
             "boostGrowQuantumMs": 100,
             "renderIdleSlackMs": 1

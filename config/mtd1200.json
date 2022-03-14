@@ -40,7 +40,7 @@
         },
         "ssAnalysis": {
             "note": "system_server分析器提供系统过渡动画开始/结束hint。",
-            "enable": false
+            "enable": true
         },
         "uxAffinity": {
             "note": "UX线程自动设置，固定高优先级的UX线程到大核，并限制低优先级线程的需求响应",
@@ -193,21 +193,21 @@
                 "name": "schedBoost",
                 "path": "/sys/devices/system/cpu/sched/sched_boost",
                 "type": "string",
-                "enable": false,
+                "enable": true,
                 "note": "异构调度器全局任务放置boost，不考虑能耗代价"
             },
             {
                 "name": "topBoost",
-                "path": "/dev/stune/top-app/schedtune.boost",
+                "path": "/dev/stune/top-app/schedtune.util.min",
                 "type": "string",
-                "enable": false,
+                "enable": true,
                 "note": "正在交互的App的schedtune.boost"
             },
             {
                 "name": "heavyBoost",
-                "path": "/dev/stune/rt/schedtune.boost",
+                "path": "/dev/stune/rt/schedtune.util.min",
                 "type": "string",
-                "enable": false,
+                "enable": true,
                 "note": "重负载线程的schedtune.boost"
             },
             {
@@ -360,7 +360,7 @@
                 "normal": {
                     "schedBoost": "0",
                     "topBoost": "0",
-                    "heavyBoost": "0",
+                    "heavyBoost": "512",
                     "uxAffinity": "4",
                     "dispFeature": "0",
                     "cpuFreqMin0": "0 1600000",
@@ -400,7 +400,7 @@
                 "interaction": {
                     "schedBoost": "0",
                     "topBoost": "10",
-                    "heavyBoost": "10",
+                    "heavyBoost": "409",
                     "uxAffinity": "4",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 1600000",
@@ -419,7 +419,7 @@
                 "pressed": {
                     "schedBoost": "0",
                     "topBoost": "0",
-                    "heavyBoost": "1",
+                    "heavyBoost": "512",
                     "uxAffinity": "4",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 2000000",
@@ -437,8 +437,8 @@
                 },
                 "heavyLoad": {
                     "schedBoost": "0",
-                    "topBoost": "60",
-                    "heavyBoost": "60",
+                    "topBoost": "0",
+                    "heavyBoost": "512",
                     "uxAffinity": "4",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 1800000",
@@ -471,8 +471,8 @@
                 },
                 "sfBoost": {
                     "schedBoost": "0",
-                    "topBoost": "10",
-                    "heavyBoost": "10",
+                    "topBoost": "819",
+                    "heavyBoost": "819",
                     "uxAffinity": "4",
                     "cpuFreqMin0": "0 1700000",
                     "cpuFreqMax0": "0 2000000",
@@ -496,7 +496,7 @@
                 "normal": {
                     "schedBoost": "0",
                     "topBoost": "0",
-                    "heavyBoost": "0",
+                    "heavyBoost": "512",
                     "uxAffinity": "4",
                     "dispFeature": "0",
                     "cpuFreqMin0": "0 100000",
@@ -514,9 +514,9 @@
                     "cciboost": "1"
                 },
                 "active": {
-                    "schedBoost": "0",
+                    "schedBoost": "1",
                     "topBoost": "0",
-                    "heavyBoost": "0",
+                    "heavyBoost": "512",
                     "uxAffinity": "4",
                     "dispFeature": "1",
                     "cpuFreqMin0": "0 100000",
@@ -534,9 +534,9 @@
                     "cciboost": "1"
                 },
                 "interaction": {
-                    "schedBoost": "0",
+                    "schedBoost": "1",
                     "topBoost": "0",
-                    "heavyBoost": "0",
+                    "heavyBoost": "768",
                     "uxAffinity": "4",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 100000",
@@ -553,9 +553,9 @@
                     "dramforcefreq": "0"
                 },
                 "pressed": {
-                    "schedBoost": "0",
+                    "schedBoost": "1",
                     "topBoost": "0",
-                    "heavyBoost": "0",
+                    "heavyBoost": "768",
                     "uxAffinity": "4",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 100000",
@@ -572,9 +572,9 @@
                     "dramforcefreq": "0"
                 },
                 "heavyLoad": {
-                    "schedBoost": "0",
+                    "schedBoost": "1",
                     "topBoost": "0",
-                    "heavyBoost": "0",
+                    "heavyBoost": "1000",
                     "uxAffinity": "4",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 100000",
@@ -591,9 +591,6 @@
                     "dramforcefreq": "0"
                 },
                 "sfLag": {
-                    "schedBoost": "0",
-                    "topBoost": "0",
-                    "heavyBoost": "0",
                     "uxAffinity": "4",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 1500000",
@@ -609,9 +606,9 @@
                     "dramboost": "1"
                 },
                 "sfBoost": {
-                    "schedBoost": "0",
-                    "topBoost": "0",
-                    "heavyBoost": "0",
+                    "schedBoost": "1",
+                    "topBoost": "1000",
+                    "heavyBoost": "1000",
                     "uxAffinity": "4",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 1500000",
@@ -636,7 +633,7 @@
                 "normal": {
                     "schedBoost": "0",
                     "topBoost": "0",
-                    "heavyBoost": "0",
+                    "heavyBoost": "409",
                     "uxAffinity": "1",
                     "dispFeature": "0",
                     "cpuFreqMin0": "0 500000",
@@ -657,7 +654,7 @@
                     "schedBoost": "0",
                     "topBoost": "0",
                     "heavyBoost": "0",
-                    "uxAffinity": "1",
+                    "uxAffinity": "0",
                     "dispFeature": "1",
                     "cpuFreqMin0": "0 500000",
                     "cpuFreqMax0": "0 1700000",
@@ -676,8 +673,8 @@
                 "interaction": {
                     "schedBoost": "0",
                     "topBoost": "0",
-                    "heavyBoost": "0",
-                    "uxAffinity": "2",
+                    "heavyBoost": "307",
+                    "uxAffinity": "1",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 600000",
                     "cpuFreqMax0": "0 1800000",
@@ -695,8 +692,8 @@
                 "pressed": {
                     "schedBoost": "0",
                     "topBoost": "0",
-                    "heavyBoost": "0",
-                    "uxAffinity": "2",
+                    "heavyBoost": "307",
+                    "uxAffinity": "1",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 600000",
                     "cpuFreqMax0": "0 1800000",
@@ -714,8 +711,8 @@
                 "heavyLoad": {
                     "schedBoost": "0",
                     "topBoost": "0",
-                    "heavyBoost": "0",
-                    "uxAffinity": "4",
+                    "heavyBoost": "307",
+                    "uxAffinity": "3",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 500000",
                     "cpuFreqMax0": "0 1800000",
@@ -747,7 +744,7 @@
                 },
                 "sfBoost": {
                     "topBoost": "0",
-                    "heavyBoost": "1",
+                    "heavyBoost": "409",
                     "uxAffinity": "4",
                     "cpuFreqMin0": "0 700000",
                     "cpuFreqMax0": "0 2000000",
@@ -904,8 +901,8 @@
             "actions": {
                 "normal": {
                     "schedBoost": "0",
-                    "topBoost": "0",
-                    "heavyBoost": "0",
+                    "topBoost": "800",
+                    "heavyBoost": "800",
                     "uxAffinity": "4",
                     "dispFeature": "0",
                     "cpuFreqMin0": "0 500000",
@@ -923,9 +920,9 @@
                     "dramforcefreq": "0"
                 },
                 "active": {
-                    "schedBoost": "0",
-                    "topBoost": "0",
-                    "heavyBoost": "0",
+                    "schedBoost": "1",
+                    "topBoost": "1000",
+                    "heavyBoost": "1000",
                     "uxAffinity": "4",
                     "dispFeature": "1",
                     "cpuFreqMin0": "0 900000",
@@ -943,9 +940,9 @@
                     "cciboost": "1"
                 },
                 "interaction": {
-                    "schedBoost": "0",
-                    "topBoost": "0",
-                    "heavyBoost": "0",
+                    "schedBoost": "1",
+                    "topBoost": "1000",
+                    "heavyBoost": "1000",
                     "uxAffinity": "4",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 900000",
@@ -963,8 +960,8 @@
                 },
                 "pressed": {
                     "schedBoost": "1",
-                    "topBoost": "0",
-                    "heavyBoost": "0",
+                    "topBoost": "1000",
+                    "heavyBoost": "1000",
                     "uxAffinity": "4",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 900000",
@@ -982,8 +979,8 @@
                 },
                 "heavyLoad": {
                     "schedBoost": "1",
-                    "topBoost": "0",
-                    "heavyBoost": "0",
+                    "topBoost": "1001",
+                    "heavyBoost": "1001",
                     "uxAffinity": "4",
                     "dispFeature": "2",
                     "cpuFreqMin0": "0 100000",
@@ -1015,8 +1012,8 @@
                     "dramboost": "1"
                 },
                 "sfBoost": {
-                    "topBoost": "0",
-                    "heavyBoost": "0",
+                    "topBoost": "1005",
+                    "heavyBoost": "1005",
                     "uxAffinity": "4",
                     "cpuFreqMin0": "0 900000",
                     "cpuFreqMax0": "0 2000000",

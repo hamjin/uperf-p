@@ -14,15 +14,26 @@ unify_cgroup() {
     # clear stune & uclamp
     for g in background foreground top-app background/untrustedapp; do
         lock_val "0" /dev/stune/$g/schedtune.sched_boost_no_override
-        lock_val "0" /dev/stune/$g/schedtune.boost
+        #lock_val "0" /dev/stune/$g/schedtune.boost
         lock_val "0" /dev/stune/$g/schedtune.prefer_idle
         lock_val "0" /dev/cpuctl/$g/cpu.uclamp.sched_boost_no_override
         lock_val "0" /dev/cpuctl/$g/cpu.uclamp.min
+        lock_val "0" /dev/stune/$g/schedtune.util.min
+        lock /dev/stune/$g/schedtune.util.max.pct
+        lock /dev/stune/$g/schedtune.util.max.effective
+        lock /dev/stune/$g/schedtune.util.min.pct
+        lock /dev/stune/$g/schedtune.util.min.effective
         lock_val "0" /dev/cpuctl/$g/cpu.uclamp.latency_sensitive
         lock_val "0" /dev/cpuset/$g/sched_load_balance
     done
+    lock_val "1000" /dev/stune/background/schedtune.util.max
+    lock_val "0" /dev/stune/background/schedtune.util.min
+    chmod 000 /dev/stune/background/schedtune.util.min
+    lock_val "1" /dev/stune/background/schedtune.util.max
+    chmod 000 /dev/stune/background/schedtune.util.max
+    lock_val "1" /dev/stune/background/schedtune.sched_boost_no_override
     lock_val "1" /dev/stune/rt/schedtune.sched_boost_no_override
-    lock_val "100" /dev/stune/rt/schedtune.boost
+    lock_val "50" /dev/stune/rt/schedtune.boost
     lock_val "1" /dev/stune/rt/schedtune.prefer_idle
     for cg in stune cpuctl cpuset; do
         for p in $(cat /dev/$cg/top-app/tasks); do

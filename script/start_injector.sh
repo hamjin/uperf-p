@@ -25,7 +25,7 @@ inj_do_inject() {
 
     local lib_path
 
-    lib_path="$MODULE_PATH/$INJ_REL/$2"
+    lib_path="/system/lib64/$2"
 
     # fallback to standlone mode
     [ ! -e "$lib_path" ] && lib_path="${MODULE_PATH}${lib_path}"
