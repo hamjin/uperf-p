@@ -58,45 +58,14 @@ nohup $BASEDIR/bin/adjustment -l "$adj_log_path" &
 sleep 10s
 change_task_rt "adjustment" "19"
 pin_proc_on_pwr "adjustment"
-for g in background foreground top-app background/untrustedapp; do
-    lock_val "0" /dev/stune/$g/schedtune.prefer_idle
-    lock_val "0" /dev/cpuset/$g/sched_load_balance
-    lock_val "1000" /dev/stune/background/schedtune.util.max
-    lock_val "0" /dev/stune/background/schedtune.util.min
-    chmod 000 /dev/stune/background/schedtune.util.min
-    lock_val "1" /dev/stune/background/schedtune.util.max
-    chmod 000 /dev/stune/background/schedtune.util.max
-done
-sleep 120s
-for g in background foreground top-app background/untrustedapp; do
-    lock_val "0" /dev/stune/$g/schedtune.prefer_idle
-    lock_val "0" /dev/cpuset/$g/sched_load_balance
-    lock_val "1000" /dev/stune/background/schedtune.util.max
-    lock_val "0" /dev/stune/background/schedtune.util.min
-    chmod 000 /dev/stune/background/schedtune.util.min
-    lock_val "1" /dev/stune/background/schedtune.util.max
-    chmod 000 /dev/stune/background/schedtune.util.max
-done
-sleep 240s
-for g in background foreground top-app background/untrustedapp; do
-    lock_val "0" /dev/stune/$g/schedtune.prefer_idle
-    lock_val "0" /dev/cpuset/$g/sched_load_balance
-    lock_val "1000" /dev/stune/background/schedtune.util.max
-    lock_val "0" /dev/stune/background/schedtune.util.min
-    chmod 000 /dev/stune/background/schedtune.util.min
-    lock_val "1" /dev/stune/background/schedtune.util.max
-    chmod 000 /dev/stune/background/schedtune.util.max
-done
-sleep 300s
 while true; do
     for g in background foreground top-app background/untrustedapp; do
         lock_val "0" /dev/stune/$g/schedtune.prefer_idle
         lock_val "0" /dev/cpuset/$g/sched_load_balance
         lock_val "1000" /dev/stune/background/schedtune.util.max
         lock_val "0" /dev/stune/background/schedtune.util.min
-        chmod 000 /dev/stune/background/schedtune.util.min
-        lock_val "1" /dev/stune/background/schedtune.util.max
-        chmod 000 /dev/stune/background/schedtune.util.max
+        lock_val "0" /dev/stune/background/schedtune.util.min
+        lock_val "0" /dev/stune/background/schedtune.util.max
     done
-    sleep 3600s
+    sleep 30s
 done

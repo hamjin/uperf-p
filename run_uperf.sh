@@ -17,4 +17,4 @@ chmod 755 /data/powercfg.sh
 #Bootstrap Uperf
 sh $SCRIPT_DIR/prepare.sh 2>&1
 sh $SCRIPT_DIR/powercfg_once.sh 2>&1
-sh $SCRIPT_DIR/start_injector.sh 2>&1
+#sh $SCRIPT_DIR/start_injector.sh 2>&1

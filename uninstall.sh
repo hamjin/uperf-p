@@ -11,3 +11,4 @@ rm -rf /data/thermal /data/system/mcd 2>&1
 chattr -i /data/system/migt 2>&1
 chattr -i /data/system/whetstone 2>&1
 rm -rf /data/system/migt /data/system/whetstone 2>&1
+rm -rf /data/powercfg*

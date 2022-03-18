@@ -28,9 +28,9 @@ unify_cgroup() {
     done
     lock_val "1000" /dev/stune/background/schedtune.util.max
     lock_val "0" /dev/stune/background/schedtune.util.min
-    chmod 000 /dev/stune/background/schedtune.util.min
+    #chmod 000 /dev/stune/background/schedtune.util.min
     lock_val "1" /dev/stune/background/schedtune.util.max
-    chmod 000 /dev/stune/background/schedtune.util.max
+    #chmod 000 /dev/stune/background/schedtune.util.max
     lock_val "1" /dev/stune/background/schedtune.sched_boost_no_override
     lock_val "1" /dev/stune/rt/schedtune.sched_boost_no_override
     lock_val "50" /dev/stune/rt/schedtune.boost
@@ -64,17 +64,27 @@ unify_cgroup() {
     #move_to_rt "surfaceflinger"
     #move_to_rt "system_server"
     move_to_rt "update_engine"
+    move_to_rt "android.hardware.media.c2@1.2-mediatek"
+    move_to_rt "mediaserver64"
+    move_to_rt "media.swcodec"
+    move_to_rt "media.codec"
+    change_task_high_prio "android.hardware.media.c2@1.2-mediatek"
+    change_task_high_prio "update_engine"
+    change_task_high_prio "media.swcodec"
+    change_task_high_prio "media.codec"
+    change_task_high_prio "mediaserver64"
     # daemons
     pin_proc_on_pwr "crtc_commit|crtc_event|pp_event|msm_irqbalance|netd|mdnsd|analytics"
     pin_proc_on_pwr "imsdaemon|cnss-daemon|qadaemon|qseecomd|time_daemon|ATFWD-daemon|ims_rtp_daemon|qcrilNrd"
     # ueventd related to hotplug of camera, wifi, usb...
     # pin_proc_on_pwr "ueventd"
     # hardware services, eg. android.hardware.sensors@1.0-service
-    pin_proc_on_pwr "android.hardware.bluetooth" #It reduce MIUI+ Speed
+    pin_proc_on_pwr "android.hardware.bluetooth"
     pin_proc_on_pwr "android.hardware.gnss"
     pin_proc_on_pwr "android.hardware.health"
     pin_proc_on_pwr "android.hardware.thermal"
-    pin_proc_on_pwr "android.hardware.wifi" #It reduce MIUI+ Speed
+    pin_proc_on_pwr "android.hardware.thermal"
+    pin_proc_on_pwr "android.hardware.media.c2@1.2-mediatek"
     pin_proc_on_pwr "android.hardware.keymaster"
     pin_proc_on_pwr "vendor.qti.hardware.qseecom"
     pin_proc_on_pwr "hardware.sensors"
@@ -311,7 +321,6 @@ disable_kernel_boost() {
     lock_val "1 0" /proc/ppm/policy_status
     lock_val "2 0" /proc/ppm/policy_status
     lock_val "3 0" /proc/ppm/policy_status
-    lock_val "4 4" /proc/ppm/policy_status
     lock_val "5 0" /proc/ppm/policy_status
     lock_val "7 0" /proc/ppm/policy_status
     lock_val "8 0" /proc/ppm/policy_status
@@ -330,10 +339,12 @@ disable_kernel_boost() {
     lock_val "6 1" /proc/ppm/policy_status
     lock_val "99" /sys/kernel/ged/hal/custom_boost_gpu_freq
     #chmod 000 /sys/kernel/ged/hal/custom_boost_gpu_freq
-    lock_val "0" /sys/kernel/ged/hal/dvfs_loading_mode
+    lock_val "2" /sys/kernel/ged/hal/dvfs_loading_mode
     # lock_val "1" /sys/kernel/ged/hal/dvfs_margin_value
     lock_val "99" /sys/module/ged/parameters/gpu_cust_boost_freq
     lock_val "enable: 0" /proc/perfmgr/tchbst/user/usrtch
+    lock_val "2" /sys/kernel/fpsgo/fstb/margin_mode
+    lock_val "2" /sys/kernel/fpsgo/fstb/margin_mode_gpu
     lock_val "none" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs
     chmod 400 /sys/module/ged/parameters/*
     chmod 555 /sys/module/ged/parameters/ged_force_mdp_enable
