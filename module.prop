@@ -1,8 +1,8 @@
 id=uperf
 name=Uperf (For Mediatek SoCs Only)
-version=v2 (21.08.15),GPU_Lock-dynamic-22.03.18
-versionCode=220318
+version=v2 (21.08.15),GPU_Lock-dynamic-22.03.26
+versionCode=220326
 author=Matt Yang @yc9559 && HamJTY @HamJin
 minMagisk=23000
-description=A userspace performance adjustment，Repo: https://gitee.com/hamjin/uperf
+description=A userspace performance adjustment, Repo: https://gitee.com/hamjin/uperf
 updateJson=https://gitee.com/hamjin/uperf/raw/update/uperf-hamjty-dynamic.json

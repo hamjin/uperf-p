@@ -179,15 +179,16 @@ unify_cpufreq() {
     # unify governor, not use schedutil if kernel has broken it
     lock_val "1" /sys/devices/system/cpu/sched/hint_enable
     chmod 000 /sys/devices/system/cpu/sched/hint_enable
-    lock_val "80" /sys/devices/system/cpu/sched/hint_load_thresh
+    lock_val "85" /sys/devices/system/cpu/sched/hint_load_thresh
     chmod 004 /sys/devices/system/cpu/sched/hint_load_thresh
-    #lock_val "1" /sys/devices/system/cpu/eas/enable
-    #chmod 000 /sys/devices/system/cpu/eas/enable
+    lock_val "1" /sys/devices/system/cpu/eas/enable
+    chmod 004 /sys/devices/system/cpu/eas/enable
 
     #some devices don't have interactive, use ondemand instead
     set_governor_param "scaling_governor" "0:ondemand 2:ondemand 4:ondemand 6:ondemand 7:ondemand"
     set_governor_param "scaling_governor" "0:interactive 2:interactive 4:interactive 6:interactive 7:interactive"
     set_governor_param "scaling_governor" "0:schedutil 2:schedutil 4:schedutil 6:schedutil 7:schedutil"
+    set_governor_param "scaling_governor" "0:sugov_ext 2:sugov_ext 4:sugov_ext 6:sugov_ext 7:sugov_ext"
     # unify walt schedutil governor
     set_governor_param "schedutil/hispeed_freq" "0:0 2:0 4:0 6:0 7:0"
     set_governor_param "schedutil/hispeed_load" "0:100 2:100 4:100 6:100 7:100"
@@ -287,7 +288,7 @@ disable_hotplug() {
 
     # bring all cores online
     for i in 0 1 2 3 4 5 6 7 8 9; do
-        mutate "1" $CPU/cpu$i/online
+        lock_val "1" $CPU/cpu$i/online
     done
 }
 
@@ -317,15 +318,15 @@ disable_kernel_boost() {
     #MTK PPM must be enabled
     lock_val "1" /proc/ppm/enabled
     #not used by uperf
-    lock_val "0 0" /proc/ppm/policy_status
-    lock_val "1 0" /proc/ppm/policy_status
+    lock_val "0 1" /proc/ppm/policy_status
+    lock_val "1 1" /proc/ppm/policy_status
     lock_val "2 0" /proc/ppm/policy_status
     lock_val "3 0" /proc/ppm/policy_status
-    lock_val "5 0" /proc/ppm/policy_status
+    lock_val "5 1" /proc/ppm/policy_status
     lock_val "7 0" /proc/ppm/policy_status
     lock_val "8 0" /proc/ppm/policy_status
-    lock_val "9 0" /proc/ppm/policy_status
-    lock_val "10 0" /proc/ppm/policy_status
+    lock_val "9 1" /proc/ppm/policy_status
+    lock_val "10 1" /proc/ppm/policy_status
     #From Scene
     for i in 'hard_userlimit_cpu_freq' 'hard_userlimit_freq_limit_by_others'; do
         lock_val "0 -1" >/proc/ppm/policy/$i
@@ -337,17 +338,17 @@ disable_kernel_boost() {
 
     # used by uperf
     lock_val "6 1" /proc/ppm/policy_status
-    lock_val "99" /sys/kernel/ged/hal/custom_boost_gpu_freq
+    #lock_val "99" /sys/kernel/ged/hal/custom_boost_gpu_freq
     #chmod 000 /sys/kernel/ged/hal/custom_boost_gpu_freq
-    lock_val "2" /sys/kernel/ged/hal/dvfs_loading_mode
-    # lock_val "1" /sys/kernel/ged/hal/dvfs_margin_value
-    lock_val "99" /sys/module/ged/parameters/gpu_cust_boost_freq
+    #lock_val "0" /sys/kernel/ged/hal/dvfs_loading_mode
+    #lock_val "1" /sys/kernel/ged/hal/dvfs_margin_value
+    #lock_val "99" /sys/module/ged/parameters/gpu_cust_boost_freq
     lock_val "enable: 0" /proc/perfmgr/tchbst/user/usrtch
-    lock_val "2" /sys/kernel/fpsgo/fstb/margin_mode
-    lock_val "2" /sys/kernel/fpsgo/fstb/margin_mode_gpu
+    #lock_val "1" /sys/kernel/fpsgo/fstb/margin_mode
+    #lock_val "1" /sys/kernel/fpsgo/fstb/margin_mode_gpu
     lock_val "none" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs
-    chmod 400 /sys/module/ged/parameters/*
-    chmod 555 /sys/module/ged/parameters/ged_force_mdp_enable
+    #chmod 400 /sys/module/ged/parameters/*
+    #chmod 555 /sys/module/ged/parameters/ged_force_mdp_enable
     # lock_val "0" /sys/kernel/fpsgo/common/force_onoff
     #Active MTK Memery Management
     # lock_val "1" /proc/mtk-perf/lowmem_hint_enable
@@ -407,13 +408,13 @@ disable_userspace_boost() {
 
 log "PATH=$PATH"
 log "sh=$(which sh)"
-(rebuild_process_scan_cache &)
-(disable_userspace_boost &)
-(disable_kernel_boost &)
-(disable_hotplug &)
-(unify_cpufreq &)
-(unify_sched &)
-(unify_lpm &)
+rebuild_process_scan_cache
+disable_userspace_boost
+disable_kernel_boost
+disable_hotplug
+unify_cpufreq
+unify_sched
+unify_lpm
 
 # make sure that all the related cpu is online
 unify_cgroup
@@ -421,4 +422,10 @@ unify_cgroup
 # start uperf once only
 uperf_stop
 uperf_start
-#chmod 400 /sys/kernel/ged/hal/custom_upbound_gpu_freq
+lock_val "99" /sys/kernel/ged/hal/custom_boost_gpu_freq
+chmod 400 /sys/kernel/ged/hal/custom_boost_gpu_freq
+for i in 0 4 7; do
+    lock_val "100000" /sys/devices/system/cpu/cpufreq/policy$i/scaling_min_freq
+    lock_val "9900000" /sys/devices/system/cpu/cpufreq/policy$i/scaling_max_freq
+    lock_val "100000" /sys/devices/system/cpu/cpufreq/policy$i/scaling_min_freq
+done

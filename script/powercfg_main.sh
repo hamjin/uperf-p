@@ -29,7 +29,7 @@ if [ "$huanta" != "" ]; then
     echo "$action" >/sdcard/yc/uperf/cur_powermode
     exit 0
 fi
-if [ "$battery_temp" -lt "150" ]; then
+if [ "$battery_temp" -lt "50" ]; then
     case "$1" in
     "powersave") action="lowtemp" ;;
     "balance" | "performance" | "fast") action="$1" ;;
@@ -39,7 +39,7 @@ if [ "$battery_temp" -lt "150" ]; then
     exit 0
 fi
 if [ "$1" == "init" ]; then
-    action="fast"
+    action="performance"
     echo "$action" >/sdcard/yc/uperf/cur_powermode
     exit 0
 fi

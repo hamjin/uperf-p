@@ -1,6 +1,6 @@
 {
     "meta": {
-        "name": "Dimensity 8000(mt6895)[22.3.18]",
+        "name": "Dimensity 8000(mt6895)[22.3.26]",
         "author": "hamjin@coolapk",
         "features": "touch cpuload render standby sfanalysis ssanalysis dispfeature"
     },
@@ -269,15 +269,15 @@
             },
             {
                 "name": "suUpRateUs",
-                "path": "/sys/devices/system/cpu/cpu%d/cpufreq/schedutil/up_rate_limit_us",
-                "note": "schedutil升频最小间隔，单位微秒",
+                "path": "/sys/devices/system/cpu/cpu%d/cpufreq/sugov_ext/up_rate_limit_us",
+                "note": "sugov_ext升频最小间隔，单位微秒",
                 "type": "percluster",
                 "enable": false
             },
             {
                 "name": "suDownRateUs",
-                "path": "/sys/devices/system/cpu/cpu%d/cpufreq/schedutil/down_rate_limit_us",
-                "note": "schedutil降频最小间隔，单位微秒",
+                "path": "/sys/devices/system/cpu/cpu%d/cpufreq/sugov_ext/down_rate_limit_us",
+                "note": "sugov_ext降频最小间隔，单位微秒",
                 "type": "percluster",
                 "enable": false
             },
@@ -637,11 +637,11 @@
                     "uxAffinity": "0",
                     "dispFeature": "0",
                     "cpuFreqMin0": "0 500000",
-                    "cpuFreqMax0": "0 700000",
+                    "cpuFreqMax0": "0 1100000",
                     "cpuFreqMin1": "1 400000",
-                    "cpuFreqMax1": "1 700000",
+                    "cpuFreqMax1": "1 1400000",
                     "cpuFreqMin2": "2 600000",
-                    "cpuFreqMax2": "2 700000",
+                    "cpuFreqMax2": "2 1800000",
                     "gpuAlwayson": "coarse_demand",
                     "gpumax": "31",
                     "gpudvfsstep": "1",
