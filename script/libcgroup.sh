@@ -27,6 +27,7 @@ move_to_rt() {
     pidof $1 | while read pid; do
         echo $pid >/dev/stune/rt/cgroup.procs
         echo $pid >/dev/cpuset/top-app/cgroup.procs
+        echo $pid >/dev/cpuctl/rt/cgroup.procs
     done
 }
 change_task_cgroup() {

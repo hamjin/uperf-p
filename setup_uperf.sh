@@ -2,11 +2,10 @@
 # Uperf Setup
 # https://github.com/yc9559/
 # Author: Matt Yang & cjybyjk (cjybyjk@gmail.com) &HamJTY(coolapk@HamJTY)
-# Version: 20201129
+# Version: 20220328
 
 BASEDIR=$MODPATH
 USER_PATH="/data/media/0/yc/uperf"
-
 # $1:error_message
 _abort() {
     echo "$1"
@@ -257,7 +256,7 @@ _get_e8895_type() {
 
 _get_mt6853_type() {
     local b_max
-    b_max="$(_get_maxfreq 6)"
+    b_max="$(_get_maxfreq 7)"
     if [ "$b_max" -gt 2200000 ]; then
         echo "mtd800u"
     else
@@ -277,8 +276,8 @@ _get_mt6873_type() {
 
 _get_mt6877_type() {
     local b_max
-    b_max="$(_get_maxfreq 4)"
-    if [ "$b_max" -gt 2500000 ]; then
+    b_max="$(_get_maxfreq 7)"
+    if [ "$b_max" -gt 2480000 ]; then
         echo "mtd920"
     else
         echo "mtd900"
@@ -286,7 +285,7 @@ _get_mt6877_type() {
 }
 _get_mt6885_type() {
     local b_max
-    b_max="$(_get_maxfreq 4)"
+    b_max="$(_get_maxfreq 7)"
     if [ "$b_max" -ge 2500000 ]; then
         echo "mtd1000"
     else
@@ -422,13 +421,19 @@ uperf_print_finish() {
 }
 
 uperf_install() {
+    mod_require_version="11"
     ui_print "- Start Install"
     DEVICE=$(getprop ro.product.board)
     DEVCODE=$(getprop ro.product.device)
+    var_version="$(grep_prop ro.build.version.release)"
     ui_print "- Platform: $(getprop ro.board.platform)"
     ui_print "- Model: $DEVCODE"
     ui_print "- DeviceCode: $DEVICE"
-
+    ui_print "- Android Version: $var_version"
+    if [ "$var_version" -gt "$mod_require_version" ]; then
+        ui_print "- Not Supported Android Version. Please upgrade to Uperf v3!"
+        _abort "! Uperf v2对当前版本系统支持不佳，请静候Uperf v3！"
+    fi
     local target
     local cfgname
     target="$(getprop ro.board.platform)"
@@ -440,17 +445,18 @@ uperf_install() {
     fi
     if [ "$cfgname" != "unsupported" ] && [ -f $MODPATH/config/$cfgname.json ]; then
         #Redmi K30 Ultra
-        if [ "$DEVICE" == "cezanne" ] || [ "$DEVCODE" == "cezanne" ]; then
-            cfgname="k30u"
-            ui_print "- Found Redmi K30 Ultra！Using specified config！"
+        #if [ "$DEVICE" == "cezanne" ] || [ "$DEVCODE" == "cezanne" ]; then
+        #    cfgname="k30u"
+        #    ui_print "- Found Redmi K30 Ultra！Using specified config！"
         #Redmi 10X &Redmi 10X Pro
-        elif [ "$DEVCODE" == "atom" ] || [ "$DEVICE" == "atom" ] || [ "$DEVCODE" == "bomb" ] || [ "$DEVICE" == "bomb" ]; then
-            cfgname="10x"
-            ui_print "- Found Redmi 10X Series！Using specified config！"
+        #elif [ "$DEVCODE" == "atom" ] || [ "$DEVICE" == "atom" ] || [ "$DEVCODE" == "bomb" ] || [ "$DEVICE" == "bomb" ]; then
+        #    cfgname="10x"
+        #    ui_print "- Found Redmi 10X Series！Using specified config！"
         #Others
-        else
-            ui_print "- found CPU: $target"
-        fi
+        #else
+        #    ui_print "- found CPU: $target"
+        #fi
+        ui_print "- Found CPU: $target"
         #make dir for the platform is supported
         ui_print "- Config File: $cfgname"
         mkdir -p $USER_PATH
@@ -489,15 +495,8 @@ clear_path() {
     fi
 }
 disable_mtk_thermal() {
-
-    chattr -i "/data/vendor/.tp"
-    chattr -i /data/vendor/thermal
-    rm -rf "/data/vendor/.tp"
-    ui_print "- Disable Mediatek Temp Limit by modify /data"
-    rm -rf /data/vendor/thermal
-    clear_path /data/thermal
-    clear_path /data/system/mcd
     ui_print "- Disable MIUI Cloud Control by modify /data"
+    clear_path /data/system/mcd
     clear_path /data/system/migt
     clear_path /data/system/whetstone
 }

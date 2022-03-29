@@ -4,19 +4,23 @@
 BASEDIR=${0%/*}
 USER_PATH="/data/media/0/yc/uperf"
 adj_log_path="$USER_PATH/log_adj.txt"
-lock_val() {
+l0ck_va1() {
     for p in $2; do
         if [ -f "$p" ]; then
-            #echo "Write $1 to $p and lock" >>$USER_PATH/init_uperf.txt 2>&1
             chmod 0666 "$p" 2>/dev/null
             echo "$1" >"$p"
             chmod 0444 "$p" 2>/dev/null
-            #echo "Locking $1 -> $p Done!" >>$USER_PATH/init_uperf.txt 2>&1
         fi
-        #echo "Not found $p , continue" >>$USER_PATH/init_uperf.txt 2>&1
     done
 }
-change_task_rt() {
+l0ck() {
+    for p in $2; do
+        if [ -f "$p" ]; then
+            chmod 0444 "$p" 2>/dev/null
+        fi
+    done
+}
+change_task_1rt() {
     for temp_pid in $(echo "$ps_ret" | grep -i -E "$1" | awk '{print $1}'); do
         for temp_tid in $(ls "/proc/$temp_pid/task/"); do
             comm="$(cat /proc/$temp_pid/task/$temp_tid/comm)"
@@ -24,7 +28,7 @@ change_task_rt() {
         done
     done
 }
-change_task_cgroup() {
+change_1task_cgroup() {
     local comm
     for temp_pid in $(echo "$ps_ret" | grep -i -E "$1" | awk '{print $1}'); do
         for temp_tid in $(ls "/proc/$temp_pid/task/"); do
@@ -42,30 +46,59 @@ change_task_affinity() {
         done
     done
 }
-unpin_proc() {
-    change_task_cgroup "$1" "" "cpuset"
+unpin_tproc() {
+    change_1task_cgroup "$1" "" "cpuset"
 }
-pin_proc_on_pwr() {
-    unpin_proc "$1"
-    change_task_cgroup "$1" "background" "cpuset"
+pin_proc_on_1pwr() {
+    unpin_tproc "$1"
+    change_1task_cgroup "$1" "background" "cpuset"
     change_task_affinity "$1" "f"
 }
-echo 1 >/dev/gpufreq_id
-echo 5 >/dev/gpufreq_step
+echo 41 >/dev/gpufreq_id
+echo 1 >/dev/gpufreq_step
 mv $USER_PATH/log_adj.txt $USER_PATH/log_adj.lastboot.txt
 chmod 777 $BASEDIR/bin/adjustment
 nohup $BASEDIR/bin/adjustment -l "$adj_log_path" &
 sleep 10s
-change_task_rt "adjustment" "19"
-pin_proc_on_pwr "adjustment"
+change_task_1rt "adjustment" "19"
+pin_proc_on_1pwr "adjustment"
 while true; do
-    for g in background foreground top-app background/untrustedapp; do
-        lock_val "0" /dev/stune/$g/schedtune.prefer_idle
-        lock_val "0" /dev/cpuset/$g/sched_load_balance
-        lock_val "1000" /dev/stune/background/schedtune.util.max
-        lock_val "0" /dev/stune/background/schedtune.util.min
-        lock_val "0" /dev/stune/background/schedtune.util.min
-        lock_val "0" /dev/stune/background/schedtune.util.max
+    l0ck_va1 "99" /sys/kernel/ged/hal/custom_boost_gpu_freq
+    chmod 400 /sys/kernel/ged/hal/custom_boost_gpu_freq
+    for i in 0 4 6 7; do
+        chmod 444 /sys/devices/system/cpu/cpufreq/policy$i/scaling_min_freq
+        chmod 444 /sys/devices/system/cpu/cpufreq/policy$i/scaling_max_freq
+        chmod 444 /sys/devices/system/cpu/cpufreq/policy$i/scaling_min_freq
     done
+    for i in 0 1 2 3 4 5 6 7 8 9 10; do
+        chmod 444 /sys/devices/system/cpu/cpu$i/cpufreq/scaling_min_freq
+        chmod 444 /sys/devices/system/cpu/cpu$i/cpufreq/scaling_max_freq
+        chmod 444 /sys/devices/system/cpu/cpu$i/cpufreq/scaling_min_freq
+    done
+    for g in background foreground top-app background/untrustedapp system-background; do
+        l0ck_va1 "0" /dev/stune/$g/schedtune.prefer_idle
+        l0ck_va1 "0" /dev/cpuset/$g/sched_load_balance
+        l0ck_va1 "0" /dev/cpuctl/$g/cpu.uclamp.latency_sensitive
+    done
+    l0ck /dev/cpuctl/background/cpu.uclamp.max
+    l0ck_va1 "0" /dev/cpuctl/background/cpu.uclamp.min
+    l0ck /dev/cpuctl/background/cpu.uclamp.min
+    l0ck_va1 "0" /dev/cpuctl/background/cpu.uclamp.max
+    l0ck /dev/cpuctl/system-background/cpu.uclamp.max
+    l0ck_va1 "0" /dev/cpuctl/system-background/cpu.uclamp.min
+    l0ck /dev/cpuctl/system-background/cpu.uclamp.min
+    l0ck_va1 "0" /dev/cpuctl/system-background/cpu.uclamp.max
+    l0ck /dev/stune/background/schedtune.util.max
+    l0ck /dev/stune/background/schedtune.util.min
+    l0ck /dev/stune/background/schedtune.util.min
+    l0ck /dev/stune/background/schedtune.util.max
+    l0ck /dev/cpuctl/system-background/cpu.uclamp.max
+    l0ck /dev/cpuctl/system-background/cpu.uclamp.min
+    l0ck /dev/cpuctl/system-background/cpu.uclamp.min
+    l0ck /dev/cpuctl/system-background/cpu.uclamp.max
+    l0ck /dev/stune/system-background/schedtune.util.max
+    l0ck /dev/stune/system-background/schedtune.util.min
+    l0ck /dev/stune/system-background/schedtune.util.min
+    l0ck /dev/stune/system-background/schedtune.util.max
     sleep 30s
 done

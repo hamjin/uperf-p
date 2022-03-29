@@ -29,12 +29,18 @@ inj_do_inject() {
 
     # fallback to standlone mode
     [ ! -e "$lib_path" ] && lib_path="${MODULE_PATH}${lib_path}"
-
     # try to allow executing dlopen in surfaceflinger
-    magiskpolicy --live "allow surfaceflinger system_lib_file file { read getattr execute }" >>"$LOG_FILE"
-    magiskpolicy --live "allow surfaceflinger system_data_file file { read write getattr }" >>"$LOG_FILE"
-    magiskpolicy --live "allow surfaceflinger system_data_file dir { read write getattr search }" >>"$LOG_FILE"
+    #magiskpolicy --live "allow surfaceflinger system_lib_file file { read getattr execute }" >>"$LOG_FILE"
+    #magiskpolicy --live "allow surfaceflinger system_data_file file { read write getattr }" >>"$LOG_FILE"
+    #magiskpolicy --live "allow surfaceflinger system_data_file dir { read write getattr search }" >>"$LOG_FILE"
 
+    magiskpolicy --live "allow surfaceflinger system_lib_file file { open read getattr execute  }" >>"$LOG_FILE"
+    magiskpolicy --live "allow surfaceflinger system_data_file file { open read write getattr execute}" >>"$LOG_FILE"
+    magiskpolicy --live "allow surfaceflinger system_data_file dir { open read write getattr search }" >>"$LOG_FILE"
+
+    magiskpolicy --live "allow surfaceflinger mcd_data_file dir { open read write getattr search }" >>"$LOG_FILE"
+    "$MODULE_PATH/$INJ_REL/$INJ_NAME" "$lib_path" >>"$LOG_FILE"
+    sleep 10
     "$MODULE_PATH/$INJ_REL/$INJ_NAME" "$lib_path" >>"$LOG_FILE"
 
     if [ "$?" != "0" ] || [ "result" == "" ]; then
@@ -42,17 +48,16 @@ inj_do_inject() {
             log "Set SELinux permissive, retry..."
             local sestate
             sestate="$(getenforce)"
-
+            setenforce 0
             "$MODULE_PATH/$INJ_REL/$INJ_NAME" "$lib_path" >>"$LOG_FILE"
-            #if [ "$sestate" == "Enforcing" ]; then
-            #    log "Resume SELinux enforcing"
-            #    setenforce 1
-            #fi
+            if [ "$sestate" == "Enforcing" ]; then
+                log "Resume SELinux enforcing"
+                setenforce 1
+            fi
         else
             log "Not allowed to set SELinux permissive, failed to retry"
         fi
     fi
-    #setenforce 1
     sleep 1
     logcat -d | grep -i "$3" >>"$LOG_FILE"
 

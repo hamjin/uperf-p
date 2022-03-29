@@ -15,37 +15,55 @@ BASEDIR="$(dirname "$0")"
 lock_val() {
     for p in $2; do
         if [ -f "$p" ]; then
-            #echo "Write $1 to $p and lock" >>$USER_PATH/init_uperf.txt 2>&1
+            log "Write $1 to $p and lock"
             chmod 0666 "$p" 2>/dev/null
             echo "$1" >"$p"
             chmod 0444 "$p" 2>/dev/null
             #echo "Locking $1 -> $p Done!" >>$USER_PATH/init_uperf.txt 2>&1
+        else
+            log "Not found $p , continue"
         fi
-        #echo "Not found $p , continue" >>$USER_PATH/init_uperf.txt 2>&1
+
     done
 }
 write_value() {
     for p in $2; do
         if [ -f "$p" ]; then
-            #echo "Locking $1 -> $p" >>$USER_PATH/init_uperf.txt
+            log "Write $1 -> $p"
             chmod 0666 "$p" 2>/dev/null
             echo "$1" >"$p"
             chmod 0444 "$p" 2>/dev/null
             #echo "Locking $1 -> $p Done!" >>$USER_PATH/init_uperf.txt
-            #echo "Not found $p , continue" >>$USER_PATH/init_uperf.txt
+        else
+            log "Not found $p , continue"
         fi
+
+    done
+}
+write_val() {
+    for p in $2; do
+        if [ -f "$p" ]; then
+            log "Write $1 -> $p"
+            chmod 0666 "$p" 2>/dev/null
+            echo "$1" >"$p"
+            chmod 0444 "$p" 2>/dev/null
+            #echo "Locking $1 -> $p Done!" >>$USER_PATH/init_uperf.txt
+        else
+            log "Not found $p , continue"
+        fi
+
     done
 }
 # $1:value $2:filepaths
 mutate() {
-
     for p in $2; do
         if [ -f "$p" ]; then
-            #echo "Write $1 to $p" >>$USER_PATH/init_uperf.txt 2>&1
+            log "Write $1 to $p"
             chmod 0666 "$p" 2>/dev/null
             echo "$1" >"$p"
             #echo "Change $p Done!" >>$USER_PATH/init_uperf.txt 2>&1
-            #echo "Not found $p , continue" >>$USER_PATH/init_uperf.txt 2>&1
+        else
+            log "Not found $p , continue"
         fi
 
     done
@@ -54,10 +72,11 @@ mutate() {
 # $1:file path
 lock() {
     if [ -f "$1" ]; then
-        #echo "Locking $1 's Permission" >>$USER_PATH/init_uperf.txt 2>&1
+        log "Locking $1 's Permission"
         chmod 0444 "$1" 2>/dev/null
         #echo "Locking $1 's Permission Done!" >>$USER_PATH/init_uperf.txt 2>&1
-        #echo "Not found $p , continue" >>$USER_PATH/init_uperf.txt 2>&1
+    else
+        log "Not found $p , continue"
     fi
 }
 

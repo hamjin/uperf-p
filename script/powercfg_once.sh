@@ -14,7 +14,7 @@ unify_cgroup() {
     # clear stune & uclamp
     for g in background foreground top-app background/untrustedapp; do
         lock_val "0" /dev/stune/$g/schedtune.sched_boost_no_override
-        #lock_val "0" /dev/stune/$g/schedtune.boost
+        write_val "0" /dev/stune/$g/schedtune.boost
         lock_val "0" /dev/stune/$g/schedtune.prefer_idle
         lock_val "0" /dev/cpuctl/$g/cpu.uclamp.sched_boost_no_override
         lock_val "0" /dev/cpuctl/$g/cpu.uclamp.min
@@ -26,10 +26,10 @@ unify_cgroup() {
         lock_val "0" /dev/cpuctl/$g/cpu.uclamp.latency_sensitive
         lock_val "0" /dev/cpuset/$g/sched_load_balance
     done
-    lock_val "1000" /dev/stune/background/schedtune.util.max
+    lock_val "0" /dev/stune/background/schedtune.util.max
     lock_val "0" /dev/stune/background/schedtune.util.min
     #chmod 000 /dev/stune/background/schedtune.util.min
-    lock_val "1" /dev/stune/background/schedtune.util.max
+    lock_val "0" /dev/stune/background/schedtune.util.max
     #chmod 000 /dev/stune/background/schedtune.util.max
     lock_val "1" /dev/stune/background/schedtune.sched_boost_no_override
     lock_val "1" /dev/stune/rt/schedtune.sched_boost_no_override
@@ -54,9 +54,9 @@ unify_cgroup() {
     lock_val "0-6" /dev/cpuset/restricted/cpus
     # VMOS may set cpuset/background/cpus to "0"
     lock /dev/cpuset/background/cpus
-    #lock_val "0-1" /dev/cpuset/background/cpus
-    #lock_val "0-1" /dev/cpuset/background/untrustedapp/cpus
-    #lock_val "0-1" /dev/cpuset/system-background/cpus
+    lock_val "0-3" /dev/cpuset/background/cpus
+    lock_val "0-3" /dev/cpuset/background/untrustedapp/cpus
+    lock_val "0-3" /dev/cpuset/system-background/cpus
     # Reduce Perf Cluster Wakeup
     #move_to_rt "vendor.qti.hardware.display.composer-service"
     #move_to_rt "com.android.systemui"
@@ -64,15 +64,15 @@ unify_cgroup() {
     #move_to_rt "surfaceflinger"
     #move_to_rt "system_server"
     move_to_rt "update_engine"
-    move_to_rt "android.hardware.media.c2@1.2-mediatek"
-    move_to_rt "mediaserver64"
-    move_to_rt "media.swcodec"
-    move_to_rt "media.codec"
-    change_task_high_prio "android.hardware.media.c2@1.2-mediatek"
-    change_task_high_prio "update_engine"
-    change_task_high_prio "media.swcodec"
-    change_task_high_prio "media.codec"
-    change_task_high_prio "mediaserver64"
+    #move_to_rt "android.hardware.media.c2@1.2-mediatek"
+    #move_to_rt "mediaserver64"
+    #move_to_rt "media.swcodec"
+    #move_to_rt "media.codec"
+    #change_task_high_prio "android.hardware.media.c2@1.2-mediatek"
+    #change_task_high_prio "update_engine"
+    #change_task_high_prio "media.swcodec"
+    #change_task_high_prio "media.codec"
+    #change_task_high_prio "mediaserver64"
     # daemons
     pin_proc_on_pwr "crtc_commit|crtc_event|pp_event|msm_irqbalance|netd|mdnsd|analytics"
     pin_proc_on_pwr "imsdaemon|cnss-daemon|qadaemon|qseecomd|time_daemon|ATFWD-daemon|ims_rtp_daemon|qcrilNrd"
@@ -83,8 +83,6 @@ unify_cgroup() {
     pin_proc_on_pwr "android.hardware.gnss"
     pin_proc_on_pwr "android.hardware.health"
     pin_proc_on_pwr "android.hardware.thermal"
-    pin_proc_on_pwr "android.hardware.thermal"
-    pin_proc_on_pwr "android.hardware.media.c2@1.2-mediatek"
     pin_proc_on_pwr "android.hardware.keymaster"
     pin_proc_on_pwr "vendor.qti.hardware.qseecom"
     pin_proc_on_pwr "hardware.sensors"
@@ -181,7 +179,7 @@ unify_cpufreq() {
     chmod 000 /sys/devices/system/cpu/sched/hint_enable
     lock_val "85" /sys/devices/system/cpu/sched/hint_load_thresh
     chmod 004 /sys/devices/system/cpu/sched/hint_load_thresh
-    lock_val "1" /sys/devices/system/cpu/eas/enable
+    lock_val "2" /sys/devices/system/cpu/eas/enable
     chmod 004 /sys/devices/system/cpu/eas/enable
 
     #some devices don't have interactive, use ondemand instead
@@ -422,10 +420,3 @@ unify_cgroup
 # start uperf once only
 uperf_stop
 uperf_start
-lock_val "99" /sys/kernel/ged/hal/custom_boost_gpu_freq
-chmod 400 /sys/kernel/ged/hal/custom_boost_gpu_freq
-for i in 0 4 7; do
-    lock_val "100000" /sys/devices/system/cpu/cpufreq/policy$i/scaling_min_freq
-    lock_val "9900000" /sys/devices/system/cpu/cpufreq/policy$i/scaling_max_freq
-    lock_val "100000" /sys/devices/system/cpu/cpufreq/policy$i/scaling_min_freq
-done
