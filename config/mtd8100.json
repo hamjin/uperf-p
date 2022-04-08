@@ -268,15 +268,15 @@
                 "enable": true
             },
             {
-                "name": "suUpRateUs",
-                "path": "/sys/devices/system/cpu/cpufreq/policy%d/sugov_ext/up_rate_limit_us",
+                "name": "suRateUs",
+                "path": "/sys/devices/system/cpu/cpufreq/policy%d/schedutil/rate_limit_us",
                 "note": "sugov_ext升频最小间隔，单位微秒",
                 "type": "percluster",
                 "enable": true
             },
             {
                 "name": "suDownRateUs",
-                "path": "/sys/devices/system/cpu/cpufreq/policy%d/sugov_ext/down_rate_limit_us",
+                "path": "/sys/devices/system/cpu/cpufreq/policy%d/schedutil/rate_limit_us",
                 "note": "sugov_ext降频最小间隔，单位微秒",
                 "type": "percluster",
                 "enable": true

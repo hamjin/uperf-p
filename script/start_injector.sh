@@ -40,8 +40,8 @@ inj_do_inject() {
 
     magiskpolicy --live "allow surfaceflinger mcd_data_file dir { open read write getattr search }" >>"$LOG_FILE"
     "$MODULE_PATH/$INJ_REL/$INJ_NAME" "$lib_path" >>"$LOG_FILE"
-    sleep 10
-    "$MODULE_PATH/$INJ_REL/$INJ_NAME" "$lib_path" >>"$LOG_FILE"
+    #sleep 10
+    #"$MODULE_PATH/$INJ_REL/$INJ_NAME" "$lib_path" >>"$LOG_FILE"
 
     if [ "$?" != "0" ] || [ "result" == "" ]; then
         if [ -f "$FLAGS/allow_permissive" ]; then

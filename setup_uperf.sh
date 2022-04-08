@@ -1,7 +1,7 @@
 #!/vendor/bin/sh
 # Uperf Setup
 # https://github.com/yc9559/
-# Author: Matt Yang & cjybyjk (cjybyjk@gmail.com) &HamJTY(coolapk@HamJTY)
+# Author: Matt Yang & cjybyjk (cjybyjk@gmail.com) & HamJTY(coolapk@HamJTY)
 # Version: 20220328
 
 BASEDIR=$MODPATH
@@ -383,19 +383,21 @@ _get_cfgname() {
     "universal7420") ret="e7420" ;;
     "mt6768") ret="mtg80" ;; # Helio P65(mt6768)/G70(mt6769v)/G80(mt6769t)/G85(mt6769z)
     "mt6785") ret="mtg90t" ;;
+    "mt6833p") ret="mtd810" ;; # D810
+    "mt6833v") ret="mtd810" ;; # D810
+    "mt6833") ret="mtd810" ;;  # D810
     "mt6853") ret="$(_get_mt6853_type)" ;;
     "mt6873") ret="$(_get_mt6873_type)" ;;
     "mt6875") ret="$(_get_mt6873_type)" ;;
     "mt6885") ret="$(_get_mt6885_type)" ;;
     "mt6889") ret="$(_get_mt6885_type)" ;;
-    "mt6891") ret="mtd1100" ;;             # D1100(4+4)
-    "mt6893") ret="$(_get_mt6893_type)" ;; # D1100(1+3+4) & D1200 & D1300
+    "mt6891") ret="mtd1100" ;;             # D1100
+    "mt6893") ret="$(_get_mt6893_type)" ;; # D1100 & D1200 & D1300
     "mt6877") ret="$(_get_mt6877_type)" ;; # D900 D920
     "mt6833") ret="$(_get_mt6833_type)" ;; # D810 & D700
-    "mt6833p") ret="mtd810" ;;             # D810
-    "mt6833v") ret="mtd810" ;;             # D810
-    "mt6983") ret="mtd9000" ;;             # D9000
     "mt6895") ret="$(_get_mt6895_type)" ;; # D8000 & D8100
+    "mt6983") ret="mtd9000" ;;             # D9000
+
     *) ret="unsupported" ;;
     esac
     echo "$ret"
@@ -421,7 +423,7 @@ uperf_print_finish() {
 }
 
 uperf_install() {
-    mod_require_version="11"
+    mod_require_version="13"
     ui_print "- Start Install"
     DEVICE=$(getprop ro.product.board)
     DEVCODE=$(getprop ro.product.device)
@@ -507,7 +509,7 @@ injector_install() {
 
     _set_perm "$BASEDIR/bin/sfa_injector" 0 0 0755 u:object_r:system_file:s0
     _set_perm "$BASEDIR/bin/libsfanalysis.so" 0 0 0644 u:object_r:system_lib_file:s0
-
+    #magisk --install-module $BASEDIR/sfanalysis-magisk.zip
     # in case of set_perm_recursive is broken
     chmod 0755 $BASEDIR/bin/*
 }
