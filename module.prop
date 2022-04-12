@@ -1,0 +1,7 @@
+id=uperf
+name=Uperf-For-Mediatek
+version=v3(22.04.09)-GPU(22.04.08)
+versionCode=3
+author=Matt Yang
+description=Userspace performance controller for android. Repo: https://github.com/yc9559/uperf/
+minMagisk=17000

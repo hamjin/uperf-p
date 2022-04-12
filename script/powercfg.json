@@ -1,0 +1,19 @@
+{
+    "version": "v3,22.04.04",
+    "versionCode": 20220404,
+    "author": "yc9559&hamjin",
+    "project_url": "https://gitee.com/hamjin/uperf",
+    "features": {
+        "strict": true,
+        "pedestal": true
+    },
+    "module": "uperf",
+    "features_note": {
+        "strict": "表示此配置支持[增强调度(严格模式)]特性",
+        "pedestal": "表示此配置支持[底座模式]特性"
+    },
+    "entry": "/data/powercfg.sh",
+    "files": [
+        "/data/powercfg.sh"
+    ]
+}
