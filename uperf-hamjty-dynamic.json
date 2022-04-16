@@ -1,6 +1,6 @@
 {
-  "versionCode": 220335,
-  "version": "v2 (21.08.15),GPU_Lock-dynamic-22.03.35",
+  "versionCode": 220409,
+  "version": "v3(22.04.09),hamjin(22.04.16)",
   "zipUrl": "https://gitee.com/hamjin/uperf/raw/update/uperf-v3-22.04.09-hamjin.zip",
   "changelog": "https://gitee.com/hamjin/uperf/raw/update/changelog-dynamic.md"
 }
