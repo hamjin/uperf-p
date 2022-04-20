@@ -446,20 +446,7 @@ uperf_install() {
         cfgname="$(_get_cfgname $target)"
     fi
     if [ "$cfgname" != "unsupported" ] && [ -f $MODPATH/config/$cfgname.json ]; then
-        #Redmi K30 Ultra
-        #if [ "$DEVICE" == "cezanne" ] || [ "$DEVCODE" == "cezanne" ]; then
-        #    cfgname="k30u"
-        #    ui_print "- Found Redmi K30 Ultra！Using specified config！"
-        #Redmi 10X &Redmi 10X Pro
-        #elif [ "$DEVCODE" == "atom" ] || [ "$DEVICE" == "atom" ] || [ "$DEVCODE" == "bomb" ] || [ "$DEVICE" == "bomb" ]; then
-        #    cfgname="10x"
-        #    ui_print "- Found Redmi 10X Series！Using specified config！"
-        #Others
-        #else
-        #    ui_print "- found CPU: $target"
-        #fi
         ui_print "- Found CPU: $target"
-        #make dir for the platform is supported
         ui_print "- Config File: $cfgname"
         mkdir -p $USER_PATH
         rm -rf $USER_PATH/cfgname $USER_PATH/device $USER_PATH/device_code

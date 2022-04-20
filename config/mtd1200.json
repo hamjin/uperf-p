@@ -331,9 +331,9 @@
             },
             {
                 "name": "dramforcefreq",
-                "note": "MTK DRAM Force Highest Frequency",
-                "enable": true,
-                "path": "/sys/devices/platform/10012000.dvfsrc/helio-dvfsrc/dvfsrc_force_vcore_dvfs_opp",
+                "note": "MTK DRAM Force Frequency ID",
+                "enable": false,
+                "path": "/sys/kernel/helio-dvfsrc/dvfsrc_force_vcore_dvfs_opp",
                 "type": "string"
             },
             {
@@ -550,7 +550,7 @@
                     "cpuFreqMin0": "0 1700000",
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2100000",
-                    "cpuFreqMax1": "1 2200000",
+                    "cpuFreqMax1": "1 2600000",
                     "cpuFreqMin2": "2 2600000",
                     "cpuFreqMax2": "2 2800000",
                     "suUpRateUs": "10000,0,0",
@@ -570,7 +570,7 @@
                     "cpuFreqMin0": "0 1800000",
                     "cpuFreqMax0": "0 2000000",
                     "cpuFreqMin1": "1 2200000",
-                    "cpuFreqMax1": "1 2200000",
+                    "cpuFreqMax1": "1 2600000",
                     "cpuFreqMin2": "2 2600000",
                     "cpuFreqMax2": "2 2600000",
                     "suUpRateUs": "10000,0,0",

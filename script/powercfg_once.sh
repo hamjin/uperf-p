@@ -41,15 +41,6 @@ unify_cgroup() {
         lock_val "0" /dev/cpuctl/$g/cpu.uclamp.latency_sensitive
         lock_val "0" /dev/cpuset/$g/sched_load_balance
     done
-    #lock_val "0" /dev/stune/background/schedtune.util.max
-    #lock_val "0" /dev/stune/background/schedtune.util.min
-    #chmod 000 /dev/stune/background/schedtune.util.min
-    #lock_val "0" /dev/stune/background/schedtune.util.max
-    #chmod 000 /dev/stune/background/schedtune.util.max
-    #lock_val "1" /dev/stune/background/schedtune.sched_boost_no_override
-    #lock_val "1" /dev/stune/rt/schedtune.sched_boost_no_override
-    #lock_val "50" /dev/stune/rt/schedtune.boost
-    #lock_val "1" /dev/stune/rt/schedtune.prefer_idle
     for cg in stune cpuctl cpuset; do
         for p in $(cat /dev/$cg/top-app/tasks); do
             echo $p >/dev/$cg/foreground/tasks
@@ -60,11 +51,6 @@ unify_cgroup() {
             echo $p >/dev/$cg/background/tasks
         done
     done
-    #for cg in stune cpuctl cpuset; do
-    #    for p in $(cat /dev/$cg/foreground/tasks); do
-    #        echo $p >/dev/$cg/top-app/tasks
-    #    done
-    #done
     for p in $(cat /dev/cpuset/background/tasks); do
         echo $p >/dev/cpuset/background/tasks
     done
@@ -83,13 +69,13 @@ unify_cgroup() {
     #move_to_rt "com.miui.home"
 
     #move_to_rt "system_server"
-    #move_to_rt "update_engine"
+    move_to_rt "update_engine"
     #move_to_rt "android.hardware.media.c2@1.2-mediatek"
     #move_to_rt "mediaserver64"
     #move_to_rt "media.swcodec"
     #move_to_rt "media.codec"
     #change_task_high_prio "android.hardware.media.c2@1.2-mediatek"
-    #change_task_high_prio "update_engine"
+    change_task_high_prio "update_engine"
     #change_task_high_prio "media.swcodec"
     #change_task_high_prio "media.codec"
     #change_task_high_prio "mediaserver64"
@@ -112,9 +98,11 @@ unify_cgroup() {
     # com.miui.securitycenter & com.miui.securityadd
     pin_proc_on_pwr "miui\.security"
     # why MTK system_server place surfaceflinger into this cgroup?
-    move_to_rt "surfaceflinger"
-    pin_proc_on_perf "surfaceflinger"
-    chmod 0444 /dev/cpuset/system-background/tasks
+    #move_to_rt "surfaceflinger"
+    move_to_rt "com.miui.guardprovider"
+    pin_proc_on_perf "com.miui.guardprovider"
+
+    #chmod 0444 /dev/cpuset/system-background/tasks
     #change_proc_cgroup "miui\.home" "rt" "stune"       # Desktop On Foreground is wrong
     #change_proc_cgroup "miui\.home" "top-app" "cpuset" # Desktop On Foreground is wrong
 
@@ -363,18 +351,18 @@ disable_kernel_boost() {
         # cat /proc/ppm/policy/$i
     done
 
-    lock_val "99" /sys/kernel/ged/hal/custom_boost_gpu_freq
-    chmod 004 /sys/kernel/ged/hal/custom_boost_gpu_freq
+    #lock_val "99" /sys/kernel/ged/hal/custom_boost_gpu_freq
+    #chmod 004 /sys/kernel/ged/hal/custom_boost_gpu_freq
     #lock_val "0" /sys/kernel/ged/hal/dvfs_loading_mode
     #lock_val "1" /sys/kernel/ged/hal/dvfs_margin_value
-    lock_val "99" /sys/module/ged/parameters/gpu_cust_boost_freq
+    #lock_val "99" /sys/module/ged/parameters/gpu_cust_boost_freq
     #lock_val "enable: 0" /proc/perfmgr/tchbst/user/usrtch
     #lock_val "1" /sys/kernel/fpsgo/fstb/margin_mode
     #lock_val "1" /sys/kernel/fpsgo/fstb/margin_mode_gpu
     lock_val "none" /sys/devices/platform/13000000.mali/scheduling/serialize_jobs
     #chmod 400 /sys/module/ged/parameters/*
     #chmod 555 /sys/module/ged/parameters/ged_force_mdp_enable
-    lock_val "0" /sys/kernel/fpsgo/common/force_onoff
+    #lock_val "0" /sys/kernel/fpsgo/common/force_onoff
     #Active MTK Memery Management
     # lock_val "1" /proc/mtk-perf/lowmem_hint_enable
     # lock_val "0" /proc/cpu_loading/onoff
@@ -431,18 +419,6 @@ disable_userspace_boost() {
     # stop vendor.power.stats-hal-1-0
     # stop vendor.power-hal-1-0
 
-    # MTK
-    # stop fpsgo
-    # yes, it will automatically respawn, don't let it die
-    #stop vendor.mediatek.hardware.mtkpower@1.0-service
-    #killall vendor.mediatek.hardware.mtkpower@1.0-service
-
-    # prohibit mi_thermald use cpu thermal interface
-    # yes, kill twice
-    #chmod 0444 /sys/devices/virtual/thermal/thermal_message/cpu_limits
-    #chmod 0444 /sys/devices/system/cpu/cpufreq/policy*/scaling_max_freq
-    #killall -9 mi_thermald
-    #stop mi_thermald
 }
 
 log "PATH=$PATH"

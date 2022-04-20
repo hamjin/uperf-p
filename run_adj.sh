@@ -1,7 +1,7 @@
 #!/system/bin/sh
 # GPU Adjustment
 # Author: HamJin @CoolApk
-BASEDIR=${0%/*}
+BASEDIR="$(dirname $(readlink -f "$0"))"
 USER_PATH="/data/media/0/yc/uperf"
 adj_log_path="$USER_PATH/log_adj.txt"
 l0ck_va1() {
@@ -57,6 +57,7 @@ pin_proc_on_1pwr() {
 echo 11 >/dev/gpufreq_id
 echo 1 >/dev/gpufreq_step
 mv $USER_PATH/log_adj.txt $USER_PATH/log_adj.lastboot.txt
+killall -9 adjustment
 chmod 777 $BASEDIR/bin/adjustment
 nohup $BASEDIR/bin/adjustment -l "$adj_log_path" &
 sleep 10s
@@ -82,23 +83,26 @@ pin_proc_on_1pwr "adjustment"
 #l0ck /dev/stune/system-background/schedtune.util.min
 #l0ck /dev/stune/system-background/schedtune.util.min
 #l0ck /dev/stune/system-background/schedtune.util.max
-l0ck_va1 "99" /sys/kernel/ged/hal/custom_boost_gpu_freq
+#l0ck_va1 "99" /sys/kernel/ged/hal/custom_boost_gpu_freq
 ##chmod 400 /sys/kernel/ged/hal/custom_boost_gpu_freq
-while true; do
-    for i in 0 4 7; do
-        chmod 444 /sys/devices/system/cpu/cpufreq/policy$i/scaling_min_freq
-        chmod 444 /sys/devices/system/cpu/cpufreq/policy$i/scaling_max_freq
-        chmod 444 /sys/devices/system/cpu/cpufreq/policy$i/scaling_min_freq
+lock_cpu() {
+    while true; do
+        for i in 0 4 7; do
+            chmod 444 /sys/devices/system/cpu/cpufreq/policy$i/scaling_min_freq
+            chmod 444 /sys/devices/system/cpu/cpufreq/policy$i/scaling_max_freq
+            chmod 444 /sys/devices/system/cpu/cpufreq/policy$i/scaling_min_freq
+        done
+        for i in 0 1 2 3 4 5 6 7; do
+            chmod 444 /sys/devices/system/cpu/cpu$i/cpufreq/scaling_min_freq
+            chmod 444 /sys/devices/system/cpu/cpu$i/cpufreq/scaling_max_freq
+            chmod 444 /sys/devices/system/cpu/cpu$i/cpufreq/scaling_min_freq
+        done
+        #for g in background foreground top-app background/untrustedapp system-background; do
+        #    l0ck_va1 "0" /dev/stune/$g/schedtune.prefer_idle
+        #    l0ck_va1 "0" /dev/cpuset/$g/sched_load_balance
+        #    l0ck_va1 "0" /dev/cpuctl/$g/cpu.uclamp.latency_sensitive
+        #done
+        sleep 60s
     done
-    for i in 0 1 2 3 4 5 6 7; do
-        chmod 444 /sys/devices/system/cpu/cpu$i/cpufreq/scaling_min_freq
-        chmod 444 /sys/devices/system/cpu/cpu$i/cpufreq/scaling_max_freq
-        chmod 444 /sys/devices/system/cpu/cpu$i/cpufreq/scaling_min_freq
-    done
-    #for g in background foreground top-app background/untrustedapp system-background; do
-    #    l0ck_va1 "0" /dev/stune/$g/schedtune.prefer_idle
-    #    l0ck_va1 "0" /dev/cpuset/$g/sched_load_balance
-    #    l0ck_va1 "0" /dev/cpuctl/$g/cpu.uclamp.latency_sensitive
-    #done
-    sleep 60s
-done
+}
+(lock_cpu &)

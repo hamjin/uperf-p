@@ -323,9 +323,9 @@
             },
             {
                 "name": "dramforcefreq",
-                "note": "MTK DRAM Force Highest Frequency",
-                "enable": true,
-                "path": "/sys/devices/platform/10012000.dvfsrc/helio-dvfsrc/dvfsrc_force_vcore_dvfs_opp",
+                "note": "MTK DRAM Force Frequency ID",
+                "enable": false,
+                "path": "/sys/kernel/helio-dvfsrc/dvfsrc_force_vcore_dvfs_opp",
                 "type": "string"
             },
             {

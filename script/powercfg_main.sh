@@ -39,12 +39,18 @@ if [ "$battery_temp" -lt "50" ]; then
     exit 0
 fi
 if [ "$1" == "init" ]; then
-    action="performance"
+    action="balance"
+    echo "$action" >/sdcard/yc/uperf/cur_powermode
+    exit 0
+fi
+if [ "$1" == "pedestal" ]; then
+    action="fast"
     echo "$action" >/sdcard/yc/uperf/cur_powermode
     exit 0
 fi
 case "$1" in
 "powersave" | "balance" | "performance" | "fast") action="$1" ;;
+
 *) action="balance" ;;
 esac
 echo "$action" >/sdcard/yc/uperf/cur_powermode

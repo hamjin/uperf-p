@@ -3,7 +3,7 @@
 # https://github.com/yc9559/
 # Author: Matt Yang
 # Version: 20200401
-BASEDIR=${0%/*}
+BASEDIR="$(dirname $(readlink -f "$0"))"
 SCRIPT_DIR="$BASEDIR/script"
 
 # support vtools
@@ -18,5 +18,5 @@ chmod 666 /data/powercfg.json
 # powercfg path provided by magisk module
 #Bootstrap Uperf
 sh $SCRIPT_DIR/prepare.sh 2>&1
-sh $SCRIPT_DIR/start_injector.sh 2>&1
 sh $SCRIPT_DIR/powercfg_once.sh 2>&1
+sh $SCRIPT_DIR/start_injector.sh 2>&1
