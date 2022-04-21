@@ -1,6 +1,6 @@
 {
-  "versionCode": 220337,
-  "version": "v2(21.08.15),GPU(220337)",
+  "versionCode": 220421000,
+  "version": "22.04.21",
   "zipUrl": "https://gitee.com/hamjin/uperf/raw/update/dynamic/uperf-v2-21.08.15-hamjin.zip",
   "changelog": "https://gitee.com/hamjin/uperf/raw/update/changelog-dynamic.md"
 }
