@@ -11,21 +11,6 @@ BASEDIR="$(dirname "$0")"
 . $BASEDIR/libuperf.sh
 
 unify_cgroup() {
-    # prohibit mi_thermald use cpu thermal interface
-    #chmod 0444 /sys/devices/virtual/thermal/thermal_message/cpu_limits
-    #chmod 0444 /sys/devices/system/cpu/cpufreq/policy*/scaling_max_freq
-    #stop mi_thermald
-    #killall mi_thermald
-    ## xiaomi vip-task scheduler override
-    #chmod 0444 /dev/migt
-    #lock_val "0" "/sys/module/migt/parameters/*"
-    #lock_val "1" "/sys/module/migt/parameters/*disable*"
-
-    ## ioctl interface used by vendor.mediatek.hardware.mtkpower@1.0-service
-    #chmod 0000 /proc/perfmgr/eara_ioctl
-    #chmod 0000 /proc/perfmgr/eas_ioctl
-    #chmod 0000 /proc/perfmgr/xgff_ioctl
-    #chmod 0000 /proc/perfmgr/perf_ioctl
     # clear stune & uclamp
     for g in background foreground top-app background/untrustedapp; do
         lock_val "0" /dev/stune/$g/schedtune.sched_boost_no_override
@@ -57,12 +42,12 @@ unify_cgroup() {
     # launcher is usually in foreground group, uperf will take care of them
     lock_val "0-7" /dev/cpuset/foreground/boost/cpus
     lock_val "0-7" /dev/cpuset/foreground/cpus
-    lock_val "0-6" /dev/cpuset/restricted/cpus
-    # VMOS may set cpuset/background/cpus to "0"
-    lock /dev/cpuset/background/cpus
+    lock_val "0-3" /dev/cpuset/restricted/cpus
     lock_val "0-3" /dev/cpuset/background/cpus
     lock_val "0-3" /dev/cpuset/background/untrustedapp/cpus
     lock_val "0-3" /dev/cpuset/system-background/cpus
+    # VMOS may set cpuset/background/cpus to "0"
+    lock /dev/cpuset/background/cpus
     # Reduce Perf Cluster Wakeup
     #move_to_rt "vendor.qti.hardware.display.composer-service"
     #move_to_rt "com.android.systemui"
@@ -80,6 +65,7 @@ unify_cgroup() {
     #change_task_high_prio "media.codec"
     #change_task_high_prio "mediaserver64"
     # daemons
+    pin_proc_on_pwr "system_server"
     pin_proc_on_pwr "crtc_commit|crtc_event|pp_event|msm_irqbalance|netd|mdnsd|analytics"
     pin_proc_on_pwr "imsdaemon|cnss-daemon|qadaemon|qseecomd|time_daemon|ATFWD-daemon|ims_rtp_daemon|qcrilNrd"
     # ueventd related to hotplug of camera, wifi, usb...
@@ -117,7 +103,7 @@ unify_cgroup() {
     pin_thread_on_pwr "system_server" "Thread-|pool-|Jit|CachedAppOpt|Greezer|TaskSnapshot|Oom"
     #Critical Threads
     pin_thread_on_perf "system_server" "UiThread|miui_input_thread|miui.getsure|miui.fg|mali|Anim|Audio|Input|android.anim|android.fg|android.io|android.display|android.ui"
-    # input dispatcher
+    # boost ui
     change_thread_high_prio "system_server" "InputDispatcher"
     change_thread_high_prio "system_server" "InputReader"
     change_thread_high_prio "system_server" "Anim"

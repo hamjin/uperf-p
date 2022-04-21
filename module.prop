@@ -1,7 +1,7 @@
 id=uperf
 name=Uperf-For-Mediatek
-version=v2(21.08.15),hamjin(22.03.37)
-versionCode=220337
+version=22.04.21
+versionCode=220421000
 author=Matt Yang @yc9559 && HamJTY @HamJin
 minMagisk=23000
 description=A userspace performance adjustment, Repo: https://gitee.com/hamjin/uperf
