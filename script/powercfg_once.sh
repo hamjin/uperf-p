@@ -42,7 +42,7 @@ unify_cgroup() {
     # launcher is usually in foreground group, uperf will take care of them
     lock_val "0-7" /dev/cpuset/foreground/boost/cpus
     lock_val "0-7" /dev/cpuset/foreground/cpus
-    lock_val "0-3" /dev/cpuset/restricted/cpus
+    lock_val "0-6" /dev/cpuset/restricted/cpus
     lock_val "0-3" /dev/cpuset/background/cpus
     lock_val "0-3" /dev/cpuset/background/untrustedapp/cpus
     lock_val "0-3" /dev/cpuset/system-background/cpus
