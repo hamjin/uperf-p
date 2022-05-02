@@ -3,10 +3,11 @@
 # ro.sf.lcd_density=320
 
 # headroom for GC
-dalvik.vm.heapminfree=2m
+dalvik.vm.heapminfree=8m
+dalvik.vm.heapmaxfree=12m
 
 #Why MIUI love usap????
-# persist.sys.usap_pool_enabled=false
+persist.sys.usap_pool_enabled=false
 
 #MTK PerfService
 ro.mtk_perf_simple_start_win=0
@@ -15,6 +16,7 @@ ro.mtk_perf_response_time=0
 ro.mtk_perfservice_support=0
 vendor.debug.sf.cpupolicy.boost_idle_bl=0
 vendor.debug.sf.cpupolicy.min_boost=0
+debug.mediatek.appgamepq_compress=0
 #Mi
 persist.miui.miperf.enable=false
 persist.sys.miui_mi_fluency.boost_gpu=false
@@ -26,14 +28,16 @@ persist.sys.miui_sptm.enable_pl_type=-1
 persist.sys.miui.camera.boost.opt=false
 persist.sys.spc.cpulimit.enabled=false
 persist.sys.spc.enabled=false
+persist.sys.use_mi_new_strategy=false
+
 #SF
 vendor.debug.sf.cpupolicy.base_min_bl=0
-vendor.debug.sf.cpupolicy.boost_idle_bl=0         
+vendor.debug.sf.cpupolicy.boost_idle_bl=0
 vendor.debug.sf.cpupolicy.hw_comp_suspend=0
 vendor.debug.sf.cpupolicy.max_correct_offset=170
 vendor.debug.sf.cpupolicy.min_60=0
 vendor.debug.sf.cpupolicy.min_boost=0
-#vendor.debug.sf.cpupolicy.re_hfr=1
+vendor.debug.sf.cpupolicy.re_hfr=1
 vendor.debug.sf.cpupolicy.sf_cpu_thres=0
 vendor.debug.sf.cpupolicy.sus_mid=0
 vendor.debug.sf.cpupolicy.upbound_uclamp_max_ll=-1

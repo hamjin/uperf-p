@@ -27,5 +27,8 @@ crash_recuser() {
 }
 
 (crash_recuser &)
-
+/vendor/bin/thermal_core /vendor/etc/thermal/disable_thermal_temp.conf
+chmod 666 /sys/class/thermal/thermal_zone0/trip_point_0_temp
+echo 120000 >/sys/class/thermal/thermal_zone0/trip_point_0_temp
+chmod 444 /sys/class/thermal/thermal_zone0/trip_point_0_temp
 sh $BASEDIR/script/initsvc.sh

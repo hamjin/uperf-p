@@ -20,26 +20,28 @@ BASEDIR="$(dirname $(readlink -f "$0"))"
 . $BASEDIR/libcommon.sh
 
 # create busybox symlinks
-# $BIN_PATH/busybox/busybox --install -s $BIN_PATH/busybox
+$BIN_PATH/busybox/busybox --install -s $BIN_PATH/busybox
 
-# support vtools
+#Scene 3rd Scheduler Adapter Config
 cp -af $SCRIPT_PATH/vtools_powercfg.sh /data/powercfg.sh
 cp -af $SCRIPT_PATH/vtools_powercfg.sh /data/powercfg-base.sh
+cat $SCRIPT_PATH/powercfg.json >/data/powercfg.json
 chmod 755 /data/powercfg.sh
 chmod 755 /data/powercfg-base.sh
 echo "sh $SCRIPT_PATH/powercfg_main.sh \"\$1\"" >>/data/powercfg.sh
 
 wait_until_login
 
+sh $SCRIPT_PATH/mtk_special.sh
+
+sh $SCRIPT_PATH/gpu_adj.sh
+
 sh $SCRIPT_PATH/powercfg_once.sh
-sh $SCRIPT_PATH/run_adj.sh
-#Scene 3rd Scheduler Adapter Config
-cat $SCRIPT_PATH/powercfg.json >/data/powercfg.json
 
 # raise inotify limit in case file sync existed
 lock_val "1048576" /proc/sys/fs/inotify/max_queued_events
 lock_val "1048576" /proc/sys/fs/inotify/max_user_watches
 lock_val "1024" /proc/sys/fs/inotify/max_user_instances
 
-mv $USER_PATH/uperf_log.txt $USER_PATH/uperf_log.txt.bak
+mv $USER_PATH/uperf_log.txt $USER_PATH/uperf_log.bak.txt
 $BIN_PATH/uperf $USER_PATH/uperf.json -o $USER_PATH/uperf_log.txt &

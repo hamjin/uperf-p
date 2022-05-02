@@ -24,7 +24,7 @@ lock_val() {
     for p in $2; do
         if [ -f "$p" ]; then
             chmod 0666 "$p" 2>/dev/null
-            log "changing $p"
+            #log "changing $p"
             echo "$1" >"$p"
             chmod 0444 "$p" 2>/dev/null
         fi
@@ -36,7 +36,7 @@ mutate() {
     for p in $2; do
         if [ -f "$p" ]; then
             chmod 0666 "$p" 2>/dev/null
-            log "writing $p"
+            #log "writing $p"
             echo "$1" >"$p"
         fi
     done
@@ -46,7 +46,7 @@ mutate() {
 lock() {
     if [ -f "$1" ]; then
         chmod 0444 "$1" 2>/dev/null
-        log "locking $p"
+        #log "locking $p"
     fi
 }
 

@@ -3,6 +3,6 @@
 # '-' means offscreen rule
 # '*' means default rule
 
-#com.miHoYo.Yuanshen fast
+com.miHoYo.Yuanshen fast
 - balance
 * balance

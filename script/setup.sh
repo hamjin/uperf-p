@@ -53,7 +53,6 @@ set_permissions() {
     set_perm_recursive $MODULE_PATH/system/vendor/etc 0 0 0755 0644 u:object_r:vendor_configs_file:s0
     set_perm_recursive $MODULE_PATH/zygisk 0 0 0755 0644 u:object_r:system_file:s0
 }
-
 install_uperf() {
     echo "- ro.board.platform=$(getprop ro.board.platform)"
     echo "- ro.product.board=$(getprop ro.product.board)"
@@ -70,7 +69,6 @@ install_uperf() {
     if [ "$cfgname" == "unsupported" ] || [ ! -f $MODULE_PATH/config/$cfgname.json ]; then
         abort "! Target [$target] not supported."
     fi
-
     mkdir -p $USER_PATH
     rm -rf /sdcard/yc/uperf
     mv -f $USER_PATH/uperf.json $USER_PATH/uperf.json.bak
@@ -80,30 +78,30 @@ install_uperf() {
     echo "- Uperf config is located at $USER_PATH"
 }
 
-install_powerhal_stub() {
-    # do not place empty json if it doesn't exist in system
-    # vendor/etc/powerhint.json: android perf hal
-    # vendor/etc/powerscntbl.cfg: mediatek perf hal (android 9)
-    # vendor/etc/powerscntbl.xml: mediatek perf hal (android 10+)
-    # vendor/etc/perf/commonresourceconfigs.json: qualcomm perf hal resource
-    # vendor/etc/perf/targetresourceconfigs.json: qualcomm perf hal resource overrides
-    local perfcfgs
-    perfcfgs="
-    vendor/etc/powerhint.json
-    vendor/etc/powerscntbl.cfg
-    vendor/etc/powerscntbl.xml
-    vendor/etc/power_app_cfg.xml
-    vendor/etc/perf/commonresourceconfigs.xml
-    vendor/etc/perf/targetresourceconfigs.xml
-    "
-    for f in $perfcfgs; do
-        if [ ! -f "/$f" ]; then
-            rm "$MODULE_PATH/system/$f"
-        else
-            true >$FLAG_PATH/enable_perfhal_stub
-        fi
-    done
-}
+#install_powerhal_stub() {
+#    # do not place empty json if it doesn't exist in system
+#    # vendor/etc/powerhint.json: android perf hal
+#    # vendor/etc/powerscntbl.cfg: mediatek perf hal (android 9)
+#    # vendor/etc/powerscntbl.xml: mediatek perf hal (android 10+)
+#    # vendor/etc/perf/commonresourceconfigs.json: qualcomm perf hal resource
+#    # vendor/etc/perf/targetresourceconfigs.json: qualcomm perf hal resource overrides
+#    local perfcfgs
+#    perfcfgs="
+#    vendor/etc/powerhint.json
+#    vendor/etc/powerscntbl.cfg
+#    vendor/etc/powerscntbl.xml
+#    vendor/etc/power_app_cfg.xml
+#    vendor/etc/perf/commonresourceconfigs.xml
+#    vendor/etc/perf/targetresourceconfigs.xml
+#    "
+#    for f in $perfcfgs; do
+#        if [ ! -f "/$f" ]; then
+#            rm "$MODULE_PATH/system/$f"
+#        else
+#            true >$FLAG_PATH/enable_perfhal_stub
+#        fi
+#    done
+#}
 
 #grep_prop comes from https://github.com/topjohnwu/Magisk/blob/master/scripts/util_functions.sh#L30
 grep_prop() {
@@ -124,7 +122,7 @@ module_id="$(grep_prop id $MODULE_PATH/module.prop)"
 module_author="$(grep_prop author $MODULE_PATH/module.prop)"
 
 echo ""
-echo "* Uperf https://github.com/yc9559/uperf/"
+echo "* $module_name https://gitee.com/hamjin/uperf/"
 echo "* Author: $module_author"
 echo "* Version: $module_version"
 echo ""
@@ -132,8 +130,12 @@ echo ""
 echo "- Installing uperf"
 install_uperf
 
-echo "- Installing perfhal stub"
-install_powerhal_stub
+#echo "- Installing perfhal stub"
+#install_powerhal_stub
 set_permissions
-
+echo "- Installing uperf surfaceflinger analysis"
 magisk --install-module $MODULE_PATH/sfanalysis-magisk.zip
+rm $MODULE_PATH/sfanalysis-magisk.zip
+echo "- Installing uperf system_server sanalysis"
+magisk --install-module $MODULE_PATH/ssanalysis-magisk.zip
+rm $MODULE_PATH/ssanalysis-magisk.zip

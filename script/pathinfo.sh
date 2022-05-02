@@ -25,4 +25,5 @@ USER_PATH="/sdcard/Android/yc/uperf"
 LOG_FILE="$USER_PATH/initsvc.log"
 
 # use private busybox
-#PATH="$BIN_PATH/busybox:$PATH"
+PATH="$BIN_PATH/busybox:$PATH"
+LD_LIBRARY_PATH="$BIN_PATH/:$LD_LIBRARY_PATH"
