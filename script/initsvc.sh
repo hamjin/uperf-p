@@ -32,7 +32,7 @@ echo "sh $SCRIPT_PATH/powercfg_main.sh \"\$1\"" >>/data/powercfg.sh
 
 wait_until_login
 
-sh $SCRIPT_PATH/mtk_special.sh
+#sh $SCRIPT_PATH/mtk_special.sh
 
 sh $SCRIPT_PATH/gpu_adj.sh
 

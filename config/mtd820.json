@@ -1,6 +1,6 @@
 {
     "meta": {
-        "name": "Dimensity 820(mt6873)[22.04.30] && GPU [22.04.23]",
+        "name": "Dimensity 820(mt6873)[22.05.04] && GPU [22.04.23]",
         "author": "yc@coolapk && hamjin@coolapk"
     },
     "modules": {
@@ -290,7 +290,7 @@
                             "pc": "auto"
                         },
                         {
-                            "k": "^(GPU completion|HWC release|hwui|FramePolicy|ScrollPolicy|ged-swd|mali-)",
+                            "k": "^(GPU completion|HWC release|hwui|FramePolicy|ScrollPolicy|ged-swd)",
                             "ac": "bg",
                             "pc": "rtusr"
                         },
@@ -345,27 +345,27 @@
                     "rules": [
                         {
                             "k": "^android.anim",
-                            "ac": "binder",
+                            "ac": "crit",
                             "pc": "rtusr"
                         },
                         {
-                            "k": "^(android.display|android.ui)",
-                            "ac": "bg",
-                            "pc": "rtusr"
+                            "k": "^android.bg",
+                            "ac": "main",
+                            "pc": "auto"
                         },
                         {
                             "k": "^[Ii]nput",
                             "ac": "trig",
-                            "pc": "rtusr"
+                            "pc": "high"
                         },
                         {
                             "k": "^Async",
                             "ac": "crit",
-                            "pc": "low"
+                            "pc": "bg"
                         },
                         {
                             "k": "^Binder:",
-                            "ac": "binder",
+                            "ac": "main",
                             "pc": "auto"
                         },
                         {
@@ -374,17 +374,7 @@
                             "pc": "auto"
                         },
                         {
-                            "k": "^(Jit thread pool|HeapTaskDaemon|FinalizerDaemon|ReferenceQueueD)",
-                            "ac": "coop",
-                            "pc": "auto"
-                        },
-                        {
-                            "k": "^(TaskSnapshot|Greezer|CachedApp|SystemPressure|SensorService)",
-                            "ac": "bg",
-                            "pc": "bg"
-                        },
-                        {
-                            "k": "[Mm]emory",
+                            "k": "^(TaskSnapshot|Greezer|CachedApp|SystemPressure|SensorService)|[Mm]emory",
                             "ac": "bg",
                             "pc": "bg"
                         },
@@ -460,7 +450,7 @@
                         },
                         {
                             "k": ".",
-                            "ac": "bg",
+                            "ac": "auto",
                             "pc": "auto"
                         }
                     ]
@@ -479,7 +469,7 @@
                 },
                 {
                     "name": "Media codec",
-                    "regex": "^(media|audioserver)|android.hardware.media|android.hardware.audio",
+                    "regex": "android.hardware.media",
                     "pinned": false,
                     "rules": [
                         {
@@ -514,7 +504,7 @@
                         {
                             "k": "^Binder:",
                             "ac": "norm",
-                            "pc": "auto"
+                            "pc": "norm"
                         }
                     ]
                 },
@@ -619,7 +609,7 @@
                             "pc": "bg"
                         },
                         {
-                            "k": "^(GPU completion|HWC release|hwui|FramePolicy|ScrollPolicy|ged-swd|mali-)",
+                            "k": "^(GPU completion|HWC release|hwui|FramePolicy|ScrollPolicy|ged-swd)",
                             "ac": "bg",
                             "pc": "rtusr"
                         },
@@ -642,11 +632,6 @@
                             "k": "^Binder:",
                             "ac": "trig",
                             "pc": "auto"
-                        },
-                        {
-                            "k": "[Aa]udio|[Mm]ixer",
-                            "ac": "bg",
-                            "pc": "rtusr"
                         },
                         {
                             "k": ".",
@@ -681,6 +666,7 @@
             "cpusetRe": "0-6",
             "gpuIdxMax": "34",
             "gpuIdxStep": "04",
+            "ddrFreq": "99",
             "ddrboost": "0",
             "cciboost": "0"
         },
@@ -738,7 +724,11 @@
                 "sysfs.cciboost": "1"
             },
             "switch": {
-                "cpu.burst": 0.2,
+                "cpu.latencyTime": 0.0,
+                "cpu.slowLimitPower": 4.0,
+                "cpu.fastLimitPower": 4.0,
+                "cpu.margin": 0.5,
+                "cpu.burst": 0.55,
                 "sched.scene": "boost",
                 "sysfs.gpuIdxMax": "22",
                 "sysfs.gpuIdxStep": "06",
@@ -746,6 +736,10 @@
                 "sysfs.cciboost": "1"
             },
             "swjunk": {
+                "cpu.latencyTime": 0.0,
+                "cpu.slowLimitPower": 4.0,
+                "cpu.fastLimitPower": 4.0,
+                "cpu.margin": 0.5,
                 "cpu.burst": 0.55,
                 "sched.scene": "boost",
                 "sysfs.gpuIdxMax": "20",
@@ -796,11 +790,17 @@
                 "sched.scene": "touch"
             },
             "switch": {
-                "cpu.burst": 0.2,
+                "cpu.latencyTime": 0.0,
+                "cpu.slowLimitPower": 2.5,
+                "cpu.fastLimitPower": 2.5,
+                "cpu.margin": 0.3,
                 "sched.scene": "boost"
             },
             "swjunk": {
-                "cpu.burst": 0.55,
+                "cpu.latencyTime": 0.0,
+                "cpu.slowLimitPower": 2.5,
+                "cpu.fastLimitPower": 2.5,
+                "cpu.margin": 0.3,
                 "sched.scene": "boost",
                 "sysfs.gpuIdxMax": "21",
                 "sysfs.gpuIdxStep": "10",
@@ -811,7 +811,7 @@
         "performance": {
             "*": {
                 "cpu.latencyTime": 0.0,
-                "cpu.slowLimitPower": 5.0,
+                "cpu.slowLimitPower": 8.0,
                 "cpu.fastLimitPower": 10.0,
                 "cpu.fastLimitCapacity": 300.0,
                 "cpu.margin": 0.4,
@@ -853,8 +853,8 @@
         "fast": {
             "*": {
                 "cpu.latencyTime": 0.0,
-                "cpu.slowLimitPower": 3.0,
-                "cpu.fastLimitPower": 3.0,
+                "cpu.slowLimitPower": 5.0,
+                "cpu.fastLimitPower": 5.0,
                 "cpu.fastLimitCapacity": 0.0,
                 "cpu.margin": 0.3,
                 "sysfs.gpuIdxMax": "13",
