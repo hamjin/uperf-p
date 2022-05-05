@@ -1,6 +1,6 @@
 {
-  "versionCode": 220430000,
-  "version": "v3(22.04.30),GPU(22.04.23)",
-  "zipUrl": "https://gitee.com/hamjin/uperf/attach_files/1048798/download/uperf-v3-22.04.30-hamjin-22.04.23.zip",
+  "versionCode": 220504000,
+  "version": "v3(22.05.04),GPU(22.04.23)",
+  "zipUrl": "https://gitee.com/hamjin/uperf/attach_files/1050611/download/uperf-v3-22.05.04-hamjin-22.04.23.zip",
   "changelog": "https://gitee.com/hamjin/uperf/raw/update/changelog-dynamic-v3.md"
 }
