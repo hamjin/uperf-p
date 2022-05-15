@@ -19,7 +19,7 @@
 
 # "Matt Yang(yc9559) is too lazy to copy and paste", said hellokf@github
 hide_value() {
-    unmount "$1" 2>/dev/null
+    umount "$1" 2>/dev/null
     if [[ ! -f "/cache/$1" ]]; then
         mkdir -p "/cache/$1"
         rm -r "/cache/$1"
