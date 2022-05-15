@@ -1,0 +1,846 @@
+{
+    "meta": {
+        "name": "Dimensity 8100(mt6895)[22.05.09] && GPU [22.04.23]",
+        "author": "yc@coolapk && hamjin@coolapk"
+    },
+    "modules": {
+        "switcher": {
+            "switchInode": "/sdcard/Android/yc/uperf/cur_powermode.txt",
+            "perapp": "/sdcard/Android/yc/uperf/perapp_powermode.txt",
+            "hintDuration": {
+                "idle": 0.0,
+                "touch": 4.0,
+                "trigger": 0.05,
+                "gesture": 0.2,
+                "switch": 0.2,
+                "junk": 0.05,
+                "swjunk": 0.1
+            }
+        },
+        "atrace": {
+            "enable": false
+        },
+        "log": {
+            "level": "info"
+        },
+        "input": {
+            "enable": true,
+            "swipeThd": 0.01,
+            "gestureThdX": 0.03,
+            "gestureThdY": 0.03,
+            "gestureDelayTime": 2.0,
+            "holdEnterTime": 1.0
+        },
+        "sfanalysis": {
+            "enable": true,
+            "renderIdleSlackTime": 0.2
+        },
+        "anim": {
+            "enable": true
+        },
+        "cpu": {
+            "enable": true,
+            "powerModel": [
+                {
+                    "efficiency": 115,
+                    "nr": 4,
+                    "typicalPower": 0.36,
+                    "typicalFreq": 2.0,
+                    "sweetFreq": 1.4,
+                    "plainFreq": 1.0,
+                    "freeFreq": 0.6
+                },
+                {
+                    "efficiency": 320,
+                    "nr": 3,
+                    "typicalPower": 1.36,
+                    "typicalFreq": 2.85,
+                    "sweetFreq": 1.8,
+                    "plainFreq": 1.0,
+                    "freeFreq": 0.7
+                },
+                {
+                    "efficiency": 320,
+                    "nr": 1,
+                    "typicalPower": 1.36,
+                    "typicalFreq": 2.85,
+                    "sweetFreq": 2.2,
+                    "plainFreq": 1.6,
+                    "freeFreq": 0.9
+                }
+            ]
+        },
+        "sysfs": {
+            "enable": true,
+            "knob": {
+                "cpusetTa": "/dev/cpuset/top-app/cpus",
+                "cpusetFg": "/dev/cpuset/foreground/cpus",
+                "cpusetBg": "/dev/cpuset/background/cpus",
+                "cpusetSysBg": "/dev/cpuset/system-background/cpus",
+                "cpusetRe": "/dev/cpuset/restricted/cpus",
+                "gpuIdxMax": "/dev/gpufreq_id",
+                "gpuIdxStep": "/dev/gpufreq_step",
+                "ddrMin": "/sys/class/devfreq/mtk-dvfsrc-devfreq/min_freq"
+            }
+        },
+        "sched": {
+            "enable": true,
+            "cpumask": {
+                "all": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7
+                ],
+                "norm": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6
+                ],
+                "perf": [
+                    4,
+                    5,
+                    6,
+                    7
+                ],
+                "eff": [
+                    0,
+                    1,
+                    2,
+                    3
+                ],
+                "bal": [
+                    4,
+                    5,
+                    6
+                ],
+                "max": [
+                    7
+                ],
+                "gtcoop": [
+                    4,
+                    5,
+                    6
+                ],
+                "gtmain": [
+                    7
+                ]
+            },
+            "affinity": {
+                "norm": {
+                    "bg": "eff",
+                    "fg": "norm",
+                    "idle": "all",
+                    "touch": "all",
+                    "boost": "all"
+                },
+                "bg": {
+                    "bg": "eff",
+                    "fg": "eff",
+                    "idle": "eff",
+                    "touch": "eff",
+                    "boost": "eff"
+                },
+                "coop": {
+                    "bg": "eff",
+                    "fg": "eff",
+                    "idle": "norm",
+                    "touch": "norm",
+                    "boost": "norm"
+                },
+                "trig": {
+                    "bg": "eff",
+                    "fg": "eff",
+                    "idle": "eff",
+                    "touch": "bal",
+                    "boost": "bal"
+                },
+                "crit": {
+                    "bg": "eff",
+                    "fg": "norm",
+                    "idle": "",
+                    "touch": "bal",
+                    "boost": "bal"
+                },
+                "mix": {
+                    "bg": "eff",
+                    "fg": "norm",
+                    "idle": "all",
+                    "touch": "bal",
+                    "boost": "bal"
+                },
+                "main": {
+                    "bg": "norm",
+                    "fg": "norm",
+                    "idle": "",
+                    "touch": "bal",
+                    "boost": "all"
+                },
+                "binder": {
+                    "bg": "norm",
+                    "fg": "norm",
+                    "idle": "norm",
+                    "touch": "bal",
+                    "boost": "perf"
+                },
+                "gtcoop": {
+                    "bg": "norm",
+                    "fg": "norm",
+                    "idle": "perf",
+                    "touch": "gtcoop",
+                    "boost": "gtcoop"
+                },
+                "gtmain": {
+                    "bg": "norm",
+                    "fg": "norm",
+                    "idle": "perf",
+                    "touch": "gtmain",
+                    "boost": "gtmain"
+                },
+                "auto": {
+                    "bg": "",
+                    "fg": "",
+                    "idle": "",
+                    "touch": "",
+                    "boost": ""
+                }
+            },
+            "prio": {
+                "rtsys": {
+                    "bg": 97,
+                    "fg": 97,
+                    "idle": 97,
+                    "touch": 96,
+                    "boost": 97
+                },
+                "rtusr": {
+                    "bg": 98,
+                    "fg": 98,
+                    "idle": 98,
+                    "touch": 97,
+                    "boost": 98
+                },
+                "high": {
+                    "bg": 102,
+                    "fg": 102,
+                    "idle": 102,
+                    "touch": 100,
+                    "boost": 100
+                },
+                "ux": {
+                    "bg": -3,
+                    "fg": 116,
+                    "idle": 110,
+                    "touch": 100,
+                    "boost": -3
+                },
+                "low": {
+                    "bg": -3,
+                    "fg": -3,
+                    "idle": 130,
+                    "touch": 139,
+                    "boost": -3
+                },
+                "bg": {
+                    "bg": -3,
+                    "fg": -3,
+                    "idle": -3,
+                    "touch": -3,
+                    "boost": -3
+                },
+                "norm": {
+                    "bg": -3,
+                    "fg": -1,
+                    "idle": -1,
+                    "touch": -1,
+                    "boost": -3
+                },
+                "auto": {
+                    "bg": 0,
+                    "fg": 0,
+                    "idle": 0,
+                    "touch": 0,
+                    "boost": 0
+                }
+            },
+            "rules": [
+                {
+                    "name": "WebView",
+                    "regex": "com.google.android.webview",
+                    "pinned": true,
+                    "rules": []
+                },
+                {
+                    "name": "Launcher",
+                    "regex": "/HOME_PACKAGE/",
+                    "pinned": true,
+                    "rules": [
+                        {
+                            "k": "/MAIN_THREAD/",
+                            "ac": "crit",
+                            "pc": "rtusr"
+                        },
+                        {
+                            "k": "^(RenderThread|GLThread)",
+                            "ac": "crit",
+                            "pc": "rtusr"
+                        },
+                        {
+                            "k": "^(Jit thread pool|HeapTaskDaemon|FinalizerDaemon|ReferenceQueueD)",
+                            "ac": "coop",
+                            "pc": "auto"
+                        },
+                        {
+                            "k": "^(GPU completion|HWC release|hwui|FramePolicy|ScrollPolicy|ged-swd)",
+                            "ac": "bg",
+                            "pc": "rtusr"
+                        },
+                        {
+                            "k": ".",
+                            "ac": "coop",
+                            "pc": "high"
+                        }
+                    ]
+                },
+                {
+                    "name": "SurfaceFlinger",
+                    "regex": "/system/bin/surfaceflinger",
+                    "pinned": true,
+                    "rules": [
+                        {
+                            "k": "/MAIN_THREAD/",
+                            "ac": "trig",
+                            "pc": "rtsys"
+                        },
+                        {
+                            "k": "^RenderEngine",
+                            "ac": "crit",
+                            "pc": "rtsys"
+                        },
+                        {
+                            "k": "^Binder:",
+                            "ac": "binder",
+                            "pc": "auto"
+                        },
+                        {
+                            "k": "^app",
+                            "ac": "trig",
+                            "pc": "rtsys"
+                        },
+                        {
+                            "k": "^[Ss]f|Timer|Idle",
+                            "ac": "bg",
+                            "pc": "rtsys"
+                        },
+                        {
+                            "k": ".",
+                            "ac": "bg",
+                            "pc": "rtsys"
+                        }
+                    ]
+                },
+                {
+                    "name": "SystemServer",
+                    "regex": "system_server",
+                    "pinned": true,
+                    "rules": [
+                        {
+                            "k": "^(android.anim|android.display)",
+                            "ac": "crit",
+                            "pc": "rtusr"
+                        },
+                        {
+                            "k": "^android.bg",
+                            "ac": "main",
+                            "pc": "auto"
+                        },
+                        {
+                            "k": "^[Ii]nput",
+                            "ac": "trig",
+                            "pc": "high"
+                        },
+                        {
+                            "k": "^Async",
+                            "ac": "crit",
+                            "pc": "bg"
+                        },
+                        {
+                            "k": "^Binder:",
+                            "ac": "coop",
+                            "pc": "auto"
+                        },
+                        {
+                            "k": "^(Gralloc|MiuiFreeForm|ActivityManager|OomAdjuster|ProcessCpuLimit)",
+                            "ac": "trig",
+                            "pc": "auto"
+                        },
+                        {
+                            "k": "^(TaskSnapshot|Greezer|CachedApp|SystemPressure|SensorService)|[Mm]emory",
+                            "ac": "bg",
+                            "pc": "bg"
+                        },
+                        {
+                            "k": ".",
+                            "ac": "coop",
+                            "pc": "auto"
+                        }
+                    ]
+                },
+                {
+                    "name": "AndroidPhone",
+                    "regex": "com.android.phone",
+                    "pinned": true,
+                    "rules": [
+                        {
+                            "k": ".",
+                            "ac": "coop",
+                            "pc": "auto"
+                        }
+                    ]
+                },
+                {
+                    "name": "MediaProvider",
+                    "regex": "^com.android.providers.media",
+                    "pinned": true,
+                    "rules": [
+                        {
+                            "k": ".",
+                            "ac": "auto",
+                            "pc": "bg"
+                        }
+                    ]
+                },
+                {
+                    "name": "Display composer/allocator",
+                    "regex": "composer|allocator",
+                    "pinned": true,
+                    "rules": [
+                        {
+                            "k": "^HwBinder:",
+                            "ac": "crit",
+                            "pc": "rtsys"
+                        },
+                        {
+                            "k": ".",
+                            "ac": "auto",
+                            "pc": "rtsys"
+                        }
+                    ]
+                },
+                {
+                    "name": "Memory reclaim",
+                    "regex": "^(kswapd0|kcompactd0)",
+                    "pinned": true,
+                    "rules": [
+                        {
+                            "k": ".",
+                            "ac": "coop",
+                            "pc": "low"
+                        }
+                    ]
+                },
+                {
+                    "name": "Uperf",
+                    "regex": "uperf",
+                    "pinned": true,
+                    "rules": [
+                        {
+                            "k": "HeavyWorker",
+                            "ac": "bg",
+                            "pc": "auto"
+                        },
+                        {
+                            "k": ".",
+                            "ac": "auto",
+                            "pc": "auto"
+                        }
+                    ]
+                },
+                {
+                    "name": "Other system processes",
+                    "regex": "^(/system|/vendor|magiskd|zygiskd)|@|-service$",
+                    "pinned": false,
+                    "rules": [
+                        {
+                            "k": ".",
+                            "ac": "auto",
+                            "pc": "auto"
+                        }
+                    ]
+                },
+                {
+                    "name": "App co-process",
+                    "regex": "[.].+:",
+                    "pinned": false,
+                    "rules": [
+                        {
+                            "k": "^Binder:",
+                            "ac": "norm",
+                            "pc": "norm"
+                        }
+                    ]
+                },
+                {
+                    "name": "Default rule",
+                    "regex": ".",
+                    "pinned": false,
+                    "rules": [
+                        {
+                            "k": "/MAIN_THREAD/",
+                            "ac": "main",
+                            "pc": "ux"
+                        },
+                        {
+                            "k": "[.]ui$",
+                            "ac": "main",
+                            "pc": "ux"
+                        },
+                        {
+                            "k": "^UnityMain",
+                            "ac": "gtmain",
+                            "pc": "ux"
+                        },
+                        {
+                            "k": "^(Unity|Worker Thread)",
+                            "ac": "gtcoop",
+                            "pc": "ux"
+                        },
+                        {
+                            "k": "^(NativeThread|Timer-)",
+                            "ac": "bg",
+                            "pc": "norm"
+                        },
+                        {
+                            "k": "^TaskGraphNP",
+                            "ac": "gtcoop",
+                            "pc": "ux"
+                        },
+                        {
+                            "k": "^(Chrome_InProc|CrRendererMain|CrGpuMain|CompositorTile)",
+                            "ac": "coop",
+                            "pc": "norm"
+                        },
+                        {
+                            "k": "^(Viz|Chrome_|Compositor)",
+                            "ac": "coop",
+                            "pc": "high"
+                        },
+                        {
+                            "k": "^(JS|libweexjsb|WeexJsBridge|mqt_native|mqt_js|JavaScriptTh)",
+                            "ac": "coop",
+                            "pc": "low"
+                        },
+                        {
+                            "k": "^(Jit thread pool|HeapTaskDaemon|FinalizerDaemon|ReferenceQueueD)",
+                            "ac": "coop",
+                            "pc": "low"
+                        },
+                        {
+                            "k": "^Thread-",
+                            "ac": "mix",
+                            "pc": "norm"
+                        },
+                        {
+                            "k": "[Aa]sync",
+                            "ac": "norm",
+                            "pc": "low"
+                        },
+                        {
+                            "k": "[Vv]sync|mali-",
+                            "ac": "coop",
+                            "pc": "ux"
+                        },
+                        {
+                            "k": "^(pool-|glide-|launcher-)",
+                            "ac": "coop",
+                            "pc": "bg"
+                        },
+                        {
+                            "k": "^(OkHttp|Ysa|Xqa|Rx|Fresco|TVKDL|APM|tp-|cgi-|ODCP-|Bugly|xlog_)",
+                            "ac": "bg",
+                            "pc": "bg"
+                        },
+                        {
+                            "k": "^(xg_vip_service|Profile|SearchDaemon|default_matrix)",
+                            "ac": "bg",
+                            "pc": "bg"
+                        },
+                        {
+                            "k": "^([Dd]ownload|ThreadPoolForeg|launcher-idle-|fe_single_pool)",
+                            "ac": "bg",
+                            "pc": "bg"
+                        },
+                        {
+                            "k": "[Ss]chedule|[.][.][.]$|[.]so$",
+                            "ac": "bg",
+                            "pc": "norm"
+                        },
+                        {
+                            "k": "[Ww]ork",
+                            "ac": "coop",
+                            "pc": "norm"
+                        },
+                        {
+                            "k": "^(GPU completion|HWC release|hwui|FramePolicy|ScrollPolicy|ged-swd)",
+                            "ac": "bg",
+                            "pc": "rtusr"
+                        },
+                        {
+                            "k": "^(RenderThread|GLThread|JNISurfaceText|IJK_External_Re)",
+                            "ac": "crit",
+                            "pc": "ux"
+                        },
+                        {
+                            "k": "[.]raster$",
+                            "ac": "crit",
+                            "pc": "ux"
+                        },
+                        {
+                            "k": "[Aa]nim",
+                            "ac": "crit",
+                            "pc": "ux"
+                        },
+                        {
+                            "k": "^Binder:",
+                            "ac": "trig",
+                            "pc": "auto"
+                        },
+                        {
+                            "k": ".",
+                            "ac": "norm",
+                            "pc": "norm"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "initials": {
+        "cpu": {
+            "baseSampleTime": 0.01,
+            "baseSlackTime": 0.01,
+            "latencyTime": 0.5,
+            "slowLimitPower": 3.0,
+            "fastLimitPower": 6.0,
+            "fastLimitCapacity": 10.0,
+            "fastLimitRecoverScale": 0.6,
+            "predictThd": 0.1,
+            "margin": 0.25,
+            "burst": 0.0,
+            "guideFloor": false,
+            "guideCeiling": false
+        },
+        "sysfs": {
+            "cpusetTa": "0-7",
+            "cpusetFg": "0-6",
+            "cpusetBg": "0-3",
+            "cpusetSysBg": "0-3",
+            "cpusetRe": "0-6",
+            "gpuIdxMax": "35",
+            "gpuIdxStep": "04",
+            "ddrMin": "800000000"
+        },
+        "sched": {
+            "scene": "idle"
+        }
+    },
+    "presets": {
+        "balance": {
+            "*": {
+                "cpu.latencyTime": 0.2,
+                "cpu.predictThd": 1.0,
+                "cpu.slowLimitPower": 2.5,
+                "cpu.fastLimitPower": 4.0,
+                "cpu.fastLimitCapacity": 3.0,
+                "cpu.margin": 0.2,
+                "sysfs.gpuIdxMax": "22",
+                "sysfs.gpuIdxStep": "04",
+                "sysfs.ddrMin": "5500000000"
+            },
+            "idle": {
+                "cpu.baseSampleTime": 0.04,
+                "cpu.baseSlackTime": 0.08,
+                "cpu.guideCeiling": true,
+                "sched.scene": "idle",
+                "sysfs.ddrMin": "800000000"
+            },
+            "touch": {
+                "sched.scene": "touch"
+            },
+            "trigger": {
+                "cpu.burst": 0.2,
+                "sched.scene": "touch"
+            },
+            "gesture": {
+                "cpu.burst": 0.4,
+                "sched.scene": "touch"
+            },
+            "junk": {
+                "cpu.burst": 0.55,
+                "sched.scene": "touch"
+            },
+            "switch": {
+                "cpu.latencyTime": 0.0,
+                "cpu.slowLimitPower": 4.0,
+                "cpu.fastLimitPower": 4.0,
+                "cpu.margin": 0.5,
+                "cpu.burst": 0.55,
+                "sched.scene": "boost",
+                "sysfs.ddrMin": "0"
+            },
+            "swjunk": {
+                "cpu.latencyTime": 0.0,
+                "cpu.slowLimitPower": 4.0,
+                "cpu.fastLimitPower": 4.0,
+                "cpu.margin": 0.5,
+                "cpu.burst": 0.55,
+                "sched.scene": "boost",
+                "sysfs.gpuIdxMax": "20",
+                "sysfs.gpuIdxStep": "05",
+                "sysfs.ddrMin": "0"
+            }
+        },
+        "powersave": {
+            "*": {
+                "cpu.baseSampleTime": 0.04,
+                "cpu.baseSlackTime": 0.04,
+                "cpu.latencyTime": 0.4,
+                "cpu.predictThd": 1.0,
+                "cpu.slowLimitPower": 1.5,
+                "cpu.fastLimitPower": 2.5,
+                "cpu.fastLimitCapacity": 1.5,
+                "cpu.margin": 0.1,
+                "sysfs.gpuIdxMax": "25",
+                "sysfs.gpuIdxStep": "01",
+                "sysfs.ddrMin": "5500000000"
+            },
+            "idle": {
+                "cpu.baseSampleTime": 0.04,
+                "cpu.baseSlackTime": 0.08,
+                "cpu.guideCeiling": true,
+                "sched.scene": "idle",
+                "sysfs.gpuIdxMax": "30",
+                "sysfs.ddrMin": "800000000"
+            },
+            "touch": {
+                "sched.scene": "touch"
+            },
+            "trigger": {
+                "cpu.burst": 0.2,
+                "sched.scene": "touch"
+            },
+            "gesture": {
+                "cpu.burst": 0.4,
+                "sched.scene": "touch"
+            },
+            "junk": {
+                "cpu.burst": 0.55,
+                "sched.scene": "touch"
+            },
+            "switch": {
+                "cpu.latencyTime": 0.0,
+                "cpu.slowLimitPower": 2.5,
+                "cpu.fastLimitPower": 2.5,
+                "cpu.margin": 0.3,
+                "sched.scene": "boost"
+            },
+            "swjunk": {
+                "cpu.latencyTime": 0.0,
+                "cpu.slowLimitPower": 2.5,
+                "cpu.fastLimitPower": 2.5,
+                "cpu.margin": 0.3,
+                "sched.scene": "boost"
+            }
+        },
+        "performance": {
+            "*": {
+                "cpu.latencyTime": 0.0,
+                "cpu.slowLimitPower": 8.0,
+                "cpu.fastLimitPower": 10.0,
+                "cpu.fastLimitCapacity": 300.0,
+                "cpu.margin": 0.4,
+                "sysfs.gpuIdxMax": "00",
+                "sysfs.gpuIdxStep": "10",
+                "sysfs.ddrMin": "5500000000"
+            },
+            "idle": {
+                "cpu.baseSampleTime": 0.01,
+                "cpu.baseSlackTime": 0.04,
+                "cpu.guideCeiling": true,
+                "sched.scene": "idle"
+            },
+            "touch": {
+                "sched.scene": "touch"
+            },
+            "trigger": {
+                "cpu.burst": 0.2,
+                "sched.scene": "touch"
+            },
+            "gesture": {
+                "cpu.burst": 0.4,
+                "sched.scene": "touch"
+            },
+            "junk": {
+                "cpu.burst": 0.55,
+                "sched.scene": "touch"
+            },
+            "switch": {
+                "cpu.burst": 0.3,
+                "sched.scene": "boost"
+            },
+            "swjunk": {
+                "cpu.burst": 0.55,
+                "sched.scene": "boost"
+            }
+        },
+        "fast": {
+            "*": {
+                "cpu.latencyTime": 0.0,
+                "cpu.slowLimitPower": 3.0,
+                "cpu.fastLimitPower": 3.0,
+                "cpu.fastLimitCapacity": 0.0,
+                "cpu.margin": 0.3,
+                "sysfs.gpuIdxMax": "10",
+                "sysfs.gpuIdxStep": "01",
+                "sysfs.ddrMin": "5500000000"
+            },
+            "idle": {
+                "cpu.baseSampleTime": 0.01,
+                "cpu.baseSlackTime": 0.04,
+                "cpu.guideCeiling": true,
+                "sched.scene": "idle"
+            },
+            "touch": {
+                "sched.scene": "touch"
+            },
+            "trigger": {
+                "cpu.burst": 0.2,
+                "sched.scene": "touch"
+            },
+            "gesture": {
+                "cpu.burst": 0.4,
+                "sched.scene": "touch"
+            },
+            "junk": {
+                "cpu.burst": 0.55,
+                "sched.scene": "touch"
+            },
+            "switch": {
+                "cpu.burst": 0.3,
+                "sched.scene": "boost"
+            },
+            "swjunk": {
+                "cpu.burst": 0.55,
+                "sched.scene": "boost"
+            }
+        }
+    }
+}

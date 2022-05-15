@@ -26,16 +26,6 @@ BASEDIR="$(dirname $(readlink -f "$0"))"
 . $BASEDIR/libcgroup.sh
 
 unify_cgroup() {
-    # clear stune & uclamp
-    for g in background foreground top-app; do
-        lock_val "0" /dev/stune/$g/schedtune.sched_boost_no_override
-        lock_val "0" /dev/stune/$g/schedtune.boost
-        lock_val "0" /dev/stune/$g/schedtune.prefer_idle
-        lock_val "0" /dev/cpuctl/$g/cpu.uclamp.sched_boost_no_override
-        lock_val "0" /dev/cpuctl/$g/cpu.uclamp.min
-        lock_val "0" /dev/cpuctl/$g/cpu.uclamp.latency_sensitive
-    done
-
     # clear top-app
     for cg in stune cpuctl; do
         for p in $(cat /dev/$cg/top-app/tasks); do
@@ -47,40 +37,52 @@ unify_cgroup() {
     rmdir /dev/cpuset/foreground/boost
 
     # work with uperf/ContextScheduler
-    change_task_cgroup "surfaceflinger" "" "cpuset"
-    change_task_cgroup "system_server" "" "cpuset"
-    change_thread_cgroup "system_server" "^android." "" "cpuset"
-    change_thread_cgroup "system_server" "^Binder" "" "cpuset"
+    change_task_cgroup "surfaceflinger" "foreground" "cpuset"
+    change_thread_cgroup "surfaceflinger" "^Binder" "" "cpuset"
+    change_task_cgroup "system_server" "foreground" "cpuset"
+    change_thread_cgroup "system_server" "^android.bg" "" "cpuset"
     change_task_cgroup "composer|allocator" "foreground" "cpuset"
-    change_task_cgroup "android.hardware.media" "top-app" "cpuset"
-    change_task_cgroup "netd" "background" "cpuset"
+    change_task_cgroup "netd" "foreground" "cpuset"
+    change_task_cgroup "android.hardware.media" "background" "cpuset"
     change_task_cgroup "vendor.mediatek.hardware" "background" "cpuset"
-    change_task_cgroup "aal_sof|kfps|dsp_send_thread|vdec_ipi_recv|mtk_drm_disp_id|hif_thread|main_thread|mali_kbase_|ged_" "background" "cpuset"
+    change_task_cgroup "aal_sof|kfps|dsp_send_thread|vdec_ipi_recv|mtk_drm_disp_id|hif_thread|main_thread|ged_" "background" "cpuset"
     change_task_cgroup "pp_event|crtc_" "background" "cpuset"
+
 }
 
 unify_sched() {
-    # useless on MTK platform
-    # reduce migration
-    #for d in kernel walt; do
-    #    mutate "30" /proc/sys/$d/sched_downmigrate
-    #    mutate "90" /proc/sys/$d/sched_upmigrate
-    #    mutate "30" /proc/sys/$d/sched_downmigrate
-    #    mutate "30 30" /proc/sys/$d/sched_downmigrate
-    #    mutate "90 90" /proc/sys/$d/sched_upmigrate
-    #    mutate "30 30" /proc/sys/$d/sched_downmigrate
-    #    mutate "30" /proc/sys/$d/sched_group_downmigrate
-    #    mutate "90" /proc/sys/$d/sched_group_upmigrate
-    #    mutate "30" /proc/sys/$d/sched_group_downmigrate
-    #done
-
-    # clear cpu load scale factor,qcom only
-    #for i in 0 1 2 3 4 5 6 7 8 9; do
-    #    mutate "0" /sys/devices/system/cpu/cpu$i/sched_load_boost
-    #done
-    echo ""
+    for d in kernel walt; do
+        lock_val "0" /proc/sys/$d/sched_force_lb_enable
+    done
 }
-
+unify_cpufreq() {
+    # unify hmp interactive governor, only 2+2 4+2 4+4
+    set_governor_param "interactive/use_sched_load" "0:1 2:1 4:1"
+    set_governor_param "interactive/use_migration_notif" "0:1 2:1 4:1"
+    set_governor_param "interactive/enable_prediction" "0:1 2:1 4:1"
+    set_governor_param "interactive/ignore_hispeed_on_notif" "0:1 2:1 4:1"
+    set_governor_param "interactive/fast_ramp_down" "0:0 2:0 4:0"
+    set_governor_param "interactive/boostpulse_duration" "0:0 2:0 4:0"
+    set_governor_param "interactive/boost" "0:0 2:0 4:0"
+    set_governor_param "interactive/above_hispeed_delay" "0:0 2:0 4:0"
+    set_governor_param "interactive/hispeed_freq" "0:0 2:0 4:0"
+    set_governor_param "interactive/go_hispeed_load" "0:90 2:90 4:90"
+    set_governor_param "interactive/target_loads" "0:80 2:80 4:80"
+    set_governor_param "interactive/min_sample_time" "0:0 2:0 4:0"
+    set_governor_param "interactive/max_freq_hysteresis" "0:0 2:0 4:0"
+}
+unify_devfreq() {
+    for d in /sys/class/devfreq/*; do
+        local maxfreq="0"
+        for f in $(cat $d/available_frequencies); do
+            [ "$f" -gt "$maxfreq" ] && maxfreq="$f"
+        done
+        [ "$maxfreq" -gt "0" ] && mutate "$maxfreq" "$d/max_freq"
+    done
+    for d in DDR LLCC L3; do
+        mutate "9999000000" "/sys/devices/system/cpu/bus_dcvs/$d/*/max_freq"
+    done
+}
 disable_hotplug() {
     # Exynos hotplug
     mutate "0" /sys/power/cpuhotplug/enabled
@@ -114,14 +116,6 @@ disable_kernel_boost() {
     lock_val "0" "/sys/module/msm_performance/parameters/*"
     lock_val "0" "/proc/sys/walt/input_boost/*"
 
-    # no msm_performance limit, mtk either
-    set_cpufreq_min "0:0 1:0 2:0 3:0 4:0 5:0 6:0 7:0"
-    set_cpufreq_max "0:9999000 1:9999000 2:9999000 3:9999000 4:9999000 5:9999000 6:9999000 7:9999000"
-    # always use schedutil when available, do not use sugov_ext and walt !
-    set_governor_param "scaling_governor" "0:ondemand 2:ondemand 4:ondemand 6:ondemand 7:ondemand"
-    set_governor_param "scaling_governor" "0:interactive 2:interactive 4:interactive 6:interactive 7:interactive"
-    set_governor_param "scaling_governor" "0:schedutil 2:schedutil 4:schedutil 6:schedutil 7:schedutil"
-
     # MediaTek
     # policy_status
     # [0] PPM_POLICY_PTPOD: Meature PMIC buck currents
@@ -144,11 +138,8 @@ disable_kernel_boost() {
     done
     # enable the policy used by uperf
     lock_val "6 1" /proc/ppm/policy_status
-    #lock /proc/ppm/policy/*
-
     # Disable Touch Boost in 6893 and before
     lock_val "enable 0" /proc/perfmgr/tchbst/user/usrtch
-    lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
 
     # Samsung
     mutate "0" "/sys/class/input_booster/*"
@@ -177,6 +168,7 @@ disable_userspace_boost() {
     # xiaomi perfservice
     stop vendor.perfservice
     stop miuibooster
+    # stop vendor.miperf
 
     # brain service maybe not smart
     stop oneplus_brain_service 2>/dev/null
@@ -185,8 +177,11 @@ disable_userspace_boost() {
     stop perfd 2>/dev/null
 
     # work with uperf/ContextScheduler
+    lock_val "0" "/sys/module/mtk_fpsgo/parameters/boost_affinity*"
+    lock_val "0" "/sys/module/fbt_cpu/parameters/boost_affinity*"
     lock_val "0" /sys/kernel/fpsgo/fbt/switch_idleprefer
-    lock_val "0" /sys/module/mtk_fpsgo/parameters/boost_affinity
+    lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
+    # lock_val "1" /sys/module/mtk_core_ctl/parameters/policy_enable
 
     # Qualcomm&MTK perfhal
     perfhal_stop
@@ -214,20 +209,18 @@ restart_userspace_boost() {
 }
 
 disable_userspace_thermal() {
+    # yes, let it respawn
+    killall mi_thermald
     # prohibit mi_thermald use cpu thermal interface
-    for i in 0 1 2 3 4 5 6 7 8 9 10; do
-        lock_val "cpu$i 99999999" /sys/devices/virtual/thermal/thermal_message/cpu_limits
+    for i in 0 2 4 6 7; do
+        lock_val "cpu$i 9999000" /sys/devices/virtual/thermal/thermal_message/cpu_limits
     done
-
-    #mi_thermald
-    chmod 0444 /sys/devices/system/cpu/cpufreq/policy*/scaling_max_freq
 
 }
 
 restart_userspace_thermal() {
     # yes, let it respawn
     killall mi_thermald
-    killall thermald
 }
 
 clear_log
@@ -239,7 +232,9 @@ echo "sh=$(which sh)"
 # set permission
 disable_kernel_boost
 disable_hotplug
-#unify_sched
+unify_sched
+unify_cpufreq
+unify_devfreq
 
 disable_userspace_thermal
 restart_userspace_thermal
@@ -249,7 +244,9 @@ restart_userspace_boost
 # unify value
 disable_kernel_boost
 disable_hotplug
-#unify_sched
+unify_sched
+unify_cpufreq
+unify_devfreq
 
 # make sure that all the related cpu is online
 rebuild_process_scan_cache

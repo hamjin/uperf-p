@@ -24,15 +24,12 @@ $BIN_PATH/busybox/busybox --install -s $BIN_PATH/busybox
 
 #Scene 3rd Scheduler Adapter Config
 cp -af $SCRIPT_PATH/vtools_powercfg.sh /data/powercfg.sh
-cp -af $SCRIPT_PATH/vtools_powercfg.sh /data/powercfg-base.sh
 cat $SCRIPT_PATH/powercfg.json >/data/powercfg.json
 chmod 755 /data/powercfg.sh
 chmod 755 /data/powercfg-base.sh
 echo "sh $SCRIPT_PATH/powercfg_main.sh \"\$1\"" >>/data/powercfg.sh
 
 wait_until_login
-
-#sh $SCRIPT_PATH/mtk_special.sh
 
 sh $SCRIPT_PATH/gpu_adj.sh
 
@@ -45,3 +42,5 @@ lock_val "1024" /proc/sys/fs/inotify/max_user_instances
 
 mv $USER_PATH/uperf_log.txt $USER_PATH/uperf_log.bak.txt
 $BIN_PATH/uperf $USER_PATH/uperf.json -o $USER_PATH/uperf_log.txt &
+
+sh $SCRIPT_PATH/mtk_special.sh

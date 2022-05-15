@@ -1,6 +1,6 @@
 {
     "meta": {
-        "name": "Dimensity 1200(mt6893)[22.05.04] && GPU [22.04.23]",
+        "name": "Dimensity 1200(mt6893)[22.05.09] && GPU [22.04.23]",
         "author": "yc@coolapk && hamjin@coolapk "
     },
     "modules": {
@@ -10,7 +10,7 @@
             "hintDuration": {
                 "idle": 0.0,
                 "touch": 4.0,
-                "fling": 0.05,
+                "trigger": 0.05,
                 "gesture": 0.2,
                 "switch": 0.2,
                 "junk": 0.05,
@@ -172,6 +172,13 @@
                     "touch": "bal",
                     "boost": "bal"
                 },
+                "mix": {
+                    "bg": "eff",
+                    "fg": "norm",
+                    "idle": "all",
+                    "touch": "bal",
+                    "boost": "bal"
+                },
                 "main": {
                     "bg": "norm",
                     "fg": "norm",
@@ -226,7 +233,7 @@
                 "high": {
                     "bg": 102,
                     "fg": 102,
-                    "idle": 100,
+                    "idle": 102,
                     "touch": 100,
                     "boost": 100
                 },
@@ -348,7 +355,7 @@
                     "pinned": true,
                     "rules": [
                         {
-                            "k": "^android.anim",
+                            "k": "^(android.anim|android.display)",
                             "ac": "crit",
                             "pc": "rtusr"
                         },
@@ -369,7 +376,7 @@
                         },
                         {
                             "k": "^Binder:",
-                            "ac": "main",
+                            "ac": "coop",
                             "pc": "auto"
                         },
                         {
@@ -438,7 +445,7 @@
                         {
                             "k": ".",
                             "ac": "coop",
-                            "pc": "bg"
+                            "pc": "low"
                         }
                     ]
                 },
@@ -455,35 +462,6 @@
                         {
                             "k": ".",
                             "ac": "auto",
-                            "pc": "auto"
-                        }
-                    ]
-                },
-                {
-                    "name": "gpu_adj",
-                    "regex": "gpu_adj",
-                    "pinned": true,
-                    "rules": [
-                        {
-                            "k": ".",
-                            "ac": "bg",
-                            "pc": "bg"
-                        }
-                    ]
-                },
-                {
-                    "name": "Media codec",
-                    "regex": "android.hardware.media",
-                    "pinned": false,
-                    "rules": [
-                        {
-                            "k": "Binder:",
-                            "ac": "crit",
-                            "pc": "auto"
-                        },
-                        {
-                            "k": ".",
-                            "ac": "bg",
                             "pc": "auto"
                         }
                     ]
@@ -543,11 +521,6 @@
                             "pc": "norm"
                         },
                         {
-                            "k": "^RenderThread ",
-                            "ac": "gtmain",
-                            "pc": "ux"
-                        },
-                        {
                             "k": "^TaskGraphNP",
                             "ac": "gtcoop",
                             "pc": "ux"
@@ -573,12 +546,17 @@
                             "pc": "low"
                         },
                         {
+                            "k": "^Thread-",
+                            "ac": "mix",
+                            "pc": "norm"
+                        },
+                        {
                             "k": "[Aa]sync",
                             "ac": "norm",
                             "pc": "low"
                         },
                         {
-                            "k": "[Vv]sync",
+                            "k": "[Vv]sync|mali-",
                             "ac": "coop",
                             "pc": "ux"
                         },
@@ -588,7 +566,7 @@
                             "pc": "bg"
                         },
                         {
-                            "k": "^(OkHttp|glide-|Ysa|Xqa|Rx|Fresco|TVKDL|APM|tp-|cgi-|ODCP-|Bugly|xlog_)",
+                            "k": "^(OkHttp|Ysa|Xqa|Rx|Fresco|TVKDL|APM|tp-|cgi-|ODCP-|Bugly|xlog_)",
                             "ac": "bg",
                             "pc": "bg"
                         },
@@ -610,7 +588,7 @@
                         {
                             "k": "[Ww]ork",
                             "ac": "coop",
-                            "pc": "bg"
+                            "pc": "norm"
                         },
                         {
                             "k": "^(GPU completion|HWC release|hwui|FramePolicy|ScrollPolicy|ged-swd)",
@@ -707,7 +685,7 @@
                 "sysfs.ddrboost": "0",
                 "sysfs.cciboost": "0"
             },
-            "fling": {
+            "trigger": {
                 "cpu.burst": 0.2,
                 "sched.scene": "touch"
             },
@@ -772,7 +750,7 @@
             "touch": {
                 "sched.scene": "touch"
             },
-            "fling": {
+            "trigger": {
                 "cpu.burst": 0.2,
                 "sched.scene": "touch"
             },
@@ -802,8 +780,8 @@
         "performance": {
             "*": {
                 "cpu.latencyTime": 0.0,
-                "cpu.slowLimitPower": 8.0,
-                "cpu.fastLimitPower": 10.0,
+                "cpu.slowLimitPower": 10.0,
+                "cpu.fastLimitPower": 15.0,
                 "cpu.fastLimitCapacity": 300.0,
                 "cpu.margin": 0.4,
                 "sysfs.gpuIdxMax": "00",
@@ -820,7 +798,7 @@
             "touch": {
                 "sched.scene": "touch"
             },
-            "fling": {
+            "trigger": {
                 "cpu.burst": 0.2,
                 "sched.scene": "touch"
             },
@@ -862,7 +840,7 @@
             "touch": {
                 "sched.scene": "touch"
             },
-            "fling": {
+            "trigger": {
                 "cpu.burst": 0.2,
                 "sched.scene": "touch"
             },

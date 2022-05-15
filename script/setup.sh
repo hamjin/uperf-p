@@ -133,11 +133,14 @@ install_uperf
 #echo "- Installing perfhal stub"
 #install_powerhal_stub
 set_permissions
+
+#Install cooperate modules
 echo "- Installing uperf surfaceflinger analysis"
 magisk --install-module $MODULE_PATH/sfanalysis-magisk.zip
 rm $MODULE_PATH/sfanalysis-magisk.zip
-echo "- Removing uperf system_server sanalysis"
-touch /data/adb/modules/ssanalysis/remove
+echo "- Installing uperf system_server sanalysis"
+magisk --install-module $MODULE_PATH/ssanalysis-magisk.zip
+
 echo "- Install Finished"
-#magisk --install-module $MODULE_PATH/ssanalysis-magisk.zip
-#rm $MODULE_PATH/ssanalysis-magisk.zip
+#touch /data/adb/modules/ssanalysis/remove
+rm $MODULE_PATH/ssanalysis-magisk.zip

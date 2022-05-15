@@ -234,6 +234,7 @@ get_config_name() {
     "mt6833") echo "$(_get_mt6833_type)" ;; # D810 & D700
     "mt6895") echo "$(_get_mt6895_type)" ;; # D8000 & D8100
     "mt6983") echo "mtd9000" ;;             # D9000
+    "gs101") echo "gs101" ;;
     *) echo "unsupported" ;;
     esac
 }
