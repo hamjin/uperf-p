@@ -1,13 +1,13 @@
 {
     "name": "Uperf-MTK v3",
     "author": "Matt Yang & hamjin",
-    "version": "v3-22.05.09,hamjin-22.04.23",
-    "versionCode": 20220509000,
+    "version": "v3-22.05.09,hamjin-22.05.17-fix1",
+    "versionCode": 20220517001,
     "features": {
         "strict": true,
         "pedestal": true
     },
-    "module": "uperf,sfanalysis,ssanalysis",
+    "module": "uperf,sfanalysis,ssanalysis,asoul_affinity_opt",
     "state": "/sdcard/Android/yc/uperf/cur_powermode.txt",
     "entry": "/data/powercfg.sh",
     "project_url": "https://gitee.com/hamjin/uperf"

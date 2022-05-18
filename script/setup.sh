@@ -140,7 +140,8 @@ magisk --install-module $MODULE_PATH/sfanalysis-magisk.zip
 rm $MODULE_PATH/sfanalysis-magisk.zip
 echo "- Installing uperf system_server sanalysis"
 magisk --install-module $MODULE_PATH/ssanalysis-magisk.zip
-
-echo "- Install Finished"
-#touch /data/adb/modules/ssanalysis/remove
 rm $MODULE_PATH/ssanalysis-magisk.zip
+echo "- Installing AsoulOpt"
+magisk --install-module $MODULE_PATH/asoulopt.zip
+rm $MODULE_PATH/asoulopt.zip
+echo "- Install Finished"

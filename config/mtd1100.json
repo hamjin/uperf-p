@@ -277,7 +277,7 @@
                 {
                     "name": "WebView",
                     "regex": "com.google.android.webview",
-                    "pinned": true,
+                    "pinned": false,
                     "rules": []
                 },
                 {
@@ -444,7 +444,7 @@
                     "rules": [
                         {
                             "k": ".",
-                            "ac": "coop",
+                            "ac": "bg",
                             "pc": "low"
                         }
                     ]
@@ -482,13 +482,7 @@
                     "name": "App co-process",
                     "regex": "[.].+:",
                     "pinned": false,
-                    "rules": [
-                        {
-                            "k": "^Binder:",
-                            "ac": "norm",
-                            "pc": "norm"
-                        }
-                    ]
+                    "rules": []
                 },
                 {
                     "name": "Default rule",
@@ -496,129 +490,9 @@
                     "pinned": false,
                     "rules": [
                         {
-                            "k": "/MAIN_THREAD/",
-                            "ac": "main",
-                            "pc": "ux"
-                        },
-                        {
-                            "k": "[.]ui$",
-                            "ac": "main",
-                            "pc": "ux"
-                        },
-                        {
-                            "k": "^UnityMain",
-                            "ac": "gtmain",
-                            "pc": "ux"
-                        },
-                        {
-                            "k": "^(Unity|Worker Thread)",
-                            "ac": "gtcoop",
-                            "pc": "ux"
-                        },
-                        {
-                            "k": "^(NativeThread|Timer-)",
-                            "ac": "bg",
-                            "pc": "norm"
-                        },
-                        {
-                            "k": "^TaskGraphNP",
-                            "ac": "gtcoop",
-                            "pc": "ux"
-                        },
-                        {
-                            "k": "^(Chrome_InProc|CrRendererMain|CrGpuMain|CompositorTile)",
-                            "ac": "coop",
-                            "pc": "norm"
-                        },
-                        {
-                            "k": "^(Viz|Chrome_|Compositor)",
-                            "ac": "coop",
-                            "pc": "high"
-                        },
-                        {
-                            "k": "^(JS|libweexjsb|WeexJsBridge|mqt_native|mqt_js|JavaScriptTh)",
-                            "ac": "coop",
-                            "pc": "low"
-                        },
-                        {
-                            "k": "^(Jit thread pool|HeapTaskDaemon|FinalizerDaemon|ReferenceQueueD)",
-                            "ac": "coop",
-                            "pc": "low"
-                        },
-                        {
-                            "k": "^Thread-",
-                            "ac": "mix",
-                            "pc": "norm"
-                        },
-                        {
-                            "k": "[Aa]sync",
-                            "ac": "norm",
-                            "pc": "low"
-                        },
-                        {
-                            "k": "[Vv]sync|mali-",
-                            "ac": "coop",
-                            "pc": "ux"
-                        },
-                        {
-                            "k": "^(pool-|glide-|launcher-)",
-                            "ac": "coop",
-                            "pc": "bg"
-                        },
-                        {
-                            "k": "^(OkHttp|Ysa|Xqa|Rx|Fresco|TVKDL|APM|tp-|cgi-|ODCP-|Bugly|xlog_)",
-                            "ac": "bg",
-                            "pc": "bg"
-                        },
-                        {
-                            "k": "^(xg_vip_service|Profile|SearchDaemon|default_matrix)",
-                            "ac": "bg",
-                            "pc": "bg"
-                        },
-                        {
-                            "k": "^([Dd]ownload|ThreadPoolForeg|launcher-idle-|fe_single_pool)",
-                            "ac": "bg",
-                            "pc": "bg"
-                        },
-                        {
-                            "k": "[Ss]chedule|[.][.][.]$|[.]so$",
-                            "ac": "bg",
-                            "pc": "norm"
-                        },
-                        {
-                            "k": "[Ww]ork",
-                            "ac": "coop",
-                            "pc": "norm"
-                        },
-                        {
-                            "k": "^(GPU completion|HWC release|hwui|FramePolicy|ScrollPolicy|ged-swd)",
-                            "ac": "bg",
-                            "pc": "rtusr"
-                        },
-                        {
-                            "k": "^(RenderThread|GLThread|JNISurfaceText|IJK_External_Re)",
-                            "ac": "crit",
-                            "pc": "ux"
-                        },
-                        {
-                            "k": "[.]raster$",
-                            "ac": "crit",
-                            "pc": "ux"
-                        },
-                        {
-                            "k": "[Aa]nim",
-                            "ac": "crit",
-                            "pc": "ux"
-                        },
-                        {
-                            "k": "^Binder:",
-                            "ac": "trig",
-                            "pc": "auto"
-                        },
-                        {
                             "k": ".",
-                            "ac": "norm",
-                            "pc": "norm"
+                            "ac": "auto",
+                            "pc": "auto"
                         }
                     ]
                 }

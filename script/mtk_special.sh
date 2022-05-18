@@ -37,9 +37,14 @@ BASEDIR="$(dirname $(readlink -f "$0"))"
 . $BASEDIR/libpowercfg.sh
 . $BASEDIR/libcgroup.sh
 sleep 10s
+# Mi Thermal Driver
+lock_val "1" /sys/class/thermal/thermal_message/balance_mode
+lock_val "boost:0" /sys/class/thermal/thermal_message/boost
 #mi_thermald:tgame 13,nolimits 10,normal 0
 lock_val "10" /sys/class/thermal/thermal_message/sconfig
-chmod 444 /sys/class/devfreq/mtk-dvfsrc-devfreq/userspace/set_freq
+#chmod 444 /sys/class/thermal/thermal_message/*
+
+chmod 444 /sys/class/devfreq/mtk-dvfsrc-devfreq/min_freq
 
 #GPU Optimize
 lock_val "1" /sys/class/misc/mali0/device/csg_scheduling_period
@@ -70,18 +75,27 @@ done
 
 # mi special
 stop vendor_tcpdump
-#stop miuibooster
-#stop vendor.miperf
-#stop vendor.misys
-#stop vendor.misys@2.0
-#stop vendor.misys@3.0
+stop miuibooster
+stop vendor.miperf
+stop vendor.misys
+stop vendor.misys@2.0
+stop vendor.misys@3.0
 #stop thermald
 #stop thermal
 #stop getgameserver
 #stop mi_thermald
 
 # mi mcd always lock resolution and fps
+chattr -i /data/system/mcd/*
+chattr -i /data/system/mcd
+chmod 666 /data/system/mcd/*
+chmod 666 /data/system/mcd
 stop mcd_service
+rm -rf /data/system/mcd
+touch /data/system/mcd
+chmod 666 /data/system/mcd
+chattr +i /data/system/mcd
+start mcd_service
 
 # MTK thermal-hal
 #stop vendor.thermal-hal-2-0.mtk
@@ -90,7 +104,7 @@ stop mcd_service
 #killall fpsgo tcpdump-vendor
 # MTK Task Turbo
 lock_val "0" /sys/module/task_turbo/parameters/feats
-#hide_value /sys/module/task_turbo/parameters/feats 0
+hide_value /sys/module/task_turbo/parameters/feats 0
 
 # MTK Low Mem Hint
 #lock_val "0" /proc/mtk-perf/lowmem_hint_enable
@@ -103,21 +117,21 @@ lock_val "0" /sys/kernel/eara_thermal/enable
 
 # stop mtk_core_ctl
 #lock_val "0" /sys/module/mtk_core_ctl/parameters/policy_enable
-# Mi Thermal Driver
-lock_val "0" /sys/class/thermal/thermal_message/balance_mode
+
 #chmod 444 /sys/devices/virtual/thermal/thermal_message/*
 lock_val "1" /sys/kernel/thermal/sports_mode
 
 # MTK FPSGO
 ## Useless Boost
-#lock_val "0" /sys/kernel/fpsgo/common/force_onoff
-#lock_val "0" /sys/kernel/fpsgo/common/fpsgo_enable
-#lock_val "1" /sys/kernel/fpsgo/common/stop_boost
-#chmod 444 /sys/kernel/fpsgo/common/*
-#lock_val "0" /sys/module/ged/parameters/is_GED_KPI_enabled
+lock_val "1" /sys/kernel/fpsgo/common/stop_boost
+lock_val "0" /sys/kernel/fpsgo/common/fpsgo_enable
+lock_val "0" /sys/kernel/fpsgo/common/force_onoff
 
-#lock_val "1" /sys/kernel/gbe/gbe_enable1
-#lock_val "1" /sys/kernel/gbe/gbe_enable2
+#chmod 444 /sys/kernel/fpsgo/common/*
+lock_val "0" /sys/module/ged/parameters/is_GED_KPI_enabled
+
+lock_val "0" /sys/kernel/gbe/gbe_enable1
+lock_val "0" /sys/kernel/gbe/gbe_enable2
 
 #lock_val "100" /sys/kernel/fpsgo/fbt/thrm_temp_th
 #lock_val "-1" /sys/kernel/fpsgo/fbt/thrm_limit_cpu
@@ -141,41 +155,50 @@ lock_val "1" /sys/kernel/thermal/sports_mode
 
 # Disable automatic voltage increase by MTK
 lock_val "disable" /proc/gpufreqv2/aging_mode
-lock_val "disable" /proc/gpufreqv2/gpm_mode
+#lock_val "disable" /proc/gpufreqv2/gpm_mode
 lock_val "0" /proc/gpufreq/gpufreq_aging_enable
 
 # Fix gpu always boost in MT6983 and MT6895, f**K buggy MTK kernel drivers.
 lock_val "0" /sys/kernel/ged/hal/dcs_mode
 
-# MemLatency Fix For Mediatek, f**k the whitelist
+# MemLatency Fix For Mediatek, no such whitelist
+
 ## 6983&6895
+#slbc
 lock_val "slbc_enable 0" /proc/slbc/dbg_slbc
-#lock_val "slb_disable 1" /proc/slbc/dbg_slbc
-#lock_val "slc_disable 1" /proc/slbc/dbg_slbc
-#lock_val "slbc_sram_enable 0" /proc/slbc/dbg_slbc
-#lock_val "slbc_scmi_enable 0" /proc/slbc/dbg_slbc
+lock_val "slb_disable 1" /proc/slbc/dbg_slbc
+lock_val "slc_disable 1" /proc/slbc/dbg_slbc
+lock_val "slbc_sram_enable 0" /proc/slbc/dbg_slbc
+lock_val "slbc_scmi_enable 0" /proc/slbc/dbg_slbc
+#cm_mgr
 lock_val "cm_mgr_disable_fb 0" /sys/kernel/cm_mgr/dbg_cm_mgr
 lock_val "cm_mgr_cpu_map_dram_enable 0" /sys/kernel/cm_mgr/dbg_cm_mgr
 lock_val "cm_mgr_perf_force_enable 1" /sys/kernel/cm_mgr/dbg_cm_mgr
 lock_val "cm_mgr_perf_enable 1" /sys/kernel/cm_mgr/dbg_cm_mgr
-lock_val "dsu_enable 0" /sys/kernel/cm_mgr/dbg_cm_mgr
-lock_val "cm_mgr_enable 0" /sys/kernel/cm_mgr/dbg_cm_mgr
+lock_val "dsu_enable 1" /sys/kernel/cm_mgr/dbg_cm_mgr
+lock_val "cm_mgr_enable 1" /sys/kernel/cm_mgr/dbg_cm_mgr
 lock_val "cm_ipi_enable 1" /sys/kernel/cm_mgr/dbg_cm_mgr
 lock_val "cm_mgr_dram_level 6" /sys/kernel/cm_mgr/dbg_cm_mgr
-lock_val "cm_mgr_emi_demand_check 0" /sys/kernel/cm_mgr/dbg_cm_mgr
+lock_val "cm_mgr_emi_demand_check 1" /sys/kernel/cm_mgr/dbg_cm_mgr
 lock_val "dsu_opp_send 0" /sys/kernel/cm_mgr/dbg_cm_mgr
+#dcm
+lock_val "disable 47fff" /sys/dcm/dcm_state
+lock_val "disable 3ffffff" /sys/dcm/dcm_state
+#swpm
+lock_val "65535 1" /proc/swpm/enable
+lock_val "65535 0" /proc/swpm/enable
+lock_val "1" /proc/swpm/pmu_ms_mode
+lock_val "0" /proc/swpm/swpm_arm_dsu_pmu
+lock_val "0" /proc/swpm/swpm_arm_pmu
+lock_val "0" /proc/swpm/swpm_pmsr_en
 ##6893 and before?
 lock_val "slbc_enable 0" /proc/slbc/dbg_slbc
-#lock_val "slb_disable 1" /proc/slbc/dbg_slbc
-#lock_val "slc_disable 1" /proc/slbc/dbg_slbc
-#lock_val "slbc_sram_enable 0" /proc/slbc/dbg_slbc
-#lock_val "slbc_scmi_enable 0" /proc/slbc/dbg_slbc
 lock_val "cm_mgr_disable_fb 0" /proc/cm_mgr/dbg_cm_mgr
 lock_val "cm_mgr_cpu_map_dram_enable 0" /proc/cm_mgr/dbg_cm_mgr
 lock_val "cm_mgr_perf_force_enable 1" /proc/cm_mgr/dbg_cm_mgr
 lock_val "cm_mgr_perf_enable 1" /proc/cm_mgr/dbg_cm_mgr
 lock_val "cm_mgr_opp_enable 1" /proc/cm_mgr/dbg_cm_mgr
-lock_val "cm_mgr_enable 0" /proc/cm_mgr/dbg_cm_mgr
-lock_val "cm_mgr_sspm_enable 0" /proc/cm_mgr/dbg_cm_mgr
-lock_val "cm_ipi_enable 0" /proc/cm_mgr/dbg_cm_mgr
+lock_val "cm_mgr_enable 1" /proc/cm_mgr/dbg_cm_mgr
+lock_val "cm_mgr_sspm_enable 1" /proc/cm_mgr/dbg_cm_mgr
+lock_val "cm_ipi_enable 1" /proc/cm_mgr/dbg_cm_mgr
 lock_val "cm_mgr_dram_level 6" /proc/cm_mgr/dbg_cm_mgr

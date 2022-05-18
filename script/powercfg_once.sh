@@ -37,6 +37,7 @@ unify_cgroup() {
     rmdir /dev/cpuset/foreground/boost
 
     # work with uperf/ContextScheduler
+    change_task_cgroup "com.android.systemui" "foreground" "cpuset"
     change_task_cgroup "surfaceflinger" "foreground" "cpuset"
     change_thread_cgroup "surfaceflinger" "^Binder" "" "cpuset"
     change_task_cgroup "system_server" "foreground" "cpuset"
@@ -181,7 +182,7 @@ disable_userspace_boost() {
     lock_val "0" "/sys/module/fbt_cpu/parameters/boost_affinity*"
     lock_val "0" /sys/kernel/fpsgo/fbt/switch_idleprefer
     lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
-    # lock_val "1" /sys/module/mtk_core_ctl/parameters/policy_enable
+    lock_val "0" /sys/module/mtk_core_ctl/parameters/policy_enable
 
     # Qualcomm&MTK perfhal
     perfhal_stop

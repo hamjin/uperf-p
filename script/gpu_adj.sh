@@ -10,7 +10,7 @@ BASEDIR="$(dirname $(readlink -f "$0"))"
 
 #Fix dcs
 lock_val "0" /sys/kernel/ged/hal/dcs_mode
-lock_val "99" /sys/kernel/ged/hal/custom_boost_gpu_freq
+#lock_val "99" /sys/kernel/ged/hal/custom_boost_gpu_freq
 
 #Init Write Node
 echo 11 >/dev/gpufreq_id
@@ -19,7 +19,7 @@ echo 1 >/dev/gpufreq_step
 # Disabel auto voltage add by MTK
 lock_val "disable" /proc/gpufreqv2/aging_mode
 #lock_val "disable" /proc/gpufreqv2/gpm_mode
-lock_val "disable" /proc/gpufreq/aging_mode
+lock_val "0" /proc/gpufreq/gpufreq_aging_enable
 
 mv $USER_PATH/log.gpuadj.txt $USER_PATH/log.gpuadj.lastboot.txt
 touch $USER_PATH/log.gpuadj.txt
