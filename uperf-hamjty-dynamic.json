@@ -1,6 +1,6 @@
 {
-  "versionCode": 220421001,
-  "version": "22.04.21-1",
+  "versionCode": 220518000,
+  "version": "v2-21.08.15,hamjin-22.03.35",
   "zipUrl": "https://gitee.com/hamjin/uperf/raw/update/uperf-v2-hamjin.zip",
   "changelog": "https://gitee.com/hamjin/uperf/raw/update/changelog-dynamic.md"
 }
