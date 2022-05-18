@@ -1,14 +1,14 @@
 {
-  "name": "Uperf-MTK v2",
-  "author": "Matt Yang & hamjin",
-  "version": "22.04.21-1",
-  "versionCode": 20220421001,
-  "features": {
-    "strict": true,
-    "pedestal": true
-  },
-  "module": "uperf",
-  "state": "/sdcardyc/uperf/cur_powermode.txt",
-  "entry": "/data/powercfg.sh",
-  "project_url": "https://gitee.com/hamjin/uperf"
+    "name": "Uperf-MTK",
+    "author": "Matt Yang & hamjin",
+    "version": "v2-21.08.15,hamjin-22.03.35",
+    "versionCode": 20220518000,
+    "features": {
+        "strict": true,
+        "pedestal": true
+    },
+    "module": "uperf",
+    "state": "/sdcard/yc/uperf/cur_powermode.txt",
+    "entry": "/data/powercfg.sh",
+    "project_url": "https://gitee.com/hamjin/uperf"
 }

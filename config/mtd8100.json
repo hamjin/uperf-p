@@ -191,6 +191,13 @@
         ],
         "knobs": [
             {
+                "name": "schedBoost",
+                "path": "/proc/sys/kernel/sched_boost",
+                "type": "string",
+                "enable": true,
+                "note": "异构调度器全局任务放置boost，不考虑能耗代价"
+            },
+            {
                 "name": "topBoost",
                 "path": "/dev/cpuctl/top-app/cpu.uclamp.min",
                 "type": "string",
@@ -303,11 +310,46 @@
                 "type": "string"
             },
             {
+                "name": "gpumax-sys",
+                "note": "Mali GPU Freq ID",
+                "enable": true,
+                "path": "/sys/kernel/ged/hal/custom_upbound_gpu_freq",
+                "type": "string"
+            },
+            {
+                "name": "gpudvfsstep-sys",
+                "note": "Mali Load Based DVFS Step",
+                "enable": true,
+                "path": "/sys/kernel/ged/hal/loading_base_dvfs_step",
+                "type": "string"
+            },
+            {
+                "name": "gpudvfsload",
+                "note": "Mali Load Based DVFS Load (100%-$gpudvfsload)",
+                "enable": true,
+                "path": "/sys/kernel/ged/hal/timer_base_dvfs_margin",
+                "type": "string"
+            },
+            {
                 "name": "dramforcefreq",
                 "note": "MTK DRAM Force Highest Frequency",
-                "enable": false,
-                "path": "/sys/kernel/helio-dvfsrc/dvfsrc_force_vcore_dvfs_opp",
+                "enable": true,
+                "path": "/sys/devices/platform/10012000.dvfsrc/helio-dvfsrc/dvfsrc_force_vcore_dvfs_opp",
                 "type": "string"
+            },
+            {
+                "name": "dramboost",
+                "path": "/sys/devices/platform/boot_dramboost/dramboost/dramboost",
+                "note": "MTK RAM Boost(0/1)",
+                "type": "string",
+                "enable": true
+            },
+            {
+                "name": "cciboost",
+                "path": "/proc/cpufreq/cpufreq_cci_mode",
+                "note": "MTK CPU-RingBus-Boost(0/1)",
+                "type": "string",
+                "enable": true
             }
         ]
     },

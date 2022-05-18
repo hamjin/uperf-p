@@ -43,7 +43,7 @@ uperf_status() {
 }
 
 uperf_stop() {
-    killall -9 "$UPERF_NAME"
+    killall -9 "$UPERF_NAME" "$ADJ_NAME"
 }
 
 uperf_start() {
@@ -53,8 +53,12 @@ uperf_start() {
     mutate "1024" /proc/sys/fs/inotify/max_user_instances
 
     # cleanup
+    cmd settings delete system min_refresh_rate
     cmd settings put Secure speed_mode_enable 1
+    #cp -r "$USER_PATH/log_adj.txt" "$USER_PATH/log_adj.lastgood.txt"
     # start uperf
+    echo 1 >/dev/gpufreq_id
+    echo 5 >/dev/gpufreq_step
     "$MODULE_PATH/$UPERF_REL/$UPERF_NAME" -o "$uperf_log_path" "$uperf_config_path"
     #nohup "$MODULE_PATH/$UPERF_REL/$ADJ_NAME" "$USER_PATH/log_adj.txt" >/dev/null 2>&1 &
     # waiting for uperf initialization

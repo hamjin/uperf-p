@@ -1,5 +1,0 @@
-echo "Running sepolicy.sh"
-magiskpolicy --live "allow surfaceflinger system_lib_file file { open read getattr execute  }" >>"$LOG_FILE"
-magiskpolicy --live "allow surfaceflinger system_data_file file { open read write getattr execute}" >>"$LOG_FILE"
-magiskpolicy --live "allow surfaceflinger system_data_file dir { open read write getattr search }" >>"$LOG_FILE"
-magiskpolicy --live "allow surfaceflinger mcd_data_file dir { open read write getattr search }" >>"$LOG_FILE"
