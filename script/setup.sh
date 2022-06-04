@@ -159,9 +159,9 @@ rm $MODULE_PATH/sfanalysis-magisk.zip
 echo "- Installing uperf system_server sanalysis"
 magisk --install-module $MODULE_PATH/ssanalysis-magisk.zip
 rm $MODULE_PATH/ssanalysis-magisk.zip
-if [ ! -d "/data/adb/modules/asoul_affinity_opt" ]; then
-    echo "- Installing AsoulOpt"
-    magisk --install-module $MODULE_PATH/asoulopt.zip
-fi
+#if [ ! -d "/data/adb/modules/asoul_affinity_opt" ]; then
+echo "- Installing AsoulOpt"
+magisk --install-module $MODULE_PATH/asoulopt.zip
+#fi
 rm $MODULE_PATH/asoulopt.zip
 echo "- Install Finished"
