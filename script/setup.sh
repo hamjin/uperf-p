@@ -78,30 +78,49 @@ install_uperf() {
     echo "- Uperf config is located at $USER_PATH"
 }
 
-#install_powerhal_stub() {
-#    # do not place empty json if it doesn't exist in system
-#    # vendor/etc/powerhint.json: android perf hal
-#    # vendor/etc/powerscntbl.cfg: mediatek perf hal (android 9)
-#    # vendor/etc/powerscntbl.xml: mediatek perf hal (android 10+)
-#    # vendor/etc/perf/commonresourceconfigs.json: qualcomm perf hal resource
-#    # vendor/etc/perf/targetresourceconfigs.json: qualcomm perf hal resource overrides
-#    local perfcfgs
-#    perfcfgs="
-#    vendor/etc/powerhint.json
-#    vendor/etc/powerscntbl.cfg
-#    vendor/etc/powerscntbl.xml
-#    vendor/etc/power_app_cfg.xml
-#    vendor/etc/perf/commonresourceconfigs.xml
-#    vendor/etc/perf/targetresourceconfigs.xml
-#    "
-#    for f in $perfcfgs; do
-#        if [ ! -f "/$f" ]; then
-#            rm "$MODULE_PATH/system/$f"
-#        else
-#            true >$FLAG_PATH/enable_perfhal_stub
-#        fi
-#    done
-#}
+install_powerhal_stub() {
+    echo "- Detecting platform specific perfhal stub"
+    local target
+    local cfgname
+    target="$(getprop ro.board.platform)"
+    cfgname="$(get_config_name $target)"
+    if [ "$cfgname" == "unsupported" ]; then
+        target="$(getprop ro.product.board)"
+        cfgname="$(get_config_name $target)"
+    fi
+
+    # do not place empty json if it doesn't exist in system
+    # vendor/etc/powerhint.json: android perf hal
+    # vendor/etc/powerscntbl.cfg: mediatek perf hal (android 9)
+    # vendor/etc/powerscntbl.xml: mediatek perf hal (android 10+)
+    # vendor/etc/perf/commonresourceconfigs.json: qualcomm perf hal resource
+    # vendor/etc/perf/targetresourceconfigs.json: qualcomm perf hal resource overrides
+    if [ "$cfgname" == "mtd9000" ] || [ "$cfgname" == "mtd8100"] || [ "$cfgname" == "mtd8000" ]; then
+        echo "- Found new devices, keep and protect them"
+        rm -rf $MODULE_PATH/system/vendor/etc/powerscntbl.xml
+        rm -rf $MODULE_PATH/system/vendor/etc/power_app_cfg.xml
+        rm -rf $MODULE_PATH/system/vendor/etc/powercontable.xml
+    else
+        echo "- Found old devices, clearing perfhal config"
+        local perfcfgs
+        perfcfgs="
+        vendor/etc/powerhint.json
+        vendor/etc/powerscntbl.cfg
+        vendor/etc/powerscntbl.xml
+        vendor/etc/powercontable.xml
+        vendor/etc/power_app_cfg.xml
+        vendor/etc/perf/commonresourceconfigs.xml
+        vendor/etc/perf/targetresourceconfigs.xml
+        "
+        for f in $perfcfgs; do
+            if [ ! -f "/$f" ]; then
+                echo "- Not found /$f, bypass it."
+                rm "$MODULE_PATH/system/$f"
+            fi
+        done
+    fi
+
+}
 
 #grep_prop comes from https://github.com/topjohnwu/Magisk/blob/master/scripts/util_functions.sh#L30
 grep_prop() {
@@ -130,8 +149,7 @@ echo ""
 echo "- Installing uperf"
 install_uperf
 
-#echo "- Installing perfhal stub"
-#install_powerhal_stub
+install_powerhal_stub
 set_permissions
 
 #Install cooperate modules
@@ -141,7 +159,9 @@ rm $MODULE_PATH/sfanalysis-magisk.zip
 echo "- Installing uperf system_server sanalysis"
 magisk --install-module $MODULE_PATH/ssanalysis-magisk.zip
 rm $MODULE_PATH/ssanalysis-magisk.zip
-echo "- Installing AsoulOpt"
-magisk --install-module $MODULE_PATH/asoulopt.zip
+if [ ! -d "/data/adb/modules/asoul_affinity_opt" ]; then
+    echo "- Installing AsoulOpt"
+    magisk --install-module $MODULE_PATH/asoulopt.zip
+fi
 rm $MODULE_PATH/asoulopt.zip
 echo "- Install Finished"

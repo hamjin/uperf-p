@@ -21,9 +21,18 @@ SCRIPT_PATH="$MODULE_PATH/script"
 BIN_PATH="$MODULE_PATH/bin"
 FLAG_PATH="$MODULE_PATH/flag"
 
-USER_PATH="/sdcard/Android/yc/uperf"
+USER_PATH="/data/media/0/Android/yc/uperf"
 LOG_FILE="$USER_PATH/initsvc.log"
 
-# use private busybox
-PATH="$BIN_PATH/busybox:$PATH"
-LD_LIBRARY_PATH="$BIN_PATH/:$LD_LIBRARY_PATH"
+###############################
+# Log
+###############################
+
+# $1:content
+log() {
+    echo "$1" >>"$LOG_FILE"
+}
+
+clear_log() {
+    true >"$LOG_FILE"
+}

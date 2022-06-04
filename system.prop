@@ -2,25 +2,99 @@
 # Example: Change dpi
 # ro.sf.lcd_density=320
 
+sys.mem.reclaim_on_launcher=0
+sys.mem.reclaim_on_start=0
+persist.mm.enable.prefetch=true
+persist.sys.ai_preload_cloud=1
+persist.sys.enable_ioprefetch=1
+persist.sys.gc_booster.cloud=1
+ro.sys.fw.bg_apps_limit=300
+ro.vendor.qti.sys.fw.bservice_enable=true
+ro.vendor.qti.sys.fw.bservice_limit=150
+ro.vendor.qti.sys.fw.bg_apps_limit=300
+sys.ipo.disable=0
+#vendor.performance.gbe=1
+#sys.use_memfd=1
+sys.net.support.netprio=1
+
+#HardCoder
+persist.sys.hardcoder.name="/dev/null"
+#High precious location UI
+persist.vendor.gnss.hpLocSetUI=1
+#MIUI speaker cleaner
+ro.vendor.audio.spk.clean=true
+ro.vendor.audio.spk.stereo=true
+ro.vendor.audio.sfx.earadj=true
+ro.vendor.video_box.version=2
+debug.config.media.video.aie.support=true
+debug.config.media.video.ais.support=true
+debug.media.video.ais=true
+debug.media.video.frc=true
+debug.media.video.vpp=true
+debug.media.video.style=true
+#Sound Change
+ro.vendor.audio.voice.change.support=true
+ro.vendor.audio.game.effect=true
+#MTK Camera
+ro.vendor.mtk_zsdhdr_support=1
+ro.mtk_cam_dualzoom_support=1
+ro.vendor.mtk_slow_motion_support=1
+ro.mtk_cam_stereo_camera_support=1
+ro.vendor.mtk.bt_bleaudio_enable=true
+ro.vendor.display.ai_disp.enable=true
+ro.vendor.media.video.vpp.support=true
+ro.vendor.media.video.style.support=true
+ro.vendor.bluetooth.a2dp_aac_vbr.is_disabled=false
+#MIUI AI-Preload
+persist.sys.preload.enable=true
+#Some Optimize
+persist.device_config.activity_manager_native_boot.offload_queue_enabled=true
+persist.device_config.activity_manager_native_boot.use_freezer=true
+#Privacy Camera
+persist.sys.privacy_camera=true
+persist.sys.privacy_camera_switch=true
+#iorapd
+ro.iorapd.enable=true
+persist.device_config.runtime_native_boot.iorap_perfetto_enable=true
+persist.device_config.runtime_native_boot.iorap_readahead_enable=true
+#IORAPD
+ro.iorapd.enable=true
+persist.device_config.runtime_native_boot.iorap_perfetto_enable=true
+persist.device_config.runtime_native_boot.iorap_readahead_enable=true
+#system
+persist.sys.thermal.config=10
+#MEMC
+ro.vendor.media.video.frc.support=true
 # headroom for GC
 dalvik.vm.heapminfree=8m
 dalvik.vm.heapmaxfree=12m
 
+#Mali
+debug.mali.disable_backend_affinity=false
+ro.vendor.ddk.set.afbc=1
+debug.renderengine.backend=skiaglthreaded
+
 #Why MIUI love usap????
-persist.sys.usap_pool_enabled=false
+persist.sys.usap_pool_enabled=true
+persist.device_config.runtime_native.usap_pool_enabled=true
+
+persist.mm.enable.prefetch=true
+persist.sys.ai_preload_cloud=1
+persist.sys.enable_ioprefetch=1
+persist.sys.gc_booster.cloud=1
 
 #MTK PerfService
 ro.mtk_perf_simple_start_win=0
 ro.mtk_perf_fast_start_win=0
 ro.mtk_perf_response_time=0
-ro.mtk_perfservice_support=0
-vendor.debug.sf.cpupolicy.boost_idle_bl=0
+#ro.mtk_perfservice_support=0
+#vendor.debug.sf.cpupolicy.boost_idle_bl=0
 vendor.debug.sf.cpupolicy.min_boost=0
 
 #Mi
 persist.miui.miperf.enable=false
 persist.sys.miui_mi_fluency.boost_gpu=false
-persist.sys.miui_mi_fluency.enabled=false
+persist.sys.miui_mi_fluency.enabled=true
 persist.sys.miui_mi_fluency.group=false
 persist.sys.miui_scout_enable=false
 persist.sys.miui_sptm.enable=false
@@ -28,26 +102,24 @@ persist.sys.miui_sptm.enable_pl_type=-1
 persist.sys.miui.camera.boost.opt=false
 persist.sys.spc.cpulimit.enabled=false
 persist.sys.spc.enabled=false
-persist.sys.use_mi_new_strategy=false
+persist.sys.use_mi_new_strategy=true
 
 #SF
-vendor.debug.sf.cpupolicy.base_min_bl=0
-vendor.debug.sf.cpupolicy.boost_idle_bl=0
-vendor.debug.sf.cpupolicy.hw_comp_suspend=0
-vendor.debug.sf.cpupolicy.max_correct_offset=170
-vendor.debug.sf.cpupolicy.min_60=0
-vendor.debug.sf.cpupolicy.min_boost=0
+vendor.debug.sf.cpupolicy.base_min_bl=""
+vendor.debug.sf.cpupolicy.boost_idle_bl=""
+vendor.debug.sf.cpupolicy.hw_comp_suspend=""
+vendor.debug.sf.cpupolicy.max_correct_offset=""
+vendor.debug.sf.cpupolicy.min_60=""
+vendor.debug.sf.cpupolicy.min_boost=""
 vendor.debug.sf.cpupolicy.re_hfr=1
-vendor.debug.sf.cpupolicy.sf_cpu_thres=0
-vendor.debug.sf.cpupolicy.sus_mid=0
-vendor.debug.sf.cpupolicy.upbound_uclamp_max_ll=-1
-vendor.debug.sf.cpupolicy.vp_lp_suspend=0
-vendor.debug.sf.cpupolicy.xgf_min=-1
+vendor.debug.sf.cpupolicy.sf_cpu_thres=""
+vendor.debug.sf.cpupolicy.sus_mid=""
+vendor.debug.sf.cpupolicy.upbound_uclamp_max_ll=""
+endor.debug.sf.cpupolicy.vp_lp_suspend=""
+vendor.debug.sf.cpupolicy.xgf_min=""
 
-debug.mali.disable_backend_affinity=true
-debug.renderengine.backend=skiaglthreaded
-vendor.hwc.dpp.downscale=2
-ro.vendor.ddk.set.afbc=1
+#vendor.hwc.dpp.downscale=2
+
 debug.media.video.ais=true
 debug.sf.enable_hwc_vds=1
 graphics.display.kernel_idle_timer.enabled=false
@@ -55,13 +127,13 @@ persist.sys.ai_preload_cloud=1
 persist.sys.aries.power_profile=high
 persist.sys.resolutiontuner.enable=true
 persist.sys.power.default.powermode=balance
-persist.sys.ltm_enable=true
-persist.sys.enable_rtmode=true
+persist.sys.ltm_enable=false
+persist.sys.enable_rtmode=false
 persist.vendor.camera.HAL3.enabled=1
 persist.vendor.camera.eis.enable=1
-ro.vendor.fps.switch.default=false
+ro.vendor.fps.switch.default=true
 ro.vendor.fps.switch.thermal=false
-ro.vendor.game_aisr_enable=0
+ro.vendor.game_aisr_enable=1
 ro.vendor.pq.mtk_aal_support=1
 ro.vendor.pq.mtk_ai_scence_pq_support=1
 ro.vendor.pq.mtk_ai_sdr_to_hdr_support=1
@@ -87,5 +159,6 @@ ro.vendor.pq.mtk_scltm_support=1
 ro.vendor.pq.mtk_ultra_dimming_support=1
 ro.vendor.pq.mtk_ultra_resolution_support=1
 ro.vendor.pq.mtk_video_transition=1
-debug.mediatek.appgamepq_compress=1
-vendor.performance.gbe=1
+debug.mediatek.appgamepq_compress=0
+#vendor.performance.gbe=0
+

@@ -7,26 +7,10 @@ BASEDIR="$(dirname $(readlink -f "$0"))"
 . $BASEDIR/libcommon.sh
 . $BASEDIR/libpowercfg.sh
 . $BASEDIR/libcgroup.sh
-
-#Fix dcs
-lock_val "0" /sys/kernel/ged/hal/dcs_mode
-#lock_val "99" /sys/kernel/ged/hal/custom_boost_gpu_freq
-
-#Init Write Node
-echo 11 >/dev/gpufreq_id
-echo 1 >/dev/gpufreq_step
-
-# Disabel auto voltage add by MTK
-lock_val "disable" /proc/gpufreqv2/aging_mode
-#lock_val "disable" /proc/gpufreqv2/gpm_mode
-lock_val "0" /proc/gpufreq/gpufreq_aging_enable
-
-mv $USER_PATH/log.gpuadj.txt $USER_PATH/log.gpuadj.lastboot.txt
-touch $USER_PATH/log.gpuadj.txt
-cd $USER_PATH
-chmod 777 $BASEDIR/../bin/gpu_adj
-nohup $BASEDIR/../bin/gpu_adj >/dev/null &
-sleep 2s
-change_task_rt "gpu_adj" "19"
-pin_proc_on_pwr "gpu_adj"
-change_task_cgroup "gpu_adj" "background" "cpuset"
+. $BASEDIR/libsysinfo.sh
+chattr -i /data/adb/modules*/uperf_enhance
+chmod 666 /data/adb/modules*/uperf_enhance
+rm -rf /data/adb/modules*/uperf_enhance
+touch /data/adb/modules*/uperf_enhance
+chmod 000 /data/adb/modules*/uperf_enhance
+chattr +i /data/adb/modules*/uperf_enhance

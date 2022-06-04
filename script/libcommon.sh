@@ -20,6 +20,7 @@
 ###############################
 
 # $1:value $2:filepaths
+
 lock_val() {
     for p in $2; do
         if [ -f "$p" ]; then
@@ -29,6 +30,19 @@ lock_val() {
             chmod 0444 "$p" 2>/dev/null
         fi
     done
+}
+# $1:filepaths $2:value
+hide_value() {
+    umount "$1" 2>/dev/null
+    if [[ ! -f "/cache/$1" ]]; then
+        mkdir -p "/cache/$1"
+        rm -r "/cache/$1"
+        cat "$1" >"/cache/$1"
+    fi
+    if [[ "$2" != "" ]]; then
+        lock_val "$2" "$1"
+    fi
+    mount "/cache/$1" "$1"
 }
 
 # $1:value $2:filepaths
@@ -75,13 +89,6 @@ read_cfg_value() {
 }
 
 # $1:content
-write_panel() {
-    echo "$1" >>"$PANEL_FILE"
-}
-
-clear_panel() {
-    true >"$PANEL_FILE"
-}
 
 wait_until_login() {
     # in case of /data encryption is disabled
@@ -97,17 +104,4 @@ wait_until_login() {
         sleep 1
     done
     rm "$test_file"
-}
-
-###############################
-# Log
-###############################
-
-# $1:content
-log() {
-    echo "$1" >>"$LOG_FILE"
-}
-
-clear_log() {
-    true >"$LOG_FILE"
 }
