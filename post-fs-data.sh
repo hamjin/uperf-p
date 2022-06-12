@@ -15,7 +15,8 @@
 #
 
 MODDIR=${0%/*}
-
+touch /data/adb/modules/asoul_affinity_opt/flag/dont_fuck
+touch /data/adb/modules_update/asoul_affinity_opt/flag/dont_fuck
 if [ -f "$MODDIR/flag/need_recuser" ]; then
     rm -f $MODDIR/flag/need_recuser
     true >$MODDIR/disable
@@ -25,3 +26,5 @@ if [ -f "$MODDIR/flag/need_recuser" ]; then
 else
     true >$MODDIR/flag/need_recuser
 fi
+mkdir /dev/cpuset/background/untrustedapp
+echo "0-3" >/dev/cpuset/background/untrustedapp

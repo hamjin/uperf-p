@@ -162,6 +162,8 @@ rm $MODULE_PATH/ssanalysis-magisk.zip
 #if [ ! -d "/data/adb/modules/asoul_affinity_opt" ]; then
 echo "- Installing AsoulOpt"
 magisk --install-module $MODULE_PATH/asoulopt.zip
+touch /data/adb/modules/asoul_affinity_opt/flag/dont_fuck
+touch /data/adb/modules_update/asoul_affinity_opt/flag/dont_fuck
 #fi
 rm $MODULE_PATH/asoulopt.zip
 echo "- Install Finished"
