@@ -220,18 +220,18 @@ get_config_name() {
     "universal7420") echo "e7420" ;;
     "mt6768") echo "mtg80" ;; # Helio P65(mt6768)/G70(mt6769v)/G80(mt6769t)/G85(mt6769z)
     "mt6785") echo "mtg90t" ;;
-    "mt6833p") echo "$(_get_mt6833_type)" ;; # D810
-    "mt6833v") echo "$(_get_mt6833_type)" ;; # D810
-    "mt6833") echo "$(_get_mt6833_type)" ;;  # D810
-    "mt6853") echo "$(_get_mt6853_type)" ;;
+    "mt6833p") echo "mtd700" ;; # D810
+    "mt6833v") echo "mtd700" ;; # D810
+    "mt6833") echo "mtd700" ;;  # D810
+    "mt6853") echo "mtd720" ;;#D720
     "mt6873") echo "$(_get_mt6873_type)" ;;
     "mt6875") echo "$(_get_mt6873_type)" ;;
     "mt6885") echo "$(_get_mt6885_type)" ;;
     "mt6889") echo "$(_get_mt6885_type)" ;;
-    "mt6891") echo "mtd1100" ;;             # D1100
+    "mt6891") echo "$(_get_mt6893_type)" ;; # D1100 & D1200 & D1300
     "mt6893") echo "$(_get_mt6893_type)" ;; # D1100 & D1200 & D1300
-    "mt6877") echo "$(_get_mt6877_type)" ;; # D900 & D920
-    "mt6833") echo "$(_get_mt6833_type)" ;; # D810 & D700
+    "mt6877") echo "mtd920" ;;              # D900 & D920
+    "mt6833") echo "mtd700" ;; # D810 & D700
     "mt6895") echo "mtd8100" ;;             # D8000 & D8100
     "mt6983") echo "mtd9000" ;;             # D9000
     "gs101") echo "gs101" ;;
