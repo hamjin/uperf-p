@@ -2,7 +2,7 @@
 **Uperf v3**   
 增加原版配置MTD700 MTD810 MTD900 MTD920   
 减少启动时部分重复写入  
-由于Uperf并不使用，关闭PPM以减少对Uperf的影响  
+~~由于Uperf并不使用，关闭PPM以减少对Uperf的影响~~部分设备仍然需要这个    
 **非MIUI设备请出现系统问题请停用system_server analysis**   
 **AsoulOpt** v20.8.8->v21.3  
 修复 游戏破音 
