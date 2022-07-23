@@ -8,12 +8,8 @@ persist.mm.enable.prefetch=true
 persist.sys.ai_preload_cloud=1
 persist.sys.enable_ioprefetch=1
 persist.sys.gc_booster.cloud=1
-ro.sys.fw.bg_apps_limit=300
-ro.vendor.qti.sys.fw.bservice_enable=true
-ro.vendor.qti.sys.fw.bservice_limit=150
-ro.vendor.qti.sys.fw.bg_apps_limit=300
 sys.ipo.disable=0
-#vendor.performance.gbe=1
+vendor.performance.gbe=1
 #sys.use_memfd=1
 sys.net.support.netprio=1
 
@@ -61,16 +57,8 @@ ro.iorapd.enable=true
 iorapd.perfetto.enable=true
 iorapd.readahead.enable=true
 
-#IORAPD
-ro.iorapd.enable=true
-persist.device_config.runtime_native_boot.iorap_perfetto_enable=true
-persist.device_config.runtime_native_boot.iorap_readahead_enable=true
-ro.iorapd.enable=true
-iorapd.perfetto.enable=true
-iorapd.readahead.enable=true
-
 #system
-persist.sys.thermal.config=10
+persist.sys.thermal.config=13
 #MEMC
 ro.vendor.media.video.frc.support=true
 # headroom for GC
@@ -83,8 +71,8 @@ ro.vendor.ddk.set.afbc=1
 debug.renderengine.backend=skiaglthreaded
 
 #Why MIUI love usap????
-persist.sys.usap_pool_enabled=true
-persist.device_config.runtime_native.usap_pool_enabled=true
+persist.sys.usap_pool_enabled=false
+persist.device_config.runtime_native.usap_pool_enabled=false
 
 persist.mm.enable.prefetch=true
 persist.sys.ai_preload_cloud=1
@@ -95,46 +83,23 @@ persist.sys.gc_booster.cloud=1
 ro.mtk_perf_simple_start_win=0
 ro.mtk_perf_fast_start_win=0
 ro.mtk_perf_response_time=0
-#ro.mtk_perfservice_support=0
-#vendor.debug.sf.cpupolicy.boost_idle_bl=0
+ro.mtk_perfservice_support=0
+vendor.debug.sf.cpupolicy.boost_idle_bl=0
 vendor.debug.sf.cpupolicy.min_boost=0
 
 #Mi
-persist.miui.miperf.enable=false
-persist.sys.miui_mi_fluency.boost_gpu=false
-persist.sys.miui_mi_fluency.enabled=true
-persist.sys.miui_mi_fluency.group=false
-persist.sys.miui_scout_enable=false
-persist.sys.miui_sptm.enable=false
-persist.sys.miui_sptm.enable_pl_type=-1
-persist.sys.miui.camera.boost.opt=false
-persist.sys.spc.cpulimit.enabled=false
-persist.sys.spc.enabled=false
-persist.sys.use_mi_new_strategy=true
 
 #SF
-vendor.debug.sf.cpupolicy.base_min_bl=""
-vendor.debug.sf.cpupolicy.boost_idle_bl=""
-vendor.debug.sf.cpupolicy.hw_comp_suspend=""
-vendor.debug.sf.cpupolicy.max_correct_offset=""
-vendor.debug.sf.cpupolicy.min_60=""
-vendor.debug.sf.cpupolicy.min_boost=""
 vendor.debug.sf.cpupolicy.re_hfr=1
-vendor.debug.sf.cpupolicy.sf_cpu_thres=""
-vendor.debug.sf.cpupolicy.sus_mid=""
-vendor.debug.sf.cpupolicy.upbound_uclamp_max_ll=""
-endor.debug.sf.cpupolicy.vp_lp_suspend=""
-vendor.debug.sf.cpupolicy.xgf_min=""
 
-#vendor.hwc.dpp.downscale=2
+vendor.hwc.dpp.downscale=2
 
 debug.media.video.ais=true
 debug.sf.enable_hwc_vds=1
-graphics.display.kernel_idle_timer.enabled=false
+graphics.display.kernel_idle_timer.enabled=true
 persist.sys.ai_preload_cloud=1
 persist.sys.aries.power_profile=high
 persist.sys.resolutiontuner.enable=true
-persist.sys.power.default.powermode=balance
 persist.sys.ltm_enable=false
 persist.sys.enable_rtmode=false
 persist.vendor.camera.HAL3.enabled=1
@@ -167,6 +132,4 @@ ro.vendor.pq.mtk_scltm_support=1
 ro.vendor.pq.mtk_ultra_dimming_support=1
 ro.vendor.pq.mtk_ultra_resolution_support=1
 ro.vendor.pq.mtk_video_transition=1
-debug.mediatek.appgamepq_compress=0
-#vendor.performance.gbe=0
-
+debug.mediatek.appgamepq_compress=1

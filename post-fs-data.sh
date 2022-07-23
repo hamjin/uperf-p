@@ -15,8 +15,30 @@
 #
 
 MODDIR=${0%/*}
-touch /data/adb/modules/asoul_affinity_opt/flag/dont_fuck
-touch /data/adb/modules_update/asoul_affinity_opt/flag/dont_fuck
+#touch /data/adb/modules/asoul_affinity_opt/flag/dont_fuck
+#touch /data/adb/modules_update/asoul_affinity_opt/flag/dont_fuck
+lock_val() {
+    for p in $2; do
+        if [ -f "$p" ]; then
+            chmod 0666 "$p" 2>/dev/null
+            #log "changing $p"
+            echo "$1" >"$p"
+            chmod 0444 "$p" 2>/dev/null
+        fi
+    done
+}
+do_others()
+{
+    echo "Enabling Infinite_Cache" /cache/uperf_mtk_boot.log
+    rmdir /dev/cpuset/background/untrustedapp
+    #echo "0-3" >/dev/cpuset/background/untrustedapp
+    mount -t debugfs none /sys/kernel/debug
+    LIST=`ls -1 /sys/kernel/debug/mali0/ctx`
+    for i in $LIST;do
+        lock_val "Y" /sys/kernel/debug/mali0/ctx/$i/infinite_cache
+    done
+}
+
 if [ -f "$MODDIR/flag/need_recuser" ]; then
     rm -f $MODDIR/flag/need_recuser
     true >$MODDIR/disable
@@ -26,5 +48,4 @@ if [ -f "$MODDIR/flag/need_recuser" ]; then
 else
     true >$MODDIR/flag/need_recuser
 fi
-mkdir /dev/cpuset/background/untrustedapp
-echo "0-3" >/dev/cpuset/background/untrustedapp
+(do_others &)

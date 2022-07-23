@@ -42,7 +42,10 @@ unify_cgroup() {
     change_task_cgroup "android.hardware.media|vendor.mediatek.hardware" "background" "cpuset"
     change_task_cgroup "aal_sof|kfps|dsp_send_thread|vdec_ipi_recv|mtk_drm_disp_id|hif_thread|main_thread|ged_" "background" "cpuset"
     change_task_cgroup "pp_event|crtc_" "background" "cpuset"
-
+    change_task_cgroup "update_engine" "top-app" "cpuset"
+    change_task_cgroup "mediatek" "system-background" "cpuset"
+    change_task_cgroup "mali" "system-background" "cpuset"
+    
 }
 
 unify_sched() {
@@ -115,18 +118,18 @@ disable_hotplug() {
 
     # bring all cores online
     for i in 0 1 2 3 4 5 6 7 8 9; do
-        mutate "1" /sys/devices/system/cpu/cpu$i/online
+        lock_val "1" /sys/devices/system/cpu/cpu$i/online
     done
     # bring all core_ctls online
     for i in 0 1 2 3 4 5 6 7 8 9; do
-        mutate "1" /sys/devices/system/cpu/cpu$i/core_ctl/enable
+        lock_val "0" /sys/devices/system/cpu/cpu$i/core_ctl/enable
     done
     # bring all core_ctls boost off
     for i in 0 1 2 3 4 5 6 7 8 9; do
-        mutate "0" /sys/devices/system/cpu/cpu$i/core_ctl/core_ctl_boost
+        lock_val "0" /sys/devices/system/cpu/cpu$i/core_ctl/core_ctl_boost
     done
     for i in 0 1 2 3 4 5 6 7 8 9; do
-        mutate "0" /sys/devices/system/cpu/cpu$i/core_ctl/min_cpus
+        lock_val "0" /sys/devices/system/cpu/cpu$i/core_ctl/min_cpus
     done
 }
 
@@ -158,7 +161,7 @@ disable_kernel_boost() {
     # Usage: echo <policy_idx> <1(enable)/0(disable)> > /proc/ppm/policy_status
 
     # first disable all policy
-    lock_val "1" /proc/ppm/enabled
+    lock_val "0" /proc/ppm/enabled
     for i in 0 1 2 3 4 5 7 8 9 10; do
         lock_val "$i 0" /proc/ppm/policy_status
     done
@@ -205,15 +208,15 @@ disable_userspace_boost() {
     stop perfd 2>/dev/null
 
     # work with uperf/ContextScheduler
-    #lock_val "0" "/sys/module/mtk_fpsgo/parameters/boost_affinity*"
-    #lock_val "0" "/sys/module/fbt_cpu/parameters/boost_affinity*"
-    #lock_val "0" /sys/kernel/fpsgo/fbt/switch_idleprefer
-    #lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
-    #lock_val "0" /sys/module/mtk_core_ctl/parameters/policy_enable
-    #lock_val "0" /sys/kernel/fpsgo/fbt/thrm_enable
-    #lock_val "90" /sys/kernel/fpsgo/fbt/thrm_temp_th
-    #lock_val "-1" /sys/kernel/fpsgo/fbt/thrm_limit_cpu
-    #lock_val "-1" /sys/kernel/fpsgo/fbt/thrm_sub_cpu
+    lock_val "0" "/sys/module/mtk_fpsgo/parameters/boost_affinity*"
+    lock_val "0" "/sys/module/fbt_cpu/parameters/boost_affinity*"
+    lock_val "0" /sys/kernel/fpsgo/fbt/switch_idleprefer
+    lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
+    lock_val "0" /sys/module/mtk_core_ctl/parameters/policy_enable
+    lock_val "0" /sys/kernel/fpsgo/fbt/thrm_enable
+    lock_val "90" /sys/kernel/fpsgo/fbt/thrm_temp_th
+    lock_val "-1" /sys/kernel/fpsgo/fbt/thrm_limit_cpu
+    lock_val "-1" /sys/kernel/fpsgo/fbt/thrm_sub_cpu
 
     # Qualcomm&MTK perfhal
     perfhal_stop

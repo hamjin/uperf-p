@@ -95,15 +95,15 @@ install_powerhal_stub() {
     # vendor/etc/powerscntbl.xml: mediatek perf hal (android 10+)
     # vendor/etc/perf/commonresourceconfigs.json: qualcomm perf hal resource
     # vendor/etc/perf/targetresourceconfigs.json: qualcomm perf hal resource overrides
-    if [ "$cfgname" == "mtd9000" ] || [ "$cfgname" == "mtd8100"] || [ "$cfgname" == "mtd8000" ]; then
-        echo "- Found new devices, keep and protect them"
-        rm -rf $MODULE_PATH/system/vendor/etc/powerscntbl.xml
-        rm -rf $MODULE_PATH/system/vendor/etc/power_app_cfg.xml
-        rm -rf $MODULE_PATH/system/vendor/etc/powercontable.xml
-    else
-        echo "- Found old devices, clearing perfhal config"
-        local perfcfgs
-        perfcfgs="
+    #if [ "$cfgname" == "mtd9000" ] || [ "$cfgname" == "mtd8100" ] || [ "$cfgname" == "mtd8000" ]; then
+    #    echo "- Found new devices, keep and protect them"
+    #    rm -rf $MODULE_PATH/system/vendor/etc/powerscntbl.xml
+    #    rm -rf $MODULE_PATH/system/vendor/etc/power_app_cfg.xml
+    #    rm -rf $MODULE_PATH/system/vendor/etc/powercontable.xml
+    #else
+    #echo "- Found old devices, clearing perfhal config"
+    local perfcfgs
+    perfcfgs="
         vendor/etc/powerhint.json
         vendor/etc/powerscntbl.cfg
         vendor/etc/powerscntbl.xml
@@ -111,15 +111,27 @@ install_powerhal_stub() {
         vendor/etc/power_app_cfg.xml
         vendor/etc/perf/commonresourceconfigs.xml
         vendor/etc/perf/targetresourceconfigs.xml
+        vendor/etc/init/init.thermal_core.rc
         "
-        for f in $perfcfgs; do
-            if [ ! -f "/$f" ]; then
-                echo "- Not found /$f, bypass it."
-                rm "$MODULE_PATH/system/$f"
-            fi
-        done
-    fi
+    for f in $perfcfgs; do
+        if [ ! -f "/$f" ]; then
+            echo "- Not found /$f, bypass it."
+            rm "$MODULE_PATH/system/$f"
+        fi
+    done
+    #fi
 
+    if [ -d "/data/system/mcd" ]; then
+        echo "- Dealing with some limits"
+        mv /data/system/mcd /data/system/mcd.bak
+        chmod 444 /data/system/mcd.bak
+        chmod 444 /data/system/mcd.bak/*
+        chattr +i /data/system/mcd.bak/*
+        chattr +i /data/system/mcd.bak
+        touch /data/system/mcd
+        chmod 000 /data/system/mcd
+        chattr +i /data/system/mcd
+    fi
 }
 
 #grep_prop comes from https://github.com/topjohnwu/Magisk/blob/master/scripts/util_functions.sh#L30
@@ -157,13 +169,16 @@ echo "- Installing uperf surfaceflinger analysis"
 magisk --install-module $MODULE_PATH/sfanalysis-magisk.zip
 rm $MODULE_PATH/sfanalysis-magisk.zip
 echo "- Installing uperf system_server sanalysis"
+echo "- Warning! Device not running MIUI should disable it by yourself to avoid some problem!"
+echo "- 警告! 非MIUI设备请手动禁用这个模块避免部分系统问题"
+sleep 10s
 magisk --install-module $MODULE_PATH/ssanalysis-magisk.zip
 rm $MODULE_PATH/ssanalysis-magisk.zip
 #if [ ! -d "/data/adb/modules/asoul_affinity_opt" ]; then
 echo "- Installing AsoulOpt"
 magisk --install-module $MODULE_PATH/asoulopt.zip
-touch /data/adb/modules/asoul_affinity_opt/flag/dont_fuck
-touch /data/adb/modules_update/asoul_affinity_opt/flag/dont_fuck
+#touch /data/adb/modules/asoul_affinity_opt/flag/dont_fuck
+#touch /data/adb/modules_update/asoul_affinity_opt/flag/dont_fuck
 #fi
 rm $MODULE_PATH/asoulopt.zip
 echo "- Install Finished"
