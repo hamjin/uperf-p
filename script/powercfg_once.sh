@@ -37,14 +37,14 @@ unify_cgroup() {
     rmdir /dev/cpuset/foreground/boost
 
     # work with uperf/ContextScheduler
-    change_task_cgroup "surfaceflinger|system_server" "" "cpuset"
+    change_task_cgroup "surfaceflinger|system_server" "system-background" "cpuset"
     change_task_cgroup "netd|allocator|kswapd0|kcompactd0" "foreground" "cpuset"
     change_task_cgroup "android.hardware.media|vendor.mediatek.hardware" "background" "cpuset"
     change_task_cgroup "aal_sof|kfps|dsp_send_thread|vdec_ipi_recv|mtk_drm_disp_id|hif_thread|main_thread|ged_" "background" "cpuset"
     change_task_cgroup "pp_event|crtc_" "background" "cpuset"
     change_task_cgroup "update_engine" "top-app" "cpuset"
     change_task_cgroup "mediatek" "system-background" "cpuset"
-    change_task_cgroup "mali" "system-background" "cpuset"
+    change_task_cgroup "mali-" "system-background" "cpuset"
     
 }
 
@@ -161,7 +161,7 @@ disable_kernel_boost() {
     # Usage: echo <policy_idx> <1(enable)/0(disable)> > /proc/ppm/policy_status
 
     # first disable all policy
-    lock_val "0" /proc/ppm/enabled
+    mutate "1" /proc/ppm/enabled
     for i in 0 1 2 3 4 5 7 8 9 10; do
         lock_val "$i 0" /proc/ppm/policy_status
     done
