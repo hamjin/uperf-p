@@ -168,17 +168,19 @@ set_permissions
 echo "- Installing uperf surfaceflinger analysis"
 magisk --install-module $MODULE_PATH/sfanalysis-magisk.zip
 rm $MODULE_PATH/sfanalysis-magisk.zip
-echo "- Installing uperf system_server sanalysis"
-echo "- Warning! Device not running MIUI should disable it by yourself to avoid some problem!"
-echo "- 警告! 非MIUI设备请手动禁用这个模块避免部分系统问题"
-sleep 10s
-magisk --install-module $MODULE_PATH/ssanalysis-magisk.zip
-rm $MODULE_PATH/ssanalysis-magisk.zip
-#if [ ! -d "/data/adb/modules/asoul_affinity_opt" ]; then
+echo "- Please install uperf system_server analysis by yourself"
+echo "- It is at /sdcard/Android/yc/uperf/ssanalysis-magisk.zip"
+mv $MODULE_PATH/ssanalysis-magisk.zip /sdcard/Android/yc/uperf/ssanalysis-magisk.zip
+#echo "- Warning! Device not running MIUI should disable it by yourself to avoid some problem!"
+#echo "- 警告! 非MIUI设备请手动禁用这个模块避免部分系统问题"
+#sleep 10s
+#magisk --install-module $MODULE_PATH/ssanalysis-magisk.zip
+#rm $MODULE_PATH/ssanalysis-magisk.zip
+if [ ! -d "/data/adb/modules/asoul_affinity_opt" ]; then
 echo "- Installing AsoulOpt"
 magisk --install-module $MODULE_PATH/asoulopt.zip
 #touch /data/adb/modules/asoul_affinity_opt/flag/dont_fuck
 #touch /data/adb/modules_update/asoul_affinity_opt/flag/dont_fuck
-#fi
+fi
 rm $MODULE_PATH/asoulopt.zip
 echo "- Install Finished"

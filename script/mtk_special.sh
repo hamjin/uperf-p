@@ -67,11 +67,24 @@ lock_val "0" /sys/module/mtk_core_ctl/parameters/policy_enable
 #Platform Specify Config
 if [ -d "/proc/gpufreqv2" ]; then
     echo "detected new platform"
+    IS_MIUI=$(getprop ro.miui.ui.version.code)
+    if [ $IS_MIUI -gt 12 ]; then
+        lock_val "1" /sys/kernel/fpsgo/common/fpsgo_enable
+        lock_val "2" /sys/kernel/fpsgo/common/force_onoff
+    else
+        lock_val "0" /sys/kernel/fpsgo/common/fpsgo_enable
+        lock_val "0" /sys/kernel/fpsgo/common/force_onoff
+    fi
     #echo "start resuming config for new devices"
     #for file in powercontable.xml power_app_cfg.xml powerscntbl.xml task_profiles.json; do
     #    find /data/adb/modules -name $file | while read found; do
     #        rm -f $found
     #    done
+    #done
+    #Infinite Cache
+    #LIST=`ls -1 /sys/kernel/debug/mali0/ctx`
+    #for i in $LIST;do
+    #lock_val "Y" /sys/kernel/debug/mali0/ctx/$i/infinite_cache
     #done
     #cpu_loading
     lock_val "1" /proc/cpu_loading/cpu_onoff
@@ -86,7 +99,7 @@ if [ -d "/proc/gpufreqv2" ]; then
     #PMSR
     lock_val "1" /proc/pmsr/enable
     # Disabel auto voltage add by MTK
-    #lock_val "disable" /proc/gpufreqv2/aging_mode
+    lock_val "disable" /proc/gpufreqv2/aging_mode
     #lock_val "disable" /proc/gpufreqv2/gpm_mode
     # Fix gpu always boost in MT6983 and MT6895, f**K buggy MTK kernel drivers.
     lock_val "0" /sys/kernel/ged/hal/dcs_mode
@@ -131,6 +144,8 @@ if [ -d "/proc/gpufreqv2" ]; then
     #lock_val "0" /proc/swpm/swpm_pmsr_en
 else
     echo "detected old platform"
+    lock_val "0" /sys/kernel/fpsgo/common/fpsgo_enable
+    lock_val "0" /sys/kernel/fpsgo/common/force_onoff
     # Disabel auto voltage add by MTK
     lock_val "0" /proc/gpufreq/gpufreq_aging_enable
     # EAS Fix for MTK, MT6893 and before
@@ -146,10 +161,15 @@ else
         lock_val "0" $CPU/cpu$i/sched_load_boost
         lock_val "$i" /sys/devices/system/cpu/sched/set_sched_deisolation
     done
-    for i in 0 4 7;do
-        hide_value /sys/devices/system/cpu/cpufreq/policy$i/scaling_max_freq 0
-        hide_value /sys/devices/system/cpu/cpufreq/policy$i/scaling_min_freq 0
-    done
+    #force use ppm
+    echo "force uperf use PPM"
+    lock_val "0 3200000" /proc/ppm/policy/hard_userlimit_max_cpu_freq
+    lock_val "0 3200000" /proc/ppm/policy/hard_userlimit_min_cpu_freq
+    lock_val "1 3200000" /proc/ppm/policy/hard_userlimit_max_cpu_freq
+    lock_val "1 3200000" /proc/ppm/policy/hard_userlimit_min_cpu_freq
+    lock_val "2 3200000" /proc/ppm/policy/hard_userlimit_max_cpu_freq
+    lock_val "2 3200000" /proc/ppm/policy/hard_userlimit_min_cpu_freq
+
     # MTK-EARA
     lock_val "0" /sys/kernel/eara_thermal/enable
     # MTK Low Mem Hint
@@ -239,16 +259,14 @@ lock /sys/module/ged/parameters/gpu_bottom_freq
 lock_val "0" /sys/module/ged/parameters/gpu_cust_boost_freq
 
 #lock_val "0" /sys/kernel/fpsgo/common/stop_boost
-lock_val "1" /sys/kernel/fpsgo/common/fpsgo_enable
-lock_val "2" /sys/kernel/fpsgo/common/force_onoff
 
 #chmod 444 /sys/kernel/fpsgo/common/*
 lock_val "1" /sys/module/ged/parameters/is_GED_KPI_enabled
 
-lock_val "1" /sys/kernel/gbe/gbe_enable1
-lock_val "1" /sys/kernel/gbe/gbe_enable2
-lock_val "68" /sys/kernel/gbe/gbe2_loading_th
-lock_val "6000" /sys/kernel/gbe/gbe2_max_boost_cnt
+#lock_val "1" /sys/kernel/gbe/gbe_enable1
+#lock_val "1" /sys/kernel/gbe/gbe_enable2
+#lock_val "50" /sys/kernel/gbe/gbe2_loading_th
+#lock_val "6000" /sys/kernel/gbe/gbe2_max_boost_cnt
 
 lock_val "0" /sys/kernel/fpsgo/fbt/thrm_enable
 lock_val "300" /sys/kernel/fpsgo/fbt/thrm_temp_th
@@ -263,36 +281,36 @@ lock_val "0" /sys/kernel/fpsgo/fstb/tfps_to_powerhal_enable
 
 #chmod 444 /sys/kernel/fpsgo/fbt/*
 
-lock_val "0" /sys/module/mtk_fpsgo/parameters/adjust_loading
+#lock_val "0" /sys/module/mtk_fpsgo/parameters/adjust_loading
 lock_val "122" /sys/module/mtk_fpsgo/parameters/fixed_target_fps
-lock_val "0" /sys/module/mtk_fpsgo/parameters/cfp_onoff
-lock_val "0" /sys/module/mtk_fpsgo/parameters/gcc_enable
-lock_val "0" /sys/module/mtk_fpsgo/parameters/perfmgr_enable
-lock_val "0" /sys/module/mtk_fpsgo/parameters/qr_enable
+#lock_val "0" /sys/module/mtk_fpsgo/parameters/cfp_onoff
+#lock_val "0" /sys/module/mtk_fpsgo/parameters/gcc_enable
+#lock_val "0" /sys/module/mtk_fpsgo/parameters/perfmgr_enable
+#lock_val "0" /sys/module/mtk_fpsgo/parameters/qr_enable
 #lock_val "0" /sys/module/mtk_fpsgo/parameters/start_limit
 #lock_val "1" /sys/module/mtk_fpsgo/parameters/fps_level_range
-lock_val "20" /sys/module/mtk_fpsgo/parameters/qr_t2wnt_y_n
-lock_val "1" /sys/module/mtk_fpsgo/parameters/xgf_cfg_spid
-lock_val "0" /sys/module/mtk_fpsgo/parameters/xgf_ema2_enable
-lock_val "3" /sys/module/mtk_fpsgo/parameters/xgf_ema_dividend
-lock_val "50" /sys/module/mtk_fpsgo/parameters/gcc_reserved_up_quota_pct
+#lock_val "20" /sys/module/mtk_fpsgo/parameters/qr_t2wnt_y_n
+#lock_val "1" /sys/module/mtk_fpsgo/parameters/xgf_cfg_spid
+#lock_val "0" /sys/module/mtk_fpsgo/parameters/xgf_ema2_enable
+#lock_val "3" /sys/module/mtk_fpsgo/parameters/xgf_ema_dividend
+#lock_val "50" /sys/module/mtk_fpsgo/parameters/gcc_reserved_up_quota_pct
 #chmod 444 /sys/module/mtk_fpsgo/parameters/*
 
-lock_val "1" /sys/kernel/fpsgo/fstb/fstb_debug
-lock_val "0" /sys/kernel/fpsgo/fstb/set_renderer_no_ctrl
+#lock_val "1" /sys/kernel/fpsgo/fstb/fstb_debug
+#lock_val "1" /sys/kernel/fpsgo/fstb/set_renderer_no_ctrl
 #chmod 444 /sys/kernel/fpsgo/fstb/*
 
-lock_val "1" /sys/kernel/fpsgo/minitop/enable
-lock_val "65" /sys/kernel/fpsgo/minitop/thrs_heavy
+#lock_val "1" /sys/kernel/fpsgo/minitop/enable
+#lock_val "30" /sys/kernel/fpsgo/minitop/thrs_heavy
 #chmod 444 /sys/kernel/fpsgo/minitop/*
 
-lock_val "1" /sys/module/cache_ctl/enable
+lock_val "0" /sys/module/cache_ctl/enable
 
-lock_val "0" /sys/module/ged/parameters/ap_self_frc_detection_rate
+#lock_val "0" /sys/module/ged/parameters/ap_self_frc_detection_rate
 lock_val "0" /sys/module/ged/parameters/enable_cpu_boost
 lock_val "0" /sys/module/ged/parameters/enable_gpu_boost
 lock_val "1" /sys/module/ged/parameters/gx_game_mode
 lock_val "47" /sys/module/ged/parameters/gx_fb_dvfs_margin
-lock_val "0" /sys/module/xgf/parameters/xgf_uboost
+#lock_val "0" /sys/module/xgf/parameters/xgf_uboost
 
 killall mi_thermald

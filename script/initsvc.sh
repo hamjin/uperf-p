@@ -24,7 +24,7 @@ wait_until_login
 
 cp -r $USER_PATH/initsvc.log $USER_PATH/initsvc.lastboot.log
 clear_log
-exec 1>$LOG_FILE
+exec 1>>$LOG_FILE
 exec 2>&1
 date
 echo "PATH=$PATH"
@@ -40,8 +40,8 @@ echo "sh $SCRIPT_PATH/powercfg_main.sh \"\$1\"" >>/data/powercfg.sh
 
 sh /data/powercfg.sh balance
 
-sh $SCRIPT_PATH/powercfg_once.sh
-sh $SCRIPT_PATH/gpu_adj.sh
-sh $SCRIPT_PATH/mtk_special.sh
+sh $SCRIPT_PATH/powercfg_once.sh 2>&1 >>$LOG_FILE 
+sh $SCRIPT_PATH/gpu_adj.sh 2>&1 >>$LOG_FILE
+sh $SCRIPT_PATH/mtk_special.sh 2>&1 >>$LOG_FILE 
 
 uperf_start

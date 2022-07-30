@@ -43,9 +43,9 @@
                     "nr": 4,
                     "typicalPower": 0.36,
                     "typicalFreq": 2.0,
-                    "sweetFreq": 1.4,
-                    "plainFreq": 1.0,
-                    "freeFreq": 0.6
+                    "sweetFreq": 1.6,
+                    "plainFreq": 1.2,
+                    "freeFreq": 0.2
                 },
                 {
                     "efficiency": 320,
@@ -54,7 +54,7 @@
                     "typicalFreq": 2.8,
                     "sweetFreq": 1.8,
                     "plainFreq": 1.0,
-                    "freeFreq": 0.7
+                    "freeFreq": 0.4
                 },
                 {
                     "efficiency": 320,
@@ -523,10 +523,10 @@
         },
         "sysfs": {
             "cpusetTa": "0-7",
-            "cpusetFg": "0-5",
-            "cpusetBg": "0,3",
-            "cpusetSysBg": "1-2",
+            "cpusetFg": "0-7",
+            "cpusetBg": "1-3",
             "cpusetRe": "0-5",
+            "cpusetSysBg": "1-3",
             "corectl": "0",
             "gpuIdxMax": "08",
             "gpuIdxMin": "30",

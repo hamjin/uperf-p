@@ -29,14 +29,9 @@ lock_val() {
 }
 do_others()
 {
-    echo "Enabling Infinite_Cache" /cache/uperf_mtk_boot.log
     rmdir /dev/cpuset/background/untrustedapp
     #echo "0-3" >/dev/cpuset/background/untrustedapp
     mount -t debugfs none /sys/kernel/debug
-    LIST=`ls -1 /sys/kernel/debug/mali0/ctx`
-    for i in $LIST;do
-        lock_val "Y" /sys/kernel/debug/mali0/ctx/$i/infinite_cache
-    done
 }
 
 if [ -f "$MODDIR/flag/need_recuser" ]; then

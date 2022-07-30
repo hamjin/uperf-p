@@ -161,7 +161,7 @@ disable_kernel_boost() {
     # Usage: echo <policy_idx> <1(enable)/0(disable)> > /proc/ppm/policy_status
 
     # first disable all policy
-    mutate "1" /proc/ppm/enabled
+    lock_val "1" /proc/ppm/enabled
     for i in 0 1 2 3 4 5 7 8 9 10; do
         lock_val "$i 0" /proc/ppm/policy_status
     done

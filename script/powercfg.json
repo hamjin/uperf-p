@@ -1,8 +1,8 @@
 {
     "name": "Uperf-MTK v3",
     "author": "Matt Yang & hamjin",
-    "version": "v3-22.06.05,mtk-22.07.23",
-    "versionCode": 220723000,
+    "version": "v3-22.06.05,mtk-22.07.25",
+    "versionCode": 220725000,
     "features": {
         "strict": true,
         "pedestal": true
