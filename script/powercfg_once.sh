@@ -35,10 +35,11 @@ unify_cgroup() {
 
     # unused
     rmdir /dev/cpuset/foreground/boost
-
+    rmdir /dev/cpuset/background/untrustedapp
     # work with uperf/ContextScheduler
-    change_task_cgroup "surfaceflinger|system_server" "system-background" "cpuset"
-    change_task_cgroup "netd|allocator|kswapd0|kcompactd0" "foreground" "cpuset"
+    change_task_cgroup "surfaceflinger" "top-app" "cpuset"
+    change_task_cgroup "kswapd0|kcompactd0" "system-background" "cpuset"
+    change_task_cgroup "netd|allocator|system_server" "foreground" "cpuset"
     change_task_cgroup "android.hardware.media|vendor.mediatek.hardware" "background" "cpuset"
     change_task_cgroup "aal_sof|kfps|dsp_send_thread|vdec_ipi_recv|mtk_drm_disp_id|hif_thread|main_thread|ged_" "background" "cpuset"
     change_task_cgroup "pp_event|crtc_" "background" "cpuset"

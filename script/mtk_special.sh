@@ -69,9 +69,11 @@ if [ -d "/proc/gpufreqv2" ]; then
     echo "detected new platform"
     IS_MIUI=$(getprop ro.miui.ui.version.code)
     if [ $IS_MIUI -gt 12 ]; then
+        echo "enable fpsgo"
         lock_val "1" /sys/kernel/fpsgo/common/fpsgo_enable
         lock_val "2" /sys/kernel/fpsgo/common/force_onoff
     else
+        echo "stop fpsgo"
         lock_val "0" /sys/kernel/fpsgo/common/fpsgo_enable
         lock_val "0" /sys/kernel/fpsgo/common/force_onoff
     fi
@@ -144,6 +146,7 @@ if [ -d "/proc/gpufreqv2" ]; then
     #lock_val "0" /proc/swpm/swpm_pmsr_en
 else
     echo "detected old platform"
+    echo "stop fpsgo"
     lock_val "0" /sys/kernel/fpsgo/common/fpsgo_enable
     lock_val "0" /sys/kernel/fpsgo/common/force_onoff
     # Disabel auto voltage add by MTK

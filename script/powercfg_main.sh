@@ -20,9 +20,11 @@ BASEDIR="$(dirname $(readlink -f "$0"))"
 . $BASEDIR/libcommon.sh
 . $BASEDIR/libsysinfo.sh
 
-echo "$top_app anisotropic_disable 1" >/sys/kernel/ged/gpu_tuner/custom_hint_set
+#echo "$top_app anisotropic_disable 1" >/sys/kernel/ged/gpu_tuner/custom_hint_set
 action="$1"
 case "$1" in
-"powersave" | "balance" | "performance" | "fast" | "pedestal" | "auto" ) echo "$1" >"$USER_PATH/cur_powermode.txt" ;;
+"powersave" | "balance" | "fast" | "pedestal") echo "$1" >"$USER_PATH/cur_powermode.txt" ;;
+"performance" ) echo "fast" >"$USER_PATH/cur_powermode.txt"
+"init" ) echo "pedestal" >"$USER_PATH/cur_powermode.txt"
 *) echo "Failed to apply unknown action '$1'." ;;
 esac
