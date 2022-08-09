@@ -1,6 +1,6 @@
 {
-  "versionCode": 220802000,
-  "version": "v3-22.07.24,mtk-22.08.02",
-  "zipUrl": "https://cloud.cia.yt/api/v3/file/source/5110/uperf-v3-mtk.zip?sign=YTIqRXiK6CBaLy6H_-GQq5fHnil1euGf00bYsY4-Mpg%3D%3A0",
+  "versionCode": 220809000,
+  "version": "v3-22.07.24,mtk-22.08.09",
+  "zipUrl": "https://uperf-mtk.jintaiyang123.org//https://raw.githubusercontent.com/railjty/uperf-mtk/update/uperf-v3-mtk.zip",
   "changelog": "https://gitee.com/hamjin/uperf/raw/update/changelog-dynamic-v3.md"
 }
