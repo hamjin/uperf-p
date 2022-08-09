@@ -1,4 +1,4 @@
-#
+#!/system/bin/sh
 # Copyright (C) 2021-2022 Matt Yang
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
 #
 
 MODDIR=${0%/*}
+BASEDIR="$(dirname $(readlink -f "$0"))"
 #touch /data/adb/modules/asoul_affinity_opt/flag/dont_fuck
 #touch /data/adb/modules_update/asoul_affinity_opt/flag/dont_fuck
 lock_val() {
@@ -43,4 +44,13 @@ if [ -f "$MODDIR/flag/need_recuser" ]; then
 else
     true >$MODDIR/flag/need_recuser
 fi
+crash_recuser() {
+    rm "$BASEDIR"/logcat.log
+    logcat -f "$BASEDIR"/logcat.log &
+    sleep 60
+    killall logcat
+    rm -f "$BASEDIR"/flag/need_recuser
+}
 (do_others &)
+(crash_recuser &)
+sh $BASEDIR/script/initsvc.sh &

@@ -263,7 +263,7 @@
                     "pinned": true,
                     "rules": [
                         {
-                            "k": "^(TaskSnapshot|Greezer|CachedApp|SystemPressure|SensorService)|[Mm]emory",
+                            "k": "^(Greezer|CachedApp|SystemPressure|SensorService)|[Mm]emory",
                             "ac": "bg",
                             "pc": "auto"
                         },
@@ -458,7 +458,8 @@
                 "sysfs.gpuIdxMax": "20",
                 "sysfs.gpuIdxMin": "32",
                 "sysfs.ddrboost": "0",
-                "sysfs.cciboost": "0"
+                "sysfs.cciboost": "0",
+                "sysfs.ddrFreq": "99"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.04,
@@ -482,7 +483,10 @@
             },
             "junk": {
                 "cpu.burst": 0.6,
-                "sched.scene": "touch"
+                "sched.scene": "touch",
+                "sysfs.ddrboost": "1",
+                "sysfs.cciboost": "1",
+                "sysfs.ddrFreq": "0"
             },
             "switch": {
                 "cpu.latencyTime": 0.0,
@@ -492,7 +496,8 @@
                 "cpu.margin": 0.4,
                 "sched.scene": "boost",
                 "sysfs.ddrboost": "1",
-                "sysfs.cciboost": "1"
+                "sysfs.cciboost": "1",
+                "sysfs.ddrFreq": "0"
             }
         },
         "powersave": {
@@ -505,7 +510,8 @@
                 "sysfs.gpuIdxMax": "25",
                 "sysfs.gpuIdxMin": "32",
                 "sysfs.ddrboost": "0",
-                "sysfs.cciboost": "0"
+                "sysfs.cciboost": "0",
+                "sysfs.ddrFreq": "99"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.04,
@@ -529,7 +535,10 @@
             },
             "junk": {
                 "cpu.burst": 0.3,
-                "sched.scene": "touch"
+                "sched.scene": "touch",
+                "sysfs.ddrboost": "1",
+                "sysfs.cciboost": "1",
+                "sysfs.ddrFreq": "0"
             },
             "switch": {
                 "cpu.latencyTime": 0.0,
@@ -537,21 +546,25 @@
                 "cpu.fastLimitPower": 3.0,
                 "cpu.fastLimitRecoverScale": 0.1,
                 "cpu.margin": 0.3,
-                "sched.scene": "boost"
+                "sched.scene": "boost",
+                "sysfs.ddrboost": "1",
+                "sysfs.cciboost": "1",
+                "sysfs.ddrFreq": "0"
             }
         },
         "performance": {
             "*": {
                 "cpu.latencyTime": 0.0,
-                "cpu.slowLimitPower": 4.0,
-                "cpu.fastLimitPower": 10.0,
+                "cpu.slowLimitPower": 8.0,
+                "cpu.fastLimitPower": 16.0,
                 "cpu.fastLimitCapacity": 360.0,
                 "cpu.fastLimitRecoverScale": 9.0,
-                "cpu.margin": 0.65,
+                "cpu.margin": 0.8,
                 "sysfs.gpuIdxMax": "07",
                 "sysfs.gpuIdxMin": "31",
                 "sysfs.ddrboost": "1",
-                "sysfs.cciboost": "1"
+                "sysfs.cciboost": "1",
+                "sysfs.ddrFreq": "0"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.01,
@@ -585,13 +598,14 @@
                 "cpu.fastLimitPower": 20.0,
                 "cpu.fastLimitCapacity": 999.0,
                 "cpu.fastLimitRecoverScale": 10.0,
-                "cpu.margin": 0.9,
-                "cpu.burst": 0.9,
+                "cpu.margin": 1.0,
+                "cpu.burst": 1.0,
                 "sched.scene": "boost",
                 "sysfs.gpuIdxMax": "01",
                 "sysfs.gpuIdxMin": "25",
                 "sysfs.ddrboost": "1",
-                "sysfs.cciboost": "1"
+                "sysfs.cciboost": "1",
+                "sysfs.ddrFreq": "99"
             },
             "idle": {},
             "touch": {},
@@ -604,9 +618,9 @@
             "*": {
                 "cpu.latencyTime": 0.0,
                 "cpu.slowLimitPower": 3.0,
-                "cpu.fastLimitPower": 3.5,
+                "cpu.fastLimitPower": 6.0,
                 "cpu.fastLimitCapacity": 0.5,
-                "cpu.margin": 0.45,
+                "cpu.margin": 0.5,
                 "sysfs.gpuIdxMax": "12",
                 "sysfs.gpuIdxMin": "31",
                 "sysfs.ddrboost": "1",

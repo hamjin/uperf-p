@@ -19,7 +19,8 @@ BASEDIR="$(dirname $(readlink -f "$0"))"
 . $BASEDIR/pathinfo.sh
 . $BASEDIR/libcommon.sh
 . $BASEDIR/libuperf.sh
-
+. $BASEDIR/cpuset_lock.sh
+. $BASEDIR/libasopt.sh
 wait_until_login
 
 cp -r $USER_PATH/initsvc.log $USER_PATH/initsvc.lastboot.log
@@ -43,5 +44,6 @@ sh /data/powercfg.sh balance
 sh $SCRIPT_PATH/powercfg_once.sh 2>&1 >>$LOG_FILE 
 sh $SCRIPT_PATH/gpu_adj.sh 2>&1 >>$LOG_FILE
 sh $SCRIPT_PATH/mtk_special.sh 2>&1 >>$LOG_FILE 
-
+(cpuset_lock &)
+(asopt_start &)
 uperf_start

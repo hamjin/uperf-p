@@ -51,7 +51,8 @@ BASEDIR="$(dirname $(readlink -f "$0"))"
 . $BASEDIR/libpowercfg.sh
 . $BASEDIR/libcgroup.sh
 . $BASEDIR/libsysinfo.sh
-
+lock_val "0" /proc/sys/kernel/sched_big_task_rotation
+lock_val "0" /proc/perfmgr/boost_ctrl/eas_ctrl/sched_big_task_rotation
 # work with uperf/ContextScheduler
 lock_val "0" "/sys/module/mtk_fpsgo/parameters/boost_affinity*"
 lock_val "0" "/sys/module/fbt_cpu/parameters/boost_affinity*"
@@ -146,6 +147,7 @@ if [ -d "/proc/gpufreqv2" ]; then
     #lock_val "0" /proc/swpm/swpm_pmsr_en
 else
     echo "detected old platform"
+    lock_val "0" /sys/module/cache_ctl/parameters/enable
     echo "stop fpsgo"
     lock_val "0" /sys/kernel/fpsgo/common/fpsgo_enable
     lock_val "0" /sys/kernel/fpsgo/common/force_onoff
@@ -154,9 +156,9 @@ else
     # EAS Fix for MTK, MT6893 and before
     lock_val "1" /sys/devices/system/cpu/sched/hint_enable
     chmod 004 /sys/devices/system/cpu/sched/hint_enable
-    lock_val "85" /sys/devices/system/cpu/sched/hint_load_thresh
+    lock_val "68" /sys/devices/system/cpu/sched/hint_load_thresh
     chmod 004 /sys/devices/system/cpu/sched/hint_load_thresh
-    lock_val "2" /sys/devices/system/cpu/eas/enable
+    lock_val "1" /sys/devices/system/cpu/eas/enable
     chmod 004 /sys/devices/system/cpu/eas/enable
     # Enable CPU7 for MTK, MT6893 and before(need empty power_app_cfg.xml)
     lock /sys/devices/system/cpu/sched/set_sched_isolation
@@ -303,11 +305,10 @@ lock_val "122" /sys/module/mtk_fpsgo/parameters/fixed_target_fps
 #lock_val "1" /sys/kernel/fpsgo/fstb/set_renderer_no_ctrl
 #chmod 444 /sys/kernel/fpsgo/fstb/*
 
-#lock_val "1" /sys/kernel/fpsgo/minitop/enable
-#lock_val "30" /sys/kernel/fpsgo/minitop/thrs_heavy
+lock_val "1" /sys/kernel/fpsgo/minitop/enable
+lock_val "30" /sys/kernel/fpsgo/minitop/thrs_heavy
 #chmod 444 /sys/kernel/fpsgo/minitop/*
 
-lock_val "0" /sys/module/cache_ctl/enable
 
 #lock_val "0" /sys/module/ged/parameters/ap_self_frc_detection_rate
 lock_val "0" /sys/module/ged/parameters/enable_cpu_boost

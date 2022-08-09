@@ -442,9 +442,9 @@
         },
         "sysfs": {
             "cpusetTa": "0-7",
-            "cpusetFg": "0-7",
+            "cpusetFg": "0-5",
             "cpusetBg": "0-3",
-            "cpusetRe": "0-5",
+            "cpusetRe": "0-7",
             "cpusetSysBg": "1-2",
             "corectl": "0",
             "gpuIdxMax": "08",
@@ -464,7 +464,7 @@
                 "cpu.fastLimitPower": 1.7,
                 "cpu.fastLimitCapacity": 20.0,
                 "cpu.margin": 0.2,
-                "sysfs.gpuIdxMax": "20",
+                "sysfs.gpuIdxMax": "15",
                 "sysfs.gpuIdxMin": "40",
                 "sysfs.corectl": "0",
                 "sysfs.ddrMin": "2133000000"
@@ -513,7 +513,7 @@
                 "cpu.fastLimitPower": 1.1,
                 "cpu.fastLimitCapacity": 5.0,
                 "cpu.margin": 0.1,
-                "sysfs.gpuIdxMax": "35",
+                "sysfs.gpuIdxMax": "25",
                 "sysfs.gpuIdxMin": "40",
                 "sysfs.corectl": "0",
                 "sysfs.ddrMin": "800000000"
@@ -619,7 +619,7 @@
                 "cpu.fastLimitPower": 2.8,
                 "cpu.fastLimitCapacity": 10.0,
                 "cpu.margin": 0.45,
-                "sysfs.gpuIdxMax": "15",
+                "sysfs.gpuIdxMax": "05",
                 "sysfs.gpuIdxMin": "40",
                 "sysfs.corectl": "0",
                 "sysfs.ddrMin": "2667000000"

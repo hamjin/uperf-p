@@ -40,7 +40,7 @@
                 {
                     "efficiency": 140,
                     "nr": 4,
-                    "typicalPower": 1.33,
+                    "typicalPower": 0.53,
                     "typicalFreq": 1.8,
                     "sweetFreq": 1.6,
                     "plainFreq": 1.2,
@@ -49,7 +49,7 @@
                 {
                     "efficiency": 340,
                     "nr": 3,
-                    "typicalPower": 2.85,
+                    "typicalPower": 1.95,
                     "typicalFreq": 2.8,
                     "sweetFreq": 1.8,
                     "plainFreq": 1.0,
@@ -58,7 +58,7 @@
                 {
                     "efficiency": 420,
                     "nr": 1,
-                    "typicalPower": 4.25,
+                    "typicalPower": 2.95,
                     "typicalFreq": 3.0,
                     "sweetFreq": 2.1,
                     "plainFreq": 1.6,
@@ -272,7 +272,7 @@
                     "pinned": true,
                     "rules": [
                         {
-                            "k": "^(TaskSnapshot|Greezer|CachedApp|SystemPressure|SensorService)|[Mm]emory",
+                            "k": "^(Greezer|CachedApp|SystemPressure|SensorService)|[Mm]emory",
                             "ac": "bg",
                             "pc": "auto"
                         },
@@ -442,9 +442,9 @@
         },
         "sysfs": {
             "cpusetTa": "0-7",
-            "cpusetFg": "0-7",
+            "cpusetFg": "0-5",
             "cpusetBg": "0-3",
-            "cpusetRe": "0-5",
+            "cpusetRe": "0-7",
             "cpusetSysBg": "1-2",
             "corectl": "0",
             "gpuIdxMax": "3",
@@ -460,10 +460,10 @@
         "balance": {
             "*": {
                 "cpu.latencyTime": 0.2,
-                "cpu.slowLimitPower": 1.3,
-                "cpu.fastLimitPower": 1.6,
+                "cpu.slowLimitPower": 2.5,
+                "cpu.fastLimitPower": 3.0,
                 "cpu.fastLimitCapacity": 20.0,
-                "cpu.margin": 0.15,
+                "cpu.margin": 0.25,
                 "sysfs.corectl": "0",
                 "sysfs.gpuIdxMax": "20",
                 "sysfs.gpuIdxMin": "40",
@@ -509,10 +509,10 @@
         "powersave": {
             "*": {
                 "cpu.latencyTime": 0.4,
-                "cpu.slowLimitPower": 0.5,
-                "cpu.fastLimitPower": 0.7,
+                "cpu.slowLimitPower": 1.0,
+                "cpu.fastLimitPower": 1.2,
                 "cpu.fastLimitCapacity": 5.0,
-                "cpu.margin": 0.01,
+                "cpu.margin": 0.1,
                 "sysfs.gpuIdxMax": "35",
                 "sysfs.gpuIdxMin": "40",
                 "sysfs.ddrMin": "800000000",
@@ -554,10 +554,10 @@
         "performance": {
             "*": {
                 "cpu.latencyTime": 0.0,
-                "cpu.slowLimitPower": 2.5,
-                "cpu.fastLimitPower": 2.8,
+                "cpu.slowLimitPower": 4.0,
+                "cpu.fastLimitPower": 10.0,
                 "cpu.fastLimitCapacity": 360.0,
-                "cpu.margin": 0.3,
+                "cpu.margin": 0.8,
                 "sysfs.gpuIdxMax": "30",
                 "sysfs.gpuIdxMin": "40",
                 "sysfs.ddrMin": "2667000000",
@@ -593,12 +593,12 @@
         "pedestal": {
             "*": {
                 "cpu.latencyTime": 0.0,
-                "cpu.slowLimitPower": 3.0,
-                "cpu.fastLimitPower": 3.1,
+                "cpu.slowLimitPower": 8.0,
+                "cpu.fastLimitPower": 15.1,
                 "cpu.fastLimitCapacity": 999.0,
                 "cpu.fastLimitRecoverScale": 10.0,
-                "cpu.margin": 0.4,
-                "cpu.burst": 0.0,
+                "cpu.margin": 1.0,
+                "cpu.burst": 1.0,
                 "sched.scene": "boost",
                 "sysfs.gpuIdxMax": "28",
                 "sysfs.gpuIdxMin": "40",
@@ -616,11 +616,11 @@
         "fast": {
             "*": {
                 "cpu.latencyTime": 0.0,
-                "cpu.slowLimitPower": 2.0,
-                "cpu.fastLimitPower": 2.1,
-                "cpu.fastLimitCapacity": 0.0,
-                "cpu.margin": 0.2,
-                "sysfs.gpuIdxMax": "33",
+                "cpu.slowLimitPower": 3.5,
+                "cpu.fastLimitPower": 7.0,
+                "cpu.fastLimitCapacity": 120.0,
+                "cpu.margin": 0.6,
+                "sysfs.gpuIdxMax": "10",
                 "sysfs.gpuIdxMin": "40",
                 "sysfs.ddrMin": "2667000000",
                 "sysfs.corectl": "0"

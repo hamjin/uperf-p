@@ -19,7 +19,7 @@
 
 # Modified by Ham Jin
 
-BASEDIR="$(dirname $(readlink -f "$0"))"
+BASEDIR="$(dirname "$(readlink -f "$0")")"
 . $BASEDIR/pathinfo.sh
 . $BASEDIR/libcommon.sh
 . $BASEDIR/libpowercfg.sh
@@ -28,8 +28,9 @@ BASEDIR="$(dirname $(readlink -f "$0"))"
 unify_cgroup() {
     # clear top-app
     for cg in stune cpuctl; do
-        for p in $(cat /dev/$cg/top-app/tasks); do
-            echo $p >/dev/$cg/foreground/tasks
+        tasks=$(cat /dev/$cg/top-app/tasks)
+        for p in $tasks; do
+            echo "$p" >/dev/$cg/foreground/tasks
         done
     done
 
@@ -38,24 +39,26 @@ unify_cgroup() {
     rmdir /dev/cpuset/background/untrustedapp
     # work with uperf/ContextScheduler
     change_task_cgroup "surfaceflinger" "top-app" "cpuset"
-    change_task_cgroup "kswapd0|kcompactd0" "system-background" "cpuset"
+    change_task_cgroup "com.miui.home|com.android.systemui" "top-app" "cpuset"
+    change_task_cgroup "mediatek" "system-background" "cpuset"
+    change_task_cgroup "mali-" "system-background" "cpuset"
+    change_task_cgroup "kswapd0|kcompactd0" "restricted" "cpuset"
     change_task_cgroup "netd|allocator|system_server" "foreground" "cpuset"
-    change_task_cgroup "android.hardware.media|vendor.mediatek.hardware" "background" "cpuset"
+    change_task_cgroup "android.hardware.media|vendor.mediatek.hardware|media.codec" "background" "cpuset"
     change_task_cgroup "aal_sof|kfps|dsp_send_thread|vdec_ipi_recv|mtk_drm_disp_id|hif_thread|main_thread|ged_" "background" "cpuset"
     change_task_cgroup "pp_event|crtc_" "background" "cpuset"
     change_task_cgroup "update_engine" "top-app" "cpuset"
-    change_task_cgroup "mediatek" "system-background" "cpuset"
-    change_task_cgroup "mali-" "system-background" "cpuset"
     
+
 }
 
 unify_sched() {
     # clear stune & uclamp
     for d in /dev/stune/*/; do
-        lock_val "0" $d/schedtune.boost
+        lock_val "0" "$d"/schedtune.boost
     done
     for d in /dev/cpuctl/*/; do
-        lock_val "0" $d/cpu.uclamp.min
+        lock_val "0" "$d"/cpu.uclamp.min
     done
 
     for d in kernel walt; do
@@ -81,9 +84,11 @@ unify_cpufreq() {
     set_governor_param "interactive/max_freq_hysteresis" "0:0 2:0 4:0"
 }
 unify_devfreq() {
-    for d in $(ls /sys/class/devfreq/); do
-        local maxfreq="0"
-        for f in $(cat /sys/class/devfreq/$d/available_frequencies); do
+    DEVFREQ="$(ls /sys/class/devfreq/)"
+    for d in $DEVFREQ; do
+        maxfreq="0"
+        freqs=$(cat "/sys/class/devfreq/$d/available_frequencies")
+        for f in $freqs; do
             [ "$f" -gt "$maxfreq" ] && maxfreq="$f"
         done
         [ "$maxfreq" -gt "0" ] && mutate "$maxfreq" "$d/max_freq"
@@ -249,7 +254,7 @@ disable_userspace_thermal() {
     killall mi_thermald
     # prohibit mi_thermald use cpu thermal interface
     for i in 0 2 4 6 7; do
-        local maxfreq="$(cat /sys/devices/system/cpu/cpu$i/cpufreq/cpuinfo_max_freq)"
+        maxfreq="$(cat /sys/devices/system/cpu/cpu$i/cpufreq/cpuinfo_max_freq)"
         [ "$maxfreq" -gt "0" ] && lock_val "cpu$i $maxfreq" /sys/devices/virtual/thermal/thermal_message/cpu_limits
     done
 }

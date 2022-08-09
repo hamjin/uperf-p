@@ -254,7 +254,7 @@
           "pinned": true, 
           "rules": [
             {
-              "k": "^(TaskSnapshot|Greezer|CachedApp|SystemPressure|SensorService)|[Mm]emory", 
+              "k": "^(Greezer|CachedApp|SystemPressure|SensorService)|[Mm]emory", 
               "ac": "bg", 
               "pc": "auto"
             }, 
