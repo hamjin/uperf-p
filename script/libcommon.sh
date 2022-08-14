@@ -105,3 +105,13 @@ wait_until_login() {
     done
     rm "$test_file"
 }
+
+#Prop File Reader
+#grep_prop comes from https://github.com/topjohnwu/Magisk/blob/master/scripts/util_functions.sh#L30
+grep_prop() {
+    REGEX="s/^$1=//p"
+    shift
+    FILES="$@"
+    [ -z "$FILES" ] && FILES='/system/build.prop'
+    cat $FILES 2>/dev/null | dos2unix | sed -n "$REGEX" | head -n 1
+}

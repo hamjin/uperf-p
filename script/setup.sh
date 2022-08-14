@@ -160,12 +160,19 @@ install_ssanalysis() {
     rm $MODULE_PATH/ssanalysis-magisk.zip
 }
 install_asopt() {
-    #For we embeded AsoulOpt delete outside
+    #For we embeded AsoulOpt, detect outside version
     if [ -d "/data/adb/modules/asoul_affinity_opt" ]; then
-        touch /data/adb/modules/asoul_affinity_opt/remove
-    #    echo "- Installing AsoulOpt"
-    #    magisk --install-module $MODULE_PATH/asoulopt.zip
+        CUR_ASOPT_VERSIONCODE="$(grep_prop ASOPT_VERSIONCODE $MODULE_PATH/module.prop)"
+        asopt_module_version="$(grep_prop versionCode /data/adb/modules/asoul_affinity_opt/module.prop)"
+        if [ "$CUR_ASOPT_VERSIONCODE" -ge "$asopt_module_version" ];then
+            #Using our newer AsoulOpt
+            killall -9 AsoulOpt
+            rm -rf /data/adb/modules/asoul_affinity_opt
+        fi
     fi
+    #   touch /data/adb/modules/asoul_affinity_opt/remove
+    #   echo "- Installing AsoulOpt"
+    #   magisk --install-module $MODULE_PATH/asoulopt.zip
     #rm $MODULE_PATH/asoulopt.zip
 }
 #grep_prop comes from https://github.com/topjohnwu/Magisk/blob/master/scripts/util_functions.sh#L30

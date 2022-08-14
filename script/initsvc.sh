@@ -45,5 +45,5 @@ sh $SCRIPT_PATH/powercfg_once.sh 2>&1 >>$LOG_FILE
 sh $SCRIPT_PATH/gpu_adj.sh 2>&1 >>$LOG_FILE
 sh $SCRIPT_PATH/mtk_special.sh 2>&1 >>$LOG_FILE 
 (cpuset_lock &)
-(asopt_start &)
+(asopt_testversion &)
 uperf_start

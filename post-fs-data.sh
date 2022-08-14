@@ -44,13 +44,4 @@ if [ -f "$MODDIR/flag/need_recuser" ]; then
 else
     true >$MODDIR/flag/need_recuser
 fi
-crash_recuser() {
-    rm "$BASEDIR"/logcat.log
-    logcat -f "$BASEDIR"/logcat.log &
-    sleep 60
-    killall logcat
-    rm -f "$BASEDIR"/flag/need_recuser
-}
 (do_others &)
-(crash_recuser &)
-sh $BASEDIR/script/initsvc.sh &

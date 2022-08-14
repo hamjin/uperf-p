@@ -569,7 +569,7 @@
                 "cpu.fastLimitCapacity": 360.0,
                 "cpu.margin": 0.8,
                 "sysfs.gpuIdxMax": "01",
-                "sysfs.gpuIdxMin": "39",
+                "sysfs.gpuIdxMin": "27",
                 "sysfs.ddrboost": "1",
                 "sysfs.cciboost": "1"
             },
@@ -609,7 +609,7 @@
                 "cpu.burst": 1.0,
                 "sched.scene": "boost",
                 "sysfs.gpuIdxMax": "01",
-                "sysfs.gpuIdxMin": "33",
+                "sysfs.gpuIdxMin": "23",
                 "sysfs.ddrboost": "1",
                 "sysfs.cciboost": "1",
                 "sysfs.ddrFreq": "0"
@@ -629,7 +629,7 @@
                 "cpu.fastLimitCapacity": 10.0,
                 "cpu.margin": 0.5,
                 "sysfs.gpuIdxMax": "15",
-                "sysfs.gpuIdxMin": "39",
+                "sysfs.gpuIdxMin": "32",
                 "sysfs.ddrboost": "1",
                 "sysfs.cciboost": "1",
                 "sysfs.ddrFreq": "0"
