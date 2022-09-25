@@ -38,14 +38,11 @@ unify_cgroup() {
     rmdir /dev/cpuset/foreground/boost
     rmdir /dev/cpuset/background/untrustedapp
     # work with uperf/ContextScheduler
-    change_task_cgroup "surfaceflinger" "top-app" "cpuset"
-    change_task_cgroup "com.miui.home|com.android.systemui" "top-app" "cpuset"
-    change_task_cgroup "mediatek" "system-background" "cpuset"
-    change_task_cgroup "mali-" "system-background" "cpuset"
-    change_task_cgroup "kswapd0|kcompactd0" "restricted" "cpuset"
-    change_task_cgroup "netd|allocator|system_server" "foreground" "cpuset"
-    change_task_cgroup "android.hardware.media|vendor.mediatek.hardware|media.codec" "background" "cpuset"
-    change_task_cgroup "aal_sof|kfps|dsp_send_thread|vdec_ipi_recv|mtk_drm_disp_id|hif_thread|main_thread|ged_" "background" "cpuset"
+    change_task_cgroup "surfaceflinger" "" "cpuset"
+    change_task_cgroup "system_server" "foreground" "cpuset"
+    change_task_cgroup "netd|allocator" "foreground" "cpuset"
+    change_task_cgroup "hardware.media.c2|vendor.mediatek.hardware" "background" "cpuset"
+    change_task_cgroup "aal_sof|kfps|dsp_send_thread|vdec_ipi_recv|mtk_drm_disp_id|disp_feature|hif_thread|main_thread|rx_thread|ged_" "background" "cpuset"
     change_task_cgroup "pp_event|crtc_" "background" "cpuset"
     change_task_cgroup "update_engine" "top-app" "cpuset"
     
@@ -55,54 +52,41 @@ unify_cgroup() {
 unify_sched() {
     # clear stune & uclamp
     for d in /dev/stune/*/; do
-        lock_val "0" "$d"/schedtune.boost
+        lock_val "0" $d/schedtune.boost
+        lock_val "0" $d/schedtune.prefer_idle
     done
     for d in /dev/cpuctl/*/; do
-        lock_val "0" "$d"/cpu.uclamp.min
+        lock_val "0" $d/cpu.uclamp.min
+        lock_val "0" $d/cpu.uclamp.latency_sensitive
     done
 
     for d in kernel walt; do
-        lock_val "0" /proc/sys/$d/sched_force_lb_enable
-        lock_val "255" /proc/sys/$d/sched_busy_hysteresis_enable_cpus
-        lock_val "2000000" /proc/sys/$d/sched_busy_hyst_ns
+        mask_val "0" /proc/sys/$d/sched_force_lb_enable
     done
 }
-unify_cpufreq() {
-    # unify hmp interactive governor, only 2+2 4+2 4+4
-    set_governor_param "interactive/use_sched_load" "0:1 2:1 4:1"
-    set_governor_param "interactive/use_migration_notif" "0:1 2:1 4:1"
-    set_governor_param "interactive/enable_prediction" "0:1 2:1 4:1"
-    set_governor_param "interactive/ignore_hispeed_on_notif" "0:1 2:1 4:1"
-    set_governor_param "interactive/fast_ramp_down" "0:0 2:0 4:0"
-    set_governor_param "interactive/boostpulse_duration" "0:0 2:0 4:0"
-    set_governor_param "interactive/boost" "0:0 2:0 4:0"
-    set_governor_param "interactive/above_hispeed_delay" "0:0 2:0 4:0"
-    set_governor_param "interactive/hispeed_freq" "0:0 2:0 4:0"
-    set_governor_param "interactive/go_hispeed_load" "0:90 2:90 4:90"
-    set_governor_param "interactive/target_loads" "0:80 2:80 4:80"
-    set_governor_param "interactive/min_sample_time" "0:0 2:0 4:0"
-    set_governor_param "interactive/max_freq_hysteresis" "0:0 2:0 4:0"
-}
+
 unify_devfreq() {
-    DEVFREQ="$(ls /sys/class/devfreq/)"
-    for d in $DEVFREQ; do
-        maxfreq="0"
-        freqs=$(cat "/sys/class/devfreq/$d/available_frequencies")
-        for f in $freqs; do
-            [ "$f" -gt "$maxfreq" ] && maxfreq="$f"
+    for df in /sys/class/devfreq; do
+        for d in $df/*cpubw $df/*llccbw $df/*cpu-cpu-llcc-bw $df/*cpu-llcc-ddr-bw; do
+            lock_val "9999000000" "$d/max_freq"
         done
-        [ "$maxfreq" -gt "0" ] && mutate "$maxfreq" "$d/max_freq"
     done
     for d in DDR LLCC L3; do
-        mutate "9999000000" "/sys/devices/system/cpu/bus_dcvs/$d/*/max_freq"
+        lock_val "9999000000" "/sys/devices/system/cpu/bus_dcvs/$d/*/max_freq"
     done
 }
+
 unify_lpm() {
     # Qualcomm enter C-state level 3 took ~500us
     lock_val "0" /sys/module/lpm_levels/parameters/lpm_ipi_prediction
     lock_val "0" /sys/module/lpm_levels/parameters/lpm_prediction
     lock_val "2" /sys/module/lpm_levels/parameters/bias_hyst
+    for d in kernel walt; do
+        mask_val "255" /proc/sys/$d/sched_busy_hysteresis_enable_cpus
+        mask_val "2000000" /proc/sys/$d/sched_busy_hyst_ns
+    done
 }
+
 disable_hotplug() {
     # Exynos hotplug
     mutate "0" /sys/power/cpuhotplug/enabled
@@ -120,22 +104,11 @@ disable_hotplug() {
     lock_val "0" /sys/kernel/zen_decision/enabled
 
     # stop sched core_ctl
-    set_corectl_param "enable" "0:0 2:0 4:0 6:0 7:0"
+    set_corectl_param "enable" "0:0 6:0 7:0"
 
     # bring all cores online
     for i in 0 1 2 3 4 5 6 7 8 9; do
         lock_val "1" /sys/devices/system/cpu/cpu$i/online
-    done
-    # bring all core_ctls online
-    for i in 0 1 2 3 4 5 6 7 8 9; do
-        lock_val "0" /sys/devices/system/cpu/cpu$i/core_ctl/enable
-    done
-    # bring all core_ctls boost off
-    for i in 0 1 2 3 4 5 6 7 8 9; do
-        lock_val "0" /sys/devices/system/cpu/cpu$i/core_ctl/core_ctl_boost
-    done
-    for i in 0 1 2 3 4 5 6 7 8 9; do
-        lock_val "0" /sys/devices/system/cpu/cpu$i/core_ctl/min_cpus
     done
 }
 
@@ -145,6 +118,7 @@ disable_kernel_boost() {
     lock_val "0" "/sys/devices/system/cpu/cpu_boost/parameters/*"
     lock_val "0" "/sys/module/cpu_boost/parameters/*"
     lock_val "0" "/sys/module/msm_performance/parameters/*"
+    lock_val "0" "/sys/kernel/msm_performance/parameters/*"
     lock_val "0" "/proc/sys/walt/input_boost/*"
 
     # no msm_performance limit
@@ -165,19 +139,27 @@ disable_kernel_boost() {
     # [9] PPM_POLICY_SYS_BOOST: disabled
     # [10] PPM_POLICY_HICA: ?
     # Usage: echo <policy_idx> <1(enable)/0(disable)> > /proc/ppm/policy_status
-
-    # first disable all policy
+    # use cpufreq interface with PPM_POLICY_HARD_USER_LIMIT enabled, thanks to helloklf@github
     lock_val "1" /proc/ppm/enabled
-    for i in 0 1 2 3 4 5 7 8 9 10; do
+    for i in 0 1 2 3 4 5 6 7 8 9 10; do
         lock_val "$i 0" /proc/ppm/policy_status
     done
-    # enable the policy used by uperf
     lock_val "6 1" /proc/ppm/policy_status
+    lock_val "enable 0" /proc/perfmgr/tchbst/user/usrtch
     lock "/proc/ppm/policy/*"
     lock "/proc/ppm/*"
-    # Disable Touch Boost in 6893 and before
-    lock_val "enable 0" /proc/perfmgr/tchbst/user/usrtch
-
+    
+    # work with uperf/ContextScheduler
+    lock_val "0" "/sys/module/mtk_fpsgo/parameters/boost_affinity*"
+    lock_val "0" "/sys/module/fbt_cpu/parameters/boost_affinity*"
+    lock_val "9999000" "/sys/kernel/fpsgo/fbt/limit_*"
+    lock_val "0" /sys/kernel/fpsgo/fbt/switch_idleprefer
+    lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
+    lock_val "1" /sys/module/mtk_core_ctl/parameters/policy_enable
+    lock_val "120" /sys/kernel/fpsgo/fbt/thrm_temp_th
+    lock_val "-1" /sys/kernel/fpsgo/fbt/thrm_limit_cpu
+    lock_val "-1" /sys/kernel/fpsgo/fbt/thrm_sub_cpu
+    
     # Samsung
     mutate "0" "/sys/class/input_booster/*"
 
@@ -185,6 +167,7 @@ disable_kernel_boost() {
     lock_val "N" "/sys/module/control_center/parameters/*"
     lock_val "0" /sys/module/aigov/parameters/enable
     lock_val "0" "/sys/module/houston/parameters/*"
+    
     # OnePlus opchain always pins UX threads on the big cluster
     lock_val "0" /sys/module/opchain/parameters/chain_on
 
@@ -199,7 +182,7 @@ disable_userspace_boost() {
     # xiaomi vip-task scheduler override
     chmod 0000 /dev/migt
     for f in /sys/module/migt/parameters/*; do
-        chmod 0000 $f
+        chmod 0000 "$f"
     done
 
     # xiaomi perfservice
@@ -213,17 +196,6 @@ disable_userspace_boost() {
     # Qualcomm perfd
     stop perfd 2>/dev/null
 
-    # work with uperf/ContextScheduler
-    lock_val "0" "/sys/module/mtk_fpsgo/parameters/boost_affinity*"
-    lock_val "0" "/sys/module/fbt_cpu/parameters/boost_affinity*"
-    lock_val "0" /sys/kernel/fpsgo/fbt/switch_idleprefer
-    lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
-    lock_val "0" /sys/module/mtk_core_ctl/parameters/policy_enable
-    lock_val "0" /sys/kernel/fpsgo/fbt/thrm_enable
-    lock_val "90" /sys/kernel/fpsgo/fbt/thrm_temp_th
-    lock_val "-1" /sys/kernel/fpsgo/fbt/thrm_limit_cpu
-    lock_val "-1" /sys/kernel/fpsgo/fbt/thrm_sub_cpu
-
     # Qualcomm&MTK perfhal
     perfhal_stop
 
@@ -233,7 +205,6 @@ disable_userspace_boost() {
     stop vendor.power-hal-1-2
     stop vendor.power-hal-1-3
     stop vendor.power-hal-aidl
-
 }
 
 restart_userspace_boost() {
@@ -246,7 +217,6 @@ restart_userspace_boost() {
     start vendor.power-hal-1-2
     start vendor.power-hal-1-3
     start vendor.power-hal-aidl
-
 }
 
 disable_userspace_thermal() {

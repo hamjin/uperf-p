@@ -116,12 +116,12 @@ REPLACE=""
 on_install() {
 
     # use universal setup.sh
-    sh $MODPATH/script/setup.sh
+    sh "$MODPATH"/script/setup.sh
     [ "$?" != "0" ] && abort
 
     # use once
-    rm $MODPATH/script/setup.sh
-    rm $MODPATH/customize.sh
+    rm "$MODPATH"/script/setup.sh
+    rm "$MODPATH"/customize.sh
 }
 
 # Only some special files require specific permissions
@@ -136,7 +136,6 @@ set_permissions() {
     chmod 755 $MODPATH/bin/*
     chmod 755 $MODPATH/*.sh
     chmod 755 $MODPATH/*script*/*.sh
-    return
 }
 # You can add more functions to assist your custom script code
 on_install

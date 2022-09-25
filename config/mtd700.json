@@ -1,6 +1,6 @@
 {
   "meta": {
-    "name": "Dimensity 700(mt6833)/720(mt6853)/810(mt6833v)[22.07.24]", 
+    "name": "Dimensity 700(mt6833)/720(mt6853)/810(mt6833v)[22.09.04]", 
     "author": "yc@coolapk"
   }, 
   "modules": {
@@ -59,7 +59,15 @@
     }, 
     "sysfs": {
       "enable": true, 
-      "knob": {}
+      "knob": {
+        "cpusetTa": "/dev/cpuset/top-app/cpus", 
+        "cpusetFg": "/dev/cpuset/foreground/cpus", 
+        "cpusetBg": "/dev/cpuset/background/cpus", 
+        "cpusetSysBg": "/dev/cpuset/system-background/cpus", 
+        "cpusetRe": "/dev/cpuset/restricted/cpus",
+        "ddrboost": "/sys/devices/platform/boot_dramboost/dramboost/dramboost",
+        "cciboost": "/proc/cpufreq/cpufreq_cci_mode"
+      }
     }, 
     "sched": {
       "enable": true, 
@@ -254,7 +262,7 @@
           "pinned": true, 
           "rules": [
             {
-              "k": "^(Greezer|CachedApp|SystemPressure|SensorService)|[Mm]emory", 
+              "k": "^(TaskSnapshot|Greezer|CachedApp|SystemPressure|SensorService)|[Mm]emory", 
               "ac": "bg", 
               "pc": "auto"
             }, 
@@ -363,12 +371,12 @@
               "pc": "auto"
             }, 
             {
-              "k": "^(Unity|Worker Thread|TaskGraph|RHIThread|Thread-|Job.Worker)", 
+              "k": "^(Unity|Worker Thread|TaskGraph|RHIThread|GLThread|Thread-|Job.Worker)", 
               "ac": "gtcoop", 
               "pc": "auto"
             }, 
             {
-              "k": "^(RenderThread|GLThread|JNISurfaceText|IJK_External_Re)|[Aa]nim|([.]raster|[.]ui)$", 
+              "k": "^(RenderThread|JNISurfaceText|IJK_External_Re)|[Aa]nim|([.]raster|[.]ui)$", 
               "ac": "ui", 
               "pc": "ui"
             }, 
@@ -432,7 +440,15 @@
       "guideCap": true, 
       "limitEfficiency": false
     }, 
-    "sysfs": {}, 
+    "sysfs": {
+      "cpusetTa": "0-7", 
+      "cpusetFg": "0-3,6-7", 
+      "cpusetBg": "0-3", 
+      "cpusetSysBg": "0-3", 
+      "cpusetRe": "0-3,6-7",
+      "ddrboost": "0",
+      "cciboost": "0"
+    }, 
     "sched": {
       "scene": "idle"
     }
@@ -443,8 +459,10 @@
         "cpu.latencyTime": 0.2, 
         "cpu.slowLimitPower": 2.0, 
         "cpu.fastLimitPower": 2.0, 
-        "cpu.fastLimitCapacity": 20.0, 
-        "cpu.margin": 0.2
+        "cpu.fastLimitCapacity": 16.0, 
+        "cpu.margin": 0.2,
+        "sysfs.ddrboost": "0",
+        "sysfs.cciboost": "0"
       }, 
       "idle": {
         "cpu.baseSampleTime": 0.04, 
@@ -468,15 +486,19 @@
       }, 
       "junk": {
         "cpu.burst": 0.7, 
-        "sched.scene": "touch"
+        "sched.scene": "touch",
+        "sysfs.ddrboost": "1",
+        "sysfs.cciboost": "1"
       }, 
       "switch": {
         "cpu.latencyTime": 0.0, 
         "cpu.slowLimitPower": 3.0, 
-        "cpu.fastLimitPower": 6.0, 
+        "cpu.fastLimitPower": 5.0, 
         "cpu.fastLimitRecoverScale": 0.1, 
         "cpu.margin": 0.4, 
-        "sched.scene": "boost"
+        "sched.scene": "boost",
+        "sysfs.ddrboost": "1",
+        "sysfs.cciboost": "1"
       }
     }, 
     "powersave": {
@@ -484,8 +506,10 @@
         "cpu.latencyTime": 0.4, 
         "cpu.slowLimitPower": 1.0, 
         "cpu.fastLimitPower": 1.0, 
-        "cpu.fastLimitCapacity": 5.0, 
-        "cpu.margin": 0.1
+        "cpu.fastLimitCapacity": 4.0, 
+        "cpu.margin": 0.1,
+        "sysfs.ddrboost": "0",
+        "sysfs.cciboost": "0"
       }, 
       "idle": {
         "cpu.baseSampleTime": 0.04, 
@@ -514,7 +538,7 @@
       "switch": {
         "cpu.latencyTime": 0.0, 
         "cpu.slowLimitPower": 1.5, 
-        "cpu.fastLimitPower": 3.0, 
+        "cpu.fastLimitPower": 2.5, 
         "cpu.fastLimitRecoverScale": 0.1, 
         "cpu.margin": 0.3, 
         "sched.scene": "boost"
@@ -526,7 +550,9 @@
         "cpu.slowLimitPower": 4.0, 
         "cpu.fastLimitPower": 10.0, 
         "cpu.fastLimitCapacity": 360.0, 
-        "cpu.margin": 0.4
+        "cpu.margin": 0.4,
+        "sysfs.ddrboost": "0",
+        "sysfs.cciboost": "0"
       }, 
       "idle": {
         "cpu.baseSampleTime": 0.01, 
@@ -546,11 +572,15 @@
       }, 
       "junk": {
         "cpu.burst": 0.7, 
-        "sched.scene": "touch"
+        "sched.scene": "touch",
+        "sysfs.ddrboost": "1",
+        "sysfs.cciboost": "1"
       }, 
       "switch": {
         "cpu.burst": 0.2, 
-        "sched.scene": "boost"
+        "sched.scene": "boost",
+        "sysfs.ddrboost": "1",
+        "sysfs.cciboost": "1"
       }
     }, 
     "fast": {
@@ -559,7 +589,9 @@
         "cpu.slowLimitPower": 2.5, 
         "cpu.fastLimitPower": 2.5, 
         "cpu.fastLimitCapacity": 0.0, 
-        "cpu.margin": 0.4
+        "cpu.margin": 0.4,
+        "sysfs.ddrboost": "1",
+        "sysfs.cciboost": "1"
       }, 
       "idle": {
         "cpu.baseSampleTime": 0.01, 

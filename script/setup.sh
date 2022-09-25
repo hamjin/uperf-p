@@ -50,43 +50,45 @@ set_perm_recursive() {
 
 set_permissions() {
     set_perm_recursive $BIN_PATH 0 0 0755 0755 u:object_r:system_file:s0
-    set_perm_recursive $MODULE_PATH/system/vendor/etc 0 0 0755 0644 u:object_r:vendor_configs_file:s0
-    set_perm_recursive $MODULE_PATH/zygisk 0 0 0755 0644 u:object_r:system_file:s0
+    set_perm_recursive "$MODULE_PATH"/system/vendor/etc 0 0 0755 0644 u:object_r:vendor_configs_file:s0
+    set_perm_recursive "$MODULE_PATH"/zygisk 0 0 0755 0644 u:object_r:system_file:s0
 }
 install_uperf() {
     echo "- ro.board.platform=$(getprop ro.board.platform)"
     echo "- ro.product.board=$(getprop ro.product.board)"
 
-    local target
-    local cfgname
     target="$(getprop ro.board.platform)"
     cfgname="$(get_config_name $target)"
-    if [ "$cfgname" == "unsupported" ]; then
+    if [ "$cfgname" = "unsupported" ]; then
         target="$(getprop ro.product.board)"
-        cfgname="$(get_config_name $target)"
+        cfgname="$(get_config_name "$target")"
     fi
 
-    if [ "$cfgname" == "unsupported" ] || [ ! -f $MODULE_PATH/config/$cfgname.json ]; then
+    if [ "$cfgname" = "unsupported" ] || [ ! -f "$MODULE_PATH"/config/"$cfgname".json ]; then
         abort "! Target [$target] not supported."
     fi
-    mkdir -p $USER_PATH
+    mkdir -p "$USER_PATH"
     rm -rf /sdcard/yc/uperf
-    mv -f $USER_PATH/uperf.json $USER_PATH/uperf.json.bak
-    cp -f $MODULE_PATH/config/$cfgname.json $USER_PATH/uperf.json
-    [ ! -e "$USER_PATH/perapp_powermode.txt" ] && cp $MODULE_PATH/config/perapp_powermode.txt $USER_PATH/perapp_powermode.txt
-    rm -rf $MODULE_PATH/config
+    mv -f "$USER_PATH"/uperf.json "$USER_PATH"/uperf.json.bak
+    cp -f "$MODULE_PATH"/config/"$cfgname".json "$USER_PATH"/uperf.json
+    #[ ! -e ""$USER_PATH"/perapp_powermode.txt" ] && cp "$MODULE_PATH"/config/perapp_powermode.txt "$USER_PATH"/perapp_powermode.txt
+    #Force use Scene
+    echo "! Deprecated Support of perapp_powermode. Please use Scene"
+    rm "$USER_PATH"/perapp_powermode.txt
+    touch /data/media/0/Android/yc/uperf/perapp_powermode.txt
+    chmod 000 /data/media/0/Android/yc/uperf/perapp_powermode.txt
+    chattr +i /data/media/0/Android/yc/uperf/perapp_powermode.txt
+    rm -rf "$MODULE_PATH"/config
     echo "- Uperf config is located at $USER_PATH"
 }
 
 install_powerhal_stub() {
     echo "- Detecting platform specific perfhal stub"
-    local target
-    local cfgname
     target="$(getprop ro.board.platform)"
-    cfgname="$(get_config_name $target)"
-    if [ "$cfgname" == "unsupported" ]; then
+    cfgname="$(get_config_name "$target")"
+    if [ "$cfgname" = "unsupported" ]; then
         target="$(getprop ro.product.board)"
-        cfgname="$(get_config_name $target)"
+        cfgname="$(get_config_name "$target")"
     fi
 
     # do not place empty json if it doesn't exist in system
@@ -95,32 +97,25 @@ install_powerhal_stub() {
     # vendor/etc/powerscntbl.xml: mediatek perf hal (android 10+)
     # vendor/etc/perf/commonresourceconfigs.json: qualcomm perf hal resource
     # vendor/etc/perf/targetresourceconfigs.json: qualcomm perf hal resource overrides
-    #if [ "$cfgname" == "mtd9000" ] || [ "$cfgname" == "mtd8100" ] || [ "$cfgname" == "mtd8000" ]; then
-    #    echo "- Found new devices, keep and protect them"
-    #    rm -rf $MODULE_PATH/system/vendor/etc/powerscntbl.xml
-    #    rm -rf $MODULE_PATH/system/vendor/etc/power_app_cfg.xml
-    #    rm -rf $MODULE_PATH/system/vendor/etc/powercontable.xml
-    #else
-    #echo "- Found old devices, clearing perfhal config"
-    local perfcfgs
-    perfcfgs="
-        vendor/etc/powerhint.json
-        vendor/etc/powerscntbl.cfg
+    if [ "$cfgname" = "mtd9000" ] || [ "$cfgname" = "mtd8100" ]; then
+        echo "- Found new devices, using modified version"
+    #    rm -rf "$MODULE_PATH"/system/vendor/etc/powerscntbl.xml
+    #    rm -rf "$MODULE_PATH"/system/vendor/etc/power_app_cfg.xml
+    #    rm -rf "$MODULE_PATH"/system/vendor/etc/powercontable.xml
+    else
+        #echo "- Found old devices, clearing perfhal config"
+        perfcfgs="
         vendor/etc/powerscntbl.xml
         vendor/etc/powercontable.xml
         vendor/etc/power_app_cfg.xml
-        vendor/etc/perf/commonresourceconfigs.xml
-        vendor/etc/perf/targetresourceconfigs.xml
-        vendor/etc/init/init.thermal_core.rc
         "
-    for f in $perfcfgs; do
-        if [ ! -f "/$f" ]; then
-            echo "- Not found /$f, bypass it."
-            rm "$MODULE_PATH/system/$f"
-        fi
-    done
-    #fi
-
+        for f in $perfcfgs; do
+            if [ ! -f "/$f" ]; then
+                echo "- Not found /$f, bypass it."
+                rm "$MODULE_PATH/system/$f"
+            fi
+        done
+    fi
     if [ -d "/data/system/mcd" ]; then
         echo "- Dealing with some limits"
         mv /data/system/mcd /data/system/mcd.bak
@@ -136,44 +131,60 @@ install_powerhal_stub() {
 #Install cooperate modules
 install_sfanalysis() {
     echo "- Installing uperf surfaceflinger analysis"
-    magisk --install-module $MODULE_PATH/sfanalysis-magisk.zip
-    rm $MODULE_PATH/sfanalysis-magisk.zip
+    magisk --install-module "$MODULE_PATH"/sfanalysis-magisk.zip
+    rm "$MODULE_PATH"/sfanalysis-magisk.zip
 }
 install_ssanalysis_old() {
     echo "- Warning! Device not running MIUI should disable it by yourself to avoid some problem!"
     echo "- 警告! 非MIUI设备请手动禁用这个模块避免部分系统问题"
     sleep 10s
-    magisk --install-module $MODULE_PATH/ssanalysis-magisk.zip
-    rm $MODULE_PATH/ssanalysis-magisk.zip
+    magisk --install-module "$MODULE_PATH"/ssanalysis-magisk.zip
+    rm "$MODULE_PATH"/ssanalysis-magisk.zip
 }
 install_ssanalysis() {
 
-    if [ ! -d "/data/adb/modules/ssanalysis" ]; then
-        echo "- Please install uperf system_server analysis by yourself"
-        echo "- It is at /sdcard/Android/yc/uperf/ssanalysis-magisk.zip"
-        cp -r $MODULE_PATH/ssanalysis-magisk.zip /sdcard/Android/yc/uperf/ssanalysis-magisk.zip
-    else
-        if [ -f "/sdcard/Android/yc/uperf/ssanalysis-magisk.zip" ]; then
-            rm /sdcard/Android/yc/uperf/ssanalysis-magisk.zip
-        fi
+    #if [ ! -d "/data/adb/modules/ssanalysis" ]; then
+    #    echo "- Please install uperf system_server analysis by yourself"
+    #    echo "- It is at /sdcard/Android/yc/uperf/ssanalysis-magisk.zip"
+    #    cp -r "$MODULE_PATH"/ssanalysis-magisk.zip /sdcard/Android/yc/uperf/ssanalysis-magisk.zip
+    #else
+    #    if [ -f "/sdcard/Android/yc/uperf/ssanalysis-magisk.zip" ]; then
+    #        rm /sdcard/Android/yc/uperf/ssanalysis-magisk.zip
+    #    fi
+    #fi
+    echo "- Deprecated support of SystemServer Analysis"
+    if [ -f "/sdcard/Android/yc/uperf/ssanalysis-magisk.zip" ]; then
+        rm /sdcard/Android/yc/uperf/ssanalysis-magisk.zip
     fi
-    rm $MODULE_PATH/ssanalysis-magisk.zip
 }
-install_asopt() {
+install_asopt_old() {
+    touch /data/adb/modules/asoul_affinity_opt/remove
+    echo "- Installing AsoulOpt"
+    magisk --install-module "$MODULE_PATH"/asoulopt.zip
+    rm "$MODULE_PATH"/asoulopt.zip
+}
+install_corp() {
     #For we embeded AsoulOpt, detect outside version
+    if [ -d "/data/adb/modules/unity_affinity_opt" ] || [ -d "/data/adb/modules_update/unity_affinity_opt" ]; then
+        rm /data/adb/modules*/unity_affinity_opt
+    fi
+    rm -rf /data/adb/asopt
     if [ -d "/data/adb/modules/asoul_affinity_opt" ]; then
-        CUR_ASOPT_VERSIONCODE="$(grep_prop ASOPT_VERSIONCODE $MODULE_PATH/module.prop)"
+        CUR_ASOPT_VERSIONCODE="$(grep_prop ASOPT_VERSIONCODE "$MODULE_PATH"/module.prop)"
         asopt_module_version="$(grep_prop versionCode /data/adb/modules/asoul_affinity_opt/module.prop)"
-        if [ "$CUR_ASOPT_VERSIONCODE" -ge "$asopt_module_version" ];then
+        if [ "$CUR_ASOPT_VERSIONCODE" -ge "$asopt_module_version" ]; then
             #Using our newer AsoulOpt
             killall -9 AsoulOpt
-            rm -rf /data/adb/modules/asoul_affinity_opt
+            rm -rf /data/adb/modules*/asoul_affinity_opt
         fi
     fi
-    #   touch /data/adb/modules/asoul_affinity_opt/remove
-    #   echo "- Installing AsoulOpt"
-    #   magisk --install-module $MODULE_PATH/asoulopt.zip
-    #rm $MODULE_PATH/asoulopt.zip
+    if [ -d "/data/adb/modules/cpu_limiter" ]; then
+        rm -rf /data/adb/modules/cpu_limiter /data/adb/modules*/cpu_limiter
+        echo "! CPU Limiter is embeded"
+    fi
+    if [ -d "/proc/cpudvfs" ]; then
+        cp -r -f "$MODULE_PATH"/config/cpu_limiter.conf /data/cpu_limiter.conf
+    fi
 }
 #grep_prop comes from https://github.com/topjohnwu/Magisk/blob/master/scripts/util_functions.sh#L30
 grep_prop() {
@@ -185,13 +196,13 @@ grep_prop() {
 }
 
 # get module version
-module_version="$(grep_prop version $MODULE_PATH/module.prop)"
+module_version="$(grep_prop version "$MODULE_PATH"/module.prop)"
 # get module name
-module_name="$(grep_prop name $MODULE_PATH/module.prop)"
+module_name="$(grep_prop name "$MODULE_PATH"/module.prop)"
 # get module id
-module_id="$(grep_prop id $MODULE_PATH/module.prop)"
+#module_id="$(grep_prop id "$MODULE_PATH"/module.prop)"
 # get module author
-module_author="$(grep_prop author $MODULE_PATH/module.prop)"
+module_author="$(grep_prop author "$MODULE_PATH"/module.prop)"
 
 echo ""
 echo "* $module_name https://gitee.com/hamjin/uperf/"
@@ -205,7 +216,7 @@ install_uperf
 install_powerhal_stub
 install_sfanalysis
 install_ssanalysis
-install_asopt
+install_corp
 set_permissions
 
 echo "- Install Finished"

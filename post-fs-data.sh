@@ -15,9 +15,6 @@
 #
 
 MODDIR=${0%/*}
-BASEDIR="$(dirname $(readlink -f "$0"))"
-#touch /data/adb/modules/asoul_affinity_opt/flag/dont_fuck
-#touch /data/adb/modules_update/asoul_affinity_opt/flag/dont_fuck
 lock_val() {
     for p in $2; do
         if [ -f "$p" ]; then
@@ -28,20 +25,25 @@ lock_val() {
         fi
     done
 }
-do_others()
-{
+do_others() {
     rmdir /dev/cpuset/background/untrustedapp
-    #echo "0-3" >/dev/cpuset/background/untrustedapp
     mount -t debugfs none /sys/kernel/debug
 }
-
-if [ -f "$MODDIR/flag/need_recuser" ]; then
-    rm -f $MODDIR/flag/need_recuser
-    true >$MODDIR/disable
-    chmod 666 /data/powercfg.sh
-    chmod 666 /data/powercfg.json
-    rm -rf /data/powercfg.sh /data/powercfg.json
-else
-    true >$MODDIR/flag/need_recuser
-fi
+async_rescue() {
+    if [ -f "$MODDIR/flag/need_recuser" ]; then
+        rm -f "$MODDIR"/flag/need_recuser
+        true >"$MODDIR"/disable
+        true >"$MODDIR"/../sfanalysis/disable
+        true >"$MODDIR"/../ssanalysis/disable
+        chmod 666 /data/powercfg.sh
+        chmod 666 /data/powercfg.json
+        rm -rf /data/powercfg.sh /data/powercfg.json
+    else
+        true >$MODDIR/flag/need_recuser
+        rm "$MODDIR"/disable
+        rm "$MODDIR"/../sfanalysis/disable
+        rm "$MODDIR"/../ssanalysis/disable
+    fi
+}
+(async_rescue &)
 (do_others &)

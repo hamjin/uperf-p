@@ -27,4 +27,5 @@ crash_recuser() {
 
 (crash_recuser &)
 
-sh $BASEDIR/script/initsvc.sh &
+sh "$BASEDIR"/script/initsvc.sh  #>$BASEDIR/boot.log 2>&1
+#echo "$?" >>$BASEDIR/boot.log

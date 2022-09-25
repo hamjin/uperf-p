@@ -1,8 +1,8 @@
 id=uperf
 name=Uperf-For-Mediatek
-version=v3-22.07.24,mtk-22.08.14
-versionCode=220814000
-ASOPT_VERSIONCODE=155
+version=v3-22.09.04,mtk-22.09.26
+versionCode=220926000
+ASOPT_VERSIONCODE=190
 author=Matt Yang & HamJin
 description=Userspace performance controller for android. Repo: https://gitee.com/hamjin/uperf/
 updateJson=https://gitee.com/hamjin/uperf/raw/update/uperf-hamjty-dynamic-v3.json

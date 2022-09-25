@@ -1,6 +1,6 @@
 {
     "meta": {
-        "name": "Dimensity 9000(mt6983)[22.07.24] && mtk [22.07.24]",
+        "name": "Dimensity 9000(mt6983)[22.09.04] && mtk [22.09.26]",
         "author": "yc@coolapk && hamjin@coolapk"
     },
     "modules": {
@@ -49,8 +49,8 @@
                 {
                     "efficiency": 340,
                     "nr": 3,
-                    "typicalPower": 1.95,
-                    "typicalFreq": 2.8,
+                    "typicalPower": 2.45,
+                    "typicalFreq": 2.85,
                     "sweetFreq": 1.8,
                     "plainFreq": 1.0,
                     "freeFreq": 0.4
@@ -58,11 +58,11 @@
                 {
                     "efficiency": 420,
                     "nr": 1,
-                    "typicalPower": 2.95,
-                    "typicalFreq": 3.0,
+                    "typicalPower": 3.55,
+                    "typicalFreq": 3.05,
                     "sweetFreq": 2.1,
                     "plainFreq": 1.6,
-                    "freeFreq": 0.8
+                    "freeFreq": 1.3
                 }
             ]
         },
@@ -78,7 +78,8 @@
                 "gpuIdxMin": "/sys/kernel/ged/hal/custom_boost_gpu_freq",
                 "ddrMin": "/sys/class/devfreq/mtk-dvfsrc-devfreq/userspace/set_freq",
                 "ddrFreq": "/sys/kernel/helio-dvfsrc/dvfsrc_force_vcore_dvfs_opp",
-                "corectl": "/sys/module/mtk_core_ctl/parameters/policy_enable"
+                "coreCtl": "/sys/module/mtk_core_ctl/parameters/policy_enable",
+                "cciBoost": "/sys/kernel/cm_mgr/dbg_cm_mgr"
             }
         },
         "sched": {
@@ -272,7 +273,7 @@
                     "pinned": true,
                     "rules": [
                         {
-                            "k": "^(Greezer|CachedApp|SystemPressure|SensorService)|[Mm]emory",
+                            "k": "^(TaskSnapshot|Greezer|CachedApp|SystemPressure|SensorService)|[Mm]emory",
                             "ac": "bg",
                             "pc": "auto"
                         },
@@ -376,7 +377,17 @@
                             "pc": "ui"
                         },
                         {
-                            "k": "^(RenderThread|GLThread|JNISurfaceText|IJK_External_Re)|[Aa]nim|([.]raster|[.]ui)$",
+                            "k": "^(UnityMain|RenderThread |GameThread)",
+                            "ac": "gtmain",
+                            "pc": "auto"
+                        },
+                        {
+                            "k": "^(Unity|Worker Thread|TaskGraph|RHIThread|GLThread|Thread-|Job.Worker)",
+                            "ac": "gtcoop",
+                            "pc": "auto"
+                        },
+                        {
+                            "k": "^(RenderThread|JNISurfaceText|IJK_External_Re)|[Aa]nim|([.]raster|[.]ui)$",
                             "ac": "ui",
                             "pc": "ui"
                         },
@@ -442,15 +453,16 @@
         },
         "sysfs": {
             "cpusetTa": "0-7",
-            "cpusetFg": "0-5",
-            "cpusetBg": "0-3",
-            "cpusetRe": "0-7",
-            "cpusetSysBg": "1-2",
-            "corectl": "0",
-            "gpuIdxMax": "3",
-            "gpuIdxMin": "30",
+            "cpusetFg": "0-2,4-7",
+            "cpusetBg": "0-2",
+            "cpusetSysBg": "0-2",
+            "cpusetRe": "0-6",
+            "coreCtl": "1",
+            "gpuIdxMax": "03",
+            "gpuIdxMin": "40",
             "ddrMin": "800000000",
-            "ddrFreq": "99"
+            "ddrFreq": "99",
+            "cciBoost": "dsu_mode 0"
         },
         "sched": {
             "scene": "idle"
@@ -460,14 +472,16 @@
         "balance": {
             "*": {
                 "cpu.latencyTime": 0.2,
-                "cpu.slowLimitPower": 2.5,
-                "cpu.fastLimitPower": 3.0,
-                "cpu.fastLimitCapacity": 20.0,
-                "cpu.margin": 0.25,
-                "sysfs.corectl": "0",
+                "cpu.slowLimitPower": 2.0,
+                "cpu.fastLimitPower": 2.2,
+                "cpu.fastLimitCapacity": 16.0,
+                "cpu.margin": 0.2,
+                "sysfs.coreCtl": "0",
                 "sysfs.gpuIdxMax": "20",
                 "sysfs.gpuIdxMin": "40",
-                "sysfs.ddrMin": "2133000000"
+                "sysfs.ddrFreq": "99",
+                "sysfs.ddrMin": "1866000000",
+                "sysfs.cciBoost": "dsu_mode 0"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.04,
@@ -475,12 +489,12 @@
                 "cpu.predictThd": 0.3,
                 "cpu.limitEfficiency": true,
                 "sched.scene": "idle",
+                "sysfs.coreCtl": "1",
                 "sysfs.ddrMin": "800000000"
             },
             "touch": {
                 "cpu.baseSampleTime": 0.04,
-                "sched.scene": "touch",
-                "sysfs.ddrMin": "1866000000"
+                "sched.scene": "touch"
             },
             "trigger": {
                 "cpu.latencyTime": 0.0,
@@ -494,7 +508,8 @@
             "junk": {
                 "cpu.burst": 0.6,
                 "sched.scene": "touch",
-                "sysfs.ddrFreq": "3"
+                "sysfs.ddrMin":"2667000000",
+                "sysfs.cciBoost": "dsu_mode 1"
             },
             "switch": {
                 "cpu.latencyTime": 0.0,
@@ -503,7 +518,8 @@
                 "cpu.fastLimitRecoverScale": 0.1,
                 "cpu.margin": 0.4,
                 "sched.scene": "boost",
-                "sysfs.ddrFreq": "3"
+                "sysfs.ddrMin":"2667000000",
+                "sysfs.cciBoost": "dsu_mode 1"
             }
         },
         "powersave": {
@@ -515,8 +531,10 @@
                 "cpu.margin": 0.1,
                 "sysfs.gpuIdxMax": "35",
                 "sysfs.gpuIdxMin": "40",
+                "sysfs.ddrFreq": "99",
                 "sysfs.ddrMin": "800000000",
-                "sysfs.corectl": "0"
+                "sysfs.coreCtl": "1",
+                "sysfs.cciBoost": "dsu_mode 0"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.04,
@@ -557,11 +575,13 @@
                 "cpu.slowLimitPower": 4.0,
                 "cpu.fastLimitPower": 10.0,
                 "cpu.fastLimitCapacity": 360.0,
-                "cpu.margin": 0.8,
+                "cpu.margin": 0.48,
                 "sysfs.gpuIdxMax": "30",
                 "sysfs.gpuIdxMin": "40",
+                "sysfs.ddrFreq": "99",
                 "sysfs.ddrMin": "2667000000",
-                "sysfs.corectl": "0"
+                "sysfs.coreCtl": "0",
+                "sysfs.cciBoost": "dsu_mode 1"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.01,
@@ -581,20 +601,18 @@
             },
             "junk": {
                 "cpu.burst": 0.5,
-                "sched.scene": "touch",
-                "sysfs.ddrFreq": "3"
+                "sched.scene": "touch"
             },
             "switch": {
                 "cpu.burst": 0.2,
-                "sched.scene": "boost",
-                "sysfs.ddrFreq": "3"
+                "sched.scene": "boost"
             }
         },
         "pedestal": {
             "*": {
                 "cpu.latencyTime": 0.0,
-                "cpu.slowLimitPower": 8.0,
-                "cpu.fastLimitPower": 15.1,
+                "cpu.slowLimitPower": 998.0,
+                "cpu.fastLimitPower": 999.0,
                 "cpu.fastLimitCapacity": 999.0,
                 "cpu.fastLimitRecoverScale": 10.0,
                 "cpu.margin": 1.0,
@@ -602,9 +620,10 @@
                 "sched.scene": "boost",
                 "sysfs.gpuIdxMax": "28",
                 "sysfs.gpuIdxMin": "40",
-                "sysfs.corectl": "0",
-                "sysfs.ddrMin": "2667000000",
-                "sysfs.ddrFreq": "3"
+                "sysfs.coreCtl": "0",
+                "sysfs.ddrMin": "5500000000",
+                "sysfs.ddrFreq": "99",
+                "sysfs.cciBoost": "dsu_mode 1"
             },
             "idle": {},
             "touch": {},
@@ -616,14 +635,16 @@
         "fast": {
             "*": {
                 "cpu.latencyTime": 0.0,
-                "cpu.slowLimitPower": 3.5,
-                "cpu.fastLimitPower": 7.0,
-                "cpu.fastLimitCapacity": 120.0,
-                "cpu.margin": 0.6,
+                "cpu.slowLimitPower": 2.5,
+                "cpu.fastLimitPower": 2.7,
+                "cpu.fastLimitCapacity": 12.0,
+                "cpu.margin": 0.42,
                 "sysfs.gpuIdxMax": "10",
                 "sysfs.gpuIdxMin": "40",
+                "sysfs.ddrFreq": "99",
                 "sysfs.ddrMin": "2667000000",
-                "sysfs.corectl": "0"
+                "sysfs.coreCtl": "0",
+                "sysfs.cciBoost": "dsu_mode 1"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.01,
@@ -643,13 +664,11 @@
             },
             "junk": {
                 "cpu.burst": 0.5,
-                "sched.scene": "touch",
-                "sysfs.ddrFreq": "3"
+                "sched.scene": "touch"
             },
             "switch": {
                 "cpu.burst": 0.2,
-                "sched.scene": "boost",
-                "sysfs.ddrFreq": "3"
+                "sched.scene": "boost"
             }
         }
     }
