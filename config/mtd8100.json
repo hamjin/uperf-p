@@ -462,7 +462,7 @@
             "gpuIdxMin": "40",
             "ddrMin": "800000000",
             "ddrFreq": "99",
-            "cciBoost": "dsu_mode 0"
+            "cciBoost": "dsu_perf 0"
         },
         "sched": {
             "scene": "idle"
@@ -478,10 +478,10 @@
                 "cpu.margin": 0.2,
                 "sysfs.gpuIdxMax": "15",
                 "sysfs.gpuIdxMin": "40",
-                "sysfs.coreCtl": "0",
+                "sysfs.coreCtl": "1",
                 "sysfs.ddrFreq": "99",
                 "sysfs.ddrMin": "1866000000",
-                "sysfs.cciBoost": "dsu_mode 0"
+                "sysfs.cciBoost": "dsu_perf 0"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.04,
@@ -510,7 +510,8 @@
                 "cpu.burst": 0.6,
                 "sched.scene": "touch",
                 "sysfs.ddrMin": "2667000000",
-                "sysfs.cciBoost": "dsu_mode 1"
+                "sysfs.coreCtl": "0",
+                "sysfs.cciBoost": "dsu_perf 3"
             },
             "switch": {
                 "cpu.latencyTime": 0.0,
@@ -520,7 +521,8 @@
                 "cpu.margin": 0.4,
                 "sched.scene": "boost",
                 "sysfs.ddrMin": "2667000000",
-                "sysfs.cciBoost": "dsu_mode 1"
+                "sysfs.coreCtl": "0",
+                "sysfs.cciBoost": "dsu_perf 3"
             }
         },
         "powersave": {
@@ -534,7 +536,7 @@
                 "sysfs.gpuIdxMin": "40",
                 "sysfs.coreCtl": "1",
                 "sysfs.ddrMin": "800000000",
-                "sysfs.cciBoost": "dsu_mode 0"
+                "sysfs.cciBoost": "dsu_perf 0"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.04,
@@ -578,10 +580,10 @@
                 "cpu.margin": 0.48,
                 "sysfs.gpuIdxMax": "10",
                 "sysfs.gpuIdxMin": "40",
-                "sysfs.coreCtl": "0",
+                "sysfs.coreCtl": "1",
                 "sysfs.ddrFreq": "99",
                 "sysfs.ddrMin": "2667000000",
-                "sysfs.cciBoost": "dsu_mode 1"
+                "sysfs.cciBoost": "dsu_perf 3"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.01,
@@ -593,7 +595,8 @@
             },
             "trigger": {
                 "cpu.margin": 0.8,
-                "sched.scene": "touch"
+                "sched.scene": "touch",
+                "sysfs.coreCtl": "0"
             },
             "gesture": {
                 "cpu.margin": 0.8,
@@ -601,11 +604,13 @@
             },
             "junk": {
                 "cpu.burst": 0.5,
-                "sched.scene": "touch"
+                "sched.scene": "touch",
+                "sysfs.coreCtl": "0"
             },
             "switch": {
                 "cpu.burst": 0.2,
-                "sched.scene": "boost"
+                "sched.scene": "boost",
+                "sysfs.coreCtl": "0"
             }
         },
         "pedestal": {
@@ -623,7 +628,7 @@
                 "sysfs.coreCtl": "0",
                 "sysfs.ddrFreq": "99",
                 "sysfs.ddrMin": "5500000000",
-                "sysfs.cciBoost": "dsu_mode 1"
+                "sysfs.cciBoost": "dsu_perf 3"
             },
             "idle": {},
             "touch": {},
@@ -643,7 +648,7 @@
                 "sysfs.gpuIdxMin": "40",
                 "sysfs.coreCtl": "0",
                 "sysfs.ddrMin": "2667000000",
-                "sysfs.cciBoost": "dsu_mode 1"
+                "sysfs.cciBoost": "dsu_perf 3"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.01,

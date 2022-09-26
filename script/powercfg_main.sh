@@ -29,7 +29,7 @@ case "$action" in
 "powersave" | "balance" |"performance" |  "fast" ) echo "$1" >"$USER_PATH"/cur_powermode.txt ;;
 "init") echo "balance" >"$USER_PATH/cur_powermode.txt" ;;
 "pedestal")
-    if [ "$(cat $USER_PATH/uperf.json | grep -E )" != "" ];then
+    if [ "$(grep -E "pedestal" < "$USER_PATH"/uperf.json)" != "" ];then
         echo "pedestal" >"$USER_PATH"/cur_powermode.txt
     else
         echo "performance" >"$USER_PATH"/cur_powermode.txt
@@ -40,15 +40,15 @@ case "$action" in
     echo "balance" >"$USER_PATH/cur_powermode.txt"
     ;;
 esac
-if [ -f "/data/cpu_limiter.conf" ];then
-case "$action" in
-"powersave") sed -i "s/targetTemp=.*/targetTemp=60000/g" /data/cpu_limiter.conf ;;
-"balance" | "init") sed -i "s/targetTemp=.*/targetTemp=75000/g" /data/cpu_limiter.conf;;
-"performance" ) sed -i "s/targetTemp=.*/targetTemp=89000/g" /data/cpu_limiter.conf;;
-"fast" | "pedestal") sed -i "s/targetTemp=.*/targetTemp=83000/g" /data/cpu_limiter.conf;;
-*) 
-    echo "Failed to apply unknown action '$action'." 
-    sed -i "s/targetTemp=.*/targetTemp=75000/g" /data/cpu_limiter.conf
-    ;;
-esac
-fi
+#if [ -f "/data/cpu_limiter.conf" ];then
+#case "$action" in
+#"powersave") sed -i "s/targetTemp=.*/targetTemp=70000/g" /data/cpu_limiter.conf ;;
+#"balance" | "init") sed -i "s/targetTemp=.*/targetTemp=80000/g" /data/cpu_limiter.conf;;
+#"performance" ) sed -i "s/targetTemp=.*/targetTemp=95000/g" /data/cpu_limiter.conf;;
+#"fast" | "pedestal") sed -i "s/targetTemp=.*/targetTemp=90000/g" /data/cpu_limiter.conf;;
+#*) 
+#    echo "Failed to apply unknown action '$action'." 
+#    sed -i "s/targetTemp=.*/targetTemp=80000/g" /data/cpu_limiter.conf
+#    ;;
+#esac
+#fi

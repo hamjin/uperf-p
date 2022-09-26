@@ -38,7 +38,7 @@ cpulimiter_start() {
     nohup "$BIN_PATH"/cpu_limiter >/dev/null 2>&1 &
 }
 cpulimiter_testdevice(){
-    if [ -d /proc/gpufreqv2 ];then
+    if [ -d /proc/cpudvfs ];then
         cpulimiter_start
     fi
 }

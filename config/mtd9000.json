@@ -40,10 +40,10 @@
                 {
                     "efficiency": 140,
                     "nr": 4,
-                    "typicalPower": 0.53,
+                    "typicalPower": 0.83,
                     "typicalFreq": 1.8,
-                    "sweetFreq": 1.6,
-                    "plainFreq": 1.2,
+                    "sweetFreq": 1.3,
+                    "plainFreq": 0.25,
                     "freeFreq": 0.2
                 },
                 {
@@ -52,7 +52,7 @@
                     "typicalPower": 2.45,
                     "typicalFreq": 2.85,
                     "sweetFreq": 1.8,
-                    "plainFreq": 1.0,
+                    "plainFreq": 0.5,
                     "freeFreq": 0.4
                 },
                 {
@@ -462,7 +462,7 @@
             "gpuIdxMin": "40",
             "ddrMin": "800000000",
             "ddrFreq": "99",
-            "cciBoost": "dsu_mode 0"
+            "cciBoost": "dsu_perf 0"
         },
         "sched": {
             "scene": "idle"
@@ -476,12 +476,12 @@
                 "cpu.fastLimitPower": 2.2,
                 "cpu.fastLimitCapacity": 16.0,
                 "cpu.margin": 0.2,
-                "sysfs.coreCtl": "0",
+                "sysfs.coreCtl": "1",
                 "sysfs.gpuIdxMax": "20",
                 "sysfs.gpuIdxMin": "40",
                 "sysfs.ddrFreq": "99",
                 "sysfs.ddrMin": "1866000000",
-                "sysfs.cciBoost": "dsu_mode 0"
+                "sysfs.cciBoost": "dsu_perf 0"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.04,
@@ -508,8 +508,9 @@
             "junk": {
                 "cpu.burst": 0.6,
                 "sched.scene": "touch",
-                "sysfs.ddrMin":"2667000000",
-                "sysfs.cciBoost": "dsu_mode 1"
+                "sysfs.ddrMin": "2667000000",
+                "sysfs.coreCtl": "0",
+                "sysfs.cciBoost": "dsu_perf 3"
             },
             "switch": {
                 "cpu.latencyTime": 0.0,
@@ -518,8 +519,9 @@
                 "cpu.fastLimitRecoverScale": 0.1,
                 "cpu.margin": 0.4,
                 "sched.scene": "boost",
-                "sysfs.ddrMin":"2667000000",
-                "sysfs.cciBoost": "dsu_mode 1"
+                "sysfs.ddrMin": "2667000000",
+                "sysfs.coreCtl": "0",
+                "sysfs.cciBoost": "dsu_perf 3"
             }
         },
         "powersave": {
@@ -534,7 +536,7 @@
                 "sysfs.ddrFreq": "99",
                 "sysfs.ddrMin": "800000000",
                 "sysfs.coreCtl": "1",
-                "sysfs.cciBoost": "dsu_mode 0"
+                "sysfs.cciBoost": "dsu_perf 0"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.04,
@@ -576,12 +578,12 @@
                 "cpu.fastLimitPower": 10.0,
                 "cpu.fastLimitCapacity": 360.0,
                 "cpu.margin": 0.48,
-                "sysfs.gpuIdxMax": "30",
+                "sysfs.gpuIdxMax": "03",
                 "sysfs.gpuIdxMin": "40",
                 "sysfs.ddrFreq": "99",
                 "sysfs.ddrMin": "2667000000",
-                "sysfs.coreCtl": "0",
-                "sysfs.cciBoost": "dsu_mode 1"
+                "sysfs.coreCtl": "1",
+                "sysfs.cciBoost": "dsu_perf 3"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.01,
@@ -597,15 +599,18 @@
             },
             "gesture": {
                 "cpu.margin": 0.8,
-                "sched.scene": "touch"
+                "sched.scene": "touch",
+                "sysfs.coreCtl": "0"
             },
             "junk": {
                 "cpu.burst": 0.5,
-                "sched.scene": "touch"
+                "sched.scene": "touch",
+                "sysfs.coreCtl": "0"
             },
             "switch": {
                 "cpu.burst": 0.2,
-                "sched.scene": "boost"
+                "sched.scene": "boost",
+                "sysfs.coreCtl": "0"
             }
         },
         "pedestal": {
@@ -623,7 +628,7 @@
                 "sysfs.coreCtl": "0",
                 "sysfs.ddrMin": "5500000000",
                 "sysfs.ddrFreq": "99",
-                "sysfs.cciBoost": "dsu_mode 1"
+                "sysfs.cciBoost": "dsu_perf 3"
             },
             "idle": {},
             "touch": {},
@@ -644,7 +649,7 @@
                 "sysfs.ddrFreq": "99",
                 "sysfs.ddrMin": "2667000000",
                 "sysfs.coreCtl": "0",
-                "sysfs.cciBoost": "dsu_mode 1"
+                "sysfs.cciBoost": "dsu_perf 3"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.01,

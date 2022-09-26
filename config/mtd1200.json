@@ -580,15 +580,21 @@
                 "sched.scene": "idle"
             },
             "touch": {
-                "sched.scene": "touch"
+                "sched.scene": "touch",
+                "sysfs.ddrboost": "1",
+                "sysfs.cciboost": "1"
             },
             "trigger": {
                 "cpu.margin": 0.8,
-                "sched.scene": "touch"
+                "sched.scene": "touch",
+                "sysfs.ddrboost": "1",
+                "sysfs.cciboost": "1"
             },
             "gesture": {
                 "cpu.margin": 0.8,
-                "sched.scene": "touch"
+                "sched.scene": "touch",
+                "sysfs.ddrboost": "1",
+                "sysfs.cciboost": "1"
             },
             "junk": {
                 "cpu.burst": 0.5,
@@ -616,8 +622,7 @@
                 "sysfs.gpuIdxMax": "00",
                 "sysfs.gpuIdxMin": "23",
                 "sysfs.ddrboost": "1",
-                "sysfs.cciboost": "1",
-                "sysfs.ddrFreq": "0"
+                "sysfs.cciboost": "1"
             },
             "idle": {},
             "touch": {},

@@ -99,11 +99,11 @@ install_powerhal_stub() {
     # vendor/etc/perf/targetresourceconfigs.json: qualcomm perf hal resource overrides
     if [ "$cfgname" = "mtd9000" ] || [ "$cfgname" = "mtd8100" ]; then
         echo "- Found new devices, using modified version"
-    #    rm -rf "$MODULE_PATH"/system/vendor/etc/powerscntbl.xml
-    #    rm -rf "$MODULE_PATH"/system/vendor/etc/power_app_cfg.xml
-    #    rm -rf "$MODULE_PATH"/system/vendor/etc/powercontable.xml
+        rm -rf "$MODULE_PATH"/system/vendor/etc/powerscntbl.xml.empty
+        rm -rf "$MODULE_PATH"/system/vendor/etc/power_app_cfg.xml.empty
+        rm -rf "$MODULE_PATH"/system/vendor/etc/powercontable.xml.empty
     else
-        #echo "- Found old devices, clearing perfhal config"
+        echo "- Found old devices, clearing perfhal config"
         perfcfgs="
         vendor/etc/powerscntbl.xml
         vendor/etc/powercontable.xml
@@ -113,6 +113,10 @@ install_powerhal_stub() {
             if [ ! -f "/$f" ]; then
                 echo "- Not found /$f, bypass it."
                 rm "$MODULE_PATH/system/$f"
+                rm "$MODULE_PATH/system/$f.empty"
+            else
+                cat "$MODULE_PATH/system/$f.empty" >"$MODULE_PATH/system/$f"
+                rm "$MODULE_PATH/system/$f.empty"
             fi
         done
     fi
@@ -178,13 +182,13 @@ install_corp() {
             rm -rf /data/adb/modules*/asoul_affinity_opt
         fi
     fi
-    if [ -d "/data/adb/modules/cpu_limiter" ]; then
-        rm -rf /data/adb/modules/cpu_limiter /data/adb/modules*/cpu_limiter
-        echo "! CPU Limiter is embeded"
-    fi
-    if [ -d "/proc/cpudvfs" ]; then
-        cp -r -f "$MODULE_PATH"/config/cpu_limiter.conf /data/cpu_limiter.conf
-    fi
+    #if [ -d "/data/adb/modules/cpu_limiter" ]; then
+    #    rm -rf /data/adb/modules/cpu_limiter /data/adb/modules*/cpu_limiter
+    #    echo "! CPU Limiter is embeded"
+    #fi
+    #if [ -d "/proc/cpudvfs" ]; then
+    #    cp -r -f "$MODULE_PATH"/config/cpu_limiter.conf /data/cpu_limiter.conf
+    #fi
 }
 #grep_prop comes from https://github.com/topjohnwu/Magisk/blob/master/scripts/util_functions.sh#L30
 grep_prop() {
