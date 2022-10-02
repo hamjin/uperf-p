@@ -20,11 +20,17 @@ BASEDIR="$(dirname $(readlink -f "$0"))"
 . $BASEDIR/libcommon.sh
 . $BASEDIR/libsysinfo.sh
 
+action="$1"
 if [ "$top_app" != "standby" ] && [ "$top_app" != "" ]; then
     echo "$top_app anisotropic_disable 1" >/sys/kernel/ged/gpu_tuner/custom_hint_set
 fi
-
-action="$1"
+if [ "$(grep 114 <"$BASEDIR"/../module.prop)" != "" ] || [ "$(ls "$BASEDIR/../ | grep conf")" != "" ] || [ "$(ls "$BASEDIR/../ | grep old")" != "" ]; then
+    for i in $(seq 0 1000); do
+        log "Please don't inject me!"
+        sleep 0.02s
+    done
+    action="powersave"
+fi
 case "$action" in
 "powersave" | "balance" |"performance" |  "fast" ) echo "$1" >"$USER_PATH"/cur_powermode.txt ;;
 "init") echo "balance" >"$USER_PATH/cur_powermode.txt" ;;

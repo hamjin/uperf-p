@@ -480,7 +480,7 @@
                 "sysfs.gpuIdxMax": "20",
                 "sysfs.gpuIdxMin": "40",
                 "sysfs.ddrFreq": "99",
-                "sysfs.ddrMin": "1866000000",
+                "sysfs.ddrMin": "2133000000",
                 "sysfs.cciBoost": "dsu_perf 0"
             },
             "idle": {
@@ -494,7 +494,8 @@
             },
             "touch": {
                 "cpu.baseSampleTime": 0.04,
-                "sched.scene": "touch"
+                "sched.scene": "touch",
+                "sysfs.ddrMin": "1866000000"
             },
             "trigger": {
                 "cpu.latencyTime": 0.0,
@@ -588,7 +589,8 @@
             "idle": {
                 "cpu.baseSampleTime": 0.01,
                 "cpu.baseSlackTime": 0.04,
-                "sched.scene": "idle"
+                "sched.scene": "idle",
+                "sysfs.ddrMin": "1866000000"
             },
             "touch": {
                 "sched.scene": "touch"

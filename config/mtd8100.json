@@ -43,7 +43,7 @@
                     "typicalPower": 0.46,
                     "typicalFreq": 2.0,
                     "sweetFreq": 1.6,
-                    "plainFreq": 1.2,
+                    "plainFreq": 0.25,
                     "freeFreq": 0.2
                 },
                 {
@@ -52,7 +52,7 @@
                     "typicalPower": 1.56,
                     "typicalFreq": 2.8,
                     "sweetFreq": 1.9,
-                    "plainFreq": 1.0,
+                    "plainFreq": 0.5,
                     "freeFreq": 0.4
                 },
                 {
@@ -61,8 +61,8 @@
                     "typicalPower": 1.56,
                     "typicalFreq": 2.8,
                     "sweetFreq": 2.2,
-                    "plainFreq": 1.6,
-                    "freeFreq": 0.6
+                    "plainFreq": 1.2,
+                    "freeFreq": 0.8
                 }
             ]
         },
@@ -480,7 +480,7 @@
                 "sysfs.gpuIdxMin": "40",
                 "sysfs.coreCtl": "1",
                 "sysfs.ddrFreq": "99",
-                "sysfs.ddrMin": "1866000000",
+                "sysfs.ddrMin": "2133000000",
                 "sysfs.cciBoost": "dsu_perf 0"
             },
             "idle": {
@@ -588,7 +588,8 @@
             "idle": {
                 "cpu.baseSampleTime": 0.01,
                 "cpu.baseSlackTime": 0.04,
-                "sched.scene": "idle"
+                "sched.scene": "idle",
+                "sysfs.ddrMin": "1866000000"
             },
             "touch": {
                 "sched.scene": "touch"

@@ -43,8 +43,8 @@
                     "typicalPower": 0.36,
                     "typicalFreq": 2.0,
                     "sweetFreq": 1.4,
-                    "plainFreq": 1.2,
-                    "freeFreq": 0.6
+                    "plainFreq": 0.6,
+                    "freeFreq": 0.5
                 },
                 {
                     "efficiency": 320,
@@ -52,8 +52,8 @@
                     "typicalPower": 1.44,
                     "typicalFreq": 2.6,
                     "sweetFreq": 1.7,
-                    "plainFreq": 1.0,
-                    "freeFreq": 0.7
+                    "plainFreq": 0.5,
+                    "freeFreq": 0.4
                 },
                 {
                     "efficiency": 320,
@@ -62,7 +62,7 @@
                     "typicalFreq": 2.6,
                     "sweetFreq": 2.1,
                     "plainFreq": 1.4,
-                    "freeFreq": 0.8
+                    "freeFreq": 0.6
                 }
             ]
         },

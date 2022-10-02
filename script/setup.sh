@@ -181,7 +181,29 @@ install_corp() {
             killall -9 AsoulOpt
             rm -rf /data/adb/modules*/asoul_affinity_opt
         fi
+        config="/data/asopt.conf"
+        note="# 若在游戏中遇到莫名卡顿等问题,可尝试将cpuset调为0
+# 但不生效的概率会提升
+# 若在和平精英中遇到了人多时卡顿问题,可尝试将pubgHeavy调为1
+# 但多数情况下会负优化"
+
+        cfg_cpuset=$(grep cpuset= $config)
+        cfg_pubgHeavy=$(grep pubgHeavy= $config)
+
+        if [ -z $cfg_cpuset ]; then
+            cfg_cpuset="cpuset=1"
+        fi
+
+        if [ -z $cfg_pubgHeavy ]; then
+            cfg_pubgHeavy="pubgHeavy=0"
+        fi
+
+        echo "$note" >$config
+        echo "$cfg_cpuset" >>$config
+        echo "$cfg_pubgHeavy" >>$config
+
     fi
+
     #if [ -d "/data/adb/modules/cpu_limiter" ]; then
     #    rm -rf /data/adb/modules/cpu_limiter /data/adb/modules*/cpu_limiter
     #    echo "! CPU Limiter is embeded"

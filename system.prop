@@ -2,13 +2,12 @@
 # Example: Change dpi
 # ro.sf.lcd_density=320
 #HardCoder
-persist.sys.hardcoder.name="/dev/null"
+persist.sys.hardcoder.name="null"
 #system
 persist.sys.thermal.config=10
 # headroom for GC
 dalvik.vm.heapminfree=8m
 dalvik.vm.heapmaxfree=12m
-#Why MIUI love usap????
 persist.sys.usap_pool_enabled=true
 persist.device_config.runtime_native.usap_pool_enabled=true
 persist.log.tag.libPowerHal=F
@@ -33,3 +32,6 @@ ro.miui.affinity.sfui=0-2,4-5
 ro.miui.affinity.sfre=0-2,4-5
 ro.minui.affinity.sfre=0-2,4-5
 ro.lmk.use_minfree_levels=false
+persist.device_config.runtime_native_boot.iorap_perfetto_enable=1
+persist.device_config.runtime_native_boot.iorap_readahead_enable=1
+ro.iorapd.enable=true

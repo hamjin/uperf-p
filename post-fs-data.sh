@@ -27,7 +27,9 @@ lock_val() {
 }
 do_others() {
     rmdir /dev/cpuset/background/untrustedapp
-    mount -t debugfs none /sys/kernel/debug
+    if [ "$(getprop ro.system.build.version.sdk)" -ge 31 ]; then
+        if [ -d "/sys/kernel/debug" ];then mount -t debugfs none /sys/kernel/debug; fi
+    fi
 }
 async_rescue() {
     if [ -f "$MODDIR/flag/need_recuser" ]; then

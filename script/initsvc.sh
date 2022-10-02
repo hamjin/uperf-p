@@ -54,4 +54,3 @@ top_app="com.android.systemui" sh /data/powercfg.sh "init"
 
 asopt_testversion
 uperf_start
-cpulimiter_start

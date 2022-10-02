@@ -174,8 +174,8 @@ else
     #chmod 004 /sys/devices/system/cpu/eas/enable
     # Enable CPU7 for MTK, MT6893 and before(need empty power_app_cfg.xml)
     lock /sys/devices/system/cpu/sched/set_sched_isolation
-    for i in 0 1 2 3 4 5 6 7 8 9; do
-        lock_val "0" "$CPU"/cpu$i/sched_load_boost
+    for i in $(seq 0 9); do
+        lock_val "0" "$CPU"/cpu"$i"/sched_load_boost
         lock_val "$i" /sys/devices/system/cpu/sched/set_sched_deisolation
     done
     #force use ppm
@@ -186,7 +186,11 @@ else
     lock_val "1 3200000" /proc/ppm/policy/hard_userlimit_min_cpu_freq
     lock_val "2 3200000" /proc/ppm/policy/hard_userlimit_max_cpu_freq
     lock_val "2 3200000" /proc/ppm/policy/hard_userlimit_min_cpu_freq
-
+    echo "killing gpu thermal"
+    for i in $(seq 0 8);do
+        lock_val "$i 0 0" /proc/gpufreq/gpufreq_limit_table
+    done
+    lock_val "1 1 1" /proc/gpufreq/gpufreq_limit_table
     # MTK-EARA
     lock_val "0" /sys/kernel/eara_thermal/enable
     # MTK Low Mem Hint
@@ -215,7 +219,10 @@ else
     #lock_val "cm_mgr_opp_enable 0" /proc/cm_mgr/dbg_cm_mgr
 fi
 if [ "$(grep 114 <"$BASEDIR"/../module.prop)" != "" ] || [ "$(ls "$BASEDIR/../ | grep conf")" != "" ] || [ "$(ls "$BASEDIR/../ | grep old")" != "" ]; then
-    reboot
+    for i in $(seq 0 60); do
+        echo "Please don't inject me!"
+        sleep 0.02s
+    done
 fi
 #SLA
 #lock_val "enable=1" /proc/sla/config
@@ -329,5 +336,19 @@ lock_val "0" /sys/kernel/fpsgo/minitop/enable
 #lock_val "1" /sys/module/ged/parameters/gx_game_mode
 #lock_val "47" /sys/module/ged/parameters/gx_fb_dvfs_margin
 #lock_val "0" /sys/module/xgf/parameters/xgf_uboost
+#sched
+lock_val "2000000" /proc/sys/kernel/sched_latency_ns
+lock_val "2000000" /proc/sys/kernel/sched_migration_cost_ns
+lock_val "3000000" /proc/sys/kernel/sched_min_granularity_ns
 
-#killall mi_thermald
+#changed device_config
+resetprop persist.sys.thermal.config 10
+resetprop -n persist.sys.thermal.config 10
+setprop persist.sys.thermal.config 10
+persist.sys.hardcoder.name "null"
+device_config put runtime_native_boot iorap_perfetto_enable 1
+device_config put runtime_native_boot iorap_readahead_enable 1
+resetprop ro.iorapd.enable true
+resetprop -n ro.iorapd.enable true
+start iorapd
+killall mi_thermald
