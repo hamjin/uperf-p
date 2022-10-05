@@ -181,6 +181,11 @@ install_corp() {
             rm -rf /data/adb/modules*/asoul_affinity_opt
         fi
     fi
+    rm -rf /data/adb/asopt
+    mkdir -p /sdcard/Android/asopt
+    CONFIG_PATH="/sdcard/Android/asopt/asopt.conf"
+    LOG_PATH="/sdcard/Android/asopt/asopt.log"
+    echo 
     echo "- Installing embeded AsoulOpt"
     echo
     echo "- You need to uninstall or disable other schedulers"
@@ -194,11 +199,6 @@ install_corp() {
     if [ -d /data/adb/modules/unity_affinity_opt ]; then
         mv /data/adb/modules/unity_affinity_opt /data/adb/modules/asoul_affinity_opt
     fi
-
-    rm -rf /data/adb/asopt
-    mkdir -p /sdcard/Android/asopt
-    CONFIG_PATH="/sdcard/Android/asopt/asopt.conf"
-    LOG_PATH="/sdcard/Android/asopt/asopt.log"
     note="# cpuset：是否使用cpuset控制游戏线程
 # 0：使用syscall
 # 1：使用cpuset
