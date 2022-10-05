@@ -180,25 +180,26 @@ install_corp() {
             killall -9 AsoulOpt
             rm -rf /data/adb/modules*/asoul_affinity_opt
         fi
-        echo "- Installing embeded AsoulOpt"
-        echo
-        echo "- You need to uninstall or disable other schedulers"
-        echo "- Like Scene-Online, Scene-Traditional, Femind, and CuToolbox(CupurumAdjustment)"
-        echo "- You can tweak configs in $CONFIG_PATH"
-        echo "- You can find the log in $LOG_PATH"
-        echo "- If there is a log tagged 'E' in the log file, you can submit a feedback with the log."
-        echo "- Others are normal situation"
-        echo 
+    fi
+    echo "- Installing embeded AsoulOpt"
+    echo
+    echo "- You need to uninstall or disable other schedulers"
+    echo "- Like Scene-Online, Scene-Traditional, Femind, and CuToolbox(CupurumAdjustment)"
+    echo "- You can tweak configs in $CONFIG_PATH"
+    echo "- You can find the log in $LOG_PATH"
+    echo "- If there is a log tagged 'E' in the log file, you can submit a feedback with the log."
+    echo "- Others are normal situation"
+    echo
 
-        if [ -d /data/adb/modules/unity_affinity_opt ]; then
-            mv /data/adb/modules/unity_affinity_opt /data/adb/modules/asoul_affinity_opt
-        fi
+    if [ -d /data/adb/modules/unity_affinity_opt ]; then
+        mv /data/adb/modules/unity_affinity_opt /data/adb/modules/asoul_affinity_opt
+    fi
 
-        rm -rf /data/adb/asopt
-        mkdir -p /sdcard/Android/asopt
-        CONFIG_PATH="/sdcard/Android/asopt/asopt.conf"
-        LOG_PATH="/sdcard/Android/asopt/asopt.log"
-        note="# cpuset：是否使用cpuset控制游戏线程
+    rm -rf /data/adb/asopt
+    mkdir -p /sdcard/Android/asopt
+    CONFIG_PATH="/sdcard/Android/asopt/asopt.conf"
+    LOG_PATH="/sdcard/Android/asopt/asopt.log"
+    note="# cpuset：是否使用cpuset控制游戏线程
 # 0：使用syscall
 # 1：使用cpuset
 # 若在游戏中遇到莫名卡顿等问题
@@ -213,29 +214,27 @@ install_corp() {
 # 若遇到了一些奇怪的问题
 # 可尝试调为0，但会降低游戏性能
 "
-        cpuset=$(grep cpuset= $CONFIG_PATH)
-        preempt=$(grep preempt= $CONFIG_PATH)
+    cpuset=$(grep cpuset= $CONFIG_PATH)
+    preempt=$(grep preempt= $CONFIG_PATH)
 
-        if [[ ! -f $CONFIG_PATH ]]; then
-            cpuset=$(grep cpuset= /data/asopt.conf)
-            preempt=$(grep preempt= /data/asopt.conf)
+    if [[ ! -f $CONFIG_PATH ]]; then
+        cpuset=$(grep cpuset= /data/asopt.conf)
+        preempt=$(grep preempt= /data/asopt.conf)
 
-            rm /data/asopt.conf
-        fi
-
-        if [[ -z $cpuset ]]; then
-            cpuset="cpuset=1"
-        fi
-
-        if [[ -z $preempt ]]; then
-            preempt="preempt=1"
-        fi
-
-        echo "$note" >$CONFIG_PATH
-        echo "$cpuset" >>$CONFIG_PATH
-        echo "$preempt" >>$CONFIG_PATH
-
+        rm /data/asopt.conf
     fi
+
+    if [[ -z $cpuset ]]; then
+        cpuset="cpuset=1"
+    fi
+
+    if [[ -z $preempt ]]; then
+        preempt="preempt=1"
+    fi
+
+    echo "$note" >$CONFIG_PATH
+    echo "$cpuset" >>$CONFIG_PATH
+    echo "$preempt" >>$CONFIG_PATH
 }
 #grep_prop comes from https://github.com/topjohnwu/Magisk/blob/master/scripts/util_functions.sh#L30
 grep_prop() {
