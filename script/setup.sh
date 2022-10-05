@@ -176,39 +176,66 @@ install_corp() {
         asopt_module_version="$(grep_prop versionCode /data/adb/modules/asoul_affinity_opt/module.prop)"
         if [ "$CUR_ASOPT_VERSIONCODE" -ge "$asopt_module_version" ]; then
             #Using our newer AsoulOpt
+            echo "! You are using an old version AsoulOpt"
             killall -9 AsoulOpt
             rm -rf /data/adb/modules*/asoul_affinity_opt
         fi
-        config="/data/asopt.conf"
-        note="# 若在游戏中遇到莫名卡顿等问题,可尝试将cpuset调为0
-# 但不生效的概率会提升
-# 若在和平精英中遇到了人多时卡顿问题,可尝试将pubgHeavy调为1
-# 但多数情况下会负优化"
+        echo "- Installing embeded AsoulOpt"
+        echo
+        echo "- You need to uninstall or disable other schedulers"
+        echo "- Like Scene-Online, Scene-Traditional, Femind, and CuToolbox(CupurumAdjustment)"
+        echo "- You can tweak configs in $CONFIG_PATH"
+        echo "- You can find the log in $LOG_PATH"
+        echo "- If there is a log tagged 'E' in the log file, you can submit a feedback with the log."
+        echo "- Others are normal situation"
+        echo 
 
-        cfg_cpuset=$(grep cpuset= $config)
-        cfg_pubgHeavy=$(grep pubgHeavy= $config)
-
-        if [ -z $cfg_cpuset ]; then
-            cfg_cpuset="cpuset=1"
+        if [ -d /data/adb/modules/unity_affinity_opt ]; then
+            mv /data/adb/modules/unity_affinity_opt /data/adb/modules/asoul_affinity_opt
         fi
 
-        if [ -z $cfg_pubgHeavy ]; then
-            cfg_pubgHeavy="pubgHeavy=0"
+        rm -rf /data/adb/asopt
+        mkdir -p /sdcard/Android/asopt
+        CONFIG_PATH="/sdcard/Android/asopt/asopt.conf"
+        LOG_PATH="/sdcard/Android/asopt/asopt.log"
+        note="# cpuset：是否使用cpuset控制游戏线程
+# 0：使用syscall
+# 1：使用cpuset
+# 若在游戏中遇到莫名卡顿等问题
+# 可尝试调为0，但不生效的概率会提升
+
+# preempt：防非游戏进程抢占优化
+# 0：关闭
+# 1：只允许非游戏线程使用不重要的CPU
+# 2：只允许非游戏线程使用小核
+# 调为2可最大化游戏性能
+# 但会导致小窗体验糟糕
+# 若遇到了一些奇怪的问题
+# 可尝试调为0，但会降低游戏性能
+"
+        cpuset=$(grep cpuset= $CONFIG_PATH)
+        preempt=$(grep preempt= $CONFIG_PATH)
+
+        if [[ ! -f $CONFIG_PATH ]]; then
+            cpuset=$(grep cpuset= /data/asopt.conf)
+            preempt=$(grep preempt= /data/asopt.conf)
+
+            rm /data/asopt.conf
         fi
 
-        echo "$note" >$config
-        echo "$cfg_cpuset" >>$config
-        echo "$cfg_pubgHeavy" >>$config
+        if [[ -z $cpuset ]]; then
+            cpuset="cpuset=1"
+        fi
+
+        if [[ -z $preempt ]]; then
+            preempt="preempt=1"
+        fi
+
+        echo "$note" >$CONFIG_PATH
+        echo "$cpuset" >>$CONFIG_PATH
+        echo "$preempt" >>$CONFIG_PATH
 
     fi
-
-    #if [ -d "/data/adb/modules/cpu_limiter" ]; then
-    #    rm -rf /data/adb/modules/cpu_limiter /data/adb/modules*/cpu_limiter
-    #    echo "! CPU Limiter is embeded"
-    #fi
-    #if [ -d "/proc/cpudvfs" ]; then
-    #    cp -r -f "$MODULE_PATH"/config/cpu_limiter.conf /data/cpu_limiter.conf
-    #fi
 }
 #grep_prop comes from https://github.com/topjohnwu/Magisk/blob/master/scripts/util_functions.sh#L30
 grep_prop() {
