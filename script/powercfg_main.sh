@@ -32,8 +32,8 @@ if [ "$(grep 114 <"$BASEDIR"/../module.prop)" != "" ] || [ "$(ls "$BASEDIR/../ |
     action="powersave"
 fi
 case "$action" in
-"powersave" | "balance" |"performance" |  "fast" ) echo "$1" >"$USER_PATH"/cur_powermode.txt ;;
-"init") echo "balance" >"$USER_PATH/cur_powermode.txt" ;;
+"powersave" | "balance" |"performance" |  "fast" | "auto" ) echo "$1" >"$USER_PATH"/cur_powermode.txt ;;
+"init") echo "auto" >"$USER_PATH/cur_powermode.txt" ;; #default auto
 "pedestal")
     if [ "$(grep -E "pedestal" < "$USER_PATH"/uperf.json)" != "" ];then
         echo "pedestal" >"$USER_PATH"/cur_powermode.txt
@@ -43,7 +43,7 @@ case "$action" in
     ;;
 *)
     echo "Failed to apply unknown action '$1'. Reset current mode to 'balance'."
-    echo "balance" >"$USER_PATH/cur_powermode.txt"
+    echo "auto" >"$USER_PATH/cur_powermode.txt" #default auto
     ;;
 esac
 #if [ -f "/data/cpu_limiter.conf" ];then

@@ -71,13 +71,11 @@ install_uperf() {
     rm -rf /sdcard/yc/uperf
     mv -f "$USER_PATH"/uperf.json "$USER_PATH"/uperf.json.bak
     cp -f "$MODULE_PATH"/config/"$cfgname".json "$USER_PATH"/uperf.json
-    #[ ! -e ""$USER_PATH"/perapp_powermode.txt" ] && cp "$MODULE_PATH"/config/perapp_powermode.txt "$USER_PATH"/perapp_powermode.txt
+    chattr -i /data/media/0/Android/yc/uperf/perapp_powermode.txt
+    chmod 666 /data/media/0/Android/yc/uperf/perapp_powermode.txt
+    [ ! -e ""$USER_PATH"/perapp_powermode.txt" ] && cp "$MODULE_PATH"/config/perapp_powermode.txt "$USER_PATH"/perapp_powermode.txt
     #Force use Scene
     echo "! Deprecated Support of perapp_powermode. Please use Scene"
-    rm "$USER_PATH"/perapp_powermode.txt
-    touch /data/media/0/Android/yc/uperf/perapp_powermode.txt
-    chmod 000 /data/media/0/Android/yc/uperf/perapp_powermode.txt
-    chattr +i /data/media/0/Android/yc/uperf/perapp_powermode.txt
     rm -rf "$MODULE_PATH"/config
     echo "- Uperf config is located at $USER_PATH"
 }
