@@ -71,9 +71,12 @@ install_uperf() {
     rm -rf /sdcard/yc/uperf
     mv -f "$USER_PATH"/uperf.json "$USER_PATH"/uperf.json.bak
     cp -f "$MODULE_PATH"/config/"$cfgname".json "$USER_PATH"/uperf.json
-    chattr -i /data/media/0/Android/yc/uperf/perapp_powermode.txt
-    chmod 666 /data/media/0/Android/yc/uperf/perapp_powermode.txt
-    [ ! -e ""$USER_PATH"/perapp_powermode.txt" ] && cp "$MODULE_PATH"/config/perapp_powermode.txt "$USER_PATH"/perapp_powermode.txt
+    if [ "$(cat /data/media/0/Android/yc/uperf/perapp_powermode.txt)" == "" ]; then
+        chattr -i /data/media/0/Android/yc/uperf/perapp_powermode.txt
+        chmod 666 /data/media/0/Android/yc/uperf/perapp_powermode.txt
+        rm /data/media/0/Android/yc/uperf/perapp_powermode.txt
+    fi
+    [ ! -e "$USER_PATH/perapp_powermode.txt" ] && cp $MODULE_PATH/config/perapp_powermode.txt $USER_PATH/perapp_powermode.txt
     #Force use Scene
     echo "! Deprecated Support of perapp_powermode. Please use Scene"
     rm -rf "$MODULE_PATH"/config
@@ -185,7 +188,7 @@ install_corp() {
     mkdir -p /sdcard/Android/asopt
     CONFIG_PATH="/sdcard/Android/asopt/asopt.conf"
     LOG_PATH="/sdcard/Android/asopt/asopt.log"
-    echo 
+    echo
     echo "- Installing embeded AsoulOpt"
     echo
     echo "- You need to uninstall or disable other schedulers"

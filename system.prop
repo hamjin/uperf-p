@@ -1,6 +1,8 @@
 # This file will be read by resetprop
 # Example: Change dpi
 # ro.sf.lcd_density=320
+#We will we will fuck you (fuck you)
+Build.BRAND=QCOM
 #HardCoder
 persist.sys.hardcoder.name="null"
 #system

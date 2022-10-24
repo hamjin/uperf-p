@@ -340,15 +340,26 @@ lock_val "0" /sys/kernel/fpsgo/minitop/enable
 lock_val "2000000" /proc/sys/kernel/sched_latency_ns
 lock_val "2000000" /proc/sys/kernel/sched_migration_cost_ns
 lock_val "3000000" /proc/sys/kernel/sched_min_granularity_ns
-
-#changed device_config
-resetprop persist.sys.thermal.config 10
-resetprop -n persist.sys.thermal.config 10
-setprop persist.sys.thermal.config 10
-persist.sys.hardcoder.name "null"
-device_config put runtime_native_boot iorap_perfetto_enable 1
-device_config put runtime_native_boot iorap_readahead_enable 1
-resetprop ro.iorapd.enable true
-resetprop -n ro.iorapd.enable true
-start iorapd
 killall mi_thermald
+#changed device_config
+dev_cfg() {
+    while true; do
+        setenforce 0
+        device_config put runtime_native_boot iorap_perfetto_enable 1
+        device_config put runtime_native_boot iorap_readahead_enable 1
+        if [ "$?" != "0" ]; then
+            resetprop ro.iorapd.enable true
+            resetprop -n ro.iorapd.enable true
+            start iorapd
+            while [ "$(getenforce)" == "Permissive" ]; do
+                setenforce 1
+                sleep 1s
+            done
+            return 0
+        else
+            sleep 10s
+            continue
+        fi
+    done
+}
+(dev_cfg &)
