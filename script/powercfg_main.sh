@@ -19,42 +19,32 @@ BASEDIR="$(dirname $(readlink -f "$0"))"
 . $BASEDIR/pathinfo.sh
 . $BASEDIR/libcommon.sh
 . $BASEDIR/libsysinfo.sh
-
 action="$1"
-if [ "$top_app" != "standby" ] && [ "$top_app" != "" ]; then
-    echo "$top_app anisotropic_disable 1" >/sys/kernel/ged/gpu_tuner/custom_hint_set
+sleep 2s
+if [ ! -f "/dev/asopt_game" ]; then
+    IS_GAME="0"
+else
+    IS_GAME="$(cat /dev/asopt_game)"
 fi
-if [ "$(grep 114 <"$BASEDIR"/../module.prop)" != "" ] || [ "$(ls "$BASEDIR/../ | grep conf")" != "" ] || [ "$(ls "$BASEDIR/../ | grep old")" != "" ]; then
-    for i in $(seq 0 1000); do
-        log "Please don't inject me!"
-        sleep 0.02s
-    done
-    action="powersave"
+HAS_GAME="$(grep -E "gbalance" <"$USER_PATH"/uperf.json)"
+
+if [ "$IS_GAME" == "1" ] && [ "$HAS_GAME" != "" ]; then
+    action="g$action"
 fi
+
 case "$action" in
-"powersave" | "balance" |"performance" |  "fast" | "auto" ) echo "$1" >"$USER_PATH"/cur_powermode.txt ;;
-"init") echo "auto" >"$USER_PATH/cur_powermode.txt" ;; #default auto
+"powersave" | "balance" | "performance" | "fast") echo "$action" >"$USER_PATH"/cur_powermode.txt ;;
+"gpowersave" | "gbalance" | "gperformance" | "gfast") echo "$action" >"$USER_PATH"/cur_powermode.txt ;; #game mode
+"init") echo "auto" >"$USER_PATH/cur_powermode.txt" ;;                                             #default auto
 "pedestal")
-    if [ "$(grep -E "pedestal" < "$USER_PATH"/uperf.json)" != "" ];then
+    if [ "$(grep -E "pedestal" <"$USER_PATH"/uperf.json)" != "" ]; then
         echo "pedestal" >"$USER_PATH"/cur_powermode.txt
     else
         echo "performance" >"$USER_PATH"/cur_powermode.txt
     fi
     ;;
 *)
-    echo "Failed to apply unknown action '$1'. Reset current mode to 'balance'."
+    echo "Failed to apply unknown action '$1'. Reset current mode to 'auto'."
     echo "auto" >"$USER_PATH/cur_powermode.txt" #default auto
     ;;
 esac
-#if [ -f "/data/cpu_limiter.conf" ];then
-#case "$action" in
-#"powersave") sed -i "s/targetTemp=.*/targetTemp=70000/g" /data/cpu_limiter.conf ;;
-#"balance" | "init") sed -i "s/targetTemp=.*/targetTemp=80000/g" /data/cpu_limiter.conf;;
-#"performance" ) sed -i "s/targetTemp=.*/targetTemp=95000/g" /data/cpu_limiter.conf;;
-#"fast" | "pedestal") sed -i "s/targetTemp=.*/targetTemp=90000/g" /data/cpu_limiter.conf;;
-#*) 
-#    echo "Failed to apply unknown action '$action'." 
-#    sed -i "s/targetTemp=.*/targetTemp=80000/g" /data/cpu_limiter.conf
-#    ;;
-#esac
-#fi

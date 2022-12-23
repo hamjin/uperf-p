@@ -1,6 +1,6 @@
 {
   "meta": {
-    "name": "Helio G90T(mt6768)[22.09.04]", 
+    "name": "Dimensity 900(mt6877)/920(mt6877T)[22.09.04]", 
     "author": "yc@coolapk"
   }, 
   "modules": {
@@ -47,11 +47,11 @@
           "freeFreq": 0.6
         }, 
         {
-          "efficiency": 250, 
+          "efficiency": 320, 
           "nr": 2, 
-          "typicalPower": 1.85, 
-          "typicalFreq": 2.0, 
-          "sweetFreq": 1.4, 
+          "typicalPower": 1.4, 
+          "typicalFreq": 2.5, 
+          "sweetFreq": 1.7, 
           "plainFreq": 1.0, 
           "freeFreq": 0.7
         }
@@ -64,9 +64,7 @@
         "cpusetFg": "/dev/cpuset/foreground/cpus", 
         "cpusetBg": "/dev/cpuset/background/cpus", 
         "cpusetSysBg": "/dev/cpuset/system-background/cpus", 
-        "cpusetRe": "/dev/cpuset/restricted/cpus",
-        "ddrboost": "/sys/devices/platform/boot_dramboost/dramboost/dramboost",
-        "cciboost": "/proc/cpufreq/cpufreq_cci_mode"
+        "cpusetRe": "/dev/cpuset/restricted/cpus"
       }
     }, 
     "sched": {
@@ -445,9 +443,7 @@
       "cpusetFg": "0-3,6-7", 
       "cpusetBg": "0-3", 
       "cpusetSysBg": "0-3", 
-      "cpusetRe": "0-3,6-7",
-      "ddrboost": "0",
-      "cciboost": "0"
+      "cpusetRe": "0-3,6-7"
     }, 
     "sched": {
       "scene": "idle"
@@ -460,9 +456,7 @@
         "cpu.slowLimitPower": 2.0, 
         "cpu.fastLimitPower": 2.0, 
         "cpu.fastLimitCapacity": 16.0, 
-        "cpu.margin": 0.2,
-        "sysfs.ddrboost": "0",
-        "sysfs.cciboost": "0"
+        "cpu.margin": 0.2
       }, 
       "idle": {
         "cpu.baseSampleTime": 0.04, 
@@ -485,10 +479,8 @@
         "sched.scene": "touch"
       }, 
       "junk": {
-        "cpu.burst": 0.7, 
-        "sched.scene": "touch",
-        "sysfs.ddrboost": "1",
-        "sysfs.cciboost": "1"
+        "cpu.burst": 0.6, 
+        "sched.scene": "touch"
       }, 
       "switch": {
         "cpu.latencyTime": 0.0, 
@@ -496,9 +488,7 @@
         "cpu.fastLimitPower": 5.0, 
         "cpu.fastLimitRecoverScale": 0.1, 
         "cpu.margin": 0.4, 
-        "sched.scene": "boost",
-        "sysfs.ddrboost": "1",
-        "sysfs.cciboost": "1"
+        "sched.scene": "boost"
       }
     }, 
     "powersave": {
@@ -507,9 +497,7 @@
         "cpu.slowLimitPower": 1.0, 
         "cpu.fastLimitPower": 1.0, 
         "cpu.fastLimitCapacity": 4.0, 
-        "cpu.margin": 0.1,
-        "sysfs.ddrboost": "0",
-        "sysfs.cciboost": "0"
+        "cpu.margin": 0.1
       }, 
       "idle": {
         "cpu.baseSampleTime": 0.04, 
@@ -532,7 +520,7 @@
         "sched.scene": "touch"
       }, 
       "junk": {
-        "cpu.burst": 0.6, 
+        "cpu.burst": 0.3, 
         "sched.scene": "touch"
       }, 
       "switch": {
@@ -550,9 +538,7 @@
         "cpu.slowLimitPower": 4.0, 
         "cpu.fastLimitPower": 10.0, 
         "cpu.fastLimitCapacity": 360.0, 
-        "cpu.margin": 0.4,
-        "sysfs.ddrboost": "0",
-        "sysfs.cciboost": "0"
+        "cpu.margin": 0.4
       }, 
       "idle": {
         "cpu.baseSampleTime": 0.01, 
@@ -564,27 +550,19 @@
       }, 
       "trigger": {
         "cpu.margin": 0.8, 
-        "sched.scene": "touch",
-        "sysfs.ddrboost": "1",
-        "sysfs.cciboost": "1"
+        "sched.scene": "touch"
       }, 
       "gesture": {
         "cpu.margin": 0.8, 
-        "sched.scene": "touch",
-        "sysfs.ddrboost": "1",
-        "sysfs.cciboost": "1"
+        "sched.scene": "touch"
       }, 
       "junk": {
-        "cpu.burst": 0.7, 
-        "sched.scene": "touch",
-        "sysfs.ddrboost": "1",
-        "sysfs.cciboost": "1"
+        "cpu.burst": 0.5, 
+        "sched.scene": "touch"
       }, 
       "switch": {
         "cpu.burst": 0.2, 
-        "sched.scene": "boost",
-        "sysfs.ddrboost": "1",
-        "sysfs.cciboost": "1"
+        "sched.scene": "boost"
       }
     }, 
     "fast": {
@@ -593,9 +571,7 @@
         "cpu.slowLimitPower": 2.5, 
         "cpu.fastLimitPower": 2.5, 
         "cpu.fastLimitCapacity": 0.0, 
-        "cpu.margin": 0.4,
-        "sysfs.ddrboost": "1",
-        "sysfs.cciboost": "1"
+        "cpu.margin": 0.4
       }, 
       "idle": {
         "cpu.baseSampleTime": 0.01, 
@@ -614,7 +590,7 @@
         "sched.scene": "touch"
       }, 
       "junk": {
-        "cpu.burst": 0.7, 
+        "cpu.burst": 0.5, 
         "sched.scene": "touch"
       }, 
       "switch": {

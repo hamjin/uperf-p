@@ -20,37 +20,29 @@ BASEDIR="$(dirname $(readlink -f "$0"))"
 . $BASEDIR/libcommon.sh
 . $BASEDIR/libuperf.sh
 . $BASEDIR/libcorp.sh
+. $BASEDIR/libsysinfo.sh
 
 wait_until_login
 
-cp -r "$USER_PATH"/initsvc.log "$USER_PATH"/initsvc.lastboot.log
+cp -r $LOG_FILE $LOG_FILE.bak
 clear_log
-exec 1>>"$LOG_FILE"
+exec 1>>$LOG_FILE
 exec 2>&1
 date
 echo "PATH=$PATH"
 echo "sh=$(which sh)"
 echo "Bootstraping Uperf"
-
-# create busybox symlinks
-$BIN_PATH/busybox/busybox --install -s $BIN_PATH/busybox
-
-#Scene 3rd Scheduler Adapter Config
-cp -af "$SCRIPT_PATH"/vtools_powercfg.sh /data/powercfg.sh
-cat "$SCRIPT_PATH"/powercfg.json >/data/powercfg.json
-chmod 755 /data/powercfg.sh
-chmod 755 /data/powercfg-base.sh
-echo "sh $SCRIPT_PATH/powercfg_main.sh \"\$1\"" >>/data/powercfg.sh
-
-
-
-top_app="com.android.systemui" sh /data/powercfg.sh "init"
-
+#All Logged
 {
-    sh "$SCRIPT_PATH"/powercfg_once.sh 
-    sh "$SCRIPT_PATH"/gpu_adj.sh
-    sh "$SCRIPT_PATH"/mtk_special.sh
-}   >>"$LOG_FILE"  2>&1
-
-asopt_testversion
-uperf_start
+    #Scene 3rd Scheduler Adapter Config
+    cp -af $SCRIPT_PATH/vtools_powercfg.sh /data/powercfg.sh
+    cat $SCRIPT_PATH/powercfg.json >/data/powercfg.json
+    chmod 755 /data/powercfg.sh
+    echo "sh $SCRIPT_PATH/powercfg_main.sh \"\$1\"" >>/data/powercfg.sh
+    IS_MTK=$(is_mtk)
+    top_app="com.android.systemui" sh /data/powercfg.sh "init"
+    sh $SCRIPT_PATH/powercfg_once.sh
+    sh $SCRIPT_PATH/mtk_special.sh
+    asopt_testversion
+    uperf_start
+} >>$LOG_FILE 2>&1

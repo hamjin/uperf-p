@@ -36,7 +36,7 @@ unify_cgroup() {
 
     # unused
     rmdir /dev/cpuset/foreground/boost
-    rmdir /dev/cpuset/background/untrustedapp
+    #rmdir /dev/cpuset/background/untrustedapp
     # work with uperf/ContextScheduler
     change_task_cgroup "surfaceflinger" "" "cpuset"
     change_task_cgroup "system_server" "foreground" "cpuset"
@@ -44,9 +44,6 @@ unify_cgroup() {
     change_task_cgroup "hardware.media.c2|vendor.mediatek.hardware" "background" "cpuset"
     change_task_cgroup "aal_sof|kfps|dsp_send_thread|vdec_ipi_recv|mtk_drm_disp_id|disp_feature|hif_thread|main_thread|rx_thread|ged_" "background" "cpuset"
     change_task_cgroup "pp_event|crtc_" "background" "cpuset"
-    change_task_cgroup "update_engine" "top-app" "cpuset"
-    
-
 }
 
 unify_sched() {
@@ -67,13 +64,46 @@ unify_sched() {
 
 unify_devfreq() {
     for df in /sys/class/devfreq; do
-        for d in $df/*cpubw $df/*llccbw $df/*cpu-cpu-llcc-bw $df/*cpu-llcc-ddr-bw; do
+        for d in $df/*cpubw $df/*gpubw $df/*llccbw $df/*cpu-cpu-llcc-bw $df/*cpu-llcc-ddr-bw $df/*cpu-llcc-lat $df/*llcc-ddr-lat $df/*cpu-ddr-latfloor $df/*cpu-l3-lat $df/*npu-ddr-latfloor $df/*npu-llcc-bw $df/*npu-llcc-ddr-bw $df/*npudsp-llcc-ddr-bw $df/*cdsp-l3-lat $df/*cdsp-l3-lat $df/*cpu-ddr-qoslat $df/*bpu-ddr-latfloor $df/*npu-ddr-bw $df/*snoc_cnoc_keepalive; do
             lock_val "9999000000" "$d/max_freq"
+            #lock_val "9999000000" "$d/min_freq"
+            #lock_val "performance" "$d/governor"
         done
     done
-    for d in DDR LLCC L3; do
-        lock_val "9999000000" "/sys/devices/system/cpu/bus_dcvs/$d/*/max_freq"
-    done
+    #for d in DDR LLCC L3; do
+    #    for df in $(ls -1 /sys/devices/system/cpu/bus_dcvs/$d/); do
+    #        lock_val "9999000000" "/sys/devices/system/cpu/bus_dcvs/$d/$df/max_freq"
+    #        #lock_val "9999000000" "/sys/devices/system/cpu/bus_dcvs/$d/$df/min_freq"
+    #        lock_val "9999000000" "/sys/devices/system/cpu/bus_dcvs/$d/$df/adapt_high_freq"
+    #        #lock_val "9999000000" "/sys/devices/system/cpu/bus_dcvs/$d/$df/adapt_low_freq"
+    #    done
+    #    #HW_MAX=$(cat /sys/devices/system/cpu/bus_dcvs/$d/hw_max_freq)
+    #    #lock_val "$HW_MAX" "/sys/devices/system/cpu/bus_dcvs/$d/boost_freq"
+    #done
+    #SM84x0 Memory Fix
+    #mask_val "3196000" /sys/devices/system/cpu/bus_dcvs/DDR/boost_freq
+    #mask_val "1555000" /sys/devices/system/cpu/bus_dcvs/DDR/soc:qcom,memlat:ddr:silver/max_freq
+    #mask_val "2092000" /sys/devices/system/cpu/bus_dcvs/DDR/19091000.qcom,bwmon-ddr/max_freq
+    #mask_val "3196000" /sys/devices/system/cpu/bus_dcvs/DDR/soc:qcom,memlat:ddr:prime/max_freq
+    #mask_val "3196000" /sys/devices/system/cpu/bus_dcvs/DDR/soc:qcom,memlat:ddr:prime-latfloor/max_freq
+    #mask_val "1555000" /sys/devices/system/cpu/bus_dcvs/DDR/soc:qcom,memlat:ddr:gold-compute/max_freq
+    #mask_val "3196000" /sys/devices/system/cpu/bus_dcvs/DDR/soc:qcom,memlat:ddr:gold/max_freq
+
+    mask_val "1804800" /sys/devices/system/cpu/bus_dcvs/L3/boost_freq
+    mask_val "1804000" /sys/devices/system/cpu/bus_dcvs/L3/soc:qcom,memlat:l3:silver/max_freq
+    mask_val "1804000" /sys/devices/system/cpu/bus_dcvs/L3/soc:qcom,memlat:l3:prime/max_freq
+    mask_val "1804000" /sys/devices/system/cpu/bus_dcvs/L3/soc:qcom,memlat:l3:gold/max_freq
+    mask_val "1708800" /sys/devices/system/cpu/bus_dcvs/L3/soc:qcom,memlat:l3:prime-compute/max_freq
+
+    #mask_val "1" /sys/devices/system/cpu/bus_dcvs/DDRQOS/boost_freq
+    #mask_val "1" /sys/devices/system/cpu/bus_dcvs/DDRQOS/soc:qcom,memlat:ddrqos:gold/max_freq
+    #mask_val "1" /sys/devices/system/cpu/bus_dcvs/DDRQOS/soc:qcom,memlat:ddrqos:prime-latfloor/min_freq
+
+    #mask_val "1066000" /sys/devices/system/cpu/bus_dcvs/LLCC/boost_freq
+    #mask_val "600000" /sys/devices/system/cpu/bus_dcvs/LLCC/soc:qcom,memlat:llcc:gold-compute/max_freq
+    #mask_val "806000" /sys/devices/system/cpu/bus_dcvs/LLCC/190b6400.qcom,bwmon-llcc/max_freq
+    #mask_val "600000" /sys/devices/system/cpu/bus_dcvs/LLCC/soc:qcom,memlat:llcc:silver/max_freq
+    #mask_val "1066000" /sys/devices/system/cpu/bus_dcvs/LLCC/soc:qcom,memlat:llcc:gold/max_freq
 }
 
 unify_lpm() {
@@ -148,18 +178,15 @@ disable_kernel_boost() {
     lock_val "enable 0" /proc/perfmgr/tchbst/user/usrtch
     lock "/proc/ppm/policy/*"
     lock "/proc/ppm/*"
-    
-    # work with uperf/ContextScheduler
     lock_val "0" "/sys/module/mtk_fpsgo/parameters/boost_affinity*"
     lock_val "0" "/sys/module/fbt_cpu/parameters/boost_affinity*"
     lock_val "9999000" "/sys/kernel/fpsgo/fbt/limit_*"
     lock_val "0" /sys/kernel/fpsgo/fbt/switch_idleprefer
     lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
-    lock_val "1" /sys/module/mtk_core_ctl/parameters/policy_enable
-    lock_val "120" /sys/kernel/fpsgo/fbt/thrm_temp_th
+    lock_val "300" /sys/kernel/fpsgo/fbt/thrm_temp_th
     lock_val "-1" /sys/kernel/fpsgo/fbt/thrm_limit_cpu
     lock_val "-1" /sys/kernel/fpsgo/fbt/thrm_sub_cpu
-    
+
     # Samsung
     mutate "0" "/sys/class/input_booster/*"
 
@@ -167,7 +194,7 @@ disable_kernel_boost() {
     lock_val "N" "/sys/module/control_center/parameters/*"
     lock_val "0" /sys/module/aigov/parameters/enable
     lock_val "0" "/sys/module/houston/parameters/*"
-    
+
     # OnePlus opchain always pins UX threads on the big cluster
     lock_val "0" /sys/module/opchain/parameters/chain_on
 
@@ -184,11 +211,6 @@ disable_userspace_boost() {
     for f in /sys/module/migt/parameters/*; do
         chmod 0000 "$f"
     done
-
-    # xiaomi perfservice
-    stop vendor.perfservice
-    stop miuibooster
-    stop vendor.miperf
 
     # brain service maybe not smart
     stop oneplus_brain_service 2>/dev/null

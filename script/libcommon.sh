@@ -32,7 +32,7 @@ lock_val() {
     done
 }
 # $1:filepaths $2:value
-hide_value() {
+hide_val() {
     umount "$1" 2>/dev/null
     if [[ ! -f "/cache/$1" ]]; then
         mkdir -p "/cache/$1"
@@ -44,7 +44,18 @@ hide_value() {
     fi
     mount "/cache/$1" "$1"
 }
-
+# $1:value $2:filepaths
+mask_val() {
+    touch /data/local/tmp/mount_mask
+    for p in $2; do
+        if [ -f "$p" ]; then
+            umount "$p"
+            chmod 0666 "$p"
+            echo "$1" >"$p"
+            mount --bind /data/local/tmp/mount_mask "$p"
+        fi
+    done
+}
 # $1:value $2:filepaths
 mutate() {
     for p in $2; do
@@ -97,7 +108,7 @@ wait_until_login() {
     done
 
     # we doesn't have the permission to rw "/sdcard" before the user unlocks the screen
-    local test_file="/sdcard/Android/.PERMISSION_TEST"
+    test_file="/sdcard/Android/.PERMISSION_TEST"
     true >"$test_file"
     while [ ! -f "$test_file" ]; do
         true >"$test_file"

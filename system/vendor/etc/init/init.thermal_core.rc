@@ -1,9 +1,0 @@
-service thermal_core /vendor/bin/thermal_core
-    class main
-    socket thermal_socket stream 660 root system
-    user root
-    group system radio
-    enabled
-
-on property:ro.vendor.mtk_thermal_2_0=1
-    start thermal_core

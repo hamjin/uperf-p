@@ -1,12 +1,12 @@
 {
     "meta": {
-        "name": "Dimensity 8000/8100(mt6895)[22.09.04] && mtk [22.09.26]",
+        "name": "Dimensity 9000 Series(mt6983)[22.09.04] && P [22.12.10]",
         "author": "yc@coolapk && hamjin@coolapk"
     },
     "modules": {
         "switcher": {
-            "switchInode": "/data/media/0/Android/yc/uperf/cur_powermode.txt",
-            "perapp": "/data/media/0/Android/yc/uperf/perapp_powermode.txt",
+            "switchInode": "/sdcard/Android/yc/uperf/cur_powermode.txt",
+            "perapp": "/sdcard/Android/yc/uperf/perapp_powermode.txt",
             "hintDuration": {
                 "idle": 0.0,
                 "touch": 4.0,
@@ -38,31 +38,31 @@
             "enable": true,
             "powerModel": [
                 {
-                    "efficiency": 115,
+                    "efficiency": 140,
                     "nr": 4,
-                    "typicalPower": 0.46,
-                    "typicalFreq": 2.0,
-                    "sweetFreq": 1.6,
-                    "plainFreq": 0.25,
-                    "freeFreq": 0.2
+                    "typicalPower": 0.63,
+                    "typicalFreq": 1.8,
+                    "sweetFreq": 1.3,
+                    "plainFreq": 0.7,
+                    "freeFreq": 0.5
                 },
                 {
-                    "efficiency": 320,
+                    "efficiency": 340,
                     "nr": 3,
-                    "typicalPower": 1.56,
-                    "typicalFreq": 2.8,
-                    "sweetFreq": 1.9,
-                    "plainFreq": 0.5,
-                    "freeFreq": 0.4
+                    "typicalPower": 2.25,
+                    "typicalFreq": 2.85,
+                    "sweetFreq": 1.95,
+                    "plainFreq": 1.3,
+                    "freeFreq": 0.7
                 },
                 {
-                    "efficiency": 320,
+                    "efficiency": 420,
                     "nr": 1,
-                    "typicalPower": 1.56,
-                    "typicalFreq": 2.8,
+                    "typicalPower": 2.95,
+                    "typicalFreq": 3.05,
                     "sweetFreq": 2.2,
-                    "plainFreq": 1.2,
-                    "freeFreq": 0.8
+                    "plainFreq": 1.6,
+                    "freeFreq": 1.3
                 }
             ]
         },
@@ -72,14 +72,9 @@
                 "cpusetTa": "/dev/cpuset/top-app/cpus",
                 "cpusetFg": "/dev/cpuset/foreground/cpus",
                 "cpusetBg": "/dev/cpuset/background/cpus",
-                "cpusetRe": "/dev/cpuset/restricted/cpus",
                 "cpusetSysBg": "/dev/cpuset/system-background/cpus",
-                "gpuIdxMax": "/sys/kernel/ged/hal/custom_upbound_gpu_freq",
-                "gpuIdxMin": "/sys/kernel/ged/hal/custom_boost_gpu_freq",
-                "ddrMin": "/sys/class/devfreq/mtk-dvfsrc-devfreq/userspace/set_freq",
-                "ddrFreq": "/sys/kernel/helio-dvfsrc/dvfsrc_force_vcore_dvfs_opp",
-                "coreCtl": "/sys/module/mtk_core_ctl/parameters/policy_enable",
-                "cciBoost": "/sys/kernel/cm_mgr/dbg_cm_mgr"
+                "cpusetRe": "/dev/cpuset/restricted/cpus",
+                "ddrMin": "/sys/class/devfreq/mtk-dvfsrc-devfreq/userspace/set_freq"
             }
         },
         "sched": {
@@ -457,12 +452,7 @@
             "cpusetBg": "0-2",
             "cpusetSysBg": "0-2",
             "cpusetRe": "0-6",
-            "coreCtl": "0",
-            "gpuIdxMax": "08",
-            "gpuIdxMin": "40",
-            "ddrMin": "800000000",
-            "ddrFreq": "99",
-            "cciBoost": "dsu_perf 0"
+            "ddrMin": "800000000"
         },
         "sched": {
             "scene": "idle"
@@ -472,30 +462,22 @@
         "balance": {
             "*": {
                 "cpu.latencyTime": 0.2,
-                "cpu.slowLimitPower": 1.5,
-                "cpu.fastLimitPower": 1.7,
-                "cpu.fastLimitCapacity": 20.0,
-                "cpu.margin": 0.2,
-                "sysfs.gpuIdxMax": "15",
-                "sysfs.gpuIdxMin": "40",
-                "sysfs.coreCtl": "1",
-                "sysfs.ddrFreq": "99",
-                "sysfs.ddrMin": "2133000000",
-                "sysfs.cciBoost": "dsu_perf 0"
+                "cpu.slowLimitPower": 2.0,
+                "cpu.fastLimitPower": 2.0,
+                "cpu.fastLimitCapacity": 16.0,
+                "cpu.margin": 0.2
             },
             "idle": {
                 "cpu.baseSampleTime": 0.04,
                 "cpu.baseSlackTime": 0.08,
                 "cpu.predictThd": 0.3,
                 "cpu.limitEfficiency": true,
-                "sched.scene": "idle",
-                "sysfs.coreCtl": "1",
-                "sysfs.ddrMin": "800000000"
+                "sched.scene": "idle"
             },
             "touch": {
                 "cpu.baseSampleTime": 0.04,
                 "sched.scene": "touch",
-                "sysfs.ddrMin": "1866000000"
+                "sysfs.ddrMin": "3200000000"
             },
             "trigger": {
                 "cpu.latencyTime": 0.0,
@@ -509,34 +491,177 @@
             "junk": {
                 "cpu.burst": 0.6,
                 "sched.scene": "touch",
-                "sysfs.ddrMin": "2667000000",
-                "sysfs.coreCtl": "0",
-                "sysfs.cciBoost": "dsu_perf 3"
+                "sysfs.ddrMin": "6400000000"
             },
             "switch": {
                 "cpu.latencyTime": 0.0,
                 "cpu.slowLimitPower": 3.0,
-                "cpu.fastLimitPower": 6.0,
+                "cpu.fastLimitPower": 5.0,
                 "cpu.fastLimitRecoverScale": 0.1,
                 "cpu.margin": 0.4,
                 "sched.scene": "boost",
-                "sysfs.ddrMin": "2667000000",
-                "sysfs.coreCtl": "0",
-                "sysfs.cciBoost": "dsu_perf 3"
+                "sysfs.ddrMin": "6400000000"
             }
         },
         "powersave": {
             "*": {
                 "cpu.latencyTime": 0.4,
-                "cpu.slowLimitPower": 0.7,
-                "cpu.fastLimitPower": 1.1,
+                "cpu.slowLimitPower": 1.0,
+                "cpu.fastLimitPower": 1.0,
+                "cpu.fastLimitCapacity": 4.0,
+                "cpu.margin": 0.1
+            },
+            "idle": {
+                "cpu.baseSampleTime": 0.04,
+                "cpu.baseSlackTime": 0.08,
+                "cpu.predictThd": 1.0,
+                "cpu.limitEfficiency": true,
+                "sched.scene": "idle"
+            },
+            "touch": {
+                "cpu.baseSampleTime": 0.04,
+                "sched.scene": "touch"
+            },
+            "trigger": {
+                "cpu.latencyTime": 0.0,
+                "cpu.margin": 0.3,
+                "sched.scene": "touch"
+            },
+            "gesture": {
+                "cpu.margin": 0.6,
+                "sched.scene": "touch"
+            },
+            "junk": {
+                "cpu.burst": 0.3,
+                "sched.scene": "touch",
+                "sysfs.ddrMin": "6400000000"
+            },
+            "switch": {
+                "cpu.latencyTime": 0.0,
+                "cpu.slowLimitPower": 1.5,
+                "cpu.fastLimitPower": 2.5,
+                "cpu.fastLimitRecoverScale": 0.1,
+                "cpu.margin": 0.3,
+                "sched.scene": "boost"
+            }
+        },
+        "performance": {
+            "*": {
+                "cpu.latencyTime": 0.0,
+                "cpu.slowLimitPower": 4.0,
+                "cpu.fastLimitPower": 10.0,
+                "cpu.fastLimitCapacity": 360.0,
+                "cpu.margin": 0.4,
+                "sysfs.ddrMin": "6400000000"
+            },
+            "idle": {
+                "cpu.baseSampleTime": 0.01,
+                "cpu.baseSlackTime": 0.04,
+                "sched.scene": "idle"
+            },
+            "touch": {
+                "sched.scene": "touch"
+            },
+            "trigger": {
+                "cpu.margin": 0.8,
+                "sched.scene": "touch"
+            },
+            "gesture": {
+                "cpu.margin": 0.8,
+                "sched.scene": "touch"
+            },
+            "junk": {
+                "cpu.burst": 0.5,
+                "sched.scene": "touch"
+            },
+            "switch": {
+                "cpu.burst": 0.2,
+                "sched.scene": "boost"
+            }
+        },
+        "fast": {
+            "*": {
+                "cpu.latencyTime": 0.0,
+                "cpu.slowLimitPower": 2.5,
+                "cpu.fastLimitPower": 2.5,
+                "cpu.fastLimitCapacity": 0.0,
+                "cpu.margin": 0.4
+            },
+            "idle": {
+                "cpu.baseSampleTime": 0.01,
+                "cpu.baseSlackTime": 0.04,
+                "sched.scene": "idle"
+            },
+            "touch": {
+                "sched.scene": "touch"
+            },
+            "trigger": {
+                "cpu.margin": 0.8,
+                "sched.scene": "touch"
+            },
+            "gesture": {
+                "cpu.margin": 0.8,
+                "sched.scene": "touch"
+            },
+            "junk": {
+                "cpu.burst": 0.5,
+                "sched.scene": "touch",
+                "sysfs.ddrMin": "6400000000"
+            },
+            "switch": {
+                "cpu.burst": 0.2,
+                "sched.scene": "boost",
+                "sysfs.ddrMin": "6400000000"
+            }
+        },
+        "gbalance": {
+            "*": {
+                "cpu.latencyTime": 0.0,
+                "cpu.slowLimitPower": 3.0,
+                "cpu.fastLimitPower": 12.0,
+                "cpu.fastLimitCapacity": 15.0,
+                "cpu.fastLimitRecoverScale": 17.0,
+                "cpu.margin": 0.27,
+                "sysfs.ddrMin": "3200000000"
+            },
+            "idle": {
+                "cpu.limitEfficiency": true,
+                "sched.scene": "idle"
+            },
+            "touch": {
+                "sched.scene": "touch"
+            },
+            "trigger": {
+                "cpu.margin": 0.4,
+                "sched.scene": "touch"
+            },
+            "gesture": {
+                "cpu.margin": 0.6,
+                "sched.scene": "touch"
+            },
+            "junk": {
+                "cpu.burst": 0.8,
+                "sched.scene": "touch",
+                "cpu.limitEfficiency": true,
+                "sysfs.ddrMin": "6400000000"
+            },
+            "switch": {
+                "cpu.latencyTime": 0.0,
+                "cpu.slowLimitPower": 6.0,
+                "cpu.fastLimitPower": 13.5,
+                "cpu.margin": 0.5,
+                "cpu.limitEfficiency": true,
+                "sched.scene": "boost",
+                "sysfs.ddrMin": "6400000000"
+            }
+        },
+        "gpowersave": {
+            "*": {
+                "cpu.latencyTime": 0.4,
+                "cpu.slowLimitPower": 1.5,
+                "cpu.fastLimitPower": 2.2,
                 "cpu.fastLimitCapacity": 5.0,
-                "cpu.margin": 0.1,
-                "sysfs.gpuIdxMax": "25",
-                "sysfs.gpuIdxMin": "40",
-                "sysfs.coreCtl": "1",
-                "sysfs.ddrMin": "800000000",
-                "sysfs.cciBoost": "dsu_perf 0"
+                "cpu.margin": 0.1
             },
             "idle": {
                 "cpu.baseSampleTime": 0.04,
@@ -564,92 +689,22 @@
             },
             "switch": {
                 "cpu.latencyTime": 0.0,
-                "cpu.slowLimitPower": 1.5,
+                "cpu.slowLimitPower": 1.7,
                 "cpu.fastLimitPower": 3.0,
-                "cpu.fastLimitRecoverScale": 0.1,
+                "cpu.fastLimitRecoverScale": 0.2,
                 "cpu.margin": 0.3,
                 "sched.scene": "boost"
             }
         },
-        "performance": {
+        "gperformance": {
             "*": {
                 "cpu.latencyTime": 0.0,
-                "cpu.slowLimitPower": 4.0,
-                "cpu.fastLimitPower": 10.0,
+                "cpu.slowLimitPower": 6.0,
+                "cpu.fastLimitPower": 99.0,
                 "cpu.fastLimitCapacity": 360.0,
-                "cpu.margin": 0.48,
-                "sysfs.gpuIdxMax": "10",
-                "sysfs.gpuIdxMin": "40",
-                "sysfs.coreCtl": "1",
-                "sysfs.ddrFreq": "99",
-                "sysfs.ddrMin": "2667000000",
-                "sysfs.cciBoost": "dsu_perf 3"
-            },
-            "idle": {
-                "cpu.baseSampleTime": 0.01,
-                "cpu.baseSlackTime": 0.04,
-                "sched.scene": "idle",
-                "sysfs.ddrMin": "1866000000"
-            },
-            "touch": {
-                "sched.scene": "touch"
-            },
-            "trigger": {
-                "cpu.margin": 0.8,
-                "sched.scene": "touch",
-                "sysfs.coreCtl": "0"
-            },
-            "gesture": {
-                "cpu.margin": 0.8,
-                "sched.scene": "touch"
-            },
-            "junk": {
-                "cpu.burst": 0.5,
-                "sched.scene": "touch",
-                "sysfs.coreCtl": "0"
-            },
-            "switch": {
-                "cpu.burst": 0.2,
-                "sched.scene": "boost",
-                "sysfs.coreCtl": "0"
-            }
-        },
-        "pedestal": {
-            "*": {
-                "cpu.latencyTime": 0.0,
-                "cpu.slowLimitPower": 998.0,
-                "cpu.fastLimitPower": 999.0,
-                "cpu.fastLimitCapacity": 999.0,
-                "cpu.fastLimitRecoverScale": 10.0,
-                "cpu.margin": 1,
-                "cpu.burst": 1,
-                "sched.scene": "boost",
-                "sysfs.gpuIdxMax": "03",
-                "sysfs.gpuIdxMin": "20",
-                "sysfs.coreCtl": "0",
-                "sysfs.ddrFreq": "99",
-                "sysfs.ddrMin": "5500000000",
-                "sysfs.cciBoost": "dsu_perf 3"
-            },
-            "idle": {},
-            "touch": {},
-            "trigger": {},
-            "gesture": {},
-            "junk": {},
-            "switch": {}
-        },
-        "fast": {
-            "*": {
-                "cpu.latencyTime": 0.0,
-                "cpu.slowLimitPower": 2.5,
-                "cpu.fastLimitPower": 2.8,
-                "cpu.fastLimitCapacity": 10.0,
-                "cpu.margin": 0.42,
-                "sysfs.gpuIdxMax": "3",
-                "sysfs.gpuIdxMin": "40",
-                "sysfs.coreCtl": "0",
-                "sysfs.ddrMin": "2667000000",
-                "sysfs.cciBoost": "dsu_perf 3"
+                "cpu.fastLimitRecoverScale": 100.0,
+                "cpu.margin": 0.7,
+                "sysfs.ddrMin": "6400000000"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.01,
@@ -673,6 +728,62 @@
             },
             "switch": {
                 "cpu.burst": 0.2,
+                "sched.scene": "boost"
+            }
+        },
+        "pedestal": {
+            "*": {
+                "cpu.latencyTime": 0.0,
+                "cpu.slowLimitPower": 6.0,
+                "cpu.fastLimitPower": 14.0,
+                "cpu.fastLimitCapacity": 200.0,
+                "cpu.fastLimitRecoverScale": 400.0,
+                "cpu.burst": 1.0,
+                "sched.scene": "boost",
+                "sysfs.ddrMin": "6400000000"
+            },
+            "idle": {},
+            "touch": {},
+            "trigger": {},
+            "gesture": {},
+            "junk": {},
+            "switch": {}
+        },
+        "gfast": {
+            "*": {
+                "cpu.latencyTime": 0.0,
+                "cpu.slowLimitPower": 4.0,
+                "cpu.fastLimitPower": 8.0,
+                "cpu.fastLimitCapacity": 65.0,
+                "cpu.fastLimitRecoverScale": 97.0,
+                "cpu.margin": 0.4,
+                "sysfs.ddrMin": "6400000000"
+            },
+            "idle": {
+                "cpu.baseSampleTime": 0.01,
+                "cpu.baseSlackTime": 0.04,
+                "sched.scene": "idle"
+            },
+            "touch": {
+                "sched.scene": "touch"
+            },
+            "trigger": {
+                "cpu.margin": 0.8,
+                "sched.scene": "touch"
+            },
+            "gesture": {
+                "cpu.margin": 0.8,
+                "sched.scene": "touch"
+            },
+            "junk": {
+                "cpu.burst": 1.0,
+                "cpu.limitEfficiency": true,
+                "sched.scene": "touch"
+            },
+            "switch": {
+                "cpu.latencyTime": 0.0,
+                "cpu.burst": 0.2,
+                "cpu.limitEfficiency": true,
                 "sched.scene": "boost"
             }
         }

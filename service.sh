@@ -14,18 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-BASEDIR="$(dirname $(readlink -f "$0"))"
+MODDIR=${0%/*}
+#BASEDIR="$(dirname $(readlink -f "$0"))"
 
 crash_recuser() {
-    rm $BASEDIR/logcat.log
-    logcat -f $BASEDIR/logcat.log &
+    rm $MODDIR/logcat.log
+    logcat -f $MODDIR/logcat.log &
     sleep 60
     killall logcat
-    rm -f $BASEDIR/flag/need_recuser
+    rm -f $MODDIR/flag/need_recuser
 }
 
 (crash_recuser &)
 
-sh "$BASEDIR"/script/initsvc.sh  #>$BASEDIR/boot.log 2>&1
+sh "$MODDIR"/script/initsvc.sh  #>$BASEDIR/boot.log 2>&1
 #echo "$?" >>$BASEDIR/boot.log

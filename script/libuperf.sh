@@ -21,7 +21,8 @@ BASEDIR="$(dirname "$0")"
 . $BASEDIR/libcgroup.sh
 
 uperf_stop() {
-    killall uperf
+    pkill uperf
+    killall -9 uperf
 }
 
 uperf_start() {
@@ -36,6 +37,7 @@ uperf_start() {
         #export LD_PRELOAD="$ASAN_LIB $BIN_PATH/libc++_shared.so"
         export LD_PRELOAD="$BIN_PATH/libc++_shared.so $LD_PRELOAD"
     fi
+    sync
     $BIN_PATH/uperf $USER_PATH/uperf.json -o $USER_PATH/uperf_log.txt
 
     # waiting for uperf initialization

