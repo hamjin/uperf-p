@@ -631,6 +631,8 @@
                 "cpu.fastLimitCapacity": 16.0,
                 "cpu.fastLimitRecoverScale": 0.4,
                 "cpu.margin": 0.4,
+                "sysfs.cpusetFg": "1-5",
+                "sysfs.cpusetRe": "1-5",
                 "sysfs.ddrboost": "1",
                 "sysfs.cciboost": "1"
             },
@@ -676,6 +678,8 @@
                 "cpu.fastLimitPower": 1.9,
                 "cpu.fastLimitCapacity": 4.0,
                 "cpu.margin": 0.15,
+                "sysfs.cpusetFg": "1-5",
+                "sysfs.cpusetRe": "1-5",
                 "sysfs.ddrboost": "0",
                 "sysfs.cciboost": "0"
             },
@@ -720,6 +724,8 @@
                 "cpu.fastLimitCapacity": 360.0,
                 "cpu.fastLimitRecoverScale": 12.0,
                 "cpu.margin": 0.8,
+                "sysfs.cpusetFg": "1-5",
+                "sysfs.cpusetRe": "1-5",
                 "sysfs.ddrboost": "1",
                 "sysfs.cciboost": "1"
             },
@@ -758,6 +764,8 @@
                 "cpu.margin": 1.0,
                 "cpu.burst": 1.0,
                 "sched.scene": "boost",
+                "sysfs.cpusetFg": "1-5",
+                "sysfs.cpusetRe": "1-5",
                 "sysfs.ddrboost": "1",
                 "sysfs.cciboost": "1"
             },
@@ -776,6 +784,8 @@
                 "cpu.fastLimitCapacity": 30.0,
                 "cpu.fastLimitRecoverScale": 35.0,
                 "cpu.margin": 0.6,
+                "sysfs.cpusetFg": "1-5",
+                "sysfs.cpusetRe": "1-5",
                 "sysfs.ddrboost": "1",
                 "sysfs.cciboost": "1"
             },

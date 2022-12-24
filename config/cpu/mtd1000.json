@@ -621,7 +621,9 @@
                 "cpu.fastLimitRecoverScale": 0.4,
                 "cpu.margin": 0.4,
                 "sysfs.ddrboost": "1",
-                "sysfs.cciboost": "1"
+                "sysfs.cciboost": "1",
+                "sysfs.cpusetFg": "1-5",
+                "sysfs.cpusetRe": "1-5"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.04,
@@ -645,9 +647,7 @@
             },
             "junk": {
                 "cpu.burst": 0.6,
-                "sched.scene": "touch",
-                "sysfs.ddrboost": "1",
-                "sysfs.cciboost": "1"
+                "sched.scene": "touch"
             },
             "switch": {
                 "cpu.latencyTime": 0.0,
@@ -655,9 +655,7 @@
                 "cpu.fastLimitPower": 6.0,
                 "cpu.fastLimitRecoverScale": 0.1,
                 "cpu.margin": 0.4,
-                "sched.scene": "boost",
-                "sysfs.ddrboost": "1",
-                "sysfs.cciboost": "1"
+                "sched.scene": "boost"
             }
         },
         "gpowersave": {
@@ -668,7 +666,9 @@
                 "cpu.fastLimitCapacity": 4.0,
                 "cpu.margin": 0.15,
                 "sysfs.ddrboost": "1",
-                "sysfs.cciboost": "1"
+                "sysfs.cciboost": "1",
+                "sysfs.cpusetFg": "1-5",
+                "sysfs.cpusetRe": "1-5"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.04,
@@ -712,7 +712,9 @@
                 "cpu.fastLimitRecoverScale": 9.0,
                 "cpu.margin": 0.8,
                 "sysfs.ddrboost": "1",
-                "sysfs.cciboost": "1"
+                "sysfs.cciboost": "1",
+                "sysfs.cpusetFg": "1-5",
+                "sysfs.cpusetRe": "1-5"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.01,
@@ -750,7 +752,9 @@
                 "cpu.burst": 1.0,
                 "sched.scene": "boost",
                 "sysfs.ddrboost": "1",
-                "sysfs.cciboost": "1"
+                "sysfs.cciboost": "1",
+                "sysfs.cpusetFg": "1-5",
+                "sysfs.cpusetRe": "1-5"
             },
             "idle": {},
             "touch": {},
@@ -768,7 +772,9 @@
                 "cpu.fastLimitRecoverScale": 5.0,
                 "cpu.margin": 0.6,
                 "sysfs.ddrboost": "1",
-                "sysfs.cciboost": "1"
+                "sysfs.cciboost": "1",
+                "sysfs.cpusetFg": "1-5",
+                "sysfs.cpusetRe": "1-5"
             },
             "idle": {
                 "cpu.baseSampleTime": 0.01,

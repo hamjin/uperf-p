@@ -2,7 +2,7 @@
     "name": "Uperf-P v3",
     "author": "Matt Yang & hamjin",
     "version": "v3-22.09.04,P-22.12.23",
-    "versionCode": 221223000,
+    "versionCode": 221223001,
     "features": {
         "strict": true,
         "pedestal": true

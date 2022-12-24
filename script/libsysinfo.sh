@@ -161,7 +161,7 @@ get_config_name() {
     "mt6877") echo "mtd920" ;;
     "mt6885") echo "mtd1000" ;;
     "mt6889") echo "mtd1000" ;;
-    "mt6891") echo "mtd1100" ;;
+    "mt6891") echo "mtd1200" ;;
     "mt6893") echo "mtd1200" ;;
     "mt6895") echo "mtd8100" ;;
     "mt6983") echo "mtd9000" ;;
