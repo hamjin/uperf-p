@@ -32,11 +32,11 @@ uperf_start() {
     lock_val "1024" /proc/sys/fs/inotify/max_user_instances
 
     mv $USER_PATH/uperf_log.txt $USER_PATH/uperf_log.txt.bak
-    if [ -f $BIN_PATH/libc++_shared.so ]; then
-        ASAN_LIB="$(ls $BIN_PATH/libclang_rt.asan-*-android.so)"
-        #export LD_PRELOAD="$ASAN_LIB $BIN_PATH/libc++_shared.so"
-        export LD_PRELOAD="$BIN_PATH/libc++_shared.so $LD_PRELOAD"
-    fi
+    #if [ -f $BIN_PATH/libc++_shared.so ]; then
+    #    ASAN_LIB="$(ls $BIN_PATH/libclang_rt.asan-*-android.so)"
+    #    #export LD_PRELOAD="$ASAN_LIB $BIN_PATH/libc++_shared.so"
+    #    export LD_PRELOAD="$BIN_PATH/libc++_shared.so $LD_PRELOAD"
+    #fi
     sync
     $BIN_PATH/uperf $USER_PATH/uperf.json -o $USER_PATH/uperf_log.txt
 

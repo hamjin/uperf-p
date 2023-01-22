@@ -21,7 +21,7 @@ SCRIPT_PATH="$MODULE_PATH/script"
 BIN_PATH="$MODULE_PATH/bin"
 FLAG_PATH="$MODULE_PATH/flag"
 
-USER_PATH="/sdcard/Android/yc/uperf"
+USER_PATH="/data/media/0/Android/yc/uperf"
 LOG_FILE="$USER_PATH/initsvc.log"
 
 ###############################

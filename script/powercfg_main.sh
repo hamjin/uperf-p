@@ -19,32 +19,32 @@ BASEDIR="$(dirname $(readlink -f "$0"))"
 . $BASEDIR/pathinfo.sh
 . $BASEDIR/libcommon.sh
 . $BASEDIR/libsysinfo.sh
-action="$1"
-sleep 2s
-if [ ! -f "/dev/asopt_game" ]; then
-    IS_GAME="0"
-else
-    IS_GAME="$(cat /dev/asopt_game)"
-fi
-HAS_GAME="$(grep -E "gbalance" <"$USER_PATH"/uperf.json)"
 
-if [ "$IS_GAME" == "1" ] && [ "$HAS_GAME" != "" ]; then
-    action="g$action"
-fi
+action="$1"
+top_app="$2"
+category="$3"
+echo "$action $top_app $category" >/dev/uperf_scene
+HAS_GAME="$(grep "gbalance" <$USER_PATH/uperf.json)"
+[ [ "$HAS_GAME" != "" ] && [ [ "$category" == "game" ] || [ "$(cat /dev/asopt_game)" == "1" ] ] ] && action="g$action"
 
 case "$action" in
-"powersave" | "balance" | "performance" | "fast") echo "$action" >"$USER_PATH"/cur_powermode.txt ;;
-"gpowersave" | "gbalance" | "gperformance" | "gfast") echo "$action" >"$USER_PATH"/cur_powermode.txt ;; #game mode
-"init") echo "auto" >"$USER_PATH/cur_powermode.txt" ;;                                             #default auto
-"pedestal")
-    if [ "$(grep -E "pedestal" <"$USER_PATH"/uperf.json)" != "" ]; then
-        echo "pedestal" >"$USER_PATH"/cur_powermode.txt
-    else
-        echo "performance" >"$USER_PATH"/cur_powermode.txt
-    fi
+    "powersave" | "balance" | "performance" | "fast") echo "$action" >"$USER_PATH"/cur_powermode.txt ;;
+    "gpowersave" | "gbalance" | "gfast") echo "$action" >"$USER_PATH"/cur_powermode.txt ;; #game mode
+    "gperformance")
+        if [ -f $USER_PATH/.ENABLE_GAME_PERFORMACE_MODE ]; then
+            echo "$action" >"$USER_PATH"/cur_powermode.txt #USE IT AT YOUR OWN RISK
+        else
+            echo "gfast" >"$USER_PATH"/cur_powermode.txt
+        fi
     ;;
-*)
-    echo "Failed to apply unknown action '$1'. Reset current mode to 'auto'."
-    echo "auto" >"$USER_PATH/cur_powermode.txt" #default auto
+    "init") echo "balance" >"$USER_PATH/cur_powermode.txt" ;; #default balance
+    "pedestal")
+        if [ "$(grep -E "pedestal" <"$USER_PATH"/uperf.json)" != "" ]; then
+            echo "pedestal" >"$USER_PATH"/cur_powermode.txt
+        else
+            echo "performance" >"$USER_PATH"/cur_powermode.txt
+        fi
     ;;
+    "gpedestal") echo "gperformance" >"$USER_PATH"/cur_powermode.txt ;;
+    *)    echo "Failed to apply unknown action '$1'.";;
 esac

@@ -112,6 +112,7 @@ _get_taro_type() {
 # $1:board_name
 get_config_name() {
     case "$1" in
+    "kalama") echo "sdm8g2" ;;
     "taro") echo "$(_get_taro_type)" ;;
     "lahaina") echo "$(_get_lahaina_type)" ;;
     "shima") echo "$(_get_lahaina_type)" ;;
@@ -165,6 +166,7 @@ get_config_name() {
     "mt6893") echo "mtd1200" ;;
     "mt6895") echo "mtd8100" ;;
     "mt6983") echo "mtd9000" ;;
+    "mt6985") echo "mtd9200" ;;
     "gs101") echo "gs101" ;;
     *) echo "unsupported" ;;
     esac

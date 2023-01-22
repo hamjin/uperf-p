@@ -36,12 +36,12 @@ unify_cgroup() {
 
     # unused
     rmdir /dev/cpuset/foreground/boost
-    #rmdir /dev/cpuset/background/untrustedapp
+    rmdir /dev/cpuset/background/untrustedapp
     # work with uperf/ContextScheduler
-    change_task_cgroup "surfaceflinger" "" "cpuset"
+    change_task_cgroup "surfaceflinger" "foreground" "cpuset"
     change_task_cgroup "system_server" "foreground" "cpuset"
     change_task_cgroup "netd|allocator" "foreground" "cpuset"
-    change_task_cgroup "hardware.media.c2|vendor.mediatek.hardware" "background" "cpuset"
+    #change_task_cgroup "hardware.media.c2|vendor.mediatek.hardware" "background" "cpuset"
     change_task_cgroup "aal_sof|kfps|dsp_send_thread|vdec_ipi_recv|mtk_drm_disp_id|disp_feature|hif_thread|main_thread|rx_thread|ged_" "background" "cpuset"
     change_task_cgroup "pp_event|crtc_" "background" "cpuset"
 }
@@ -64,7 +64,7 @@ unify_sched() {
 
 unify_devfreq() {
     for df in /sys/class/devfreq; do
-        for d in $df/*cpubw $df/*gpubw $df/*llccbw $df/*cpu-cpu-llcc-bw $df/*cpu-llcc-ddr-bw $df/*cpu-llcc-lat $df/*llcc-ddr-lat $df/*cpu-ddr-latfloor $df/*cpu-l3-lat $df/*npu-ddr-latfloor $df/*npu-llcc-bw $df/*npu-llcc-ddr-bw $df/*npudsp-llcc-ddr-bw $df/*cdsp-l3-lat $df/*cdsp-l3-lat $df/*cpu-ddr-qoslat $df/*bpu-ddr-latfloor $df/*npu-ddr-bw $df/*snoc_cnoc_keepalive; do
+        for d in $df/*cpubw $df/*gpubw $df/*llccbw $df/*cpu-cpu-llcc-bw $df/*cpu-llcc-ddr-bw $df/*cpu-llcc-lat $df/*llcc-ddr-lat $df/*cpu-ddr-latfloor $df/*cpu-l3-lat $df/*cdsp-l3-lat $df/*cdsp-l3-lat $df/*cpu-ddr-qoslat $df/*bpu-ddr-latfloor $df/*snoc_cnoc_keepalive; do
             lock_val "9999000000" "$d/max_freq"
             #lock_val "9999000000" "$d/min_freq"
             #lock_val "performance" "$d/governor"
@@ -180,9 +180,10 @@ disable_kernel_boost() {
     lock "/proc/ppm/*"
     lock_val "0" "/sys/module/mtk_fpsgo/parameters/boost_affinity*"
     lock_val "0" "/sys/module/fbt_cpu/parameters/boost_affinity*"
-    lock_val "9999000" "/sys/kernel/fpsgo/fbt/limit_*"
+    lock_val "0" "/sys/kernel/fpsgo/fbt/limit_*"
     lock_val "0" /sys/kernel/fpsgo/fbt/switch_idleprefer
     lock_val "1" /proc/perfmgr/syslimiter/syslimiter_force_disable
+    lock_val "0" /sys/kernel/fpsgo/fbt/thrm_enable
     lock_val "300" /sys/kernel/fpsgo/fbt/thrm_temp_th
     lock_val "-1" /sys/kernel/fpsgo/fbt/thrm_limit_cpu
     lock_val "-1" /sys/kernel/fpsgo/fbt/thrm_sub_cpu

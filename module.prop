@@ -1,8 +1,8 @@
 id=uperf
 name=Uperf-P
-version=v3-22.09.04,P-22.12.23
-versionCode=221223001
-ASOPT_VERSIONCODE=219
+version=v3-22.09.04,P-23.01.22
+versionCode=230122000
+ASOPT_VERSIONCODE=223
 author=Matt Yang & HamJin
-description=Userspace performance controller for android. Repo: https://gitee.com/hamjin/uperf/
 updateJson=https://gitee.com/hamjin/uperf/raw/update/uperf-hamjty-dynamic-v3.json
+description=Userspace performance controller for android. Repo: https://gitee.com/hamjin/uperf/

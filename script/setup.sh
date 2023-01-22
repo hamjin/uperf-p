@@ -54,6 +54,16 @@ set_permissions() {
     set_perm_recursive "$MODULE_PATH"/system/vendor/etc 0 0 0755 0644 u:object_r:vendor_configs_file:s0
     set_perm_recursive "$MODULE_PATH"/zygisk 0 0 0755 0644 u:object_r:system_file:s0
 }
+
+#grep_prop comes from https://github.com/topjohnwu/Magisk/blob/master/scripts/util_functions.sh#L30
+grep_prop() {
+    REGEX="s/^$1=//p"
+    shift
+    FILES="$@"
+    [ -z "$FILES" ] && FILES='/system/build.prop'
+    cat $FILES 2>/dev/null | dos2unix | sed -n "$REGEX" | head -n 1
+}
+
 install_uperf() {
     echo "- ro.board.platform=$(getprop ro.board.platform)"
     echo "- ro.product.board=$(getprop ro.product.board)"
@@ -68,7 +78,7 @@ install_uperf() {
         abort "! Target [$target] not supported."
     fi
     mkdir -p "$USER_PATH"
-    rm -rf /sdcard/yc/uperf
+    rm -rf /data/media/0/yc/uperf
     mv -f "$USER_PATH"/uperf.json "$USER_PATH"/uperf.json.bak
     cp -f "$MODULE_PATH"/config/cpu/"$cfgname".json "$USER_PATH"/uperf.json
     [ ! -e "$USER_PATH/perapp_powermode.txt" ] && cp $MODULE_PATH/config/perapp_powermode.txt $USER_PATH/perapp_powermode.txt
@@ -78,50 +88,24 @@ install_uperf() {
 }
 
 install_powerhal_stub() {
-    echo "- Detecting platform specific perfhal stub"
-    [ ! -d "/proc/gpufreq" ] && rm -rf "$MODULE_PATH/system"
-    # do not place empty json if it doesn't exist in system
-    # vendor/etc/powerhint.json: android perf hal
-    # vendor/etc/powerscntbl.cfg: mediatek perf hal (android 9)
-    # vendor/etc/powerscntbl.xml: mediatek perf hal (android 10+)
-    # vendor/etc/perf/commonresourceconfigs.json: qualcomm perf hal resource
-    # vendor/etc/perf/targetresourceconfigs.json: qualcomm perf hal resource overrides
+    echo "- Fixing charge problem"
+    resetprop --delete persist.sys.thermal.config
 }
+
 #Install cooperate modules
 install_sfanalysis() {
     echo "- Installing uperf surfaceflinger analysis"
     echo "! Some device will break when enabled surfaceflinger analysis"
+    echo "! It is default diabled at the first installation"
+    echo "! You can enable it manually"
+    sleep 5s
     magisk --install-module "$MODULE_PATH"/sfanalysis-magisk.zip
+    if [ ! -f "/data/adb/modules/sfanalysis/disable" ];then
+        rm /data/adb/modules_update/sfanalysis/disable
+    fi
     rm "$MODULE_PATH"/sfanalysis-magisk.zip
 }
-install_ssanalysis_old() {
-    echo "- Warning! Device not running MIUI should disable it by yourself to avoid some problem!"
-    echo "- 警告! 非MIUI设备请手动禁用这个模块避免部分系统问题"
-    sleep 10s
-    magisk --install-module "$MODULE_PATH"/ssanalysis-magisk.zip
-    rm "$MODULE_PATH"/ssanalysis-magisk.zip
-}
-install_ssanalysis() {
-    echo "- Deprecated support of SystemServer Analysis"
-    if [ ! -d "/data/adb/modules/ssanalysis" ]; then
-        echo "- Please install uperf system_server analysis by yourself"
-        echo "- It is at /sdcard/Android/yc/uperf/ssanalysis-magisk.zip"
-        cp -r "$MODULE_PATH"/ssanalysis-magisk.zip /sdcard/Android/yc/uperf/ssanalysis-magisk.zip
-    else
-        if [ -f "/sdcard/Android/yc/uperf/ssanalysis-magisk.zip" ]; then
-            rm /sdcard/Android/yc/uperf/ssanalysis-magisk.zip
-        fi
-    fi
-    #if [ -f "/sdcard/Android/yc/uperf/ssanalysis-magisk.zip" ]; then
-    #    rm /sdcard/Android/yc/uperf/ssanalysis-magisk.zip
-    #fi
-}
-install_asopt_old() {
-    touch /data/adb/modules/asoul_affinity_opt/remove
-    echo "- Installing AsoulOpt"
-    magisk --install-module "$MODULE_PATH"/asoulopt.zip
-    rm "$MODULE_PATH"/asoulopt.zip
-}
+
 install_corp() {
     #For we embeded AsoulOpt, detect outside version
     if [ -d "/data/adb/modules/unity_affinity_opt" ] || [ -d "/data/adb/modules_update/unity_affinity_opt" ]; then
@@ -131,15 +115,16 @@ install_corp() {
     asopt_module_version="0"
     if [ -f "/data/adb/modules/asoul_affinity_opt/module.prop" ]; then
         asopt_module_version="$(grep_prop versionCode /data/adb/modules/asoul_affinity_opt/module.prop)"
-        echo "- AsoulOpt...current:$asopt_module_version"
-        echo "- AsoulOpt...embeded:$CUR_ASOPT_VERSIONCODE"
+        echo "- AsoulOpt current:$asopt_module_version"
+        echo "- AsoulOpt embeded:$CUR_ASOPT_VERSIONCODE"
         if [ "$CUR_ASOPT_VERSIONCODE" -ge "$asopt_module_version" ]; then
             #Using our newer AsoulOpt
-            echo "! You are using an old version AsoulOpt, you should reboot after installation"
-            killall -9 AsoulOpt
-            rm -rf /data/adb/modules*/asoul_affinity_opt
-            echo "- Installing embeded AsoulOpt"
+            echo "! You are using an old version AsoulOpt. Installing embeded AsoulOpt"
             magisk --install-module "$MODULE_PATH"/asoulopt.zip
+            if [ -f "/data/adb/modules/asoul_affinity_opt/disable" ]; then
+                echo "- You have disabled the AsoulOpt. Keep the previous status."
+                touch /data/adb/modules_update/asoul_affinity_opt/disable
+            fi
         else
             echo "- Detected Same or Newer Version Of AsoulOpt"
         fi
@@ -151,14 +136,6 @@ install_corp() {
         magisk --install-module "$MODULE_PATH"/asoulopt.zip
     fi
 
-}
-#grep_prop comes from https://github.com/topjohnwu/Magisk/blob/master/scripts/util_functions.sh#L30
-grep_prop() {
-    REGEX="s/^$1=//p"
-    shift
-    FILES="$@"
-    [ -z "$FILES" ] && FILES='/system/build.prop'
-    cat $FILES 2>/dev/null | dos2unix | sed -n "$REGEX" | head -n 1
 }
 
 # get module version
@@ -176,12 +153,10 @@ echo "* Author: $module_author"
 echo "* Version: $module_version"
 echo ""
 
-echo "- Installing uperf"
+echo "- Installing $module_name"
 install_uperf
-
 install_powerhal_stub
 install_sfanalysis
-#install_ssanalysis
 install_corp
 set_permissions
 

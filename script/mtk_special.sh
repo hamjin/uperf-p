@@ -25,32 +25,28 @@ BASEDIR="$(dirname "$(readlink -f "$0")")"
 
 # work with uperf/ContextScheduler && AsoulOpt
 if [ "$(is_mtk)" == "true" ]; then
-    #MTK
-    #MTK thermal-hal
-    stop vendor.thermal-hal-2-0.mtk
-    setenforce 0
-    setenforce 0
-    setenforce 0
+    # MTK specified
+    setenforce 0;setenforce 0;setenforce 0
     settings put system le_audio 1
     settings put system setting.duraspeed.enabled 1
     settings put secure doze_enabled 0
     settings put global is_default_icon 1
     settings put global lc3Enable true
-    setenforce 1
-    setenforce 1
-    setenforce 1
-    lock_val "0" "/sys/module/mtk_fpsgo/parameters/boost_affinity*"
-    lock_val "0" "/sys/module/fbt_cpu/parameters/boost_affinity*"
-    lock_val "0" "/sys/module/xgf/parameters/xgf_uboost"
-    #lock_val "0" /sys/kernel/fpsgo/fbt/switch_idleprefer
-    #lock_val "0" /sys/kernel/fpsgo/minitop/enable
+    setenforce 1;setenforce 1;setenforce 1
+    if [ -d "/data/adb/modules/asoul_affinity_opt" ];then
+        mask_val "0" /sys/module/mtk_fpsgo/parameters/boost_affinity
+        mask_val "0" /sys/module/fbt_cpu/parameters/boost_affinity
+        mask_val "0" /sys/kernel/fpsgo/fbt/switch_idleprefer
+        mask_val "0" /sys/kernel/fpsgo/minitop/enable
+    else
+        mask_val "1" /sys/module/mtk_fpsgo/parameters/boost_affinity
+        mask_val "1" /sys/module/fbt_cpu/parameters/boost_affinity
+        mask_val "1" /sys/kernel/fpsgo/fbt/switch_idleprefer
+        mask_val "1" /sys/kernel/fpsgo/minitop/enable
+    fi
     mask_val "0" /sys/module/mtk_core_ctl/parameters/policy_enable
-    #FPSGO
-    mask_val "1" /sys/kernel/fpsgo/common/perfserv_ta
-    mask_val "0" /sys/kernel/fpsgo/fbt/enable_switch_down_throttle
-    mask_val "0" /sys/kernel/fpsgo/fbt/enable_switch_cap_margin
-    mask_val "0" /sys/kernel/fpsgo/fbt/enable_switch_sync_flag
-    mas_val "0" /sys/kernel/fpsgo/fbt/thrm_enable
+    # FPSGO thermal
+    mask_val "0" /sys/kernel/fpsgo/fbt/thrm_enable
     mask_val "300000" /sys/kernel/fpsgo/fbt/thrm_temp_th
     mask_val "-1" /sys/kernel/fpsgo/fbt/thrm_limit_cpu
     mask_val "-1" /sys/kernel/fpsgo/fbt/thrm_sub_cpu
@@ -61,7 +57,7 @@ if [ "$(is_mtk)" == "true" ]; then
     #    done
     #done
 
-    #Platform Specify Config
+    # Platform specified Config
     if [ -d "/proc/gpufreqv2" ]; then
         # Disabel auto voltage scaling by MTK
         lock_val "disable" /proc/gpufreqv2/aging_mode
@@ -75,19 +71,21 @@ if [ "$(is_mtk)" == "true" ]; then
         lock_val "3 1 1" /proc/gpufreqv2/limit_table
         #cm_mgr
         lock_val "cm_mgr_disable_fb 0" /sys/kernel/cm_mgr/dbg_cm_mgr
-    elif [ -d "/proc/gpufreq" ]; then
+    fi
+    if [ -d "/proc/gpufreq" ]; then
+        # Disable cpuqos
         mask_val "0" /sys/module/cache_ctl/parameters/enable
-        # Disabel auto voltage add by MTK
+        # Disabel auto voltage scaling by MTK
         lock_val "0" /proc/gpufreq/gpufreq_aging_enable
         # Enable CPU7 for MTK, MT6893 and before(need empty power_app_cfg.xml)
         mask_val "" /sys/devices/system/cpu/sched/cpu_prefer
-        mask_val "" /sys/devices/system/cpu/sched/set_sched_isolation
+        mask_val "0" /sys/devices/system/cpu/sched/set_sched_isolation
         for i in $(seq 0 9); do
             lock_val "0" "$CPU"/cpu"$i"/sched_load_boost
             lock_val "$i" /sys/devices/system/cpu/sched/set_sched_deisolation
         done
         lock_val "1" /sys/devices/system/cpu/sched/hint_enable
-        lock_val "99" /sys/devices/system/cpu/sched/hint_load_thresh
+        lock_val "65" /sys/devices/system/cpu/sched/hint_load_thresh
         #force use ppm
         echo "force uperf use PPM"
         lock_val "0 3200000" /proc/ppm/policy/hard_userlimit_max_cpu_freq
@@ -107,17 +105,12 @@ if [ "$(is_mtk)" == "true" ]; then
         lock_val "1 1 1" /proc/gpufreq/gpufreq_limit_table
         # MTK-EARA
         mask_val "0" /sys/kernel/eara_thermal/enable
-        ##slbc
-        #lock_val "slbc_enable 1" /proc/slbc/dbg_slbc
-        #cm_mgr
-        #lock_val "cm_mgr_cpu_disable_fb 0" /proc/cm_mgr/dbg_cm_mgr
     fi
-    killall -9 vendor.mediatek.hardware.mtkpower@1.0-service
+    # OPLUS
+    mask_val "0" /sys/module/cpufreq_bouncing/parameters/enable
+    mask_val "0" /proc/task_info/task_sched_info/task_sched_info_enable
+    mask_val "0" /proc/oplus_scheduler/sched_assist/sched_assist_enabled
+    for i in 0,1,2;do
+        mask_val "$i,0,5,3000,3,2000,3,2000" /sys/module/cpufreq_bouncing/parameters/config
+    done
 fi
-
-#mi_thermald:tgame 13,nolimits 10,normal 0
-#lock_val "10" /sys/class/thermal/thermal_message/sconfig
-stop mcd_service
-stop mimd-service
-stop miuibooster
-stop vendor_tcpdump

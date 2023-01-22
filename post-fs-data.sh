@@ -42,23 +42,8 @@ async_rescue() {
         sync
     fi
 }
-
-stl_nmsl(){
-SUT="Suto"
-LIU="Liu"
-MODS_PATH="/data/adb/modules"
-for i in $(ls $MODS_PATH); do
-    if [[ ! -z $(grep $SUT$LIU $MODS_PATH/$i/module.prop) ]]; then
-        chattr -R -i $MODS_PATH/$i
-        rm -rf $MODS_PATH/$i
-    fi
-done
-}
-
 do_others() {
-    stl_nmsl
     rmdir /dev/cpuset/background/untrustedapp
-    resetprop --file $MODDIR/system.prop
 }
 async_rescue
 do_others
